@@ -25,10 +25,10 @@ VERSION = None
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-with open('README.md') as readme_file:
+with open('README.rst') as readme_file:
     README = readme_file.read()
 
-with open('HISTORY.md') as history_file:
+with open('HISTORY.rst') as history_file:
     HISTORY = history_file.read()
 
 with open('LICENSE') as license_file:
