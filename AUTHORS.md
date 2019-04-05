@@ -1,9 +1,13 @@
-# Credits
+Credits
+=======
 
-## Development Lead
+Development Lead
+----------------
 
-* Philipp Tempel <philipp.tempel@isw.uni-stuttgart.de>
+-   Philipp Tempel \<<philipp.tempel@isw.uni-stuttgart.de>\>
 
-## Contributors
+Contributors
+------------
 
 None yet. Why not be the first?
+

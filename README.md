@@ -1,29 +1,20 @@
-=====
 CDPyR
 =====
 
-
-
-
-.. image:: https://pyup.io/repos/github/phiilipptempel/cdpyr/shield.svg
-     :target: https://pyup.io/repos/github/phiilipptempel/cdpyr/
-     :alt: Updates
-
-
+[![Updates](https://pyup.io/repos/github/philipptempel/cdpyr/shield.svg)](https://pyup.io/repos/github/philipptempel/cdpyr/)
 
 Cable-Driven Parallel Robots in Python.
-
-
 
 Features
 --------
 
-* TODO
+-   TODO
 
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+This package was created with
+[Cookiecutter](https://github.com/audreyr/cookiecutter) and the
+[audreyr/cookiecutter-pypackage](https://github.com/audreyr/cookiecutter-pypackage)
+project template.
 
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
