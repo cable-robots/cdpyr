@@ -51,8 +51,12 @@ test_requirements = [str(tr.req) for tr in parsed_test_requirements]
 about = {}
 if not VERSION:
     project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
-    with open(os.path.join(here, project_slug, '__version__.py')) as f:
-        exec(f.read(), about)
+    with open(os.path.join(here, project_slug, '__init__.py')) as f:
+        ls = [l.strip() for l in f.readlines()]
+        try:
+            about['__version__'] = [v for v in ls if '__version__' in v][0].split(' = ')[1].strip('\'')
+        except IndexError:
+            about['__version__'] = VERSION
 else:
     about['__version__'] = VERSION
 
@@ -76,7 +80,7 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://www.cable-robots.com/cdpyr/',
-    version=VERSION,
+    version=about['__version__'],
     zip_safe=False,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
