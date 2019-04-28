@@ -10,4 +10,8 @@ twine
 
 numpy
 scipy
-pyquaternion
+numba
+numpy-quaternion
+geomdl
+geomdl.cli
+geomdl.shapes
