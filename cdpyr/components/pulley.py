@@ -1,7 +1,7 @@
-from cdpyr.traits.orientable import Orientable
+from cdpyr.traits.angularkinematics import AngularKinematics
 
 
-class Pulley(object, Orientable):
+class Pulley(object, AngularKinematics):
 
     def __init__(self, orientation=None):
         super().__init__(orientation=orientation)

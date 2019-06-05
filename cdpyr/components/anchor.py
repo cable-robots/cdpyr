@@ -1,8 +1,8 @@
-from cdpyr.traits.orientable import Orientable
-from cdpyr.traits.positionable import Positionable
+from cdpyr.traits.angularkinematics import AngularKinematics
+from cdpyr.traits.linearkinematics import LinearKinematics
 
 
-class Anchor(object, Orientable, Positionable):
+class Anchor(object, AngularKinematics, LinearKinematics):
 
     def __init__(self, position: None, orientation: None):
         super().__init__(position=position)
