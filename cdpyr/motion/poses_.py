@@ -1,9 +1,9 @@
 from typing import Iterable
 from typing import List
+from typing import Optional
 from typing import Union
 
 import numpy as np_
-from scipy._lib._util import check_random_state
 from scipy.spatial.transform import Rotation as Rotation_
 
 from cdpyr.kinematics.transform import Angular
@@ -12,11 +12,8 @@ from cdpyr.kinematics.transform import Linear
 
 class Pose(object):
     """
-    linear => cdpyr.kinematics.transform.Linear
-    angular => cdpyr.kinematics.transform.Angular
-
     position => (3,)
-    orientation => (9,)
+    orientation => Rotation
     euler => (3,)
     dcm => (3,3)
     rotvec => (3,)
@@ -60,42 +57,16 @@ class Pose(object):
                                acceleration=angular_acceleration)
         self.time = time
 
-    @classmethod
-    def random(cls, num: int = None, random_state=None):
-        random_state = check_random_state(random_state)
-
-        if num is None:
-            samples = random_state.normal(size=8)
-        else:
-            samples = random_state.normal(size=(num, 8))
-
-        return sorted(
-            (cls(position=s[1:4], quaternion=s[4:], time=np_.abs(s[0])) for s in
-             samples))
-
     @property
-    def angular(self):
-        return self._angular
+    def time(self) -> float:
+        return self._time
 
-    @angular.setter
-    def angular(self, a: Angular):
-        self._angular = a
+    @time.setter
+    def time(self, t: float):
+        if t < 0:
+            raise ValueError('time must be a nonnegative.')
 
-    @property
-    def angular_acceleration(self):
-        return self.angular.acceleration
-
-    @property
-    def angular_velocity(self):
-        return self.angular.velocity
-
-    @property
-    def dcm(self):
-        return self.angular.dcm
-
-    @property
-    def euler(self):
-        return self.angular.euler
+        self._time = t
 
     @property
     def linear(self) -> Linear:
@@ -106,24 +77,24 @@ class Pose(object):
         self._linear = l
 
     @property
-    def linear_acceleration(self):
-        return self.linear.acceleration
+    def angular(self):
+        return self._angular
+
+    @angular.setter
+    def angular(self, a: Angular):
+        self._angular = a
 
     @property
-    def linear_velocity(self):
-        return self.linear.velocity
+    def position(self):
+        return self.linear.position
 
     @property
     def orientation(self):
         return self.dcm.reshape(9)
 
     @property
-    def pose(self):
-        return np_.hstack((self.position, self.orientation))
-
-    @property
-    def position(self):
-        return self.linear.position
+    def dcm(self):
+        return self.angular.dcm
 
     @property
     def quaternion(self):
@@ -134,24 +105,40 @@ class Pose(object):
         return self.angular.rotvec
 
     @property
+    def euler(self):
+        return self.angular.euler
+
+    def euler(self, seq: str, degrees: Optional[bool] = False):
+        return self.angular.euler(seq, degrees=degrees)
+
+    @property
+    def linear_velocity(self):
+        return self.linear.velocity
+
+    @property
+    def angular_velocity(self):
+        return self.angular.velocity
+
+    @property
+    def linear_acceleration(self):
+        return self.linear.acceleration
+
+    @property
+    def angular_acceleration(self):
+        return self.angular.acceleration
+
+    @property
     def state(self):
         return np_.hstack((self.position, self.quaternion))
 
     @property
-    def time(self) -> float:
-        return self._time
-
-    @time.setter
-    def time(self, t: float):
-        if t < 0:
-            raise ValueError('time must be nonnegative.')
-
-        self._time = t
+    def pose(self):
+        return np_.hstack((self.position, self.orientation))
 
     def __iter__(self):
         return iter(self.pose)
 
-    def __str__(self):
+    def __repr__(self):
         return np_.array2string(np_.hstack([self.time, self.pose]),
                                 separator=',',
                                 formatter={'float_kind': lambda x: "%.2f" %
@@ -203,34 +190,9 @@ class PoseList(object):
         else:
             self.poses = []
 
-    @classmethod
-    def random(cls, num: int = None, random_state=None):
-        random_state = check_random_state(random_state)
-
-        if num is None:
-            samples = random_state.normal(size=8)
-        else:
-            samples = random_state.normal(size=(num, 8))
-
-        return cls(
-            [Pose(position=s[1:4], quaternion=s[4:], time=np_.abs(s[0])) for s
-             in samples])
-
     @property
-    def dcms(self):
-        return [p.dcm for p in self._poses]
-
-    @property
-    def euler(self):
-        return [p.euler for p in self._poses]
-
-    @property
-    def orientations(self):
-        return [p.orientation for p in self._poses]
-
-    @property
-    def poses(self) -> List[Pose]:
-        return self._poses
+    def poses(self) -> List[np_.ndarray]:
+        return [p.pose for p in self._poses]
 
     @poses.setter
     def poses(self, p: Union[List[list], List[Pose]]):
@@ -255,26 +217,30 @@ class PoseList(object):
         self._poses = sorted(p)
 
     @property
+    def times(self):
+        return [p.time for p in self._poses]
+
+    @property
     def positions(self):
         return [p.position for p in self._poses]
 
     @property
-    def quaternions(self):
-        return [p.quaternion for p in self._poses]
+    def orientations(self):
+        return [p.orientation for p in self._poses]
 
     @property
-    def rotvec(self):
-        return [p.rotvec for p in self._poses]
+    def rotation_matrices(self):
+        return [p.dcm for p in self._poses]
 
     @property
     def states(self):
         return [p.state for p in self._poses]
 
     @property
-    def times(self):
-        return [p.time for p in self._poses]
+    def quaternions(self):
+        return [p.quaternion for p in self._poses]
 
-    def __str__(self):
+    def __repr__(self):
         return '\n'.join(
             ['t,x,y,z,R11,R12,R13,R21,R22,R23,R31,R32,R33'] + [str(p) for p in
                                                                self.poses])

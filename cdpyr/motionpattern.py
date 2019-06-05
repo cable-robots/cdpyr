@@ -1,5 +1,7 @@
 from enum import Enum
 
+__version__ = '1.0.0-dev'
+
 
 class Spatiality(Enum):
     Point = 1
@@ -9,6 +11,15 @@ class Spatiality(Enum):
     def __str__(self):
         return self.name.lower()
 
+    def is_point(self):
+        return self is Spatiality.Point
+
+    def is_beam(self):
+        return self is Spatiality.Beam
+
+    def is_body(self):
+        return self is Spatiality.Body
+
 
 class Mobility(Enum):
     Linear = 1
@@ -17,6 +28,15 @@ class Mobility(Enum):
 
     def __str__(self):
         return self.name.lower()
+
+    def moves_linear(self):
+        return self is Mobility.Linear
+
+    def moves_planar(self):
+        return self is Mobility.Planar
+
+    def moves_spatial(self):
+        return self is Mobility.Spatial
 
 
 class MotionPattern(Enum):
