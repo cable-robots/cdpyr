@@ -1,3 +1,3 @@
-pytest
-pytest-runner
-sphinx_rtd_theme
+pytest # makes it easy to write small tests
+pytest-runner # setup scripts can use pytest-runner to add setup.py test support for pytest runner
+sphinx_rtd_theme # theme of readthedocs.org for sphinx

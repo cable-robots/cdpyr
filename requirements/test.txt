@@ -1,1 +1,1 @@
-mock
+mock # library for testing in python

@@ -1,17 +1,13 @@
-pip
-bumpversion
-wheel
-watchdog
-flake8
-tox
-coverage
-sphinx
-twine
+pip # Package Installer for Python
+bumpversion # script for automated version bumping
+wheel # reference implementation of the Python wheel packaging standard, as defined in PEP 427
+watchdog # monitor file system events.
+flake8 # python code style and error checking
+tox # command line driven CI frontend and development task automation tool
+coverage # code coverage testing for python
+sphinx # create intelligent and beautiful documentation for python projects
+twine # twine is a utility for publishing python packages on pypi.
 
 numpy
 scipy
 numba
-numpy-quaternion
-geomdl
-geomdl.cli
-geomdl.shapes
