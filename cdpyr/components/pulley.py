@@ -1,20 +1,16 @@
-from cdpyr.traits.angularkinematics import AngularKinematics
+from typing import Iterable
+from typing import List
+from typing import Union
+
+import numpy as np_
+from scipy.spatial.transform import Rotation as Rotation_
+
+from cdpyr.components.geometric import Cylinder
+from cdpyr.kinematics.transform import Angular
 
 
-class Pulley(object, AngularKinematics):
+class Pulley(Angular, Cylinder):
 
-    def __init__(self, orientation=None):
-        super().__init__(orientation=orientation)
-        self.radius = 1
-        self.material = 'default'
-
-    @property
-    def diameter(self):
-        return 2 * self.radius
-
-    @diameter.setter
-    def diameter(self, d):
-        if d <= 0:
-            raise ValueError('diameter must be positive')
-
-        self.radius = d / 2
+    def __init__(self, *args, **kwargs):
+        Cylinder.__init__(self, *args, **kwargs)
+        Angular.__init__(self, *args, **kwargs)

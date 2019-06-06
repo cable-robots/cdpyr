@@ -1,6 +1,5 @@
 from typing import Iterable
 from typing import List
-from typing import Optional
 from typing import Union
 
 import numpy as np_
@@ -11,9 +10,9 @@ class Linear(object):
     """
     Internal position storage variable
     """
-    _position: np_.ndarray
-    _velocity: np_.ndarray
-    _acceleration: np_.ndarray
+    _linpos: np_.ndarray
+    _linvel: np_.ndarray
+    _linacc: np_.ndarray
 
     def __init__(self,
                  position: Union[np_.ndarray, list, Iterable, int, float] =
@@ -21,59 +20,58 @@ class Linear(object):
                  velocity: Union[np_.ndarray, list, Iterable, int, float] =
                  None,
                  acceleration: Union[np_.ndarray, list, Iterable, int, float] =
-                 None):
-        self.position = position if position is not None else np_.zeros(3)
-        self.velocity = velocity if velocity is not None else np_.zeros(3)
-        self.acceleration = acceleration if acceleration is not None else np_.zeros(
+                 None,
+                 *args,
+                 **kwargs):
+        self.linear_position = position if position is not None else np_.zeros(3)
+        self.linear_velocity = velocity if velocity is not None else np_.zeros(3)
+        self.linear_acceleration = acceleration if acceleration is not None else np_.zeros(
             3)
 
     @property
-    def acceleration(self) -> np_.ndarray:
-        return self._acceleration
+    def linear_acceleration(self) -> np_.ndarray:
+        return self._linacc
 
-    @acceleration.setter
-    def acceleration(self, a: Union[np_.ndarray, list, Iterable, int, float]):
-        if not isinstance(a, np_.ndarray):
-            a = np_.array(a, dtype=np_.float64)
+    @linear_acceleration.setter
+    def linear_acceleration(self, a: Union[np_.ndarray, list, Iterable, int, float]):
+        a = np_.asarray(a, dtype=np_.float64)
 
         if not a.shape == (3,):
-            raise ValueError('acceleration must be of shape (3, )')
+            raise ValueError('linear_acceleration must be of shape (3, )')
 
-        self._acceleration = a
+        self._linacc = a
 
     @property
-    def position(self) -> np_.ndarray:
-        return self._position
+    def linear_position(self) -> np_.ndarray:
+        return self._linpos
 
-    @position.setter
-    def position(self, p: Union[np_.ndarray, list, Iterable, int, float]):
-        if not isinstance(p, np_.ndarray):
-            p = np_.array(p, dtype=np_.float64)
+    @linear_position.setter
+    def linear_position(self, p: Union[np_.ndarray, list, Iterable, int, float]):
+        p = np_.asarray(p, dtype=np_.float64)
 
         if not p.shape == (3,):
-            raise ValueError('position must be of shape (3, )')
+            raise ValueError('linear_position must be of shape (3, )')
 
-        self._position = p
+        self._linpos = p
 
     @property
-    def velocity(self) -> np_.ndarray:
-        return self._velocity
+    def linear_velocity(self) -> np_.ndarray:
+        return self._linvel
 
-    @velocity.setter
-    def velocity(self, v: Union[np_.ndarray, list, Iterable, int, float]):
-        if not isinstance(v, np_.ndarray):
-            v = np_.array(v, dtype=np_.float64)
+    @linear_velocity.setter
+    def linear_velocity(self, v: Union[np_.ndarray, list, Iterable, int, float]):
+        v = np_.asarray(v, dtype=np_.float64)
 
         if not v.shape == (3,):
-            raise ValueError('velocity must be of shape (3, )')
+            raise ValueError('linear_velocity must be of shape (3, )')
 
-        self._velocity = v
+        self._linvel = v
 
 
 class Angular(object):
-    _position: Rotation_
-    _velocity: np_.ndarray
-    _acceleration: np_.ndarray
+    _angpos: Rotation_
+    _angvel: np_.ndarray
+    _angacc: np_.ndarray
 
     def __init__(self,
                  orientation: Rotation_ = None,
@@ -86,7 +84,9 @@ class Angular(object):
                  velocity: Union[np_.ndarray, list, Iterable, int, float] =
                  None,
                  acceleration: Union[np_.ndarray, list, Iterable, int, float] =
-                 None):
+                 None,
+                 *args,
+                 **kwargs):
 
         self.orientation = Rotation_.from_euler('ZYX', [0, 0, 0])
         if orientation is not None:
@@ -99,23 +99,35 @@ class Angular(object):
             self.rotvec = rotvec
         elif euler is not None:
             self.euler = euler
-        self.velocity = velocity if velocity is not None else np_.zeros(3)
-        self.acceleration = acceleration if acceleration is not None else np_.zeros(
+        self.angular_velocity = velocity if velocity is not None else np_.zeros(3)
+        self.angular_acceleration = acceleration if acceleration is not None else np_.zeros(
             3)
 
     @property
-    def acceleration(self) -> np_.ndarray:
-        return self._acceleration
+    def angular_acceleration(self) -> np_.ndarray:
+        return self._angacc
 
-    @acceleration.setter
-    def acceleration(self, a: Union[np_.ndarray, list, Iterable, int, float]):
-        if not isinstance(a, np_.ndarray):
-            a = np_.array(a, dtype=np_.float64)
+    @angular_acceleration.setter
+    def angular_acceleration(self, a: Union[np_.ndarray, list, Iterable, int, float]):
+        a = np_.asarray(a, dtype=np_.float64)
 
         if not a.shape == (3,):
-            raise ValueError('acceleration must be of shape (3, )')
+            raise ValueError('angular_acceleration must be of shape (3, )')
 
-        self._acceleration = a
+        self._angacc = a
+
+    @property
+    def angular_velocity(self) -> np_.ndarray:
+        return self._angvel
+
+    @angular_velocity.setter
+    def angular_velocity(self, v: Union[np_.ndarray, list, Iterable, int, float]):
+        v = np_.asarray(v, dtype=np_.float64)
+
+        if not v.shape == (3,):
+            raise ValueError('angular_velocity must be of shape (3, )')
+
+        self._angvel = v
 
     @property
     def dcm(self) -> np_.ndarray:
@@ -135,7 +147,7 @@ class Angular(object):
 
     @property
     def orientation(self):
-        return self._position
+        return self._angpos
 
     @orientation.setter
     def orientation(self, orientation: Rotation_):
@@ -143,7 +155,7 @@ class Angular(object):
             raise ValueError('orientation must be of type '
                              'scipy.spatial.transform.Rotation')
 
-        self._position = orientation
+        self._angpos = orientation
 
     @property
     def quaternion(self) -> np_.ndarray:
@@ -160,17 +172,3 @@ class Angular(object):
     @rotvec.setter
     def rotvec(self, rotvec: Union[np_.ndarray, Iterable, int, float]):
         self.orientation.from_rotvec(rotvec)
-
-    @property
-    def velocity(self) -> np_.ndarray:
-        return self._velocity
-
-    @velocity.setter
-    def velocity(self, v: Union[np_.ndarray, list, Iterable, int, float]):
-        if not isinstance(v, np_.ndarray):
-            v = np_.array(v, dtype=np_.float64)
-
-        if not v.shape == (3,):
-            raise ValueError('velocity must be of shape (3, )')
-
-        self._velocity = v

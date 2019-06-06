@@ -1,2 +1,2 @@
-from cdpyr.motion.poses_ import Pose
-from cdpyr.motion.poses_ import PoseList
+from cdpyr.motion.poses import Pose
+from cdpyr.motion.poses import PoseList
