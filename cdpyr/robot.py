@@ -15,6 +15,7 @@ class Robot(object):
     _platforms: List[Platform]
     _cables: List[Cable]
     _connectivities: List[Connectivity]
+    _name: str
 
     def __init__(self):
         pass
@@ -32,12 +33,12 @@ class Robot(object):
         self._anchors = anchors
 
     @property
-    def platforms(self):
-        return self._platforms
+    def ai(self):
+        return np_.stack([a.linear_position.T for a in self.anchors], axis=0)
 
-    @platforms.setter
-    def platforms(self, platforms: List[Platform]):
-        self._platforms = platforms
+    @property
+    def bi(self):
+        return np_.stack([p.bi for p in self.platforms], axis=2)
 
     @property
     def cables(self):
@@ -56,6 +57,14 @@ class Robot(object):
         self._connectivities = connectivities
 
     @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name: str):
+        self._name = name
+
+    @property
     def num_cables(self):
         return len(self.cables)
 
@@ -68,12 +77,12 @@ class Robot(object):
         return len(self._anchors)
 
     @property
-    def ai(self):
-        return np_.stack([a.linear_position.T for a in self.anchors], axis=0)
+    def platforms(self):
+        return self._platforms
 
-    @property
-    def bi(self):
-        return np_.stack([p.bi for p in self.platforms], axis=2)
+    @platforms.setter
+    def platforms(self, platforms: List[Platform]):
+        self._platforms = platforms
 
     @property
     def ri(self):
