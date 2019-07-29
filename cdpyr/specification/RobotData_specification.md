@@ -125,6 +125,7 @@
             <x> 0 </x>
             <y> 0 </y>
             <z> 0 </z>
+        </position>    
         <orientation>
             <R11> 1 </R11>
             <R12> 0 </R12>
