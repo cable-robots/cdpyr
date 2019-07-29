@@ -1,4 +1,3 @@
-
 # Data Model
 
 ## XML-Structure - robot
@@ -86,7 +85,7 @@
     <drive_train>
         <winch>
             <radius>
-                <r> 0.1 </r>
+                0.1
             </radius>
             <inertia>
                 <m> 0.1 </m>
@@ -180,7 +179,6 @@
             <c7> 7 </c7>
         </frame>
         <platform>
-            <id> 0 </id>
             <c0> 0 </c0>
             <c1> 1 </c1>
             <c2> 2 </c2>
