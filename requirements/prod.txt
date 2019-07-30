@@ -11,3 +11,8 @@ twine # twine is a utility for publishing python packages on pypi.
 numpy
 scipy
 numba
+
+xmltodict
+beautifulsoup4
+lxml
+jsonpickle
