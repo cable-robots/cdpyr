@@ -1,18 +1,29 @@
-pip # Package Installer for Python
-bumpversion # script for automated version bumping
-wheel # reference implementation of the Python wheel packaging standard, as defined in PEP 427
-watchdog # monitor file system events.
-flake8 # python code style and error checking
-tox # command line driven CI frontend and development task automation tool
-coverage # code coverage testing for python
-sphinx # create intelligent and beautiful documentation for python projects
-twine # twine is a utility for publishing python packages on pypi.
+# Package Installer for Python
+pip
+# script for automated version bumping
+bumpversion
+# reference implementation of the Python wheel packaging standard, as defined in PEP 427
+wheel
+# monitor file system events.
+watchdog
+# python code style and error checking
+flake8
+# command line driven CI frontend and development task automation tool
+tox
+# code coverage testing for python
+coverage
+# create intelligent and beautiful documentation for python projects
+sphinx
+# twine is a utility for publishing python packages on pypi.
+twine
 
+# numpy is the fundamental package for array computing with python.
 numpy
+# SciPy: scientific library for python
 scipy
-numba
-
-xmltodict
-beautifulsoup4
-lxml
-jsonpickle
+# compiling Python code using llvm
+# numba
+# converts and manipulates various color representation (HSL, RVB, web, X11, ...)
+colour
+# a shortcut to generate __repr__ methods for python classes
+repr

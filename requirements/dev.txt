@@ -1,3 +1,11 @@
-pytest # makes it easy to write small tests
-pytest-runner # setup scripts can use pytest-runner to add setup.py test support for pytest runner
-sphinx_rtd_theme # theme of readthedocs.org for sphinx
+# makes it easy to write small tests
+pytest
+# setup scripts can use pytest-runner to add setup.py test support for pytest runner
+pytest-runner
+# theme of readthedocs.org for sphinx
+sphinx_rtd_theme
+# syntax-highlighting, declarative and composable pretty printer for Python 3.5+
+prettyprinter
+
+# recursively include requirements from production
+-r prod.txt
