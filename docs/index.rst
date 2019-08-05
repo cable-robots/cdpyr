@@ -1,4 +1,4 @@
-Welcome to CDPyR's documentation!
+Welcome to Cable-Driven Parallel Robots on Python's documentation!
 ======================================
 
 .. toctree::

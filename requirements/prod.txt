@@ -17,6 +17,9 @@ sphinx
 # twine is a utility for publishing python packages on pypi.
 twine
 
+# Composable command line interface toolkit
+click
+
 # numpy is the fundamental package for array computing with python.
 numpy
 # SciPy: scientific library for python

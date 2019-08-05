@@ -5,9 +5,12 @@ Credits
 Development Lead
 ----------------
 
-* Philipp Tempel <philipp.tempel@isw.uni-stuttgart.de>
+* Philipp Tempel <mail@philipptempel.me>
 
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Felix Trautwein <felix.trautwein@isw.uni-stuttgart.de>
+* Thomas Reichenbach <thomas.reichenbach@isw.uni-stuttgart.de>
+
+Wanna join? Why not shoot us an e-mail?

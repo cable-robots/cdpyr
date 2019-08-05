@@ -1,0 +1,2 @@
+# setup scripts can use pytest-runner to add setup.py test support for pytest runner
+pytest-runner

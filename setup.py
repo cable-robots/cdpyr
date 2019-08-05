@@ -44,8 +44,14 @@ parsed_test_requirements = parse_requirements(
     session=PipSession()
 )
 
+parsed_setup_requirements = parse_requirements(
+    'requirements/setup.txt',
+    session=PipSession()
+)
+
 requirements = [str(ir.req) for ir in parsed_requirements]
 test_requirements = [str(tr.req) for tr in parsed_test_requirements]
+setup_requirements = [str(tr.req) for tr in parsed_setup_requirements]
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
@@ -63,28 +69,34 @@ else:
 setup(
     author=AUTHOR,
     author_email=EMAIL,
-    description="Cable-Driven Parallel Robots in Python.",
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+    ],
+    description="A Python 3.7 package for designing, analyzing, and simulating cable-driven parallel robots.",
     entry_points={
         'console_scripts': [
             'cdpyr=cdpyr.cli:main',
         ],
     },
     install_requires=requirements,
+    license=LICENSE,
     long_description=README + '\n\n' + HISTORY,
     include_package_data=True,
     keywords=KEYWORDS,
     name=NAME,
-    license=LICENSE,
     packages=find_packages(include=['cdpyr']),
-    # setup_requires=setup_requirements,
+    setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://www.cable-robots.com/cdpyr/',
-    version=about['__version__'],
+    url='https://cable-robot.science/cdpyr',
+    version='0.1.0',
     zip_safe=False,
-    classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
-        'Natural Language :: English',
-    ],
 )

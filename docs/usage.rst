@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use CDPyR in a project::
+To use Cable-Driven Parallel Robots on Python in a project::
 
     import cdpyr

@@ -47,7 +47,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'CDPyR'
+project = u'Cable-Driven Parallel Robots on Python'
 copyright = u"2019, Philipp Tempel"
 author = u"Philipp Tempel"
 
@@ -129,7 +129,7 @@ latex_elements = {
 # [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'cdpyr.tex',
-     u'CDPyR Documentation',
+     u'Cable-Driven Parallel Robots on Python Documentation',
      u'Philipp Tempel', 'manual'),
 ]
 
@@ -140,7 +140,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, 'cdpyr',
-     u'CDPyR Documentation',
+     u'Cable-Driven Parallel Robots on Python Documentation',
      [author], 1)
 ]
 
@@ -152,7 +152,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'cdpyr',
-     u'CDPyR Documentation',
+     u'Cable-Driven Parallel Robots on Python Documentation',
      author,
      'cdpyr',
      'One line description of project.',
