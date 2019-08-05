@@ -1,12 +1,20 @@
+from typing import Dict
+from typing import List
 from typing import Sequence
+from typing import Set
+from typing import Tuple
 from typing import Union
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.robot.frame import Frame
-from cdpyr.robot.platform import Platform
 from cdpyr.motion.pose import Pose
+from cdpyr.robot.cable import Cable
+from cdpyr.robot.frame import Frame
+from cdpyr.robot.frame import FrameAnchor
+from cdpyr.robot.kinematicchain import KinematicChain
+from cdpyr.robot.platform import Platform
+from cdpyr.robot.platform import PlatformAnchor
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -17,14 +25,22 @@ class Robot(object):
     _name: str
     _frame: Frame
     _platforms: Sequence[Platform]
+    _cables: Sequence[Cable]
+    _chains: Set[KinematicChain]
 
     def __init__(self,
                  name: str = None,
                  frame: Frame = None,
-                 platforms: Sequence[Platform] = None):
-        self.name = name if name is not None else 'default'
-        self.frame = frame if frame is not None else None
-        self.platforms = platforms if platforms is not None else []
+                 platforms: Sequence[Platform] = None,
+                 cables: Sequence[Cable] = None,
+                 kinematic_chains: Set[
+                     Union[Sequence[_TNum], KinematicChain]] = None
+                 ):
+        self.name = name or 'default'
+        self.frame = frame or None
+        self.platforms = platforms or []
+        self.cables = cables or []
+        self.kinematic_chains = kinematic_chains or {}
 
     @property
     def name(self):
@@ -90,7 +106,69 @@ class Robot(object):
         for platform in self.platforms:
             del platform.pose
 
+    @property
+    def cables(self):
+        return self._cables
 
-Robot.__repr__ = make_repr('name', 'frame', 'platforms')
+    @cables.setter
+    def cables(self, cables: Sequence[Cable]):
+        self._cables = cables
+
+    @cables.deleter
+    def cables(self):
+        del self._cables
+
+    @property
+    def kinematic_chains(self):
+        return self._chains
+
+    @kinematic_chains.setter
+    def kinematic_chains(self,
+                         chains: Set[Union[Sequence[_TNum], KinematicChain]]):
+        # loop over each chain and turn it from integer values into object
+        # values
+        for idx, v in enumerate(chains):
+            if not isinstance(v, KinematicChain):
+                # remove from the list
+                chains.remove(v)
+
+                # create a proper KinematicChain object
+                if isinstance(v, Dict):
+                    frame_anchor = v['frame_anchor']
+                    platform = v['platform']
+                    platform_anchor = v['platform_anchor']
+                    cable = v['cable']
+                elif isinstance(v, List) or isinstance(v, Tuple):
+                    frame_anchor, platform, platform_anchor, cable = v
+
+                if not isinstance(frame_anchor, FrameAnchor):
+                    frame_anchor = self.frame.anchors[frame_anchor]
+
+                if not isinstance(platform, Platform):
+                    platform = self.platforms[platform]
+
+                if not isinstance(platform_anchor, PlatformAnchor):
+                    platform_anchor = self.platforms[self.platforms.index(
+                        platform)].anchors[platform_anchor]
+
+                if not isinstance(cable, Cable):
+                    cable = self.cables[cable]
+
+                chains.add(KinematicChain(
+                    frame_anchor=frame_anchor,
+                    platform=platform,
+                    platform_anchor=platform_anchor,
+                    cable=cable
+                ))
+
+        self._chains = chains
+
+    @kinematic_chains.deleter
+    def kinematic_chains(self):
+        del self._chains
+
+
+Robot.__repr__ = make_repr('name', 'frame', 'platforms', 'cables',
+                           'kinematic_chains')
 
 __all__ = ['Robot']

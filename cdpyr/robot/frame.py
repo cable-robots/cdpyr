@@ -36,7 +36,7 @@ class Frame(object):
         def filter_(a: FrameAnchor):
             return a.position
 
-        return map(filter_, self.anchors)
+        return np_.vstack(list(map(filter_, self.anchors)))
 
 
 Frame.__repr__ = make_repr('anchors')

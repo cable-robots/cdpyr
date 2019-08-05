@@ -9,6 +9,7 @@ from cdpyr.mechanics.transformation.angular import \
     Angular as AngularTransformation
 from cdpyr.mechanics.transformation.linear import Linear as LinearTransformation
 from cdpyr.robot.anchor.anchor import Anchor
+from cdpyr.robot.drivetrain import DriveTrain
 from cdpyr.robot.pulley import Pulley
 
 _TNum = Union[int, float]
@@ -18,16 +19,19 @@ _TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
 
 class FrameAnchor(Anchor):
     _pulley: Pulley
+    _drivetrain: DriveTrain
 
     def __init__(self,
                  position: Optional[
                      Union[_TVector, LinearTransformation]] = None,
                  rotation: Optional[
                      Union[_TMatrix, AngularTransformation]] = None,
-                 pulley: Pulley = None
+                 pulley: Pulley = None,
+                 drivetrain: DriveTrain = None
                  ):
         Anchor.__init__(self, position=position, rotation=rotation)
-        self.pulley = pulley if pulley is not None else Pulley()
+        self.pulley = pulley or None
+        self.drivetrain = drivetrain or None
 
     @property
     def pulley(self):
@@ -41,7 +45,19 @@ class FrameAnchor(Anchor):
     def pulley(self):
         del self._pulley
 
+    @property
+    def drivetrain(self):
+        return self._drivetrain
 
-FrameAnchor.__repr__ = make_repr('pulley')
+    @drivetrain.setter
+    def drivetrain(self, drivetrain: Union[DriveTrain, None]):
+        self._drivetrain = drivetrain
+
+    @drivetrain.deleter
+    def drivetrain(self):
+        del self._drivetrain
+
+
+FrameAnchor.__repr__ = make_repr('pulley', 'drivetrain')
 
 __all__ = ['FrameAnchor']

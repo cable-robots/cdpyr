@@ -1,14 +1,11 @@
 from typing import Sequence
-from typing import MutableSequence
 from typing import Union
-
-from collections import UserList
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.robot.anchor.platformanchor import PlatformAnchor
 from cdpyr.motion.pose import Pose
+from cdpyr.robot.anchor.platformanchor import PlatformAnchor
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -43,7 +40,7 @@ class Platform(object):
         def filter_(a: PlatformAnchor):
             return a.position
 
-        return map(filter_, self.anchors)
+        return np_.vstack(list(map(filter_, self.anchors)))
 
     @property
     def anchors(self):
