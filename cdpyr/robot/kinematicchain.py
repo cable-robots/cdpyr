@@ -4,6 +4,7 @@ from typing import Union
 import numpy as np_
 from magic_repr import make_repr
 
+from cdpyr.mixins.lists import DispatcherList
 from cdpyr.robot.cable import Cable
 from cdpyr.robot.frame import FrameAnchor
 from cdpyr.robot.platform import Platform
@@ -80,7 +81,16 @@ class KinematicChain(object):
         del self._platform_anchor
 
 
-KinematicChain.__repr__ = make_repr('frame_anchor', 'platform',
-                                    'platform_anchor', 'cable')
+KinematicChain.__repr__ = make_repr(
+    'frame_anchor',
+    'platform',
+    'platform_anchor',
+    'cable'
+)
 
-__all__ = ['KinematicChain']
+
+class KinematicChainList(DispatcherList):
+    pass
+
+
+__all__ = ['KinematicChain', 'KinematicChainList']

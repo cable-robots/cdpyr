@@ -24,8 +24,8 @@ class Drum(object):
                      _TVector, _TMatrix]], Inertia]] = None
                  ):
 
-        self.geometry = geometry if geometry is not None else Geometry()
-        self.inertia = inertia if inertia is not None else Inertia()
+        self.geometry = geometry or Geometry()
+        self.inertia = inertia or Inertia()
 
     @property
     def geometry(self):
@@ -56,6 +56,9 @@ class Drum(object):
         del self.inertia
 
 
-Drum.__repr__ = make_repr('geometry', 'inertia')
+Drum.__repr__ = make_repr(
+    'geometry',
+    'inertia'
+)
 
 __all__ = ['Drum']

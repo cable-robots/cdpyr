@@ -20,8 +20,8 @@ class Cylinder(Geometry):
                  height: Optional[_TNum] = None,
                  diameter: Optional[_TNum] = None
                  ):
-        self.height = height if height is not None else 0
-        self.diameter = diameter if diameter is not None else 0
+        self.height = height or 0
+        self.diameter = diameter or 0
 
     @property
     def diameter(self):
@@ -80,6 +80,9 @@ class Cylinder(Geometry):
         ))
 
 
-Cylinder.__repr__ = make_repr('diameter', 'height')
+Cylinder.__repr__ = make_repr(
+    'diameter',
+    'height'
+)
 
 __all__ = ['Cylinder']

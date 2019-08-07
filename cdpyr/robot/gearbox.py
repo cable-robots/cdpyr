@@ -18,8 +18,8 @@ class Gearbox(object):
                  ratio: Optional[_TNum] = None,
                  inertia: Optional[_TNum] = None
                  ):
-        self.ratio = ratio if ratio is not None else 0
-        self.inertia = inertia if inertia is not None else 0
+        self.ratio = ratio or 0
+        self.inertia = inertia or 0
 
     @property
     def ratio(self):
@@ -52,6 +52,9 @@ class Gearbox(object):
         del self._moment_of_inertia
 
 
-Gearbox.__repr__ = make_repr('ratio', 'moment_of_inertia')
+Gearbox.__repr__ = make_repr(
+    'ratio',
+    'moment_of_inertia'
+)
 
 __all__ = ['Gearbox']

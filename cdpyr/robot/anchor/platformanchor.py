@@ -9,6 +9,7 @@ from cdpyr.mechanics.transformation.angular import \
     Angular as AngularTransformation
 from cdpyr.mechanics.transformation.linear import Linear as LinearTransformation
 from cdpyr.robot.anchor.anchor import Anchor
+from cdpyr.robot.anchor.anchor import AnchorList
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -25,6 +26,14 @@ class PlatformAnchor(Anchor):
         Anchor.__init__(self, position=position, rotation=rotation)
 
 
-PlatformAnchor.__repr__ = make_repr('linear', 'angular')
+PlatformAnchor.__repr__ = make_repr(
+    'linear',
+    'angular'
+)
 
-__all__ = ['PlatformAnchor']
+
+class PlatformAnchorList(AnchorList):
+    pass
+
+
+__all__ = ['PlatformAnchor', 'PlatformAnchorList']

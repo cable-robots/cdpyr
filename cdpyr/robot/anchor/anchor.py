@@ -8,6 +8,7 @@ from magic_repr import make_repr
 from cdpyr.mechanics.transformation.angular import \
     Angular as AngularTransformation
 from cdpyr.mechanics.transformation.linear import Linear as LinearTransformation
+from cdpyr.mixins.lists import DispatcherList
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -29,9 +30,8 @@ class Anchor(object):
         self.angular = AngularTransformation()
 
         # set value
-        self.position = position if position is not None else [0, 0, 0]
-        self.dcm = rotation if rotation is not None else [[1, 0, 0], [0, 1, 0],
-                                                          [0, 0, 1]]
+        self.position = position or [0, 0, 0]
+        self.dcm = rotation or [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
     @property
     def position(self):
@@ -129,6 +129,14 @@ class Anchor(object):
         del self.angular
 
 
-Anchor.__repr__ = make_repr('position', 'dcm')
+Anchor.__repr__ = make_repr(
+    'position',
+    'dcm'
+)
+
+
+class AnchorList(DispatcherList):
+    pass
+
 
 __all__ = ['Anchor']

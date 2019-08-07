@@ -1,5 +1,6 @@
 from typing import Dict
 from typing import List
+from typing import Optional
 from typing import Sequence
 from typing import Set
 from typing import Tuple
@@ -10,11 +11,14 @@ from magic_repr import make_repr
 
 from cdpyr.motion.pose import Pose
 from cdpyr.robot.cable import Cable
+from cdpyr.robot.cable import CableList
 from cdpyr.robot.frame import Frame
 from cdpyr.robot.frame import FrameAnchor
 from cdpyr.robot.kinematicchain import KinematicChain
+from cdpyr.robot.kinematicchain import KinematicChainList
 from cdpyr.robot.platform import Platform
 from cdpyr.robot.platform import PlatformAnchor
+from cdpyr.robot.platform import PlatformList
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -24,17 +28,18 @@ _TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
 class Robot(object):
     _name: str
     _frame: Frame
-    _platforms: Sequence[Platform]
-    _cables: Sequence[Cable]
+    _platforms: PlatformList
+    _cables: CableList
     _chains: Set[KinematicChain]
 
     def __init__(self,
-                 name: str = None,
-                 frame: Frame = None,
-                 platforms: Sequence[Platform] = None,
-                 cables: Sequence[Cable] = None,
-                 kinematic_chains: Set[
-                     Union[Sequence[_TNum], KinematicChain]] = None
+                 name: Optional[str] = None,
+                 frame: Optional[Frame] = None,
+                 platforms: Optional[
+                     Union[PlatformList, Sequence[Platform]]] = None,
+                 cables: Optional[Union[CableList, Sequence[Cable]]] = None,
+                 kinematic_chains: Optional[Set[
+                     Union[Sequence[_TNum], KinematicChain]]] = None
                  ):
         self.name = name or 'default'
         self.frame = frame or None
@@ -71,7 +76,10 @@ class Robot(object):
         return self._platforms
 
     @platforms.setter
-    def platforms(self, platforms: Sequence[Platform]):
+    def platforms(self, platforms: Union[PlatformList, Sequence[Platform]]):
+        if not isinstance(platforms, PlatformList):
+            platforms = PlatformList(platforms)
+
         self._platforms = platforms
 
     @platforms.deleter
@@ -84,22 +92,17 @@ class Robot(object):
 
     @property
     def bi(self):
-        def filter_(p: Platform):
-            return p.bi
-
-        return map(filter_, self.platforms)
+        return list(self.platforms.bi)
 
     @property
     def poses(self):
-        def filter_(p: Platform):
-            return p.pose
-
-        return map(filter_, self.platforms)
+        return list(self.platforms.pose)
 
     @poses.setter
     def poses(self, poses: Sequence[Pose]):
-        for idx, platform in enumerate(self.platforms):
-            platform.pose = poses[idx]
+        self.platforms.pose = poses
+        # for idx, platform in enumerate(self.platforms):
+        #     platform.pose = poses[idx]
 
     @poses.deleter
     def poses(self):
@@ -111,7 +114,10 @@ class Robot(object):
         return self._cables
 
     @cables.setter
-    def cables(self, cables: Sequence[Cable]):
+    def cables(self, cables: Union[CableList, Sequence[Cable]]):
+        if not isinstance(cables, CableList):
+            cables = CableList(cables)
+
         self._cables = cables
 
     @cables.deleter
@@ -124,7 +130,12 @@ class Robot(object):
 
     @kinematic_chains.setter
     def kinematic_chains(self,
-                         chains: Set[Union[Sequence[_TNum], KinematicChain]]):
+                         chains: Union[KinematicChainList, Set[
+                             Union[Sequence[_TNum], KinematicChain]]]):
+        # Make sure we are dealing with the correct dispatcher list
+        if not isinstance(chains, KinematicChainList):
+            chains = KinematicChainList(chains)
+
         # loop over each chain and turn it from integer values into object
         # values
         for idx, v in enumerate(chains):
@@ -168,7 +179,12 @@ class Robot(object):
         del self._chains
 
 
-Robot.__repr__ = make_repr('name', 'frame', 'platforms', 'cables',
-                           'kinematic_chains')
+Robot.__repr__ = make_repr(
+    'name',
+    'frame',
+    'platforms',
+    'cables',
+    'kinematic_chains'
+)
 
 __all__ = ['Robot']

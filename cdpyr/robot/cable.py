@@ -1,9 +1,12 @@
 from typing import Sequence
+from typing import Optional
 from typing import Union
 
 import numpy as np_
 from colour import Color
 from magic_repr import make_repr
+
+from cdpyr.mixins.lists import DispatcherList
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -19,20 +22,19 @@ class Cable(object):
     _name: str
 
     def __init__(self,
-                 name: str = None,
-                 material: str = None,
-                 modulus: dict = None,
-                 diameter: _TNum = None,
-                 color: Union[str, Color] = None,
-                 breaking_load: _TNum = None
+                 name: Optional[str] = None,
+                 material: Optional[str] = None,
+                 modulus: Optional[dict] = None,
+                 diameter: Optional[_TNum] = None,
+                 color: Optional[Union[str, Color]] = None,
+                 breaking_load: Optional[_TNum] = None
                  ):
-        self.name = name if name is not None else 'default'
-        self.material = material if material is not None else 'default'
-        self.modulus = modulus if modulus is not None else {}
-        self.diameter = diameter if diameter is not None else 0
-        self.color = color if color is not None else 'red'
-        self.breaking_load = breaking_load if breaking_load is not None else \
-            np_.Infinity
+        self.name = name or 'default'
+        self.material = material or 'default'
+        self.modulus = modulus or {}
+        self.diameter = diameter or 0
+        self.color = color or 'red'
+        self.breaking_load = breaking_load or np_.Infinity
 
     @property
     def diameter(self):
@@ -110,7 +112,7 @@ class Cable(object):
     @modulus.setter
     def modulus(self, modulus: dict):
         default = {'elasticities': None, 'viscosities': None}
-        modulus = modulus if modulus is not None else {}
+        modulus = modulus or {}
 
         self._modulus = {**default, **modulus}
 
@@ -143,7 +145,18 @@ class Cable(object):
         del self.modulus['viscosities']
 
 
-Cable.__repr__ = make_repr('name', 'material', 'diameter', 'modulus',
-                           'color', 'breaking_load')
+Cable.__repr__ = make_repr(
+    'name',
+    'material',
+    'diameter',
+    'modulus',
+    'color',
+    'breaking_load'
+)
 
-__all__ = ['Cable']
+
+class CableList(DispatcherList):
+    pass
+
+
+__all__ = ['Cable', 'CableList']

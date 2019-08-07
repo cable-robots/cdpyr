@@ -6,8 +6,10 @@ from typing import Union
 import numpy as np_
 from magic_repr import make_repr
 
-from ..mechanics.transformation import Angular as AngularTransformation
-from ..mechanics.transformation import Linear as LinearTransformation
+from cdpyr.mechanics.transformation.angular import Angular as \
+    AngularTransformation
+from cdpyr.mechanics.transformation.linear import Linear as LinearTransformation
+from cdpyr.mixins.lists import DispatcherList
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -26,12 +28,11 @@ class Pose(object):
         self.linear = LinearTransformation()
         self.angular = AngularTransformation()
 
-        self.position = position if position is not None else (
-            [0.0, 0.0, 0.0], [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
-        self.velocity = velocity if velocity is not None else (
-            [0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
-        self.acceleration = acceleration if acceleration is not None else (
-            [0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
+        self.position = position or (
+            [0.0, 0.0, 0.0],
+            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+        self.velocity = velocity or ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
+        self.acceleration = acceleration or ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
 
     @property
     def state(self):
@@ -104,6 +105,15 @@ class Pose(object):
         del self.angular.angular_acceleration
 
 
-Pose.__repr__ = make_repr('position', 'velocity', 'acceleration')
+Pose.__repr__ = make_repr(
+    'position',
+    'velocity',
+    'acceleration'
+)
 
-__all__ = ['Pose']
+
+class PoseList(DispatcherList):
+    pass
+
+
+__all__ = ['Pose', 'PoseList']

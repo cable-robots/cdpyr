@@ -1,10 +1,12 @@
 from typing import Sequence
+from typing import Optional
 from typing import Union
 
 import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.robot.anchor.frameanchor import FrameAnchor
+from cdpyr.robot.anchor.frameanchor import FrameAnchorList
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -15,16 +17,19 @@ class Frame(object):
     _anchors: Sequence[FrameAnchor]
 
     def __init__(self,
-                 anchors: Sequence[FrameAnchor] = None
+                 anchors: Optional[
+                     Union[FrameAnchorList, Sequence[FrameAnchor]]] = None
                  ):
-        self.anchors = anchors if anchors is not None else []
+        self.anchors = anchors or []
 
     @property
     def anchors(self):
         return self._anchors
 
     @anchors.setter
-    def anchors(self, anchors: Sequence[FrameAnchor]):
+    def anchors(self, anchors: Union[FrameAnchorList, Sequence[FrameAnchor]]):
+        if not isinstance(anchors, FrameAnchorList):
+            anchors = FrameAnchorList(anchors)
         self._anchors = anchors
 
     @anchors.deleter
@@ -33,12 +38,11 @@ class Frame(object):
 
     @property
     def ai(self):
-        def filter_(a: FrameAnchor):
-            return a.position
-
-        return np_.vstack(list(map(filter_, self.anchors)))
+        return np_.vstack(list(self.anchors.position))
 
 
-Frame.__repr__ = make_repr('anchors')
+Frame.__repr__ = make_repr(
+    'anchors'
+)
 
 __all__ = ['Frame']

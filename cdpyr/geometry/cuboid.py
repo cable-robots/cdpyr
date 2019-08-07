@@ -22,9 +22,9 @@ class Cuboid(Geometry):
                  height: Optional[_TNum] = None,
                  depth: Optional[_TNum] = None
                  ):
-        self.width = width if width is not None else 0
-        self.height = height if height is not None else 0
-        self.depth = depth if depth is not None else 0
+        self.width = width or 0
+        self.height = height or 0
+        self.depth = depth or 0
 
     @property
     def width(self):
@@ -83,6 +83,10 @@ class Cuboid(Geometry):
         ))
 
 
-Cuboid.__repr__ = make_repr('width', 'depth', 'height')
+Cuboid.__repr__ = make_repr(
+    'width',
+    'depth',
+    'height'
+)
 
 __all__ = ['Cuboid']

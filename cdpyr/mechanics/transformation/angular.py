@@ -22,14 +22,10 @@ class Angular(object):
                  angular_acceleration: _TVector = None,
                  rotation_sequence: str = None
                  ):
-        self.sequence = rotation_sequence if rotation_sequence is not None \
-            else 'zyx'
-        self.angular_position = angular_position if angular_position is not \
-                                                    None else [0.0, 0.0, 0.0]
-        self.angular_velocity = angular_velocity if angular_velocity is not \
-                                                    None else [0.0, 0.0, 0.0]
-        self.angular_acceleration = angular_acceleration if \
-            angular_acceleration is not None else [0.0, 0.0, 0.0]
+        self.sequence = rotation_sequence or 'zyx'
+        self.angular_position = angular_position or [0.0, 0.0, 0.0]
+        self.angular_velocity = angular_velocity or [0.0, 0.0, 0.0]
+        self.angular_acceleration = angular_acceleration or [0.0, 0.0, 0.0]
 
     @property
     def rotation(self):
@@ -140,6 +136,10 @@ class Angular(object):
         del self._angular_acceleration
 
 
-Angular.__repr__ = make_repr('dcm', 'angular_velocity', 'angular_acceleration')
+Angular.__repr__ = make_repr(
+    'dcm',
+    'angular_velocity',
+    'angular_acceleration'
+)
 
 __all__ = ['Angular']

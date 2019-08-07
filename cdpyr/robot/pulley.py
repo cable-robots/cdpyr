@@ -8,7 +8,8 @@ from magic_repr import make_repr
 
 from cdpyr.geometry.geometry import Geometry
 from cdpyr.mechanics.inertia import Inertia
-from cdpyr.mechanics.transformation.angular import Angular as AngularTransformation
+from cdpyr.mechanics.transformation.angular import \
+    Angular as AngularTransformation
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -27,9 +28,9 @@ class Pulley(object):
                  rotation: Optional[
                      Union[_TMatrix, AngularTransformation]] = None
                  ):
-        self.geometry = geometry if geometry is not None else Geometry()
-        self.inertia = inertia if inertia is not None else Inertia()
-        self.angular = rotation if rotation is not None else AngularTransformation()
+        self.geometry = geometry or Geometry()
+        self.inertia = inertia or Inertia()
+        self.angular = rotation or AngularTransformation()
 
     @property
     def geometry(self):
@@ -71,6 +72,10 @@ class Pulley(object):
         del self.angular
 
 
-Pulley.__repr__ = make_repr('geometry', 'inertia', 'angular')
+Pulley.__repr__ = make_repr(
+    'geometry',
+    'inertia',
+    'angular'
+)
 
 __all__ = ['Pulley']

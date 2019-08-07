@@ -20,7 +20,7 @@ class Motor(object):
         self.torques = {'stall': None, 'peak': None, 'rated': None, 'rms': None}
 
         self.torques = torques
-        self.moment_of_inertia = inertia if inertia is not None else 0
+        self.moment_of_inertia = inertia or 0
         self.rated_speed = rated_speed
         self.rated_power = rated_power
 
@@ -31,7 +31,7 @@ class Motor(object):
     @torques.setter
     def torques(self, torques: dict):
         default = {'stall': None, 'peak': None, 'rated': None, 'rms': None}
-        torques = torques if torques is not None else {}
+        torques = torques or {}
 
         self._torques = {**default, **torques}
 
@@ -160,7 +160,11 @@ class Motor(object):
         del self.peak_torque
 
 
-Motor.__repr__ = make_repr('torques', 'rated_power', 'rated_speed',
-                           'moment_of_inertia')
+Motor.__repr__ = make_repr(
+    'torques',
+    'rated_power',
+    'rated_speed',
+    'moment_of_inertia'
+)
 
 __all__ = ['Motor']

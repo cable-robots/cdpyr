@@ -18,7 +18,7 @@ class Sphere(Geometry):
     def __init__(self,
                  diameter: Optional[_TNum] = None,
                  ):
-        self.diameter = diameter if diameter is not None else 0
+        self.diameter = diameter or 0
 
     @property
     def diameter(self):
@@ -63,6 +63,8 @@ class Sphere(Geometry):
         ))
 
 
-Sphere.__repr__ = make_repr('diameter')
+Sphere.__repr__ = make_repr(
+    'diameter'
+)
 
 __all__ = ['Sphere']

@@ -72,6 +72,8 @@ __all__ = ['KinematicAlgorithm',
 #         raise NotImplementedError()
 #
 #
-# Kinematics.__repr__ = make_repr('algorithm')
+# Kinematics.__repr__ = make_repr(
+#     'algorithm'
+# )
 #
 # __all__ = ['Kinematics']

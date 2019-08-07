@@ -1,11 +1,14 @@
+from typing import Optional
 from typing import Sequence
 from typing import Union
 
 import numpy as np_
 from magic_repr import make_repr
 
+from cdpyr.mixins.lists import DispatcherList
 from cdpyr.motion.pose import Pose
 from cdpyr.robot.anchor.platformanchor import PlatformAnchor
+from cdpyr.robot.anchor.platformanchor import PlatformAnchorList
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -14,14 +17,15 @@ _TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
 
 class Platform(object):
     _pose: Pose
-    _anchors: Sequence[PlatformAnchor]
+    _anchors: PlatformAnchorList
 
     def __init__(self,
-                 pose: Pose = None,
-                 anchors: Sequence[PlatformAnchor] = None
+                 pose: Optional[Pose] = None,
+                 anchors: Optional[Union[PlatformAnchorList, Sequence[
+                     PlatformAnchor]]] = None
                  ):
-        self.anchors = anchors if anchors is not None else []
-        self.pose = pose if pose is not None else None
+        self.anchors = anchors or []
+        self.pose = pose or None
 
     @property
     def pose(self):
@@ -37,24 +41,33 @@ class Platform(object):
 
     @property
     def bi(self):
-        def filter_(a: PlatformAnchor):
-            return a.position
-
-        return np_.vstack(list(map(filter_, self.anchors)))
+        return np_.vstack(list(self.anchors.position))
 
     @property
     def anchors(self):
         return self._anchors
 
     @anchors.setter
-    def anchors(self, anchors: Sequence[PlatformAnchor]):
-        self._anchors = anchors
+    def anchors(self, anchors: Union[PlatformAnchorList, Sequence[
+        PlatformAnchor]]):
+        if not isinstance(anchors, PlatformAnchorList):
+            anchors = PlatformAnchorList(anchors)
+
+        self._anchors = PlatformAnchorList(anchors)
 
     @anchors.deleter
     def anchors(self):
         del self._anchors
 
 
-Platform.__repr__ = make_repr('anchors', 'pose')
+Platform.__repr__ = make_repr(
+    'anchors',
+    'pose'
+)
 
-__all__ = ['Platform']
+
+class PlatformList(DispatcherList):
+    pass
+
+
+__all__ = ['Platform', 'PlatformList']

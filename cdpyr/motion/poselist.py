@@ -32,4 +32,6 @@ class PoseList(UserList):
         del self.data
 
 
-PoseList.__repr__ = make_repr('poses')
+PoseList.__repr__ = make_repr(
+    'poses'
+)

@@ -23,9 +23,9 @@ class Tube(Geometry):
                  outer_diameter: Optional[_TNum] = None,
                  height: Optional[_TNum] = None
                  ):
-        self.inner_diameter = inner_diameter if inner_diameter is not None else 0
-        self.outer_diameter = outer_diameter if outer_diameter is not None else 0
-        self.height = height if height is not None else 0
+        self.inner_diameter = inner_diameter or 0
+        self.outer_diameter = outer_diameter or 0
+        self.height = height or 0
 
     @property
     def diameter(self):
@@ -136,6 +136,10 @@ class Tube(Geometry):
         ))
 
 
-Tube.__repr__ = make_repr('inner_diameter', 'outer_diameter', 'height')
+Tube.__repr__ = make_repr(
+    'inner_diameter',
+    'outer_diameter',
+    'height'
+)
 
 __all__ = ['Tube']

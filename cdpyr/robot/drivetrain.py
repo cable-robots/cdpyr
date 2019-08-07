@@ -1,3 +1,5 @@
+from typing import Optional
+
 from magic_repr import make_repr
 
 from cdpyr.robot.drum import Drum
@@ -11,9 +13,9 @@ class DriveTrain(object):
     _motor: Motor
 
     def __init__(self,
-                 drum: Drum = None,
-                 motor: Motor = None,
-                 gearbox: Gearbox = None
+                 drum: Optional[Drum] = None,
+                 motor: Optional[Motor] = None,
+                 gearbox: Optional[Gearbox] = None
                  ):
         self.drum = drum or None
         self.motor = motor or None
@@ -56,6 +58,10 @@ class DriveTrain(object):
         del self._motor
 
 
-DriveTrain.__repr__ = make_repr('motor', 'gearbox', 'drum')
+DriveTrain.__repr__ = make_repr(
+    'motor',
+    'gearbox',
+    'drum'
+)
 
 __all__ = ['DriveTrain']

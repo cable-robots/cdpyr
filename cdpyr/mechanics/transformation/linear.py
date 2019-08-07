@@ -19,10 +19,9 @@ class Linear(object):
                  velocity: _TVector = None,
                  acceleration: _TVector = None
                  ):
-        self.position = position if position is not None else [0.0, 0.0, 0.0]
-        self.velocity = velocity if velocity is not None else [0.0, 0.0, 0.0]
-        self.acceleration = acceleration if acceleration is not None \
-            else [0.0, 0.0, 0.0]
+        self.position = position or [0.0, 0.0, 0.0]
+        self.velocity = velocity or [0.0, 0.0, 0.0]
+        self.acceleration = acceleration or [0.0, 0.0, 0.0]
 
     @property
     def position(self):
@@ -61,6 +60,10 @@ class Linear(object):
         del self._acceleration
 
 
-Linear.__repr__ = make_repr('position', 'velocity', 'acceleration')
+Linear.__repr__ = make_repr(
+    'position',
+    'velocity',
+    'acceleration'
+)
 
 __all__ = ['Linear']

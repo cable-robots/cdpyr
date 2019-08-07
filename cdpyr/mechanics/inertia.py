@@ -38,6 +38,9 @@ class Inertia(object):
         self._angular = np_.asarray(inertia)
 
 
-Inertia.__repr__ = make_repr('linear', 'angular')
+Inertia.__repr__ = make_repr(
+    'linear',
+    'angular'
+)
 
 __all__ = ['Inertia']

@@ -9,6 +9,7 @@ from cdpyr.mechanics.transformation.angular import \
     Angular as AngularTransformation
 from cdpyr.mechanics.transformation.linear import Linear as LinearTransformation
 from cdpyr.robot.anchor.anchor import Anchor
+from cdpyr.robot.anchor.anchor import AnchorList
 from cdpyr.robot.drivetrain import DriveTrain
 from cdpyr.robot.pulley import Pulley
 
@@ -26,8 +27,8 @@ class FrameAnchor(Anchor):
                      Union[_TVector, LinearTransformation]] = None,
                  rotation: Optional[
                      Union[_TMatrix, AngularTransformation]] = None,
-                 pulley: Pulley = None,
-                 drivetrain: DriveTrain = None
+                 pulley: Optional[Pulley] = None,
+                 drivetrain: Optional[DriveTrain] = None
                  ):
         Anchor.__init__(self, position=position, rotation=rotation)
         self.pulley = pulley or None
@@ -38,7 +39,7 @@ class FrameAnchor(Anchor):
         return self._pulley
 
     @pulley.setter
-    def pulley(self, pulley: Union[Pulley, None]):
+    def pulley(self, pulley: Pulley):
         self._pulley = pulley
 
     @pulley.deleter
@@ -50,7 +51,7 @@ class FrameAnchor(Anchor):
         return self._drivetrain
 
     @drivetrain.setter
-    def drivetrain(self, drivetrain: Union[DriveTrain, None]):
+    def drivetrain(self, drivetrain: DriveTrain):
         self._drivetrain = drivetrain
 
     @drivetrain.deleter
@@ -58,6 +59,14 @@ class FrameAnchor(Anchor):
         del self._drivetrain
 
 
-FrameAnchor.__repr__ = make_repr('pulley', 'drivetrain')
+FrameAnchor.__repr__ = make_repr(
+    'pulley',
+    'drivetrain'
+)
 
-__all__ = ['FrameAnchor']
+
+class FrameAnchorList(AnchorList):
+    pass
+
+
+__all__ = ['FrameAnchor', 'FrameAnchorList']

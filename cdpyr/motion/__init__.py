@@ -1,4 +1,4 @@
 from .pose import Pose
-from .poselist import PoseList
+from .pose import PoseList
 
 __all__ = ['Pose', 'PoseList']
