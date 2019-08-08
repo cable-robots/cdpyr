@@ -27,8 +27,8 @@ class PlatformAnchor(Anchor):
 
 
 PlatformAnchor.__repr__ = make_repr(
-    'linear',
-    'angular'
+    'position',
+    'dcm'
 )
 
 

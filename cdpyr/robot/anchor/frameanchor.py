@@ -60,6 +60,8 @@ class FrameAnchor(Anchor):
 
 
 FrameAnchor.__repr__ = make_repr(
+    'position',
+    'dcm',
     'pulley',
     'drivetrain'
 )
