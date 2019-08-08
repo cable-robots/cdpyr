@@ -30,7 +30,7 @@ class Robot(object):
     _frame: Frame
     _platforms: PlatformList
     _cables: CableList
-    _chains: Set[KinematicChain]
+    _chains: KinematicChainList
 
     def __init__(self,
                  name: Optional[str] = None,
@@ -38,8 +38,8 @@ class Robot(object):
                  platforms: Optional[
                      Union[PlatformList, Sequence[Platform]]] = None,
                  cables: Optional[Union[CableList, Sequence[Cable]]] = None,
-                 kinematic_chains: Optional[Set[
-                     Union[Sequence[_TNum], KinematicChain]]] = None
+                 kinematic_chains: Optional[Union[KinematicChainList, Set[
+                     Union[Sequence[_TNum], KinematicChain]]]] = None
                  ):
         self.name = name or 'default'
         self.frame = frame or None
@@ -101,8 +101,6 @@ class Robot(object):
     @poses.setter
     def poses(self, poses: Sequence[Pose]):
         self.platforms.pose = poses
-        # for idx, platform in enumerate(self.platforms):
-        #     platform.pose = poses[idx]
 
     @poses.deleter
     def poses(self):
@@ -132,9 +130,10 @@ class Robot(object):
     def kinematic_chains(self,
                          chains: Union[KinematicChainList, Set[
                              Union[Sequence[_TNum], KinematicChain]]]):
-        # Make sure we are dealing with the correct dispatcher list
-        if not isinstance(chains, KinematicChainList):
-            chains = KinematicChainList(chains)
+        # turn anything not a set into a set (also removes already redundant
+        # objects)
+        if not isinstance(chains, Set):
+            chains = set(chains)
 
         # loop over each chain and turn it from integer values into object
         # values
@@ -172,7 +171,8 @@ class Robot(object):
                     cable=cable
                 ))
 
-        self._chains = chains
+        # and set the correct object type
+        self._chains = KinematicChainList(chains)
 
     @kinematic_chains.deleter
     def kinematic_chains(self):

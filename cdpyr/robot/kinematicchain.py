@@ -90,7 +90,10 @@ KinematicChain.__repr__ = make_repr(
 
 
 class KinematicChainList(DispatcherList):
-    pass
+
+    def __init__(self, initlist: None):
+        super().__init__()
+        self.data = list(set(initlist)) or []
 
 
 __all__ = ['KinematicChain', 'KinematicChainList']
