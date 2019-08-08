@@ -19,11 +19,13 @@ _TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
 class Pose(object):
     _linear: LinearTransformation
     _angular: AngularTransformation
+    _time: _TNum
 
     def __init__(self,
                  position: Optional[Tuple[_TVector, _TMatrix]] = None,
                  velocity: Optional[Tuple[_TVector, _TVector]] = None,
-                 acceleration: Optional[Tuple[_TVector, _TVector]] = None
+                 acceleration: Optional[Tuple[_TVector, _TVector]] = None,
+                 time: _TNum = None,
                  ):
         self.linear = LinearTransformation()
         self.angular = AngularTransformation()
@@ -33,10 +35,23 @@ class Pose(object):
             [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
         self.velocity = velocity or ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
         self.acceleration = acceleration or ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
+        self.time = time or 0
 
     @property
     def state(self):
         return self._linear
+
+    @property
+    def time(self):
+        return self._time
+
+    @time.setter
+    def time(self, time: _TNum):
+        self._time = time
+
+    @time.deleter
+    def time(self):
+        del self._time
 
     @property
     def linear(self):
@@ -104,8 +119,33 @@ class Pose(object):
         del self.linear.acceleration
         del self.angular.angular_acceleration
 
+    def __lt__(self, other: object):
+        try:
+            return self.time < other.time
+        except AttributeError:
+            return self < other
+
+    def __le__(self, other: object):
+        try:
+            return self.time <= other.time
+        except AttributeError:
+            return self < other
+
+    def __gt__(self, other: object):
+        try:
+            return self.time > other.time
+        except AttributeError:
+            return self < other
+
+    def __ge__(self, other: object):
+        try:
+            return self.time >= other.time
+        except AttributeError:
+            return self < other
+
 
 Pose.__repr__ = make_repr(
+    'time',
     'position',
     'velocity',
     'acceleration'
