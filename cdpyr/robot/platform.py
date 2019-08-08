@@ -18,14 +18,20 @@ _TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
 class Platform(object):
     _pose: Pose
     _anchors: PlatformAnchorList
+    _center_of_gravity: np_.ndarray
+    _center_of_linkage: np_.ndarray
 
     def __init__(self,
                  pose: Optional[Pose] = None,
                  anchors: Optional[Union[PlatformAnchorList, Sequence[
-                     PlatformAnchor]]] = None
+                     PlatformAnchor]]] = None,
+                 center_of_gravity: _TVector = None,
+                 center_of_linkage: _TVector = None
                  ):
         self.anchors = anchors or []
         self.pose = pose or None
+        self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]
+        self.center_of_linkage = center_of_linkage or [0.0, 0.0, 0.0]
 
     @property
     def pose(self):
@@ -67,7 +73,9 @@ Platform.__repr__ = make_repr(
 
 
 class PlatformList(DispatcherList):
-    pass
+
+    def __dir__(self):
+        return Platform.__dict__.keys()
 
 
 __all__ = ['Platform', 'PlatformList']

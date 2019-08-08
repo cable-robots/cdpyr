@@ -19,10 +19,10 @@ class Motor(object):
                  rated_speed: _TNum = None, rated_power: _TNum = None):
         self.torques = {'stall': None, 'peak': None, 'rated': None, 'rms': None}
 
-        self.torques = torques
+        self.torques = torques or {}
         self.moment_of_inertia = inertia or 0
-        self.rated_speed = rated_speed
-        self.rated_power = rated_power
+        self.rated_speed = rated_speed or None
+        self.rated_power = rated_power or None
 
     @property
     def torques(self):

@@ -136,7 +136,9 @@ Anchor.__repr__ = make_repr(
 
 
 class AnchorList(DispatcherList):
-    pass
+
+    def __dir__(self):
+        return Anchor.__dict__.keys()
 
 
-__all__ = ['Anchor']
+__all__ = ['Anchor', 'AnchorList']

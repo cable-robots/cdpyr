@@ -33,7 +33,9 @@ PlatformAnchor.__repr__ = make_repr(
 
 
 class PlatformAnchorList(AnchorList):
-    pass
+
+    def __dir__(self):
+        return PlatformAnchor.__dict__.keys()
 
 
 __all__ = ['PlatformAnchor', 'PlatformAnchorList']

@@ -23,7 +23,6 @@ class Drum(object):
                  inertia: Optional[Union[Tuple[Union[_TNum, _TVector], Union[
                      _TVector, _TMatrix]], Inertia]] = None
                  ):
-
         self.geometry = geometry or Geometry()
         self.inertia = inertia or Inertia()
 

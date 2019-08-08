@@ -18,8 +18,8 @@ class Gearbox(object):
                  ratio: Optional[_TNum] = None,
                  inertia: Optional[_TNum] = None
                  ):
-        self.ratio = ratio or 0
-        self.inertia = inertia or 0
+        self.ratio = ratio or None
+        self.inertia = inertia or None
 
     @property
     def ratio(self):

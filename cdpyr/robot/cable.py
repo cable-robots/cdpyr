@@ -156,7 +156,9 @@ Cable.__repr__ = make_repr(
 
 
 class CableList(DispatcherList):
-    pass
+
+    def __dir__(self):
+        return Cable.__dict__.keys()
 
 
 __all__ = ['Cable', 'CableList']

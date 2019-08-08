@@ -5,10 +5,10 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.mixins.lists import DispatcherList
+from cdpyr.robot.anchor.frameanchor import FrameAnchor
+from cdpyr.robot.anchor.platformanchor import PlatformAnchor
 from cdpyr.robot.cable import Cable
-from cdpyr.robot.frame import FrameAnchor
 from cdpyr.robot.platform import Platform
-from cdpyr.robot.platform import PlatformAnchor
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -91,9 +91,12 @@ KinematicChain.__repr__ = make_repr(
 
 class KinematicChainList(DispatcherList):
 
-    def __init__(self, initlist: None):
+    def __init__(self, initlist=None):
         super().__init__()
-        self.data = list(set(initlist)) or []
+        self.data = list(set(initlist)) if initlist else []
+
+    def __dir__(self):
+        return KinematicChain.__dict__.keys()
 
 
 __all__ = ['KinematicChain', 'KinematicChainList']
