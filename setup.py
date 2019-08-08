@@ -60,7 +60,9 @@ if not VERSION:
     with open(os.path.join(here, project_slug, '__init__.py')) as f:
         ls = [l.strip() for l in f.readlines()]
         try:
-            about['__version__'] = [v for v in ls if '__version__' in v][0].split(' = ')[1].strip('\'')
+            about['__version__'] = \
+                [v for v in ls if '__version__' in v][0].split(' = ')[1].strip(
+                    '\'')
         except IndexError:
             about['__version__'] = VERSION
 else:
@@ -80,7 +82,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    description="A Python 3.7 package for designing, analyzing, and simulating cable-driven parallel robots.",
+    description='A Python 3.7 package for designing, analyzing, and simulating cable-driven parallel robots.',
     entry_points={
         'console_scripts': [
             'cdpyr=cdpyr.cli:main',
