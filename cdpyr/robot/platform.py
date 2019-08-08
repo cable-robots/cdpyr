@@ -65,6 +65,42 @@ class Platform(object):
     def anchors(self):
         del self._anchors
 
+    @property
+    def center_of_gravity(self):
+        return self._center_of_gravity
+
+    @center_of_gravity.setter
+    def center_of_gravity(self, position: _TVector):
+        position = np_.asarray(position)
+
+        if not position.shape == (3,):
+            raise ValueError('invalid shape of center_of_gravity; must be (3,'
+                             '), was {}'.format(position.shape))
+
+        self._center_of_gravity = position
+
+    @center_of_gravity.deleter
+    def center_of_gravity(self):
+        del self._center_of_gravity
+
+    @property
+    def center_of_linkage(self):
+        return self._center_of_linkage
+
+    @center_of_linkage.setter
+    def center_of_linkage(self, position: _TVector):
+        position = np_.asarray(position)
+
+        if not position.shape == (3,):
+            raise ValueError('invalid shape of center_of_linkage; must be (3,'
+                             '), was {}'.format(position.shape))
+
+        self._center_of_linkage = position
+
+    @center_of_linkage.deleter
+    def center_of_linkage(self):
+        del self._center_of_linkage
+
 
 Platform.__repr__ = make_repr(
     'anchors',
