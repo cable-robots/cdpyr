@@ -12,4 +12,11 @@ from cdpyr import mechanics
 from cdpyr import motion
 from cdpyr import robot
 
-__all__ = ['robot', 'algorithms', 'motion', 'mechanics', 'geometry']
+__all__ = [
+    'robot',
+    'algorithms',
+    'motion',
+    'mechanics',
+    'geometry',
+    'io'
+]
