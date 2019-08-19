@@ -117,7 +117,19 @@ class Angular(object):
 
     @angular_velocity.setter
     def angular_velocity(self, velocity: _TVector):
-        self._angular_velocity = np_.asarray(velocity)
+        velocity = np_.asarray(velocity)
+
+        if velocity.ndim != 1:
+            raise ValueError(
+                'invalid dimension. angular_velocity must be a 1-dimensional '
+                'list or array')
+
+        if velocity.shape != (3,):
+            raise ValueError(
+                'invalid shape. angular_velocity must be a 3-element list or '
+                'a (3,) numpy array')
+
+        self._angular_velocity = velocity
 
     @angular_velocity.deleter
     def angular_velocity(self):
@@ -129,7 +141,19 @@ class Angular(object):
 
     @angular_acceleration.setter
     def angular_acceleration(self, acceleration: _TVector):
-        self._angular_acceleration = np_.asarray(acceleration)
+        acceleration = np_.asarray(acceleration)
+
+        if acceleration.ndim != 1:
+            raise ValueError(
+                'invalid dimension. angular_acceleration must be a '
+                '1-dimensional list or array')
+
+        if acceleration.shape != (3,):
+            raise ValueError(
+                'invalid shape. angular_acceleration must be a 3-element list '
+                'or a (3,) numpy array')
+
+        self._angular_acceleration = acceleration
 
     @angular_acceleration.deleter
     def angular_acceleration(self):

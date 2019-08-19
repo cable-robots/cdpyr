@@ -29,7 +29,19 @@ class Linear(object):
 
     @position.setter
     def position(self, position: Union[_TVector, np_.ndarray]):
-        self._position = np_.asarray(position)
+        position = np_.asarray(position)
+
+        if position.ndim != 1:
+            raise ValueError(
+                'invalid dimension. position must be a 1-dimensional list or '
+                'array')
+
+        if position.shape != (3,):
+            raise ValueError(
+                'invalid shape. position must be a 3-element list or a (3,'
+                ') numpy array')
+
+        self._position = position
 
     @position.deleter
     def position(self):
@@ -41,7 +53,19 @@ class Linear(object):
 
     @velocity.setter
     def velocity(self, velocity: Union[_TVector, np_.ndarray]):
-        self._velocity = np_.asarray(velocity)
+        velocity = np_.asarray(velocity)
+
+        if velocity.ndim != 1:
+            raise ValueError(
+                'invalid dimension. velocity must be a 1-dimensional list or '
+                'array')
+
+        if velocity.shape != (3,):
+            raise ValueError(
+                'invalid shape. velocity must be a 3-element list or a (3,'
+                ') numpy array')
+
+        self._velocity = velocity
 
     @velocity.deleter
     def velocity(self):
@@ -53,7 +77,19 @@ class Linear(object):
 
     @acceleration.setter
     def acceleration(self, acceleration: Union[_TVector, np_.ndarray]):
-        self._acceleration = np_.asarray(acceleration)
+        acceleration = np_.asarray(acceleration)
+
+        if acceleration.ndim != 1:
+            raise ValueError(
+                'invalid dimension. acceleration must be a 1-dimensional list '
+                'or array')
+
+        if acceleration.shape != (3,):
+            raise ValueError(
+                'invalid shape. acceleration must be a 3-element list or a (3,'
+                ') numpy array')
+
+        self._acceleration = acceleration
 
     @acceleration.deleter
     def acceleration(self):
