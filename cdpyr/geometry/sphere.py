@@ -2,6 +2,7 @@ from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 from cdpyr.geometry.geometry import Geometry
 
@@ -63,4 +64,15 @@ Sphere.__repr__ = make_repr(
     'diameter'
 )
 
-__all__ = ['Sphere']
+
+class SphereSchema(Schema):
+    diameter = fields.Float()
+
+    __model__ = Sphere
+
+    @post_load
+    def make_user(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Sphere', 'SphereSchema']

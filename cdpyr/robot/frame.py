@@ -2,9 +2,13 @@ from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
-from cdpyr.robot.anchor.frameanchor import FrameAnchor
-from cdpyr.robot.anchor.frameanchor import FrameAnchorList
+from cdpyr.robot.anchor.frameanchor import (
+    FrameAnchor,
+    FrameAnchorList,
+    FrameAnchorSchema,
+)
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -44,4 +48,15 @@ Frame.__repr__ = make_repr(
     'anchors'
 )
 
-__all__ = ['Frame']
+
+class FrameSchema(Schema):
+    anchors = fields.List(fields.Nested(FrameAnchorSchema))
+
+    __model__ = FrameAnchor
+
+    @post_load
+    def make_frame(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Frame', 'FrameSchema']

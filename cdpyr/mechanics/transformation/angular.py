@@ -2,6 +2,7 @@ from typing import Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 from scipy.spatial.transform import Rotation
 
 _TNum = Union[int, float]
@@ -141,4 +142,17 @@ Angular.__repr__ = make_repr(
     'angular_acceleration'
 )
 
-__all__ = ['Angular']
+
+class AngularSchema(Schema):
+    dcm = fields.List(fields.List(fields.Float()))
+    angular_velocity = fields.List(fields.Float())
+    angular_acceleration = fields.List(fields.Float())
+
+    __model__ = Angular
+
+    @post_load
+    def make_angular(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Angular', 'AngularSchema']

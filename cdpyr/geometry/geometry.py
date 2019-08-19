@@ -3,6 +3,7 @@ from typing import Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -33,4 +34,15 @@ class Geometry(ABC):
 
 Geometry.__repr__ = make_repr()
 
-__all__ = ['Geometry']
+
+class GeometrySchema(Schema):
+    mass = fields.Float()
+
+    __model__ = Geometry
+
+    @post_load
+    def make_geometry(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Geometry', 'GeometrySchema']

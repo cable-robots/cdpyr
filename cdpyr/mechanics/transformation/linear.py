@@ -2,6 +2,7 @@ from typing import Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -65,4 +66,17 @@ Linear.__repr__ = make_repr(
     'acceleration'
 )
 
-__all__ = ['Linear']
+
+class LinearSchema(Schema):
+    position = fields.List(fields.Float())
+    velocity = fields.List(fields.Float())
+    acceleration = fields.List(fields.Float())
+
+    __model__ = Linear
+
+    @post_load
+    def make_linear(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Linear', 'LinearSchema']

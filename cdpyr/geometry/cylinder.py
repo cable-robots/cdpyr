@@ -2,6 +2,7 @@ from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 from cdpyr.geometry.geometry import Geometry
 
@@ -81,4 +82,16 @@ Cylinder.__repr__ = make_repr(
     'height'
 )
 
-__all__ = ['Cylinder']
+
+class CylinderSchema(Schema):
+    diameter = fields.Float()
+    height = fields.Float()
+
+    __model__ = Cylinder
+
+    @post_load
+    def make_cylinder(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Cylinder', 'CylinderSchema']

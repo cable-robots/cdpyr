@@ -2,14 +2,15 @@ from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import fields
 
 from cdpyr.mechanics.transformation.angular import \
     Angular as AngularTransformation
-from cdpyr.mechanics.transformation.linear import Linear as LinearTransformation
-from cdpyr.robot.anchor.anchor import Anchor
-from cdpyr.robot.anchor.anchor import AnchorList
-from cdpyr.robot.drivetrain import DriveTrain
-from cdpyr.robot.pulley import Pulley
+from cdpyr.mechanics.transformation.linear import Linear as \
+    LinearTransformation
+from cdpyr.robot.anchor.anchor import Anchor, AnchorList, AnchorSchema
+from cdpyr.robot.drivetrain import DriveTrain, DriveTrainSchema
+from cdpyr.robot.pulley import Pulley, PulleySchema
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -65,10 +66,17 @@ FrameAnchor.__repr__ = make_repr(
 )
 
 
+class FrameAnchorSchema(AnchorSchema):
+    pulley = fields.Nested(PulleySchema)
+    drivetrain = fields.Nested(DriveTrainSchema)
+
+    __model__ = FrameAnchor
+
+
 class FrameAnchorList(AnchorList):
 
     def __dir__(self):
         return FrameAnchor.__dict__.keys()
 
 
-__all__ = ['FrameAnchor', 'FrameAnchorList']
+__all__ = ['FrameAnchor', 'FrameAnchorList', 'FrameAnchorSchema']

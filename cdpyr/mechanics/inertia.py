@@ -2,6 +2,7 @@ from typing import Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -41,4 +42,16 @@ Inertia.__repr__ = make_repr(
     'angular'
 )
 
-__all__ = ['Inertia']
+
+class InertiaSchema(Schema):
+    angular = fields.List(fields.Float())
+    linear = fields.List(fields.Float())
+
+    __model__ = Inertia
+
+    @post_load
+    def make_inertia(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Inertia', 'InertiaSchema']

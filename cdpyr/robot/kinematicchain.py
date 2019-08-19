@@ -2,12 +2,16 @@ from typing import Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 from cdpyr.mixins.lists import DispatcherList
-from cdpyr.robot.anchor.frameanchor import FrameAnchor
-from cdpyr.robot.anchor.platformanchor import PlatformAnchor
-from cdpyr.robot.cable import Cable
-from cdpyr.robot.platform import Platform
+from cdpyr.robot.anchor.frameanchor import FrameAnchor, FrameAnchorSchema
+from cdpyr.robot.anchor.platformanchor import (
+    PlatformAnchor,
+    PlatformAnchorSchema,
+)
+from cdpyr.robot.cable import Cable, CableSchema
+from cdpyr.robot.platform import Platform, PlatformSchema
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -88,6 +92,19 @@ KinematicChain.__repr__ = make_repr(
 )
 
 
+class KinematicChainSchema(Schema):
+    frame_anchor = fields.Nested(FrameAnchorSchema)
+    platform = fields.Nested(PlatformSchema)
+    platform_anchor = fields.Nested(PlatformAnchorSchema)
+    cable = fields.Nested(CableSchema)
+
+    __model__ = KinematicChain
+
+    @post_load
+    def make_user(self, data):
+        return self.__model__(**data)
+
+
 class KinematicChainList(DispatcherList):
 
     def __init__(self, initlist=None):
@@ -98,4 +115,4 @@ class KinematicChainList(DispatcherList):
         return KinematicChain.__dict__.keys()
 
 
-__all__ = ['KinematicChain', 'KinematicChainList']
+__all__ = ['KinematicChain', 'KinematicChainList', 'KinematicChainSchema']

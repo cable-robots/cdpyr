@@ -3,8 +3,9 @@ from typing import Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
-from .pose import Pose
+from cdpyr.motion.pose import Pose, PoseSchema
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -34,3 +35,16 @@ class PoseList(UserList):
 PoseList.__repr__ = make_repr(
     'poses'
 )
+
+
+class PoseListSchema(Schema):
+    poses = fields.List(fields.Nested(PoseSchema))
+
+    __model__ = PoseList
+
+    @post_load
+    def make_poselist(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['PoseList', 'PoseListSchema']

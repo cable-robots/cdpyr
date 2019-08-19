@@ -1,4 +1,4 @@
 from cdpyr.mechanics import transformation
-from cdpyr.mechanics.inertia import Inertia
+from cdpyr.mechanics.inertia import Inertia, InertiaSchema
 
-__all__ = ['Inertia', 'transformation']
+__all__ = ['transformation', 'Inertia', 'InertiaSchema']

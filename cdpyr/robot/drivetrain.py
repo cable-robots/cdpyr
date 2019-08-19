@@ -1,10 +1,11 @@
 from typing import Optional
 
 from magic_repr import make_repr
+from marshmallow import Schema, fields
 
 from cdpyr.robot.drum import Drum
 from cdpyr.robot.gearbox import Gearbox
-from cdpyr.robot.motor import Motor
+from cdpyr.robot.motor import Motor, MotorSchema
 
 
 class DriveTrain(object):
@@ -63,5 +64,10 @@ DriveTrain.__repr__ = make_repr(
     'gearbox',
     'drum'
 )
+
+
+class DriveTrainSchema(Schema):
+    motor = fields.Nested(MotorSchema)
+
 
 __all__ = ['DriveTrain']

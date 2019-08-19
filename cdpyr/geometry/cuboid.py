@@ -2,6 +2,7 @@ from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 from cdpyr.geometry.geometry import Geometry
 
@@ -85,4 +86,17 @@ Cuboid.__repr__ = make_repr(
     'height'
 )
 
-__all__ = ['Cuboid']
+
+class CuboidSchema(Schema):
+    width = fields.Float()
+    depth = fields.Float()
+    height = fields.Float()
+
+    __model__ = Cuboid
+
+    @post_load
+    def make_cuboid(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Cuboid', 'CuboidSchema']

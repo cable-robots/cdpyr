@@ -2,10 +2,16 @@ from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
-from cdpyr.mechanics.transformation.angular import \
-    Angular as AngularTransformation
-from cdpyr.mechanics.transformation.linear import Linear as LinearTransformation
+from cdpyr.mechanics.transformation.angular import (
+    Angular as AngularTransformation,
+    AngularSchema as AngularTransformationSchema,
+)
+from cdpyr.mechanics.transformation.linear import (
+    Linear as LinearTransformation,
+    LinearSchema as LinearTransformationSchema,
+)
 from cdpyr.mixins.lists import DispatcherList
 
 _TNum = Union[int, float]
@@ -133,10 +139,21 @@ Anchor.__repr__ = make_repr(
 )
 
 
+class AnchorSchema(Schema):
+    position = fields.Nested(LinearTransformationSchema)
+    dcm = fields.Nested(AngularTransformationSchema)
+
+    __model__ = Anchor
+
+    @post_load
+    def make_anchor(self, data):
+        return self.__model__(**data)
+
+
 class AnchorList(DispatcherList):
 
     def __dir__(self):
         return Anchor.__dict__.keys()
 
 
-__all__ = ['Anchor', 'AnchorList']
+__all__ = ['Anchor', 'AnchorList', 'AnchorSchema']

@@ -2,9 +2,10 @@ from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
-from cdpyr.geometry.geometry import Geometry
-from cdpyr.mechanics.inertia import Inertia
+from cdpyr.geometry.geometry import Geometry, GeometrySchema
+from cdpyr.mechanics.inertia import Inertia, InertiaSchema
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -57,5 +58,17 @@ Drum.__repr__ = make_repr(
     'geometry',
     'inertia'
 )
+
+
+class DrumSchema(Schema):
+    geometry = fields.Nested(GeometrySchema)
+    inertia = fields.Nested(InertiaSchema)
+
+    __model__ = Drum
+
+    @post_load
+    def make_user(self, data):
+        return self.__model__(**data)
+
 
 __all__ = ['Drum']

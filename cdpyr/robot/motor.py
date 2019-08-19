@@ -2,6 +2,7 @@ from typing import Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -171,4 +172,18 @@ Motor.__repr__ = make_repr(
     'moment_of_inertia'
 )
 
-__all__ = ['Motor']
+
+class MotorSchema(Schema):
+    torques = fields.Dict()
+    rated_power = fields.Float()
+    rated_speed = fields.Float()
+    moment_of_inertia = fields.Float()
+
+    __model__ = Motor
+
+    @post_load
+    def make_motor(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Motor', 'MotorSchema']

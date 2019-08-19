@@ -2,6 +2,7 @@ from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -55,4 +56,16 @@ Gearbox.__repr__ = make_repr(
     'moment_of_inertia'
 )
 
-__all__ = ['Gearbox']
+
+class GearboxSchema(Schema):
+    ratio = fields.Float()
+    moment_of_inertia = fields.Float()
+
+    __model__ = Gearbox
+
+    @post_load
+    def make_gearbox(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Gearbox', 'GearboxSchema']

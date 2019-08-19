@@ -2,17 +2,19 @@ from typing import Dict, List, Optional, Sequence, Set, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 from cdpyr.motion.pose import Pose
-from cdpyr.robot.cable import Cable
-from cdpyr.robot.cable import CableList
-from cdpyr.robot.frame import Frame
-from cdpyr.robot.frame import FrameAnchor
-from cdpyr.robot.kinematicchain import KinematicChain
-from cdpyr.robot.kinematicchain import KinematicChainList
-from cdpyr.robot.platform import Platform
-from cdpyr.robot.platform import PlatformAnchor
-from cdpyr.robot.platform import PlatformList
+from cdpyr.robot.anchor.frameanchor import FrameAnchor
+from cdpyr.robot.anchor.platformanchor import PlatformAnchor
+from cdpyr.robot.cable import Cable, CableList, CableSchema
+from cdpyr.robot.frame import Frame, FrameSchema
+from cdpyr.robot.kinematicchain import (
+    KinematicChain,
+    KinematicChainList,
+    KinematicChainSchema,
+)
+from cdpyr.robot.platform import Platform, PlatformList, PlatformSchema
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -181,4 +183,19 @@ Robot.__repr__ = make_repr(
     'kinematic_chains'
 )
 
-__all__ = ['Robot']
+
+class RobotSchema(Schema):
+    name = fields.Str()
+    frame = fields.Nested(FrameSchema)
+    platforms = fields.List(fields.Nested(PlatformSchema))
+    cables = fields.List(fields.Nested(CableSchema))
+    kinematic_chains = fields.List(fields.Nested(KinematicChainSchema))
+
+    __model__ = Robot
+
+    @post_load
+    def make_robot(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Robot', 'RobotSchema']

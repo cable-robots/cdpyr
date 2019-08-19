@@ -3,6 +3,7 @@ from typing import Optional, Sequence, Union
 import numpy as np_
 from colour import Color
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 from cdpyr.mixins.lists import DispatcherList
 
@@ -153,10 +154,25 @@ Cable.__repr__ = make_repr(
 )
 
 
+class CableSchema(Schema):
+    name = fields.String()
+    material = fields.String()
+    diameter = fields.Float(required=True)
+    modulus = fields.Dict(required=True)
+    color = fields.String()
+    breaking_load = fields.Float(required=True)
+
+    __model__ = Cable
+
+    @post_load
+    def make_user(self, data):
+        return self.__model__(**data)
+
+
 class CableList(DispatcherList):
 
     def __dir__(self):
         return Cable.__dict__.keys()
 
 
-__all__ = ['Cable', 'CableList']
+__all__ = ['Cable', 'CableList', 'CableSchema']

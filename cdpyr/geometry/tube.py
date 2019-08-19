@@ -2,6 +2,7 @@ from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 from cdpyr.geometry.geometry import Geometry
 
@@ -137,4 +138,17 @@ Tube.__repr__ = make_repr(
     'height'
 )
 
-__all__ = ['Tube']
+
+class TubeSchema(Schema):
+    inner_diameter = fields.Float()
+    outer_diameter = fields.Float()
+    height = fields.Float()
+
+    __model__ = Tube
+
+    @post_load
+    def make_user(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Tube', 'TubeSchema']

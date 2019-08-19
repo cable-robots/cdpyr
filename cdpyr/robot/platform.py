@@ -2,11 +2,15 @@ from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 from cdpyr.mixins.lists import DispatcherList
-from cdpyr.motion.pose import Pose
-from cdpyr.robot.anchor.platformanchor import PlatformAnchor
-from cdpyr.robot.anchor.platformanchor import PlatformAnchorList
+from cdpyr.motion.pose import Pose, PoseSchema
+from cdpyr.robot.anchor.platformanchor import (
+    PlatformAnchor,
+    PlatformAnchorList,
+    PlatformAnchorSchema,
+)
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -106,10 +110,21 @@ Platform.__repr__ = make_repr(
 )
 
 
+class PlatformSchema(Schema):
+    anchors = fields.List(fields.Nested(PlatformAnchorSchema))
+    pose = fields.Nested(PoseSchema)
+
+    __model__ = Pose
+
+    @post_load
+    def make_platform(self, data):
+        return self.__model__(**data)
+
+
 class PlatformList(DispatcherList):
 
     def __dir__(self):
         return Platform.__dict__.keys()
 
 
-__all__ = ['Platform', 'PlatformList']
+__all__ = ['Platform', 'PlatformList', 'PlatformSchema']

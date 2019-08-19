@@ -151,8 +151,21 @@ Pose.__repr__ = make_repr(
 )
 
 
+class PoseSchema(Schema):
+    time = fields.Float()
+    position = fields.List(fields.List(fields.Float()))
+    velocity = fields.List(fields.List(fields.Float()))
+    acceleration = fields.List(fields.List(fields.Float()))
+
+    __model__ = Pose
+
+    @post_load
+    def make_pose(self, data):
+        return self.__model__(**data)
+
+
 class PoseList(DispatcherList):
     pass
 
 
-__all__ = ['Pose', 'PoseList']
+__all__ = ['Pose', 'PoseList', 'PoseSchema']

@@ -2,11 +2,14 @@ from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
-from cdpyr.geometry.geometry import Geometry
-from cdpyr.mechanics.inertia import Inertia
-from cdpyr.mechanics.transformation.angular import \
-    Angular as AngularTransformation
+from cdpyr.geometry.geometry import Geometry, GeometrySchema
+from cdpyr.mechanics.inertia import Inertia, InertiaSchema
+from cdpyr.mechanics.transformation.angular import (
+    Angular as AngularTransformation,
+    AngularSchema as AngularTransformationSchema,
+)
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -75,4 +78,17 @@ Pulley.__repr__ = make_repr(
     'angular'
 )
 
-__all__ = ['Pulley']
+
+class PulleySchema(Schema):
+    geometry = fields.Nested(GeometrySchema)
+    inertia = fields.Nested(InertiaSchema)
+    angular = fields.Nested(AngularTransformationSchema)
+
+    __model__ = Pulley
+
+    @post_load
+    def make_pulley(self, data):
+        return self.__model__(**data)
+
+
+__all__ = ['Pulley', 'PulleySchema']
