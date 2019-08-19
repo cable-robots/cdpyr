@@ -22,6 +22,14 @@ class Frame(object):
                  anchors: Optional[
                      Union[FrameAnchorList, Sequence[FrameAnchor]]] = None
                  ):
+        """ A general cable robot frame object.
+
+        For the time being, this object only collects all frame anchors and
+        provides a nice wrapper around accessing the anchor data.
+
+        :param Union[FrameAnchorList, Sequence[FrameAnchor]] anchors:
+        Optional list of anchors or a `FrameAnchorList` available on the frame.
+        """
         self.anchors = anchors or []
 
     @property

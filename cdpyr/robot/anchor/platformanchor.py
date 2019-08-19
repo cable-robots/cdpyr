@@ -21,6 +21,16 @@ class PlatformAnchor(Anchor):
                      Union[_TVector, LinearTransformation]] = None,
                  rotation: Optional[
                      Union[_TMatrix, AngularTransformation]] = None):
+        """ Generic anchor type that is attached to the platform.
+
+        :param Union[_TVector, LinearTransformation] position: Optional
+        position of the platform anchor given either as (3,) numpy array or
+        a 3-element list. Coordinates are assumed given with respect to the
+        platform's coordinate system and in SI units [ m ] (meter)
+        :param Union[_TMatrix, AngularTransformation] rotation: Optional
+        orientation of the platform anchor given as (3,3) numpy array (a DCM)
+        or a 3-element list of 3-element lists.
+        """
         Anchor.__init__(self, position=position, rotation=rotation)
 
 

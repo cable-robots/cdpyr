@@ -22,6 +22,22 @@ class Angular(object):
                  angular_acceleration: _TVector = None,
                  rotation_sequence: str = None
                  ):
+        """ A kinematic angular transformation object.
+
+        This object represents a kinematic transformation on the orientation
+        or angular space. It allows for describing and reading the angular
+        orientation in different ways like DCM (orientation matrix),
+        quaternion, rotation vectors, or Euler angles.
+
+        :param _TVector|list angular_position: Optional angular position
+        given as Euler angles, defined in the `rotation_sequence` parameter
+        :param _TVector|list angular_velocity: Optional angular velocity
+        about the three principal axes of rotation.
+        :param _TVector|list angular_acceleration: Optional angular
+        acceleration about the three principal axes of rotation.
+        :param str rotation_sequence: Optional rotation sequence that should
+        internally be used when converting to Euler angles.
+        """
         self.sequence = rotation_sequence or 'zyx'
         self.angular_position = angular_position or [0.0, 0.0, 0.0]
         self.angular_velocity = angular_velocity or [0.0, 0.0, 0.0]

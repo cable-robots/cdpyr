@@ -28,6 +28,26 @@ class Cable(object):
                  color: Optional[Union[str, Color]] = None,
                  breaking_load: Optional[_TNum] = None
                  ):
+        """ Base cable class that represents a rigid, elastic, viscous,
+        or viscoelastic cable object.
+
+        :rtype: Cable
+        :param str name: Optional string representing a human-readable name of
+        the cable
+        :param str material: Optional string representing a human-readable
+        name of the cable's material
+        :param dict modulus: Optional dictionary mapping of elastic and viscous
+        modulus of the cable. Contains the case-sensitive fields `elasticities`
+        and `viscosities`
+        :param float diameter: Optional float representing the cable's
+        diameter in SI
+        unit [ m ] (Meter)
+        :param str|Color color: Optional string or Color object representing
+        the object's color. Used mostly for visualizing the cable correctly.
+        :param float|np_.Infinity breaking_load: Optional float or
+        np_.Infinity representing the cable's rated breaking load. Set to
+        `np_.Infinity` if the cable is like steel.
+        """
         self.name = name or 'default'
         self.material = material or 'default'
         self.modulus = modulus or {}
