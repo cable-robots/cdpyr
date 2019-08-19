@@ -1,9 +1,12 @@
-from .anchor import Anchor
-from .anchor import AnchorList
-from .frameanchor import FrameAnchor
-from .frameanchor import FrameAnchorList
-from .platformanchor import PlatformAnchor
-from .platformanchor import PlatformAnchorList
+from cdpyr.robot.anchor.anchor import Anchor, AnchorList
+from cdpyr.robot.anchor.frameanchor import (
+    FrameAnchor,
+    FrameAnchorList,
+)
+from cdpyr.robot.anchor.platformanchor import (
+    PlatformAnchor,
+    PlatformAnchorList,
+)
 
 __all__ = [
     'Anchor',

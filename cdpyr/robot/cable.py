@@ -1,6 +1,4 @@
-from typing import Sequence
-from typing import Optional
-from typing import Union
+from typing import Optional, Sequence, Union
 
 import numpy as np_
 from colour import Color

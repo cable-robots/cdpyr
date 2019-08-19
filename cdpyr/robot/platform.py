@@ -1,6 +1,4 @@
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -54,8 +52,8 @@ class Platform(object):
         return self._anchors
 
     @anchors.setter
-    def anchors(self, anchors: Union[PlatformAnchorList, Sequence[
-        PlatformAnchor]]):
+    def anchors(self,
+                anchors: Union[PlatformAnchorList, Sequence[PlatformAnchor]]):
         if not isinstance(anchors, PlatformAnchorList):
             anchors = PlatformAnchorList(anchors)
 

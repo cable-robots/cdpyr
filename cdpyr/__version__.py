@@ -1,6 +1,6 @@
 import os.path
 
-from pkg_resources import get_distribution, DistributionNotFound
+from pkg_resources import DistributionNotFound, get_distribution
 
 try:
     _dist = get_distribution('cdpyr')

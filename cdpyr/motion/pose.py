@@ -1,14 +1,13 @@
-from typing import Optional
-from typing import Sequence
-from typing import Tuple
-from typing import Union
+from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
+from marshmallow import Schema, fields, post_load
 
 from cdpyr.mechanics.transformation.angular import Angular as \
     AngularTransformation
-from cdpyr.mechanics.transformation.linear import Linear as LinearTransformation
+from cdpyr.mechanics.transformation.linear import Linear as \
+    LinearTransformation
 from cdpyr.mixins.lists import DispatcherList
 
 _TNum = Union[int, float]

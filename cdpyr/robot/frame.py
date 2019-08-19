@@ -1,6 +1,4 @@
-from typing import Sequence
-from typing import Optional
-from typing import Union
+from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -14,7 +12,7 @@ _TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
 
 
 class Frame(object):
-    _anchors: Sequence[FrameAnchor]
+    _anchors: FrameAnchorList
 
     def __init__(self,
                  anchors: Optional[
@@ -30,6 +28,7 @@ class Frame(object):
     def anchors(self, anchors: Union[FrameAnchorList, Sequence[FrameAnchor]]):
         if not isinstance(anchors, FrameAnchorList):
             anchors = FrameAnchorList(anchors)
+
         self._anchors = anchors
 
     @anchors.deleter

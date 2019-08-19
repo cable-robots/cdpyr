@@ -1,6 +1,5 @@
 from abc import ABC
-from typing import Sequence
-from typing import Union
+from typing import Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr

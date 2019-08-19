@@ -1,7 +1,4 @@
-from typing import Optional
-from typing import Sequence
-from typing import Tuple
-from typing import Union
+from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr

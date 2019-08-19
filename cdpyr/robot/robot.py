@@ -1,10 +1,4 @@
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Sequence
-from typing import Set
-from typing import Tuple
-from typing import Union
+from typing import Dict, List, Optional, Sequence, Set, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr

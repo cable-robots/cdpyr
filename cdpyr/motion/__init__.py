@@ -1,4 +1,3 @@
-from .pose import Pose
-from .pose import PoseList
+from cdpyr.motion.pose import Pose, PoseList
 
 __all__ = ['Pose', 'PoseList']

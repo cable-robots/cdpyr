@@ -1,11 +1,9 @@
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
 
-from .geometry import Geometry
+from cdpyr.geometry.geometry import Geometry
 
 _TNum = Union[int, float]
 _TVector = Union[np_.ndarray, Sequence[_TNum]]
@@ -65,10 +63,8 @@ class Cylinder(Geometry):
     def radius(self):
         del self.diameter
 
-    def moment_of_inertia(self, mass: _TNum):
-        if mass < 0:
-            raise ValueError('mass must be nonnegative')
-
+    def moment_of_inertia(self):
+        mass = self.mass
         r = self.radius
         h = self.height
         rh = 3.0 * (r ** 2.0) + h ** 2.0

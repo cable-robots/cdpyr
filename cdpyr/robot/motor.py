@@ -1,5 +1,4 @@
-from typing import Sequence
-from typing import Union
+from typing import Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -17,7 +16,12 @@ class Motor(object):
 
     def __init__(self, torques: dict = None, inertia: _TNum = None,
                  rated_speed: _TNum = None, rated_power: _TNum = None):
-        self.torques = {'stall': None, 'peak': None, 'rated': None, 'rms': None}
+        self.torques = {
+            'stall': None,
+            'peak':  None,
+            'rated': None,
+            'rms':   None
+        }
 
         self.torques = torques or {}
         self.moment_of_inertia = inertia or 0

@@ -1,7 +1,4 @@
-from typing import Optional
-from typing import Sequence
-from typing import Tuple
-from typing import Union
+from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -43,8 +40,9 @@ class Drum(object):
         return self._inertia
 
     @inertia.setter
-    def inertia(self, inertia: Union[
-        Tuple[Union[_TNum, _TVector], Union[_TVector, _TMatrix]], Inertia]):
+    def inertia(self,
+                froinertia: Union[Tuple[Union[_TNum, _TVector], Union[
+                    _TVector, _TMatrix]], Inertia]):
         if not isinstance(inertia, Inertia):
             inertia = Inertia(linear=inertia[0], angular=inertia[1])
 
