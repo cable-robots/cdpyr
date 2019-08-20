@@ -6,14 +6,14 @@ __author__ = 'Philipp Tempel'
 __email__ = 'philipp.tempel@isw.uni-stuttgart.de'
 __version__ = '1.0.0-dev'
 
-from cdpyr import algorithms, attr, geometry, io, mechanics, motion, robot
+from cdpyr import algorithms, geometry, io, mechanics, motion, robot, validators
 
 __all__ = [
-    'attr',
+    'validators',
     'robot',
     'algorithms',
     'motion',
     'mechanics',
     'geometry',
-    'io'
+    'io',
 ]
