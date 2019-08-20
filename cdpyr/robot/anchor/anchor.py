@@ -4,11 +4,11 @@ import numpy as np_
 from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 
-from cdpyr.mechanics.transformation.angular import (
+from cdpyr.kinematics.transformation.angular import (
     Angular as AngularTransformation,
     AngularSchema as AngularTransformationSchema,
 )
-from cdpyr.mechanics.transformation.linear import (
+from cdpyr.kinematics.transformation.linear import (
     Linear as LinearTransformation,
     LinearSchema as LinearTransformationSchema,
 )

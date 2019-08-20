@@ -1,12 +1,13 @@
 from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
+from scipy.linalg import block_diag
 from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 
-from cdpyr.mechanics.transformation.angular import Angular as \
+from cdpyr.kinematics.transformation.angular import Angular as \
     AngularTransformation
-from cdpyr.mechanics.transformation.linear import Linear as \
+from cdpyr.kinematics.transformation.linear import Linear as \
     LinearTransformation
 from cdpyr.mixins.lists import DispatcherList
 
@@ -38,7 +39,11 @@ class Pose(object):
 
     @property
     def state(self):
-        return self._linear
+        return np_.hstack([self.linear.position, self.angular.quaternion])
+
+    @property
+    def transformationmatrix(self):
+        return block_diag()
 
     @property
     def time(self):

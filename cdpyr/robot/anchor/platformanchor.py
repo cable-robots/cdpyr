@@ -3,9 +3,9 @@ from typing import Optional, Sequence, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.mechanics.transformation.angular import \
+from cdpyr.kinematics.transformation.angular import \
     Angular as AngularTransformation
-from cdpyr.mechanics.transformation.linear import Linear as \
+from cdpyr.kinematics.transformation.linear import Linear as \
     LinearTransformation
 from cdpyr.robot.anchor.anchor import Anchor, AnchorList, AnchorSchema
 

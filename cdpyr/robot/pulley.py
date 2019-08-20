@@ -6,7 +6,7 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.geometry.geometry import Geometry, GeometrySchema
 from cdpyr.mechanics.inertia import Inertia, InertiaSchema
-from cdpyr.mechanics.transformation.angular import (
+from cdpyr.kinematics.transformation.angular import (
     Angular as AngularTransformation,
     AngularSchema as AngularTransformationSchema,
 )
