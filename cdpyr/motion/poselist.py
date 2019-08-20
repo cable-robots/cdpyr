@@ -7,9 +7,7 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.motion.pose import Pose, PoseSchema
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class PoseList(UserList):

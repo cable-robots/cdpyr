@@ -16,9 +16,7 @@ from cdpyr.robot.kinematicchain import (
 )
 from cdpyr.robot.platform import Platform, PlatformList, PlatformSchema
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Robot(object):
@@ -35,7 +33,7 @@ class Robot(object):
                      Union[PlatformList, Sequence[Platform]]] = None,
                  cables: Optional[Union[CableList, Sequence[Cable]]] = None,
                  kinematic_chains: Optional[Union[KinematicChainList, Set[
-                     Union[Sequence[_TNum], KinematicChain]]]] = None
+                     Union[Sequence[Num], KinematicChain]]]] = None
                  ):
         self.name = name or 'default'
         self.frame = frame or None
@@ -125,7 +123,7 @@ class Robot(object):
     @kinematic_chains.setter
     def kinematic_chains(self,
                          chains: Union[KinematicChainList, Set[
-                             Union[Sequence[_TNum], KinematicChain]]]):
+                             Union[Sequence[Num], KinematicChain]]]):
         # turn anything not a set into a set (also removes already redundant
         # objects)
         if not isinstance(chains, Set):

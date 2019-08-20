@@ -6,9 +6,7 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.geometry.geometry import Geometry
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Cuboid(Geometry):
@@ -17,9 +15,9 @@ class Cuboid(Geometry):
     _depth: float
 
     def __init__(self,
-                 width: Optional[_TNum] = None,
-                 height: Optional[_TNum] = None,
-                 depth: Optional[_TNum] = None
+                 width: Optional[Num] = None,
+                 height: Optional[Num] = None,
+                 depth: Optional[Num] = None
                  ):
         self.width = width or 0
         self.height = height or 0
@@ -30,7 +28,7 @@ class Cuboid(Geometry):
         return self._width
 
     @width.setter
-    def width(self, width: _TNum):
+    def width(self, width: Num):
         if width < 0:
             raise ValueError('width must be nonnegative')
         self._width = width
@@ -44,7 +42,7 @@ class Cuboid(Geometry):
         return self._height
 
     @height.setter
-    def height(self, height: _TNum):
+    def height(self, height: Num):
         if height < 0:
             raise ValueError('height must be nonnegative')
         self._height = height
@@ -58,7 +56,7 @@ class Cuboid(Geometry):
         return self._depth
 
     @depth.setter
-    def depth(self, depth: _TNum):
+    def depth(self, depth: Num):
         if depth < 0:
             raise ValueError('depth must be nonnegative')
         self._depth = depth

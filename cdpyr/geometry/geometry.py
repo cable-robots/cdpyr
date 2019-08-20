@@ -5,9 +5,7 @@ import numpy as np_
 from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Geometry(ABC):
@@ -21,7 +19,7 @@ class Geometry(ABC):
         return self._mass
 
     @mass.setter
-    def mass(self, mass: _TNum):
+    def mass(self, mass: Num):
         if mass < 0:
             raise ValueError('mass must be nonnegative')
 

@@ -7,9 +7,7 @@ from marshmallow import Schema, fields, post_load
 from cdpyr.geometry.geometry import Geometry, GeometrySchema
 from cdpyr.mechanics.inertia import Inertia, InertiaSchema
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Drum(object):
@@ -18,8 +16,8 @@ class Drum(object):
 
     def __init__(self,
                  geometry: Optional[Geometry] = None,
-                 inertia: Optional[Union[Tuple[Union[_TNum, _TVector], Union[
-                     _TVector, _TMatrix]], Inertia]] = None
+                 inertia: Optional[Union[Tuple[Union[Num, Vector], Union[
+                     Vector, Matrix]], Inertia]] = None
                  ):
         self.geometry = geometry or Geometry()
         self.inertia = inertia or Inertia()
@@ -42,8 +40,8 @@ class Drum(object):
 
     @inertia.setter
     def inertia(self,
-                froinertia: Union[Tuple[Union[_TNum, _TVector], Union[
-                    _TVector, _TMatrix]], Inertia]):
+                froinertia: Union[Tuple[Union[Num, Vector], Union[
+                    Vector, Matrix]], Inertia]):
         if not isinstance(inertia, Inertia):
             inertia = Inertia(linear=inertia[0], angular=inertia[1])
 

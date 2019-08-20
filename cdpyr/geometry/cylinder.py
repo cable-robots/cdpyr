@@ -6,9 +6,7 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.geometry.geometry import Geometry
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Cylinder(Geometry):
@@ -16,8 +14,8 @@ class Cylinder(Geometry):
     _height: float
 
     def __init__(self,
-                 height: Optional[_TNum] = None,
-                 diameter: Optional[_TNum] = None
+                 height: Optional[Num] = None,
+                 diameter: Optional[Num] = None
                  ):
         self.height = height or 0
         self.diameter = diameter or 0
@@ -27,7 +25,7 @@ class Cylinder(Geometry):
         return self._diameter
 
     @diameter.setter
-    def diameter(self, diameter: _TNum):
+    def diameter(self, diameter: Num):
         if diameter < 0:
             raise ValueError('diameter must be nonnegative')
         self._diameter = diameter
@@ -41,7 +39,7 @@ class Cylinder(Geometry):
         return self._height
 
     @height.setter
-    def height(self, height: _TNum):
+    def height(self, height: Num):
         if height < 0:
             raise ValueError('height must be nonnegative')
         self._height = height
@@ -55,7 +53,7 @@ class Cylinder(Geometry):
         return self._diameter / 2.0
 
     @radius.setter
-    def radius(self, radius: _TNum):
+    def radius(self, radius: Num):
         if radius < 0:
             raise ValueError('radius must be nonnegative')
         self.diameter = 2.0 * radius

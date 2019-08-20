@@ -12,9 +12,7 @@ from cdpyr.robot.anchor.anchor import Anchor, AnchorList, AnchorSchema
 from cdpyr.robot.drivetrain import DriveTrain, DriveTrainSchema
 from cdpyr.robot.pulley import Pulley, PulleySchema
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class FrameAnchor(Anchor):
@@ -23,9 +21,9 @@ class FrameAnchor(Anchor):
 
     def __init__(self,
                  position: Optional[
-                     Union[_TVector, LinearTransformation]] = None,
+                     Union[Vector, LinearTransformation]] = None,
                  rotation: Optional[
-                     Union[_TMatrix, AngularTransformation]] = None,
+                     Union[Matrix, AngularTransformation]] = None,
                  pulley: Optional[Pulley] = None,
                  drivetrain: Optional[DriveTrain] = None
                  ):

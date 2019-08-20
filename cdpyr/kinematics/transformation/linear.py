@@ -4,9 +4,7 @@ import numpy as np_
 from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Linear(object):
@@ -15,9 +13,9 @@ class Linear(object):
     _acceleration: np_.ndarray
 
     def __init__(self,
-                 position: _TVector = None,
-                 velocity: _TVector = None,
-                 acceleration: _TVector = None
+                 position: Vector = None,
+                 velocity: Vector = None,
+                 acceleration: Vector = None
                  ):
         self.position = position or [0.0, 0.0, 0.0]
         self.velocity = velocity or [0.0, 0.0, 0.0]
@@ -28,7 +26,7 @@ class Linear(object):
         return self._position
 
     @position.setter
-    def position(self, position: Union[_TVector, np_.ndarray]):
+    def position(self, position: Union[Vector, np_.ndarray]):
         position = np_.asarray(position)
 
         if position.ndim != 1:
@@ -52,7 +50,7 @@ class Linear(object):
         return self._velocity
 
     @velocity.setter
-    def velocity(self, velocity: Union[_TVector, np_.ndarray]):
+    def velocity(self, velocity: Union[Vector, np_.ndarray]):
         velocity = np_.asarray(velocity)
 
         if velocity.ndim != 1:
@@ -76,7 +74,7 @@ class Linear(object):
         return self._acceleration
 
     @acceleration.setter
-    def acceleration(self, acceleration: Union[_TVector, np_.ndarray]):
+    def acceleration(self, acceleration: Union[Vector, np_.ndarray]):
         acceleration = np_.asarray(acceleration)
 
         if acceleration.ndim != 1:

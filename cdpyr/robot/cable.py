@@ -7,15 +7,13 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.mixins.lists import DispatcherList
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Cable(object):
-    _breaking_load: _TNum
+    _breaking_load: Num
     _color: Color
-    _diameter: _TNum
+    _diameter: Num
     _material: str
     _modulus: dict
     _name: str
@@ -24,9 +22,9 @@ class Cable(object):
                  name: Optional[str] = None,
                  material: Optional[str] = None,
                  modulus: Optional[dict] = None,
-                 diameter: Optional[_TNum] = None,
+                 diameter: Optional[Num] = None,
                  color: Optional[Union[str, Color]] = None,
-                 breaking_load: Optional[_TNum] = None
+                 breaking_load: Optional[Num] = None
                  ):
         """ Base cable class that represents a rigid, elastic, viscous,
         or viscoelastic cable object.
@@ -60,7 +58,7 @@ class Cable(object):
         return self._diameter
 
     @diameter.setter
-    def diameter(self, diameter: _TNum):
+    def diameter(self, diameter: Num):
         if diameter < 0:
             raise ValueError('diameter must be nonnegative')
 
@@ -75,7 +73,7 @@ class Cable(object):
         return self._breaking_load
 
     @breaking_load.setter
-    def breaking_load(self, breaking_load: _TNum):
+    def breaking_load(self, breaking_load: Num):
         if breaking_load < 0:
             raise ValueError('breaking_load must be nonnegative')
 
@@ -144,7 +142,7 @@ class Cable(object):
         return self._modulus['elasticities']
 
     @elasticities.setter
-    def elasticities(self, elasticities: Sequence[_TNum]):
+    def elasticities(self, elasticities: Sequence[Num]):
         self.modulus['elasticities'] = elasticities
 
     @elasticities.deleter
@@ -156,7 +154,7 @@ class Cable(object):
         return self._modulus['viscosities']
 
     @viscosities.setter
-    def viscosities(self, viscosities: Sequence[_TNum]):
+    def viscosities(self, viscosities: Sequence[Num]):
         self.modulus['viscosities'] = viscosities
 
     @viscosities.deleter

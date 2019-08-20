@@ -1,31 +1,29 @@
 from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
-from scipy.linalg import block_diag
 from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 
 from cdpyr.kinematics.transformation.angular import Angular as \
     AngularTransformation
+from cdpyr.kinematics.transformation.homogenous import Homogenous
 from cdpyr.kinematics.transformation.linear import Linear as \
     LinearTransformation
 from cdpyr.mixins.lists import DispatcherList
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Pose(object):
     _linear: LinearTransformation
     _angular: AngularTransformation
-    _time: _TNum
+    _time: Num
 
     def __init__(self,
-                 position: Optional[Tuple[_TVector, _TMatrix]] = None,
-                 velocity: Optional[Tuple[_TVector, _TVector]] = None,
-                 acceleration: Optional[Tuple[_TVector, _TVector]] = None,
-                 time: _TNum = None,
+                 position: Optional[Tuple[Vector, Matrix]] = None,
+                 velocity: Optional[Tuple[Vector, Vector]] = None,
+                 acceleration: Optional[Tuple[Vector, Vector]] = None,
+                 time: Num = None,
                  ):
         self.linear = LinearTransformation()
         self.angular = AngularTransformation()
@@ -43,14 +41,15 @@ class Pose(object):
 
     @property
     def transformationmatrix(self):
-        return block_diag()
+        return Homogenous(translation=self.linear.position,
+                          rotation=self.angular.dcm)
 
     @property
     def time(self):
         return self._time
 
     @time.setter
-    def time(self, time: _TNum):
+    def time(self, time: Num):
         self._time = time
 
     @time.deleter
@@ -86,7 +85,7 @@ class Pose(object):
         return self.linear.position, self.angular.dcm
 
     @position.setter
-    def position(self, position: Tuple[_TVector, _TMatrix]):
+    def position(self, position: Tuple[Vector, Matrix]):
         self.linear.position = position[0]
         self.angular.dcm = position[1]
 
@@ -100,7 +99,7 @@ class Pose(object):
         return self.linear.velocity, self.angular.angular_velocity
 
     @velocity.setter
-    def velocity(self, velocity: Tuple[_TVector, _TVector]):
+    def velocity(self, velocity: Tuple[Vector, Vector]):
         self.linear.velocity = velocity[0]
         self.angular.velocity = velocity[1]
 
@@ -114,7 +113,7 @@ class Pose(object):
         return self.linear.acceleration, self.angular.angular_acceleration
 
     @acceleration.setter
-    def acceleration(self, acceleration: Tuple[_TVector, _TVector]):
+    def acceleration(self, acceleration: Tuple[Vector, Vector]):
         self.linear.acceleration = acceleration[0]
         self.angular.angular_acceleration = acceleration[1]
 

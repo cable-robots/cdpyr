@@ -13,9 +13,7 @@ from cdpyr.robot.anchor.platformanchor import (
 from cdpyr.robot.cable import Cable, CableSchema
 from cdpyr.robot.platform import Platform, PlatformSchema
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class KinematicChain(object):
@@ -25,10 +23,10 @@ class KinematicChain(object):
     _platform_anchor: PlatformAnchor
 
     def __init__(self,
-                 frame_anchor: Union[_TNum, FrameAnchor],
-                 platform: Union[_TNum, Platform],
-                 platform_anchor: Union[_TNum, PlatformAnchor],
-                 cable: Union[_TNum, Cable]
+                 frame_anchor: Union[Num, FrameAnchor],
+                 platform: Union[Num, Platform],
+                 platform_anchor: Union[Num, PlatformAnchor],
+                 cable: Union[Num, Cable]
                  ):
         self.cable = cable
         self.platform = platform

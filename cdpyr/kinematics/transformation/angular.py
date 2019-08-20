@@ -5,9 +5,7 @@ from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 from scipy.spatial.transform import Rotation
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Angular(object):
@@ -17,9 +15,9 @@ class Angular(object):
     _rotation_sequence: str = 'zyx'
 
     def __init__(self,
-                 angular_position: _TVector = None,
-                 angular_velocity: _TVector = None,
-                 angular_acceleration: _TVector = None,
+                 angular_position: Vector = None,
+                 angular_velocity: Vector = None,
+                 angular_acceleration: Vector = None,
                  rotation_sequence: str = None
                  ):
         """ A kinematic angular transformation object.
@@ -29,11 +27,11 @@ class Angular(object):
         orientation in different ways like DCM (orientation matrix),
         quaternion, rotation vectors, or Euler angles.
 
-        :param _TVector|list angular_position: Optional angular position
+        :param Vector|list angular_position: Optional angular position
         given as Euler angles, defined in the `rotation_sequence` parameter
-        :param _TVector|list angular_velocity: Optional angular velocity
+        :param Vector|list angular_velocity: Optional angular velocity
         about the three principal axes of rotation.
-        :param _TVector|list angular_acceleration: Optional angular
+        :param Vector|list angular_acceleration: Optional angular
         acceleration about the three principal axes of rotation.
         :param str rotation_sequence: Optional rotation sequence that should
         internally be used when converting to Euler angles.
@@ -72,7 +70,7 @@ class Angular(object):
         return self.euler
 
     @angular_position.setter
-    def angular_position(self, position: _TVector):
+    def angular_position(self, position: Vector):
         self.euler = position
 
     @angular_position.deleter
@@ -84,7 +82,7 @@ class Angular(object):
         return self._angular_rotation.as_euler(self.sequence)
 
     @euler.setter
-    def euler(self, euler: _TVector):
+    def euler(self, euler: Vector):
         self.rotation = Rotation.from_euler(self.sequence, euler)
 
     @euler.deleter
@@ -96,7 +94,7 @@ class Angular(object):
         return self._angular_rotation.as_dcm()
 
     @dcm.setter
-    def dcm(self, dcm: _TMatrix):
+    def dcm(self, dcm: Matrix):
         self.rotation = Rotation.from_dcm(dcm)
 
     @dcm.deleter
@@ -108,7 +106,7 @@ class Angular(object):
         return self._angular_rotation.as_quat()
 
     @quaternion.setter
-    def quaternion(self, quaternion: _TVector):
+    def quaternion(self, quaternion: Vector):
         self.rotation = Rotation.from_quat(quaternion)
 
     @quaternion.deleter
@@ -120,7 +118,7 @@ class Angular(object):
         return self._angular_rotation.as_rotvec()
 
     @rotvec.setter
-    def rotvec(self, rotvec: _TVector):
+    def rotvec(self, rotvec: Vector):
         self.rotation = Rotation.from_rotvec(rotvec)
 
     @rotvec.deleter
@@ -132,7 +130,7 @@ class Angular(object):
         return self._angular_velocity
 
     @angular_velocity.setter
-    def angular_velocity(self, velocity: _TVector):
+    def angular_velocity(self, velocity: Vector):
         velocity = np_.asarray(velocity)
 
         if velocity.ndim != 1:
@@ -156,7 +154,7 @@ class Angular(object):
         return self._angular_acceleration
 
     @angular_acceleration.setter
-    def angular_acceleration(self, acceleration: _TVector):
+    def angular_acceleration(self, acceleration: Vector):
         acceleration = np_.asarray(acceleration)
 
         if acceleration.ndim != 1:

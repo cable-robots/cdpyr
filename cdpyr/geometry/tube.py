@@ -6,9 +6,7 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.geometry.geometry import Geometry
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Tube(Geometry):
@@ -17,9 +15,9 @@ class Tube(Geometry):
     _height: float
 
     def __init__(self,
-                 inner_diameter: Optional[_TNum] = None,
-                 outer_diameter: Optional[_TNum] = None,
-                 height: Optional[_TNum] = None
+                 inner_diameter: Optional[Num] = None,
+                 outer_diameter: Optional[Num] = None,
+                 height: Optional[Num] = None
                  ):
         self.inner_diameter = inner_diameter or 0
         self.outer_diameter = outer_diameter or 0
@@ -30,7 +28,7 @@ class Tube(Geometry):
         return self.inner_diameter, self.outer_diameter
 
     @diameter.setter
-    def diameter(self, diameter: Tuple[_TNum, _TNum]):
+    def diameter(self, diameter: Tuple[Num, Num]):
         self.inner_diameter = diameter[0]
         self.outer_diameter = diameter[1]
 
@@ -44,7 +42,7 @@ class Tube(Geometry):
         return self._inner_diameter
 
     @inner_diameter.setter
-    def inner_diameter(self, inner_diameter: _TNum):
+    def inner_diameter(self, inner_diameter: Num):
         if inner_diameter < 0:
             raise ValueError('inner_diameter must be nonnegative')
 
@@ -62,7 +60,7 @@ class Tube(Geometry):
         return self._outer_diameter
 
     @outer_diameter.setter
-    def outer_diameter(self, outer_diameter: _TNum):
+    def outer_diameter(self, outer_diameter: Num):
         if outer_diameter < 0:
             raise ValueError('outer_diameter must be nonnegative')
 
@@ -80,7 +78,7 @@ class Tube(Geometry):
         return self._height
 
     @height.setter
-    def height(self, height: _TNum):
+    def height(self, height: Num):
         if height < 0:
             raise ValueError('height must be nonnegative')
         self._height = height
@@ -94,7 +92,7 @@ class Tube(Geometry):
         return self._inner_diameter / 2.0
 
     @inner_radius.setter
-    def inner_radius(self, inner_radius: _TNum):
+    def inner_radius(self, inner_radius: Num):
         if inner_radius < 0:
             raise ValueError('inner_radius must be nonnegative')
         self.inner_diameter = 2.0 * inner_radius
@@ -108,7 +106,7 @@ class Tube(Geometry):
         return self._outer_diameter / 2.0
 
     @outer_radius.setter
-    def outer_radius(self, outer_radius: _TNum):
+    def outer_radius(self, outer_radius: Num):
         if outer_radius < 0:
             raise ValueError('outer_radius must be nonnegative')
         self.outer_diameter = 2.0 * outer_radius

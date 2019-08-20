@@ -4,19 +4,17 @@ import numpy as np_
 from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Motor(object):
     _torques: dict
-    _moment_of_inertia: _TNum
-    _rated_speed: _TNum
-    _rated_power: _TNum
+    _moment_of_inertia: Num
+    _rated_speed: Num
+    _rated_power: Num
 
-    def __init__(self, torques: dict = None, inertia: _TNum = None,
-                 rated_speed: _TNum = None, rated_power: _TNum = None):
+    def __init__(self, torques: dict = None, inertia: Num = None,
+                 rated_speed: Num = None, rated_power: Num = None):
         self.torques = {
             'stall': None,
             'peak':  None,
@@ -49,7 +47,7 @@ class Motor(object):
         return self.torques['stall']
 
     @stall_torque.setter
-    def stall_torque(self, stall_torque: _TNum):
+    def stall_torque(self, stall_torque: Num):
         if stall_torque <= 0:
             raise ValueError('stall_torque must be positive')
 
@@ -64,7 +62,7 @@ class Motor(object):
         return self.torques['peak']
 
     @peak_torque.setter
-    def peak_torque(self, peak_torque: _TNum):
+    def peak_torque(self, peak_torque: Num):
         if peak_torque <= 0:
             raise ValueError('peak_torque must be positive')
 
@@ -79,7 +77,7 @@ class Motor(object):
         return self._rated_speed
 
     @rated_speed.setter
-    def rated_speed(self, rated_speed: _TNum):
+    def rated_speed(self, rated_speed: Num):
         if rated_speed <= 0:
             raise ValueError('rated_speed must be positive')
 
@@ -94,7 +92,7 @@ class Motor(object):
         return self._rated_power
 
     @rated_power.setter
-    def rated_power(self, rated_power: _TNum):
+    def rated_power(self, rated_power: Num):
         if rated_power <= 0:
             raise ValueError('rated_power must be positive')
 
@@ -109,7 +107,7 @@ class Motor(object):
         return self.torques['rated']
 
     @rated_torque.setter
-    def rated_torque(self, rated_torque: _TNum):
+    def rated_torque(self, rated_torque: Num):
         if rated_torque <= 0:
             raise ValueError('rated_torque must be positive')
 
@@ -124,7 +122,7 @@ class Motor(object):
         return self._moment_of_inertia
 
     @moment_of_inertia.setter
-    def moment_of_inertia(self, moment_of_inertia: _TNum):
+    def moment_of_inertia(self, moment_of_inertia: Num):
         if moment_of_inertia < 0:
             raise ValueError('moment_of_inertia must be nonnegative')
 
@@ -139,7 +137,7 @@ class Motor(object):
         return self.torques['rms']
 
     @rms_torque.setter
-    def rms_torque(self, rms_torque: _TNum):
+    def rms_torque(self, rms_torque: Num):
         if rms_torque <= 0:
             raise ValueError('rms_torque must be positive')
 
@@ -154,7 +152,7 @@ class Motor(object):
         return self.peak_torque
 
     @max_torque.setter
-    def max_torque(self, max_torque: _TNum):
+    def max_torque(self, max_torque: Num):
         if max_torque <= 0:
             raise ValueError('max_torque must be positive')
 

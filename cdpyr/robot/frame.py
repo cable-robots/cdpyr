@@ -10,9 +10,7 @@ from cdpyr.robot.anchor.frameanchor import (
     FrameAnchorSchema,
 )
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Frame(object):

@@ -9,25 +9,23 @@ from cdpyr.kinematics.transformation.linear import Linear as \
     LinearTransformation
 from cdpyr.robot.anchor.anchor import Anchor, AnchorList, AnchorSchema
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class PlatformAnchor(Anchor):
 
     def __init__(self,
                  position: Optional[
-                     Union[_TVector, LinearTransformation]] = None,
+                     Union[Vector, LinearTransformation]] = None,
                  rotation: Optional[
-                     Union[_TMatrix, AngularTransformation]] = None):
+                     Union[Matrix, AngularTransformation]] = None):
         """ Generic anchor type that is attached to the platform.
 
-        :param Union[_TVector, LinearTransformation] position: Optional
+        :param Union[Vector, LinearTransformation] position: Optional
         position of the platform anchor given either as (3,) numpy array or
         a 3-element list. Coordinates are assumed given with respect to the
         platform's coordinate system and in SI units [ m ] (meter)
-        :param Union[_TMatrix, AngularTransformation] rotation: Optional
+        :param Union[Matrix, AngularTransformation] rotation: Optional
         orientation of the platform anchor given as (3,3) numpy array (a DCM)
         or a 3-element list of 3-element lists.
         """

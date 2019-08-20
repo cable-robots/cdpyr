@@ -4,18 +4,16 @@ import numpy as np_
 from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Gearbox(object):
-    _ratio: _TVector
-    _moment_of_inertia: _TNum
+    _ratio: Vector
+    _moment_of_inertia: Num
 
     def __init__(self,
-                 ratio: Optional[_TNum] = None,
-                 inertia: Optional[_TNum] = None
+                 ratio: Optional[Num] = None,
+                 inertia: Optional[Num] = None
                  ):
         self.ratio = ratio or None
         self.inertia = inertia or None
@@ -25,7 +23,7 @@ class Gearbox(object):
         return self._ratio
 
     @ratio.setter
-    def ratio(self, ratio: _TNum):
+    def ratio(self, ratio: Num):
         if ratio < 0:
             raise ValueError('ratio must be nonnegative.')
 
@@ -40,7 +38,7 @@ class Gearbox(object):
         return self._moment_of_inertia
 
     @moment_of_inertia.setter
-    def moment_of_inertia(self, inertia: _TNum):
+    def moment_of_inertia(self, inertia: Num):
         if inertia < 0:
             raise ValueError('moment_of_inertia must be nonnegative.')
 

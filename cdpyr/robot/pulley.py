@@ -11,9 +11,7 @@ from cdpyr.kinematics.transformation.angular import (
     AngularSchema as AngularTransformationSchema,
 )
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Pulley(object):
@@ -23,10 +21,10 @@ class Pulley(object):
 
     def __init__(self,
                  geometry: Optional[Geometry] = None,
-                 inertia: Optional[Union[Tuple[Union[_TNum, _TVector], Union[
-                     _TVector, _TMatrix]], Inertia]] = None,
+                 inertia: Optional[Union[Tuple[Union[Num, Vector], Union[
+                     Vector, Matrix]], Inertia]] = None,
                  rotation: Optional[
-                     Union[_TMatrix, AngularTransformation]] = None
+                     Union[Matrix, AngularTransformation]] = None
                  ):
         self.geometry = geometry or Geometry()
         self.inertia = inertia or Inertia()
@@ -49,7 +47,7 @@ class Pulley(object):
         return self._inertia
 
     @inertia.setter
-    def inertia(self, inertia: Union[Tuple[_TVector, _TMatrix], Inertia]):
+    def inertia(self, inertia: Union[Tuple[Vector, Matrix], Inertia]):
         if not isinstance(inertia, Inertia):
             inertia = Inertia(linear=inertia[0], angular=inertia[1])
 

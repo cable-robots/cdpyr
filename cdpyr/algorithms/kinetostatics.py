@@ -39,3 +39,7 @@ class Kinetostatics(Enum):
 
     def _forward_elastic_catenary(self):
         pass
+
+__all__ = [
+    'Kinetostatics'
+]

@@ -12,9 +12,7 @@ from cdpyr.robot.anchor.platformanchor import (
     PlatformAnchorSchema,
 )
 
-_TNum = Union[int, float]
-_TVector = Union[np_.ndarray, Sequence[_TNum]]
-_TMatrix = Union[np_.ndarray, Sequence[Sequence[_TNum]]]
+from cdpyr.typedefs import Num, Vector, Matrix
 
 
 class Platform(object):
@@ -27,8 +25,8 @@ class Platform(object):
                  pose: Optional[Pose] = None,
                  anchors: Optional[Union[PlatformAnchorList, Sequence[
                      PlatformAnchor]]] = None,
-                 center_of_gravity: _TVector = None,
-                 center_of_linkage: _TVector = None
+                 center_of_gravity: Vector = None,
+                 center_of_linkage: Vector = None
                  ):
         self.anchors = anchors or []
         self.pose = pose or None
@@ -72,7 +70,7 @@ class Platform(object):
         return self._center_of_gravity
 
     @center_of_gravity.setter
-    def center_of_gravity(self, position: _TVector):
+    def center_of_gravity(self, position: Vector):
         position = np_.asarray(position)
 
         if not position.shape == (3,):
@@ -90,7 +88,7 @@ class Platform(object):
         return self._center_of_linkage
 
     @center_of_linkage.setter
-    def center_of_linkage(self, position: _TVector):
+    def center_of_linkage(self, position: Vector):
         position = np_.asarray(position)
 
         if not position.shape == (3,):

@@ -1,3 +1,5 @@
 from cdpyr.algorithms import kinematics
 
-__all__ = ['kinematics']
+__all__ = [
+    'kinematics'
+]
