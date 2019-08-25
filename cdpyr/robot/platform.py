@@ -76,9 +76,16 @@ class Platform(object):
     def center_of_gravity(self, position: Vector):
         position = np_.asarray(position)
 
+        if not position.ndim == 1:
+            raise ValueError(
+                'center_of_gravity position must be a 1-dimensional numpy '
+                'array, was {}'.format(
+                    position.ndim))
+
         if not position.shape == (3,):
-            raise ValueError('invalid shape of center_of_gravity; must be (3,'
-                             '), was {}'.format(position.shape))
+            raise ValueError(
+                'center_of_gravity position must be (3,), was {}'.format(
+                    position.shape))
 
         self._center_of_gravity = position
 
@@ -94,9 +101,16 @@ class Platform(object):
     def center_of_linkage(self, position: Vector):
         position = np_.asarray(position)
 
+        if not position.ndim == 1:
+            raise ValueError(
+                'center_of_linkage position must be a 1-dimensional numpy '
+                'array, was {}'.format(
+                    position.ndim))
+
         if not position.shape == (3,):
-            raise ValueError('invalid shape of center_of_linkage; must be (3,'
-                             '), was {}'.format(position.shape))
+            raise ValueError(
+                'center_of_linkage position must be (3,), was {}'.format(
+                    position.shape))
 
         self._center_of_linkage = position
 
