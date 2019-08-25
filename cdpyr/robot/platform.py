@@ -5,6 +5,7 @@ from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 
 from cdpyr.mixins.lists import DispatcherList
+from cdpyr.motion.pattern import Motionpattern, MotionpatternSchema
 from cdpyr.motion.pose import Pose, PoseSchema
 from cdpyr.robot.anchor.platformanchor import (
     PlatformAnchor,
@@ -20,8 +21,10 @@ class Platform(object):
     _anchors: PlatformAnchorList
     _center_of_gravity: np_.ndarray
     _center_of_linkage: np_.ndarray
+    _motionpattern: Motionpattern
 
     def __init__(self,
+                 motionpattern: Motionpattern,
                  pose: Optional[Pose] = None,
                  anchors: Optional[Union[PlatformAnchorList, Sequence[
                      PlatformAnchor]]] = None,
@@ -32,6 +35,7 @@ class Platform(object):
         self.pose = pose or None
         self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]
         self.center_of_linkage = center_of_linkage or [0.0, 0.0, 0.0]
+        self.motionpattern = motionpattern
 
     @property
     def pose(self):
@@ -101,18 +105,32 @@ class Platform(object):
     def center_of_linkage(self):
         del self._center_of_linkage
 
+    @property
+    def motionpattern(self):
+        return self._motionpattern
+
+    @motionpattern.setter
+    def motionpattern(self, motionpattern: Motionpattern):
+        self._motionpattern = motionpattern
+
+    @motionpattern.deleter
+    def motionpattern(self):
+        del self._motionpattern
+
 
 Platform.__repr__ = make_repr(
+    'pattern',
+    'pose',
     'anchors',
-    'pose'
 )
 
 
 class PlatformSchema(Schema):
     anchors = fields.List(fields.Nested(PlatformAnchorSchema))
     pose = fields.Nested(PoseSchema)
+    motionpattern = fields.Nested(MotionpatternSchema)
 
-    __model__ = Pose
+    __model__ = Platform
 
     @post_load
     def make_platform(self, data):
