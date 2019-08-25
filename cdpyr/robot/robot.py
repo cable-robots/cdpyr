@@ -1,6 +1,5 @@
 from typing import Dict, List, Optional, Sequence, Set, Tuple, Union
 
-import numpy as np_
 from magic_repr import make_repr
 from marshmallow import Schema, fields, post_load
 
@@ -15,8 +14,7 @@ from cdpyr.robot.kinematicchain import (
     KinematicChainSchema,
 )
 from cdpyr.robot.platform import Platform, PlatformList, PlatformSchema
-
-from cdpyr.typedefs import Num, Vector, Matrix
+from cdpyr.typedefs import Num
 
 
 class Robot(object):

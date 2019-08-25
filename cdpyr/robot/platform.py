@@ -12,8 +12,7 @@ from cdpyr.robot.anchor.platformanchor import (
     PlatformAnchorList,
     PlatformAnchorSchema,
 )
-
-from cdpyr.typedefs import Num, Vector, Matrix
+from cdpyr.typedefs import Vector
 
 
 class Platform(object):
