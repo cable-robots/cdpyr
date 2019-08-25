@@ -125,4 +125,8 @@ class PlatformList(DispatcherList):
         return Platform.__dict__.keys()
 
 
-__all__ = ['Platform', 'PlatformList', 'PlatformSchema']
+__all__ = [
+    'Platform',
+    'PlatformList',
+    'PlatformSchema',
+]

@@ -69,4 +69,6 @@ class DrumSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Drum']
+__all__ = [
+    'Drum'
+]

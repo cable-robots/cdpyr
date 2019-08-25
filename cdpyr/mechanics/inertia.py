@@ -52,4 +52,7 @@ class InertiaSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Inertia', 'InertiaSchema']
+__all__ = [
+    'Inertia',
+    'InertiaSchema'
+]

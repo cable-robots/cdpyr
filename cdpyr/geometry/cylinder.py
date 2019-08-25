@@ -92,4 +92,7 @@ class CylinderSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Cylinder', 'CylinderSchema']
+__all__ = [
+    'Cylinder',
+    'CylinderSchema',
+]

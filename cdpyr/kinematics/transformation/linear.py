@@ -113,4 +113,7 @@ class LinearSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Linear', 'LinearSchema']
+__all__ = [
+    'Linear',
+    'LinearSchema',
+]

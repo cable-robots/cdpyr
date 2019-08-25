@@ -149,4 +149,7 @@ class TubeSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Tube', 'TubeSchema']
+__all__ = [
+    'Tube',
+    'TubeSchema',
+]

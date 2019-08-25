@@ -113,4 +113,8 @@ class KinematicChainList(DispatcherList):
         return KinematicChain.__dict__.keys()
 
 
-__all__ = ['KinematicChain', 'KinematicChainList', 'KinematicChainSchema']
+__all__ = [
+    'KinematicChain',
+    'KinematicChainList',
+    'KinematicChainSchema',
+]

@@ -193,4 +193,8 @@ class CableList(DispatcherList):
         return Cable.__dict__.keys()
 
 
-__all__ = ['Cable', 'CableList', 'CableSchema']
+__all__ = [
+    'Cable',
+    'CableList',
+    'CableSchema',
+]

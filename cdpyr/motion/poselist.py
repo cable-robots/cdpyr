@@ -45,4 +45,7 @@ class PoseListSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['PoseList', 'PoseListSchema']
+__all__ = [
+    'PoseList',
+    'PoseListSchema',
+]

@@ -43,4 +43,7 @@ class GeometrySchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Geometry', 'GeometrySchema']
+__all__ = [
+    'Geometry',
+    'GeometrySchema',
+]

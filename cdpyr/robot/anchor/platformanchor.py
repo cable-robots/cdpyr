@@ -48,4 +48,8 @@ class PlatformAnchorList(AnchorList):
         return PlatformAnchor.__dict__.keys()
 
 
-__all__ = ['PlatformAnchor', 'PlatformAnchorList', 'PlatformAnchorSchema']
+__all__ = [
+    'PlatformAnchor',
+    'PlatformAnchorList',
+    'PlatformAnchorSchema',
+]

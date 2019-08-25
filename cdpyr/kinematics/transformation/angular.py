@@ -193,4 +193,7 @@ class AngularSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Angular', 'AngularSchema']
+__all__ = [
+    'Angular',
+    'AngularSchema',
+]

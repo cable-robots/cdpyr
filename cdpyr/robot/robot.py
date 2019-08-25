@@ -196,4 +196,7 @@ class RobotSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Robot', 'RobotSchema']
+__all__ = [
+    'Robot',
+    'RobotSchema',
+]

@@ -154,4 +154,8 @@ class AnchorList(DispatcherList):
         return Anchor.__dict__.keys()
 
 
-__all__ = ['Anchor', 'AnchorList', 'AnchorSchema']
+__all__ = [
+    'Anchor',
+    'AnchorList',
+    'AnchorSchema',
+]

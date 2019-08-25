@@ -19,5 +19,5 @@ __all__ = [
     'FrameAnchorList',
     'PlatformAnchor',
     'PlatformAnchorSchema',
-    'PlatformAnchorList'
+    'PlatformAnchorList',
 ]

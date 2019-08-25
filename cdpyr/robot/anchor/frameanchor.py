@@ -77,4 +77,8 @@ class FrameAnchorList(AnchorList):
         return FrameAnchor.__dict__.keys()
 
 
-__all__ = ['FrameAnchor', 'FrameAnchorList', 'FrameAnchorSchema']
+__all__ = [
+    'FrameAnchor',
+    'FrameAnchorList',
+    'FrameAnchorSchema',
+]

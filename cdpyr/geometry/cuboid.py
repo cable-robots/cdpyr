@@ -97,4 +97,7 @@ class CuboidSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Cuboid', 'CuboidSchema']
+__all__ = [
+    'Cuboid',
+    'CuboidSchema',
+]

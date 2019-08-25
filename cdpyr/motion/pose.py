@@ -1,4 +1,4 @@
-from typing import Optional, Sequence, Tuple, Union
+from typing import Optional, Tuple
 
 import numpy as np_
 from magic_repr import make_repr
@@ -10,8 +10,7 @@ from cdpyr.kinematics.transformation.homogenous import Homogenous
 from cdpyr.kinematics.transformation.linear import Linear as \
     LinearTransformation
 from cdpyr.mixins.lists import DispatcherList
-
-from cdpyr.typedefs import Num, Vector, Matrix
+from cdpyr.typedefs import Matrix, Num, Vector
 
 
 class Pose(object):
@@ -172,4 +171,8 @@ class PoseList(DispatcherList):
     pass
 
 
-__all__ = ['Pose', 'PoseList', 'PoseSchema']
+__all__ = [
+    'Pose',
+    'PoseList',
+    'PoseSchema',
+]

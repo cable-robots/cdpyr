@@ -70,4 +70,6 @@ class DriveTrainSchema(Schema):
     motor = fields.Nested(MotorSchema)
 
 
-__all__ = ['DriveTrain']
+__all__ = [
+    'DriveTrain'
+]

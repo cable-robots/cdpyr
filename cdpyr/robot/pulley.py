@@ -89,4 +89,7 @@ class PulleySchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Pulley', 'PulleySchema']
+__all__ = [
+    'Pulley',
+    'PulleySchema',
+]

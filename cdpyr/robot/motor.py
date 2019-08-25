@@ -184,4 +184,7 @@ class MotorSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Motor', 'MotorSchema']
+__all__ = [
+    'Motor',
+    'MotorSchema',
+]

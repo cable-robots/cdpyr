@@ -73,4 +73,7 @@ class SphereSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Sphere', 'SphereSchema']
+__all__ = [
+    'Sphere',
+    'SphereSchema',
+]

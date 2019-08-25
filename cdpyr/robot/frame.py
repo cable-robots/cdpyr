@@ -65,4 +65,7 @@ class FrameSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Frame', 'FrameSchema']
+__all__ = [
+    'Frame',
+    'FrameSchema',
+]

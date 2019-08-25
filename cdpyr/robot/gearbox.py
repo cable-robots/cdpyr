@@ -66,4 +66,7 @@ class GearboxSchema(Schema):
         return self.__model__(**data)
 
 
-__all__ = ['Gearbox', 'GearboxSchema']
+__all__ = [
+    'Gearbox',
+    'GearboxSchema',
+]
