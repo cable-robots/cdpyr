@@ -113,6 +113,9 @@ To run a subset of tests::
 
 $ py.test tests.test_cdpyr
 
+For more detailed documentation of our code, we use the popular style used for the NumPy project, often called `NumPy style`_ docstrings.
+While it can take up more lines than other code styles, it allows us to include a lot more information about a method, function, or class.
+
 
 Deploying
 ---------
@@ -126,3 +129,6 @@ $ git push
 $ git push --tags
 
 Travis will then deploy to PyPI if tests pass.
+
+
+.. _NumPy style: http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html
