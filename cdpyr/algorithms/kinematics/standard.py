@@ -1,4 +1,4 @@
-from typing import Sequence, Union
+from typing import List, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -7,6 +7,7 @@ from cdpyr.algorithms.kinematics.algorithm import KinematicAlgorithm
 from cdpyr.motion.pose import Pose
 from cdpyr.robot.kinematicchain import KinematicChain
 from cdpyr.robot.robot import Robot
+from cdpyr.typedefs import Num, Vector
 
 
 class StandardKinematics(KinematicAlgorithm):
@@ -16,6 +17,7 @@ class StandardKinematics(KinematicAlgorithm):
                 pose: Union[Sequence[Pose], Pose]
                 ):
         raise NotImplementedError()
+
     def backward(self,
                  robot: Robot,
                  pose: Union[Sequence[Pose], Pose]
@@ -36,9 +38,9 @@ class StandardKinematics(KinematicAlgorithm):
         poses = pose if isinstance(pose, Sequence) else [pose]
 
         # init return values
-        cable_vectors = []
-        cable_lengths = []
-        unit_vectors = []
+        cable_lengths: List[Num] = []
+        cable_vectors: List[Vector] = []
+        unit_vectors: List[Vector] = []
 
         # loop over each kinematic chain
         for idx, kc in enumerate(robot.kinematic_chains):
@@ -49,21 +51,18 @@ class StandardKinematics(KinematicAlgorithm):
             pose = poses[idx_platform]
             r, R = pose.position
             # cable direction vector
-            cable_vectors.append(
-                kc.frame_anchor.position
-                -
-                (
-                    r
-                    +
-                    R.dot(
-                        kc.platform_anchor.position
-                    )
-                )
+            cable_vector = kc.frame_anchor.position - (
+                r
+                +
+                R.dot(kc.platform_anchor.position)
             )
+            # append to list
+            cable_vectors.append(cable_vector)
             # append cable length
-            cable_lengths.append(np_.linalg.norm(cable_vectors[-1]))
+            cable_length = np_.linalg.norm(cable_vector)
+            cable_lengths.append(cable_length)
             # unitary cable direction vector
-            unit_vectors.append(cable_vectors[-1] / cable_lengths[-1])
+            unit_vectors.append(cable_vector / cable_length)
 
         # here we are sorting the cable lengths back into the form that they
         # are given per platform and then per cable
