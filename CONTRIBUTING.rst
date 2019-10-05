@@ -1,134 +1,128 @@
-.. highlight:: shell
-
 ============
 Contributing
 ============
 
-Contributions are welcome, and they are greatly appreciated! Every little bit
-helps, and credit will always be given.
+Contributions are welcome, and they are greatly appreciated! Every
+little bit helps, and credit will always be given.
 
-You can contribute in many ways:
+Bug reports
+===========
 
-Types of Contributions
-----------------------
+When `reporting a bug <https://github.com/cable-robots/cdpyr/issues>`_ please include:
 
-Report Bugs
-~~~~~~~~~~~
+    * Your operating system name and version.
+    * Any details about your local setup that might be helpful in troubleshooting.
+    * Detailed steps to reproduce the bug.
 
-Report bugs at https://github.com/philipptempel/cdpyr/issues.
+Documentation improvements
+==========================
 
-If you are reporting a bug, please include:
-
-* Your operating system name and version.
-* Any details about your local setup that might be helpful in troubleshooting.
-* Detailed steps to reproduce the bug.
-
-Fix Bugs
-~~~~~~~~
-
-Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
-wanted" is open to whoever wants to implement it.
-
-Implement Features
-~~~~~~~~~~~~~~~~~~
-
-Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
-
-Write Documentation
-~~~~~~~~~~~~~~~~~~~
-
-Cable-Driven Parallel Robots on Python could always use more documentation, whether as part of the
-official Cable-Driven Parallel Robots on Python docs, in docstrings, or even on the web in blog posts,
+CDPyR could always use more documentation, whether as part of the
+official CDPyR docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
-Submit Feedback
-~~~~~~~~~~~~~~~
+Feature requests and feedback
+=============================
 
-The best way to send feedback is to file an issue at https://github.com/philipptempel/cdpyr/issues.
+The best way to send feedback is to file an issue at https://github.com/cable-robots/cdpyr/issues.
 
 If you are proposing a feature:
 
 * Explain in detail how it would work.
 * Keep the scope as narrow as possible, to make it easier to implement.
-* Remember that this is a volunteer-driven project, and that contributions
-  are welcome :)
+* Remember that this is a volunteer-driven project, and that code contributions are welcome :)
 
-Get Started!
-------------
+Development
+===========
 
-Ready to contribute? Here's how to set up `cdpyr` for local development.
+To set up `cdpyr` for local development:
 
-1. Fork the `cdpyr` repo on GitHub.
-2. Clone your fork locally::
+1. Fork `cdpyr <https://github.com/cable-robots/cdpyr>`_ (look for the "Fork" button).
+2. Clone your fork locally:
 
-    $ git clone git@github.com:your_name_here/cdpyr.git
+.. code-block:: bash
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+    $ git clone git@github.com:cable-robots/cdpyr.git
 
-    $ mkvirtualenv cdpyr
-    $ cd cdpyr/
-    $ python setup.py develop
+3. Set up your local development environment by installing tox and creating the dev environment:
 
-4. Create a branch for local development::
+    .. code-block:: bash
+
+        $ pip install tox
+        $ tox -e dev
+
+4. Activate the environment:
+    1. Windows:
+
+    .. code-block:: powershell
+
+        > .tox\dev\Scripts\activate
+
+    2. Unix:
+
+    .. code-block:: shell
+
+          $ source .tox/dev/bin/activate
+
+5. Create a branch for local development to make your changes locally:
+
+.. code-block:: shell
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
-   Now you can make your changes locally.
+6. When you're done making changes, run all the checks, doc builder and spell checker with `tox <https://tox.readthedocs.io/en/latest/install.html>`_ one command:
 
-5. When you're done making changes, check that your changes pass flake8 and the
-   tests, including testing other Python versions with tox::
+.. code-block:: shell
 
-    $ flake8 cdpyr tests
-    $ python setup.py test or py.test
     $ tox
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+7. Commit your changes and push your branch to GitHub:
 
-6. Commit your changes and push your branch to GitHub::
+.. code-block:: shell
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-7. Submit a pull request through the GitHub website.
+8. Submit a pull request through the GitHub website.
+
+If your change requires changes to the dependencies of ``cdpyr``, then add these in ``setup.py`` under ``install_requires``.
+However, if you make changes to the dependencies of tests or the development environment, then add these dependencies in ``tox.ini`` in either ``deps`` of either the ``[testenv]`` or ``[testenv:dev]`` section.
 
 Pull Request Guidelines
 -----------------------
 
-Before you submit a pull request, check that it meets these guidelines:
+If you need some code review or feedback while you're developing the code just make the pull request.
 
-1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put
-   your new functionality into a function with a docstring, and add the
-   feature to the list in README.rst.
-3. The pull request should work for Python 2.7, 3.4, 3.5 and 3.6, and for PyPy. Check
-   https://travis-ci.org/philipptempel/cdpyr/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+For merging, you should:
+
+1. Include passing tests (run ``tox``) [1]_.
+2. Update documentation when there's new API, functionality etc.
+3. Add a note to ``CHANGELOG.rst`` about the changes.
+4. Add yourself to ``AUTHORS.rst``.
+
+.. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will
+       `run the tests <https://travis-ci.org/cable-robots/cdpyr/pull_requests>`_ for each change you add in the pull request.
+
+       It will be slower though ...
 
 Tips
 ----
 
-To run a subset of tests::
+To run a subset of tests:
 
-$ py.test tests.test_cdpyr
+.. code-block:: shell
 
-For more detailed documentation of our code, we use the popular style used for the NumPy project, often called `NumPy style`_ docstrings.
-While it can take up more lines than other code styles, it allows us to include a lot more information about a method, function, or class.
+    tox -e envname -- pytest -k test_myfeature
 
+To run all the test environments in *parallel* (you need to ``pip install detox``):
 
-Deploying
----------
+.. code-block:: shell
 
-A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
-Then run::
+    detox
 
-$ bumpversion patch # possible: major / minor / patch
-$ git push
-$ git push --tags
+To build the docs locally to ``dist/docs``:
 
-Travis will then deploy to PyPI if tests pass.
+.. code-block:: shell
 
-
-.. _NumPy style: http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html
+    tox -e docs

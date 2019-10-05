@@ -1,37 +1,78 @@
-======================================
-Cable-Driven Parallel Robots on Python
-======================================
+========
+Overview
+========
+
+.. start-badges
+
+.. list-table::
+    :stub-columns: 1
+
+    * - docs
+      - |docs|
+    * - tests
+      - | |travis|
+        |
+    * - package
+      - | |commits-since|
+.. |docs| image:: https://readthedocs.org/projects/cdpyr/badge/?style=flat
+    :target: https://readthedocs.org/projects/cdpyr
+    :alt: Documentation Status
+
+.. |travis| image:: https://api.travis-ci.org/cable-robots/cdpyr.svg?branch=master
+    :alt: Travis-CI Build Status
+    :target: https://travis-ci.org/cable-robots/cdpyr
+
+.. |commits-since| image:: https://img.shields.io/github/commits-since/cable-robots/cdpyr/v1.0.dev0.svg
+    :alt: Commits since latest release
+    :target: https://github.com/cable-robots/cdpyr/compare/v1.0.dev0...master
 
 
-.. image:: https://img.shields.io/pypi/v/cdpyr.svg
-        :target: https://pypi.python.org/pypi/cdpyr
 
-.. image:: https://img.shields.io/travis/philipptempel/cdpyr.svg
-        :target: https://travis-ci.org/philipptempel/cdpyr
+.. end-badges
 
-.. image:: https://readthedocs.org/projects/cdpyr/badge/?version=latest
-        :target: https://cdpyr.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+A Python 3 package for designing, analyzing, and simulating cable-driven parallel robots.
+
+* Free software: BSD 3-Clause License
+
+Installation
+============
+
+::
+
+    pip install cdpyr
+
+You can also install the in-development version with::
+
+    pip install https://github.com/cable-robots/cdpyr/archive/master.zip
 
 
+Documentation
+=============
 
 
-A Python 3.7 package for designing, analyzing, and simulating cable-driven parallel robots.
+https://cdpyr.readthedocs.io/
 
 
-* Free software: MIT license
-* Documentation: https://cdpyr.readthedocs.io.
+Development
+===========
 
+To run the all tests run::
 
-Features
---------
+    tox
 
-* TODO
+Note, to combine the coverage data from all the tox environments run:
 
-Credits
--------
+.. list-table::
+    :widths: 10 90
+    :stub-columns: 1
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+    - - Windows
+      - ::
 
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+            set PYTEST_ADDOPTS=--cov-append
+            tox
+
+    - - Other
+      - ::
+
+            PYTEST_ADDOPTS=--cov-append tox

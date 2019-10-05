@@ -1,20 +1,22 @@
-Welcome to Cable-Driven Parallel Robots on Python's documentation!
-======================================
+========
+Contents
+========
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    readme
    installation
    usage
-   modules
+   reference/index
    contributing
    authors
-   history
+   changelog
 
 Indices and tables
 ==================
+
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+

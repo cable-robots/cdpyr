@@ -1,2 +1,0 @@
-# library for testing in python
-mock

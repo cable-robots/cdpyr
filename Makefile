@@ -54,7 +54,7 @@ lint: ## check style with flake8
 	flake8 cdpyr tests
 
 test: ## run tests quickly with the default Python
-	py.test
+	pytest
 
 test-all: ## run tests on every Python version with tox
 	tox
@@ -68,7 +68,7 @@ coverage: ## check code coverage quickly with the default Python
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/cdpyr.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ cdpyr
+	sphinx-apidoc -o docs/ src/cdpyr
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html

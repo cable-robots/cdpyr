@@ -1,16 +1,7 @@
+
+Authors
 =======
-Credits
-=======
 
-Development Lead
-----------------
-
-* Philipp Tempel <mail@philipptempel.me>
-
-Contributors
-------------
-
-* Felix Trautwein <felix.trautwein@isw.uni-stuttgart.de>
+* Philipp Tempel <p.tempel@tudelft.nl> - https://philipptempel.me
 * Thomas Reichenbach <thomas.reichenbach@isw.uni-stuttgart.de>
-
-Wanna join? Why not shoot us an e-mail?
+* Felix Trautwein <felix.trautwein@isw.uni-stuttgart.de>
