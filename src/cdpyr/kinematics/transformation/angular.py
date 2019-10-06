@@ -131,18 +131,6 @@ class Angular(object):
         del self._rotation_sequence
 
     @property
-    def angular_position(self):
-        return self.euler
-
-    @angular_position.setter
-    def angular_position(self, position: Vector):
-        self.euler = position
-
-    @angular_position.deleter
-    def angular_position(self):
-        del self.euler
-
-    @property
     def euler(self):
         return self._angular_rotation.as_euler(self.sequence)
 
