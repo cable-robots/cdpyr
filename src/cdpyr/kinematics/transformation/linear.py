@@ -32,6 +32,10 @@ class Linear(object):
     def position(self, position: Vector):
         position = np_.asarray(position)
 
+        # catch cases where the user passed a scalar value for position
+        if position.shape == ():
+            position = np_.asarray([position])
+
         if position.ndim != 1:
             raise ValueError(
                 'invalid dimension. position must be a 1-dimensional list or '
@@ -60,6 +64,10 @@ class Linear(object):
     def velocity(self, velocity: Vector):
         velocity = np_.asarray(velocity)
 
+        # catch cases where the user passed a scalar value for velocity
+        if velocity.shape == ():
+            velocity = np_.asarray([velocity])
+
         if velocity.ndim != 1:
             raise ValueError(
                 'invalid dimension. velocity must be a 1-dimensional list or '
@@ -86,6 +94,10 @@ class Linear(object):
     @acceleration.setter
     def acceleration(self, acceleration: Vector):
         acceleration = np_.asarray(acceleration)
+
+        # catch cases where the user passed a scalar value for acceleration
+        if acceleration.shape == ():
+            acceleration = np_.asarray([acceleration])
 
         if acceleration.ndim != 1:
             raise ValueError(
