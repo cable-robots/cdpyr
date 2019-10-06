@@ -106,18 +106,18 @@ class AngularTransformationTestSuite(object):
     @mark.parametrize(
         "quat",
         [
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
-            (np.random.random((4,) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
+            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
         ]
     )
     def test_with_quaternion_from_list_as_keyword_argument(self,
