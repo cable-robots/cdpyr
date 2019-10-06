@@ -11,32 +11,94 @@ class Angular(object):
     _angular_acceleration: np_.ndarray = np_.array([0.0, 0.0, 0.0])
     _rotation_sequence: str = 'zyx'
 
+    """
+    A kinematic angular transformation object.
+
+    This object represents a kinematic transformation on the orientation or 
+    angular space. It allows for describing and reading the angular 
+    orientation in different ways like DCM (orientation matrix), quaternion, 
+    rotation vectors, or Euler angles.
+    
+    Attributes
+    ----------
+    rotation : Rotation
+    
+    sequence : str
+    
+    dcm : ndarray
+    
+    quaternion : ndarray
+    
+    rotvec : ndarray
+    
+    euler : ndaray
+    
+    angular_velocity : ndarray
+    
+    angular_acceleration : ndarray
+    """
+
     def __init__(self,
-                 angular_position: Vector = None,
+                 euler: Vector = None,
+                 quaternion: Vector = None,
+                 dcm: Matrix = None,
+                 rotvec: Vector = None,
                  angular_velocity: Vector = None,
                  angular_acceleration: Vector = None,
                  rotation_sequence: str = None
                  ):
-        """ A kinematic angular transformation object.
-
-        This object represents a kinematic transformation on the orientation
-        or angular space. It allows for describing and reading the angular
-        orientation in different ways like DCM (orientation matrix),
-        quaternion, rotation vectors, or Euler angles.
-
-        :param Vector|list angular_position: Optional angular position
-        given as Euler angles, defined in the `rotation_sequence` parameter
-        :param Vector|list angular_velocity: Optional angular velocity
-        about the three principal axes of rotation.
-        :param Vector|list angular_acceleration: Optional angular
-        acceleration about the three principal axes of rotation.
-        :param str rotation_sequence: Optional rotation sequence that should
-        internally be used when converting to Euler angles.
         """
+        Parameters
+        ----------
+        euler : iterable or (3, ) ndarray, optional
+            Euler angles of the rotation. Interpreted according to the value of
+            ``rotation_sequence``
+        quaternion : iterable or (4, ) ndarray, optional
+            Quaternion representation of the rotation in scalar-last notation.
+        dcm : iterable or (3, 3) ndarray, optional
+            Conventional rotation matrix representation of the rotation
+        rotvec : iterable or (3, ) ndarray, optional
+            A rotation vector is a 3 dimensional vector which is
+            co-directional to the axis of rotation and whose norm gives the
+            angle of rotation (in radians)
+        angular_velocity : iterable or (3, ) ndarray, optional
+            Angular velocity at the current instance as give in the local
+            coordinate system. Defaults to [0., 0., 0.]
+        angular_acceleration : iterable or (3, ) ndarray, optional
+            Angular acceleration as given in the local coordinate system.
+            Defaults to [0., 0., 0.]
+        rotation_sequence : str
+            Valid rotation sequences to instantiate the object with. Refers
+            to the Euler extrinsic or intrinsic parameter. Defaults to 'zyx'
+
+        See Also
+        --------
+        scipy.spatial.transform.Rotation: Underlying implementation of the
+        rotation object
+        """
+
         self.sequence = rotation_sequence or 'zyx'
-        self.angular_position = angular_position \
-            if angular_position is not None \
-            else [0.0, 0.0, 0.0]
+        if euler is not None and \
+            quaternion is None and \
+            dcm is None and \
+            rotvec is None:
+            self.euler = euler
+        if euler is None and \
+            quaternion is not None and \
+            dcm is None and \
+            rotvec is None:
+            self.quaternion = quaternion
+        if euler is None and \
+            quaternion is None and \
+            dcm is not None and \
+            rotvec is None:
+            self.dcm = dcm
+        if euler is None and \
+            quaternion is None and \
+            dcm is None and rotvec is\
+            not None:
+            self.rotvec = rotvec
+
         self.angular_velocity = angular_velocity \
             if angular_velocity is not None \
             else [0.0, 0.0, 0.0]
