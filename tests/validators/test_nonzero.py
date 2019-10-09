@@ -11,7 +11,7 @@ class NonzeroTestSuite(object):
         validator.nonzero(-4)
 
     def test_scalar_fails(self):
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.nonzero(0)
 
     def test_list_passes(self):
@@ -19,7 +19,7 @@ class NonzeroTestSuite(object):
         validator.nonzero([-4] * 4)
 
     def test_list_fails(self):
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.nonzero([0] * 4)
 
     def test_numpy_vector_passes(self):
@@ -27,5 +27,5 @@ class NonzeroTestSuite(object):
         validator.nonzero(np_.asarray([-4] * 4))
 
     def test_numpy_vector_fails(self):
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.nonzero([0] * 4)

@@ -9,11 +9,11 @@ class ShapeTestSuite(object):
         validator.shape(1, ())
 
     def test_scalar_fails(self):
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.shape(1, 1)
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.shape([1, 2], 2)
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.shape(1, (1,))
 
     def test_list_passes(self):
@@ -22,9 +22,9 @@ class ShapeTestSuite(object):
         validator.shape([[1, 2], [3, 4]], (2,2))
 
     def test_list_fails(self):
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.shape([1, 2, 3], (2,))
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.shape([1, 2, 3], (1, 1))
 
     def test_tuple_passes(self):
@@ -33,7 +33,7 @@ class ShapeTestSuite(object):
         validator.shape(((1, 2), (3, 4)), (2,2))
 
     def test_tuple_fails(self):
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.shape((1, 2, 3), (2,))
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.shape((1, 2, 3), (1, 1))

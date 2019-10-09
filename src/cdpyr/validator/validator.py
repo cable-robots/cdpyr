@@ -2,7 +2,7 @@ from typing import Sequence, Union
 
 import numpy as np_
 
-from cdpyr.typing import Num, Vector, Matrix
+from cdpyr.typing import Matrix, Num, Vector
 
 
 def nonzero(value: Union[Num, Vector, Sequence[Num]], name: str = None):
@@ -60,7 +60,86 @@ def nonpositive(value: Union[Num, Vector, Sequence[Num]], name: str = None):
         )
 
 
-def dimensions(value: Union[Num, Vector, Matrix, Sequence[Num]], expected: int, name: str = None):
+def equal_to(value: Union[Num, Vector, Sequence[Num]],
+             expected: Num,
+             name: str = None,
+             *args,
+             **kwargs):
+    value = np_.asarray(value)
+    if not np_.allclose(value, expected, *args, **kwargs):
+        raise ValueError(
+            'Expected {}value{} of `{}` to be close to {}.'.format(
+                'all ' if value.size > 1 else '',
+                's' if value.size > 1 else '',
+                name if name is not None else 'value',
+                expected
+            )
+        )
+
+
+def greater_than(value: Union[Num, Vector, Sequence[Num]],
+                 expected: Num,
+                 name: str = None):
+    value = np_.asarray(value)
+    if np_.any(value <= expected):
+        raise ValueError(
+            'Expected {}value{} of `{}` to be greater than {}.'.format(
+                'all ' if value.size > 1 else '',
+                's' if value.size > 1 else '',
+                name if name is not None else 'value',
+                expected
+            )
+        )
+
+
+def greater_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
+                             expected: Num,
+                             name: str = None):
+    value = np_.asarray(value)
+    if np_.any(value < expected):
+        raise ValueError(
+            'Expected {}value{} of `{}` to be greater than or equal to {'
+            '}.'.format(
+                'all ' if value.size > 1 else '',
+                's' if value.size > 1 else '',
+                name if name is not None else 'value',
+                expected
+            )
+        )
+
+
+def less_than(value: Union[Num, Vector, Sequence[Num]],
+              expected: Num,
+              name: str = None):
+    value = np_.asarray(value)
+    if np_.any(value >= expected):
+        raise ValueError(
+            'Expected {}value{} of `{}` to be less than {}.'.format(
+                'all ' if value.size > 1 else '',
+                's' if value.size > 1 else '',
+                name if name is not None else 'value',
+                expected
+            )
+        )
+
+
+def less_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
+                          expected: Num,
+                          name: str = None):
+    value = np_.asarray(value)
+    if np_.any(value > expected):
+        raise ValueError(
+            'Expected {}value{} of `{}` to be less than or equal {}.'.format(
+                'all ' if value.size > 1 else '',
+                's' if value.size > 1 else '',
+                name if name is not None else 'value',
+                expected
+            )
+        )
+
+
+def dimensions(value: Union[Num, Vector, Matrix, Sequence[Num]], expected: int,
+               name: str = None):
     value = np_.asarray(value)
     if value.ndim != expected:
         raise ValueError(
@@ -73,7 +152,9 @@ def dimensions(value: Union[Num, Vector, Matrix, Sequence[Num]], expected: int, 
         )
 
 
-def shape(value: Union[Num, Vector, Matrix, Sequence[Num]], expected: Union[int, tuple], name: str = None):
+def shape(value: Union[Num, Vector, Matrix, Sequence[Num]],
+          expected: Union[int, tuple],
+          name: str = None):
     value = np_.asarray(value)
     if value.shape != expected:
         raise ValueError(
@@ -83,3 +164,87 @@ def shape(value: Union[Num, Vector, Matrix, Sequence[Num]], expected: Union[int,
                 value.shape
             )
         )
+
+
+def square(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
+    value = np_.asarray(value)
+
+    try:
+        dimensions(value, 2, name)
+        n = value.shape[0]
+        shape(value, (n, n), name)
+    except ValueError as verr:
+        raise ValueError(
+            'Expected `{}` to be square.'.format(
+                name if name is not None else 'value'
+            )
+        ) from verr
+
+
+def symmetric(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
+    value = np_.asarray(value)
+
+    try:
+        square(value, name)
+        if not np_.allclose(value - value.transpose(), 0):
+            raise ValueError(
+                'Expected `{}.T` to be equal to `{}`.'.format(
+                    name if name is not None else 'value',
+                    name if name is not None else 'value',
+                )
+            )
+    except ValueError as verr:
+        raise ValueError(
+            'Expected `{}` to be symmetric.'.format(
+                name if name is not None else 'value'
+            )
+        ) from verr
+
+
+def inertia_tensor(value: Union[Sequence[Sequence[Num]], Matrix],
+                    name: str = None):
+    value = np_.asarray(value)
+
+    try:
+        dimensions(value, 2, name)
+        shape(value, (3, 3), name)
+        greater_than_or_equal_to(value.diagonal(), 0, 'diag({})'.format(name if name is not None else 'value'))
+    except ValueError as verr:
+        raise ValueError(
+            'Expected `{}` to be a valid inertia tensor, but was not'.format(
+                name if name is not None else 'value',
+            )
+        ) from verr
+
+
+def rotation_matrix(value: Union[Sequence[Sequence[Num]], Matrix],
+                    name: str = None):
+    value = np_.asarray(value)
+
+    try:
+        dimensions(value, 2, name)
+        shape(value, (3, 3), name)
+        greater_than_or_equal_to(value, -1, name)
+        less_than_or_equal_to(value, 1, name)
+        equal_to(np_.abs(np_.linalg.det(value)), 1, 'det({})'.format(name if name is not None else 'value'))
+    except ValueError as verr:
+        raise ValueError(
+            'Expected `{}` to be a valid rotation matrix, but was not.'.format(
+                name if name is not None else 'value',
+            )
+        ) from verr
+
+
+def unit_vector(value: Union[Sequence[Num], Vector], name: str = None):
+    value = np_.asarray(value)
+
+    try:
+        dimensions(value, 1, name)
+        equal_to(np_.linalg.norm(value), 1,
+                 'norm({})'.format(name if name is not None else 'value'))
+    except ValueError as verr:
+        raise ValueError(
+            'Expected `{}` to be a valid unit vector, but was not.'.format(
+                name if name is not None else 'value',
+            )
+        ) from verr

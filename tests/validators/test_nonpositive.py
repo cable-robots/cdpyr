@@ -11,7 +11,7 @@ class NonpositiveTestSuite(object):
         validator.nonpositive(0)
 
     def test_scalar_fails_negative(self):
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.nonpositive(4)
 
     def test_list_passes(self):
@@ -19,7 +19,7 @@ class NonpositiveTestSuite(object):
         validator.nonpositive((-1, -2, -3, -4))
 
     def test_list_fails_negative(self):
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.nonpositive((1, 2, 3, 4))
 
     def test_numpy_vector_passes(self):
@@ -27,5 +27,5 @@ class NonpositiveTestSuite(object):
         validator.nonpositive(np_.asarray((-1, -2, -3, -4)))
 
     def test_numpy_vector_fails_negative(self):
-        with pytest.raises(ValueError) as excinfo:
+        with pytest.raises(ValueError):
             validator.nonpositive((1, 2, 3, 4))
