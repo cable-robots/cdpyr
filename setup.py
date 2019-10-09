@@ -70,6 +70,7 @@ setup(
         'repr',
         'marshmallow',
         'watchdog',
+        'hurry.filesize',
     ],
     extras_require={
         # eg:
