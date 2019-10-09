@@ -1,5 +1,5 @@
 from collections import UserList
-from typing import Optional, Sequence, Tuple
+from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -32,7 +32,7 @@ class Pose(object):
             [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
         self.velocity = velocity or ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
         self.acceleration = acceleration or ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
-        self.time = time or 0
+        self.time = time
 
     @property
     def state(self):
