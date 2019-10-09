@@ -36,7 +36,7 @@ class Robot(object):
                      '_kinematicchain.KinematicChainList',
                      Sequence['_kinematicchain.KinematicChain'],
                      Sequence[Tuple[int, int, int, int]],
-                     Set[Dict[str, int]]
+                     Sequence[Dict[str, int]]
                  ]] = None
                  ):
         self.name = name or 'default'
