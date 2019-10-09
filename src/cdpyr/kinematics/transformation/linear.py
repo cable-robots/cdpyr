@@ -7,9 +7,9 @@ from cdpyr import  validator as _validator
 
 
 class Linear(object):
-    _position: np_.ndarray
-    _velocity: np_.ndarray
-    _acceleration: np_.ndarray
+    _position: np_.ndarray = np_.asarray((0., 0., 0.))
+    _velocity: np_.ndarray = np_.asarray((0., 0., 0.))
+    _acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
 
     def __init__(self,
                  position: Vector = None,
@@ -34,23 +34,8 @@ class Linear(object):
     def position(self, position: Vector):
         position = np_.asarray(position)
 
-        # catch cases where the user passed a scalar value for position
-        if position.shape == ():
-            position = np_.asarray([position])
-
-        if position.ndim != 1:
-            raise ValueError(
-                'invalid dimension. position must be a 1-dimensional list or '
-                'array')
-
-        # if position is not of shape (3,) we will pad it with zeros at the end
-        if position.shape[0] != 3:
-            position = np_.pad(position, (0, 3 - position.shape[0]))
-
-        if position.shape != (3,):
-            raise ValueError(
-                'invalid shape. position must be a 3-element list or a (3,'
-                ') numpy array')
+        _validator.dimensions(position, 1, 'position')
+        _validator.shape(position, (3, ), 'position')
 
         self._position = position
 
@@ -66,22 +51,8 @@ class Linear(object):
     def velocity(self, velocity: Vector):
         velocity = np_.asarray(velocity)
 
-        # catch cases where the user passed a scalar value for velocity
-        if velocity.shape == ():
-            velocity = np_.asarray([velocity])
-
-        if velocity.ndim != 1:
-            raise ValueError(
-                'invalid dimension. velocity must be a 1-dimensional list or '
-                'array')
-
-        if velocity.shape[0] != 3:
-            velocity = np_.pad(velocity, (0, 3 - velocity.shape[0]))
-
-        if velocity.shape != (3,):
-            raise ValueError(
-                'invalid shape. velocity must be a 3-element list or a (3,'
-                ') numpy array')
+        _validator.dimensions(velocity, 1, 'velocity')
+        _validator.shape(velocity, (3, ), 'velocity')
 
         self._velocity = velocity
 
@@ -97,22 +68,8 @@ class Linear(object):
     def acceleration(self, acceleration: Vector):
         acceleration = np_.asarray(acceleration)
 
-        # catch cases where the user passed a scalar value for acceleration
-        if acceleration.shape == ():
-            acceleration = np_.asarray([acceleration])
-
-        if acceleration.ndim != 1:
-            raise ValueError(
-                'invalid dimension. acceleration must be a 1-dimensional list '
-                'or array')
-
-        if acceleration.shape[0] != 3:
-            acceleration = np_.pad(acceleration, (0, 3 - acceleration.shape[0]))
-
-        if acceleration.shape != (3,):
-            raise ValueError(
-                'invalid shape. acceleration must be a 3-element list or a (3,'
-                ') numpy array')
+        _validator.dimensions(acceleration, 1, 'acceleration')
+        _validator.shape(acceleration, (3, ), 'acceleration')
 
         self._acceleration = acceleration
 

@@ -24,9 +24,6 @@ class LinearTransformationTestSuite(object):
         "pos",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,)).tolist()),  # 1x1 vector
-            (np.random.random((2,)).tolist()),  # 2x1 vector
             (np.random.random((3,)).tolist()),  # 3x1 vector
         ]
     )
@@ -40,7 +37,6 @@ class LinearTransformationTestSuite(object):
                               if isinstance(pos, Sequence)
                               else [pos]
                               )
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx(expected)
@@ -53,9 +49,6 @@ class LinearTransformationTestSuite(object):
         "pos",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,)).tolist()),  # 1x1 vector
-            (np.random.random((2,)).tolist()),  # 2x1 vector
             (np.random.random((3,)).tolist()),  # 3x1 vector
         ]
     )
@@ -68,7 +61,6 @@ class LinearTransformationTestSuite(object):
                               if isinstance(pos, Sequence)
                               else [pos]
                               )
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx(expected)
@@ -81,9 +73,6 @@ class LinearTransformationTestSuite(object):
         "pos",
         [
             (np.zeros((3,))),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,))),  # 1x1 vector
-            (np.random.random((2,))),  # 2x1 vector
             (np.random.random((3,))),  # 3x1 vector
         ]
     )
@@ -95,7 +84,6 @@ class LinearTransformationTestSuite(object):
         )
 
         expected = np.asarray(pos if isinstance(pos, np.ndarray) else [pos])
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx(expected)
@@ -108,9 +96,6 @@ class LinearTransformationTestSuite(object):
         "pos",
         [
             (np.zeros((3,))),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,))),  # 1x1 vector
-            (np.random.random((2,))),  # 2x1 vector
             (np.random.random((3,))),  # 3x1 vector
         ]
     )
@@ -121,7 +106,6 @@ class LinearTransformationTestSuite(object):
         )
 
         expected = np.asarray(pos if isinstance(pos, np.ndarray) else [pos])
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx(expected)
@@ -134,9 +118,6 @@ class LinearTransformationTestSuite(object):
         "vel",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,)).tolist()),  # 1x1 vector
-            (np.random.random((2,)).tolist()),  # 2x1 vector
             (np.random.random((3,)).tolist()),  # 3x1 vector
         ]
     )
@@ -151,7 +132,6 @@ class LinearTransformationTestSuite(object):
                               if isinstance(vel, Sequence)
                               else [vel]
                               )
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx([0., 0., 0.])
@@ -164,9 +144,6 @@ class LinearTransformationTestSuite(object):
         "vel",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,)).tolist()),  # 1x1 vector
-            (np.random.random((2,)).tolist()),  # 2x1 vector
             (np.random.random((3,)).tolist()),  # 3x1 vector
         ]
     )
@@ -179,7 +156,6 @@ class LinearTransformationTestSuite(object):
                               if isinstance(vel, Sequence)
                               else [vel]
                               )
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx([0., 0., 0.])
@@ -192,9 +168,6 @@ class LinearTransformationTestSuite(object):
         "vel",
         [
             (np.zeros((3,))),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,))),  # 1x1 vector
-            (np.random.random((2,))),  # 2x1 vector
             (np.random.random((3,))),  # 3x1 vector
         ]
     )
@@ -207,7 +180,6 @@ class LinearTransformationTestSuite(object):
         )
 
         expected = np.asarray(vel if isinstance(vel, np.ndarray) else [vel])
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx([0., 0., 0.])
@@ -220,9 +192,6 @@ class LinearTransformationTestSuite(object):
         "vel",
         [
             (np.zeros((3,))),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,))),  # 1x1 vector
-            (np.random.random((2,))),  # 2x1 vector
             (np.random.random((3,))),  # 3x1 vector
         ]
     )
@@ -233,7 +202,6 @@ class LinearTransformationTestSuite(object):
         )
 
         expected = np.asarray(vel if isinstance(vel, np.ndarray) else [vel])
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx([0., 0., 0.])
@@ -246,9 +214,6 @@ class LinearTransformationTestSuite(object):
         "acc",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,)).tolist()),  # 1x1 vector
-            (np.random.random((2,)).tolist()),  # 2x1 vector
             (np.random.random((3,)).tolist()),  # 3x1 vector
         ]
     )
@@ -264,7 +229,6 @@ class LinearTransformationTestSuite(object):
                               if isinstance(acc, Sequence)
                               else [acc]
                               )
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx([0., 0., 0.])
@@ -277,9 +241,6 @@ class LinearTransformationTestSuite(object):
         "acc",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,)).tolist()),  # 1x1 vector
-            (np.random.random((2,)).tolist()),  # 2x1 vector
             (np.random.random((3,)).tolist()),  # 3x1 vector
         ]
     )
@@ -293,7 +254,6 @@ class LinearTransformationTestSuite(object):
                               if isinstance(acc, Sequence)
                               else [acc]
                               )
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx([0., 0., 0.])
@@ -306,9 +266,6 @@ class LinearTransformationTestSuite(object):
         "acc",
         [
             (np.zeros((3,))),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,))),  # 1x1 vector
-            (np.random.random((2,))),  # 2x1 vector
             (np.random.random((3,))),  # 3x1 vector
         ]
     )
@@ -322,7 +279,6 @@ class LinearTransformationTestSuite(object):
         )
 
         expected = np.asarray(acc if isinstance(acc, np.ndarray) else [acc])
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx([0., 0., 0.])
@@ -335,9 +291,6 @@ class LinearTransformationTestSuite(object):
         "acc",
         [
             (np.zeros((3,))),  # 3x1 zeros
-            (np.random.rand()),  # scalar value
-            (np.random.random((1,))),  # 1x1 vector
-            (np.random.random((2,))),  # 2x1 vector
             (np.random.random((3,))),  # 3x1 vector
         ]
     )
@@ -349,7 +302,6 @@ class LinearTransformationTestSuite(object):
         )
 
         expected = np.asarray(acc if isinstance(acc, np.ndarray) else [acc])
-        expected = np.pad(expected, (0, 3 - expected.shape[0]))
 
         assert linear.position.shape == (3,)
         assert linear.position == approx([0., 0., 0.])
