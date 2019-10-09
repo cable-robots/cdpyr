@@ -7,7 +7,7 @@ from cdpyr.typing import Matrix, Num, Vector
 
 def nonzero(value: Union[Num, Vector, Sequence[Num]], name: str = None):
     value = np_.asarray(value)
-    if np_.any(value == 0):
+    if (value == 0).any():
         raise ValueError(
             'Expected `{}` to be {}nonzero.'.format(
                 name if name is not None else 'value',
@@ -18,7 +18,7 @@ def nonzero(value: Union[Num, Vector, Sequence[Num]], name: str = None):
 
 def negative(value: Union[Num, Vector, Sequence[Num]], name: str = None):
     value = np_.asarray(value)
-    if np_.any(value >= 0):
+    if (value >= 0).any():
         raise ValueError(
             'Expected `{}` to be {}negative.'.format(
                 name if name is not None else 'value',
@@ -29,7 +29,7 @@ def negative(value: Union[Num, Vector, Sequence[Num]], name: str = None):
 
 def nonnegative(value: Union[Num, Vector, Sequence[Num]], name: str = None):
     value = np_.asarray(value)
-    if np_.any(value < 0):
+    if (value < 0).any():
         raise ValueError(
             'Expected `{}` to be {}nonnegative.'.format(
                 name if name is not None else 'value',
@@ -40,7 +40,7 @@ def nonnegative(value: Union[Num, Vector, Sequence[Num]], name: str = None):
 
 def positive(value: Union[Num, Vector, Sequence[Num]], name: str = None):
     value = np_.asarray(value)
-    if np_.any(value <= 0):
+    if (value <= 0).any():
         raise ValueError(
             'Expected `{}` to be {}positive.'.format(
                 name if name is not None else 'value',
@@ -51,7 +51,7 @@ def positive(value: Union[Num, Vector, Sequence[Num]], name: str = None):
 
 def nonpositive(value: Union[Num, Vector, Sequence[Num]], name: str = None):
     value = np_.asarray(value)
-    if np_.any(value > 0):
+    if (value > 0).any():
         raise ValueError(
             'Expected `{}` to be {}positive.'.format(
                 name if name is not None else 'value',
@@ -81,7 +81,7 @@ def greater_than(value: Union[Num, Vector, Sequence[Num]],
                  expected: Num,
                  name: str = None):
     value = np_.asarray(value)
-    if np_.any(value <= expected):
+    if (value <= expected).any():
         raise ValueError(
             'Expected {}value{} of `{}` to be greater than {}.'.format(
                 'all ' if value.size > 1 else '',
@@ -96,7 +96,7 @@ def greater_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
                              expected: Num,
                              name: str = None):
     value = np_.asarray(value)
-    if np_.any(value < expected):
+    if (value < expected).any():
         raise ValueError(
             'Expected {}value{} of `{}` to be greater than or equal to {'
             '}.'.format(
@@ -112,7 +112,7 @@ def less_than(value: Union[Num, Vector, Sequence[Num]],
               expected: Num,
               name: str = None):
     value = np_.asarray(value)
-    if np_.any(value >= expected):
+    if (value >= expected).any():
         raise ValueError(
             'Expected {}value{} of `{}` to be less than {}.'.format(
                 'all ' if value.size > 1 else '',
@@ -127,7 +127,7 @@ def less_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
                           expected: Num,
                           name: str = None):
     value = np_.asarray(value)
-    if np_.any(value > expected):
+    if (value > expected).any():
         raise ValueError(
             'Expected {}value{} of `{}` to be less than or equal {}.'.format(
                 'all ' if value.size > 1 else '',
@@ -166,6 +166,26 @@ def shape(value: Union[Num, Vector, Matrix, Sequence[Num]],
         )
 
 
+def finite(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
+    value = np_.asarray(value)
+    if np_.invert(np_.isfinite(value)).any():
+        raise ValueError(
+            'Expected `{}` to be finite, but was not.'.format(
+                name if name is not None else 'value',
+            )
+        )
+
+
+def nonnan(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
+    value = np_.asarray(value)
+    if np_.isnan(value).any():
+        raise ValueError(
+            'Expected `{}` to be finite, but was not.'.format(
+                name if name is not None else 'value',
+            )
+        )
+
+
 def square(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
     value = np_.asarray(value)
 
@@ -181,7 +201,8 @@ def square(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
         ) from verr
 
 
-def symmetric(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
+def symmetric(value: Union[Num, Vector, Matrix, Sequence[Num]],
+              name: str = None):
     value = np_.asarray(value)
 
     try:
@@ -202,13 +223,14 @@ def symmetric(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None
 
 
 def inertia_tensor(value: Union[Sequence[Sequence[Num]], Matrix],
-                    name: str = None):
+                   name: str = None):
     value = np_.asarray(value)
 
     try:
         dimensions(value, 2, name)
         shape(value, (3, 3), name)
-        greater_than_or_equal_to(value.diagonal(), 0, 'diag({})'.format(name if name is not None else 'value'))
+        greater_than_or_equal_to(value.diagonal(), 0, 'diag({})'.format(
+            name if name is not None else 'value'))
     except ValueError as verr:
         raise ValueError(
             'Expected `{}` to be a valid inertia tensor, but was not'.format(
@@ -226,7 +248,8 @@ def rotation_matrix(value: Union[Sequence[Sequence[Num]], Matrix],
         shape(value, (3, 3), name)
         greater_than_or_equal_to(value, -1, name)
         less_than_or_equal_to(value, 1, name)
-        equal_to(np_.abs(np_.linalg.det(value)), 1, 'det({})'.format(name if name is not None else 'value'))
+        equal_to(np_.abs(np_.linalg.det(value)), 1,
+                 'det({})'.format(name if name is not None else 'value'))
     except ValueError as verr:
         raise ValueError(
             'Expected `{}` to be a valid rotation matrix, but was not.'.format(
