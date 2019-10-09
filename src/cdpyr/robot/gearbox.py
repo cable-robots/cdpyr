@@ -2,6 +2,8 @@ from typing import Optional
 
 from magic_repr import make_repr
 
+import numpy as np_
+
 from cdpyr.typing import Num, Vector
 from cdpyr import validator as _validator
 
@@ -14,8 +16,8 @@ class Gearbox(object):
                  ratio: Optional[Num] = None,
                  inertia: Optional[Num] = None
                  ):
-        self.ratio = ratio or None
-        self.inertia = inertia or None
+        self.ratio = ratio or 1
+        self.inertia = inertia or np_.Inf
 
     @property
     def ratio(self):
@@ -23,8 +25,7 @@ class Gearbox(object):
 
     @ratio.setter
     def ratio(self, ratio: Num):
-        if ratio < 0:
-            raise ValueError('ratio must be nonnegative.')
+        _validator.nonnegative(ratio, 'ratio')
 
         self._ratio = ratio
 
@@ -38,8 +39,7 @@ class Gearbox(object):
 
     @moment_of_inertia.setter
     def moment_of_inertia(self, inertia: Num):
-        if inertia < 0:
-            raise ValueError('moment_of_inertia must be nonnegative.')
+        _validator.positive(inertia, 'inertia')
 
         self._moment_of_inertia = inertia
 
