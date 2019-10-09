@@ -16,8 +16,8 @@ class Inertia(object):
                  linear: Union[Vector, Num] = None,
                  angular: Union[Vector, Matrix] = None
                  ):
-        self.linear = linear if linear else np_.zeros(3)
-        self.angular = angular if angular else np_.zeros((3, 3))
+        self.linear = linear if linear else np_.full((3, ), np_.inf)
+        self.angular = angular if angular else np_.diag(np_.full((3, ), np_.inf))
 
     @property
     def linear(self):
@@ -25,7 +25,13 @@ class Inertia(object):
 
     @linear.setter
     def linear(self, inertia: Union[Vector, Num]):
-        self._linear = np_.asarray(inertia)
+        inertia = np_.asarray(inertia)
+
+        _validator.dimensions(inertia, 1, 'linear')
+        _validator.shape(inertia, (3, ), 'linear')
+        _validator.positive(inertia, 'linear')
+
+        self._linear = inertia
 
     @property
     def angular(self):
@@ -33,7 +39,13 @@ class Inertia(object):
 
     @angular.setter
     def angular(self, inertia: Union[Matrix, Vector]):
-        self._angular = np_.asarray(inertia)
+        inertia = np_.asarray(inertia)
+
+        _validator.dimensions(inertia, 2, 'angular')
+        _validator.shape(inertia, (3, 3), 'angular')
+        _validator.nonnegative(inertia.diagonal(), 'angular')
+
+        self._angular = inertia
 
 
 Inertia.__repr__ = make_repr(
