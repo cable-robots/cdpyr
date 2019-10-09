@@ -195,6 +195,10 @@ class Robot(object):
         return len(self.platforms)
 
     @property
+    def num_kinematic_chains(self):
+        return len(self.kinematic_chains)
+
+    @property
     def num_cables(self):
         return len(self.cables)
 
