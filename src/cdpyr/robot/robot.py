@@ -190,6 +190,14 @@ class Robot(object):
     def kinematic_chains(self):
         del self._chains
 
+    @property
+    def num_platforms(self):
+        return len(self.platforms)
+
+    @property
+    def num_cables(self):
+        return len(self.cables)
+
 
 Robot.__repr__ = make_repr(
     'name',
