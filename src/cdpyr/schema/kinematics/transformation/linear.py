@@ -16,6 +16,5 @@ class LinearSchema(Schema):
 
 
 __all__ = [
-    'Linear',
     'LinearSchema',
 ]

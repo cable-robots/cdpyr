@@ -6,7 +6,7 @@ from cdpyr.schema.robot.anchor import (
     PlatformAnchorListSchema,
     PlatformAnchorSchema,
 )
-from cdpyr.schema.robot.cable import CableSchema
+from cdpyr.schema.robot.cable import CableSchema, CableListSchema
 from cdpyr.schema.robot.drivetrain import DriveTrainSchema
 from cdpyr.schema.robot.drum import DrumSchema
 from cdpyr.schema.robot.frame import FrameSchema
