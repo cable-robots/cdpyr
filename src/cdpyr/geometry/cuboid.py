@@ -69,7 +69,7 @@ class Cuboid(Geometry):
         d = self.depth
         h = self.height
 
-        return 1.0 / 12.0 * mass * np_.array((
+        return 1.0 / 12.0 * mass * np_.asarray((
             d ** 2.0 + h ** 2.0,
             w ** 2.0 + h ** 2.0,
             w ** 2.0 + d ** 2.0,

@@ -121,7 +121,7 @@ class Tube(Geometry):
         h = self.height
         rh = 3.0 * (r ** 2.0) + h ** 2.0
 
-        return 1.0 / 12.0 * mass * np_.array((
+        return 1.0 / 12.0 * mass * np_.asarray((
             rh,
             rh,
             6.0 * (r ** 2.0)

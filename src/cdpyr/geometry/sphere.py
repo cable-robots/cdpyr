@@ -49,7 +49,7 @@ class Sphere(Geometry):
         mass = self.mass
         rs = self.radius ** 2.0
 
-        return 2.0 / 3.0 * mass * np_.array((
+        return 2.0 / 3.0 * mass * np_.asarray((
             rs,
             rs,
             rs
