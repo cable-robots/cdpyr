@@ -17,7 +17,7 @@ from cdpyr.robot.anchor import (
 class Robot(object):
     _name: str
     _frame: '_frame.Frame'
-    _platforms: '_platform.Platform'
+    _platforms: '_platform.PlatformList'
     _cables: '_cable.CableList'
     _chains: '_kinematicchain.KinematicChainList'
 
