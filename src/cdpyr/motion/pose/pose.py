@@ -122,29 +122,59 @@ class Pose(object):
         del self.linear.acceleration
         del self.angular.angular_acceleration
 
-    def __lt__(self, other: object):
+    def __eq__(self, other: Union['Pose', object]):
+        try:
+            return self.time == other.time
+        except AttributeError as AttributeException:
+            try:
+                return self.time == other
+            except TypeError as TypeException:
+                raise TypeException from None
+
+    def __ne__(self, other: Union['Pose', object]):
+        try:
+            return self.time != other.time
+        except AttributeError as AttributeException:
+            try:
+                return self.time != other
+            except TypeError as TypeException:
+                raise TypeException from None
+
+    def __lt__(self, other: Union['Pose', object]):
         try:
             return self.time < other.time
-        except AttributeError:
-            return self < other
+        except AttributeError as AttributeException:
+            try:
+                return self.time < other
+            except TypeError as TypeException:
+                raise TypeException from None
 
-    def __le__(self, other: object):
+    def __le__(self, other: Union['Pose', object]):
         try:
             return self.time <= other.time
-        except AttributeError:
-            return self < other
+        except AttributeError as AttributeException:
+            try:
+                return self.time <= other
+            except TypeError as TypeException:
+                raise TypeException from None
 
-    def __gt__(self, other: object):
+    def __gt__(self, other: Union['Pose', object]):
         try:
             return self.time > other.time
-        except AttributeError:
-            return self < other
+        except AttributeError as AttributeException:
+            try:
+                return self.time > other
+            except TypeError as TypeException:
+                raise TypeException from None
 
-    def __ge__(self, other: object):
+    def __ge__(self, other: Union['Pose', object]):
         try:
             return self.time >= other.time
-        except AttributeError:
-            return self < other
+        except AttributeError as AttributeException:
+            try:
+                return self.time >= other
+            except TypeError as TypeException:
+                raise TypeException from None
 
 
 Pose.__repr__ = make_repr(
