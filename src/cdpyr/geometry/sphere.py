@@ -4,7 +4,7 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.geometry.geometry import Geometry
-from cdpyr.typedef import Num
+from cdpyr.typing import Num
 
 
 class Sphere(Geometry):

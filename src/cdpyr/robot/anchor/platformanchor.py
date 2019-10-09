@@ -7,7 +7,7 @@ from cdpyr.kinematics.transformation.angular import \
 from cdpyr.kinematics.transformation.linear import Linear as \
     LinearTransformation
 from cdpyr.robot.anchor import anchor as _anchor
-from cdpyr.typedef import Matrix, Vector
+from cdpyr.typing import Matrix, Vector
 
 
 class PlatformAnchor(_anchor.Anchor):

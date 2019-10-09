@@ -5,7 +5,8 @@ from colour import Color
 from magic_repr import make_repr
 
 from cdpyr.mixin.list import DispatcherList
-from cdpyr.typedef import Num
+from cdpyr.typing import Num
+from cdpyr import  validator as _validator
 
 
 class Cable(object):

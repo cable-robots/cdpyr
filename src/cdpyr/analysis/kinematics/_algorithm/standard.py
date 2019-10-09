@@ -7,7 +7,7 @@ from cdpyr.analysis.kinematics._algorithm.algorithm import Algorithm as \
     KinematicsInterface
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import kinematicchain as _kinematicchain, robot as _robot
-from cdpyr.typedef import Num, Vector
+from cdpyr.typing import Matrix, Num
 
 
 class Standard(KinematicsInterface):

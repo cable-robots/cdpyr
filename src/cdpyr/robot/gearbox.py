@@ -2,7 +2,8 @@ from typing import Optional
 
 from magic_repr import make_repr
 
-from cdpyr.typedef import Num, Vector
+from cdpyr.typing import Num, Vector
+from cdpyr import validator as _validator
 
 
 class Gearbox(object):

@@ -1,7 +1,7 @@
 from magic_repr import make_repr
 
 from cdpyr.mixin.list import DispatcherList
-from cdpyr.typedef import Num
+from cdpyr.typing import Num
 
 
 class KinematicChain(object):

@@ -3,7 +3,9 @@ from typing import Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.typedef import Matrix, Num, Vector
+from cdpyr.typing import Matrix, Num, Vector
+
+from cdpyr import  validator as _validator
 
 
 class Inertia(object):

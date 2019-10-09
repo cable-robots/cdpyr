@@ -3,7 +3,7 @@ from typing import Sequence
 from cdpyr.analysis.structurematrix._algorithm.algorithm import Algorithm
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import platform as _platform
-from cdpyr.typedef import Vector
+from cdpyr.typing import Vector
 
 
 class MP_3R3T(Algorithm):

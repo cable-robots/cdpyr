@@ -2,7 +2,7 @@ from abc import ABC
 
 from magic_repr import make_repr
 
-from cdpyr.typedef import Num
+from cdpyr.typing import Num
 
 
 class Geometry(ABC):

@@ -1,7 +1,7 @@
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.typedef import Matrix, Vector
+from cdpyr.typing import Matrix, Vector
 
 
 class Homogenous(object):

@@ -1,5 +1,6 @@
-from enum import Enum
+from typing import Sequence, Union
 
+from enum import Enum
 from magic_repr import make_repr
 
 from cdpyr.analysis.kinematics._algorithm import (
@@ -8,6 +9,7 @@ from cdpyr.analysis.kinematics._algorithm import (
 )
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
+from cdpyr.typing import Vector
 
 
 class Kinematics(Enum):

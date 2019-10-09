@@ -10,7 +10,7 @@ from cdpyr.kinematics.transformation import (
     linear as _lineartransformation,
 )
 from cdpyr.mixin.list import DispatcherList
-from cdpyr.typedef import Matrix, Num, Vector
+from cdpyr.typing import Matrix, Num, Vector
 
 
 class Pose(object):

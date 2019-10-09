@@ -4,7 +4,7 @@ from magic_repr import make_repr
 
 from cdpyr.geometry import geometry as __geometry
 from cdpyr.mechanics import inertia as __inertia
-from cdpyr.typedef import Matrix, Num, Vector
+from cdpyr.typing import Matrix, Num, Vector
 
 
 class Drum(object):

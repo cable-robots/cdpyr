@@ -7,7 +7,7 @@ from cdpyr.mixin.list import DispatcherList
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import motionpattern as _motionpattern
 from cdpyr.robot.anchor import platformanchor as _platformanchor
-from cdpyr.typedef import Vector
+from cdpyr.typing import Vector
 
 
 class Platform(object):

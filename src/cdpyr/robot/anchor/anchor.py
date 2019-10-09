@@ -11,7 +11,7 @@ from cdpyr.kinematics.transformation.linear import (
     # LinearSchema as LinearTransformationSchema,
 )
 from cdpyr.mixin.list import DispatcherList
-from cdpyr.typedef import Matrix, Vector
+from cdpyr.typing import Matrix, Vector
 
 
 class Anchor(object):

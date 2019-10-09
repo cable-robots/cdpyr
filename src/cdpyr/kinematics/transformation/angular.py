@@ -2,7 +2,9 @@ import numpy as np_
 from magic_repr import make_repr
 from scipy.spatial.transform import Rotation
 
-from cdpyr.typedef import Matrix, Vector
+from cdpyr.typing import Matrix, Vector
+
+from cdpyr import validator as _validator
 
 
 class Angular(object):

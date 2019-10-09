@@ -8,7 +8,7 @@ from cdpyr.kinematics.transformation.linear import Linear as \
     LinearTransformation
 from cdpyr.robot import drivetrain as _drivetrain, pulley as _pulley
 from cdpyr.robot.anchor import anchor as _anchor
-from cdpyr.typedef import Matrix, Vector
+from cdpyr.typing import Matrix, Vector
 
 
 class FrameAnchor(_anchor.Anchor):

@@ -1,7 +1,9 @@
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.typedef import Vector
+from cdpyr.typing import Vector
+
+from cdpyr import  validator as _validator
 
 
 class Linear(object):
