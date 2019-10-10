@@ -6,6 +6,11 @@ from cdpyr.motion import pose
 
 
 @pytest.fixture
+def rand_vector_3d():
+    return np.random.random(3)
+
+
+@pytest.fixture
 def rand_pos_1t():
     return np.pad(np.random.random(1), (0, 2))
 
@@ -32,6 +37,11 @@ def rand_rot_2r():
 
 @pytest.fixture
 def rand_rot_3r():
+    return Rotation.random().as_dcm()
+
+
+@pytest.fixture
+def rand_rot():
     return Rotation.random().as_dcm()
 
 
