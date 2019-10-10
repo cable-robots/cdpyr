@@ -14,79 +14,192 @@ class PoseTestSuite(object):
                           cdpyr.kinematics.transformation.Angular)
         assert empty_pose.time is None
 
-    def test_getset_linear_position(self, rand_pose_3d: cdpyr.motion.Pose):
+    def test_getset_linear_position(self, rand_pose_3d: cdpyr.motion.Pose,
+                                    rand_vector_3d):
+        # access through the "linear" property and assert
         pos = rand_pose_3d.linear.position
-
+        assert isinstance(pos, np.ndarray)
         assert pos.ndim == 1
         assert pos.shape == (3,)
 
-        pos = np.random.random(3)
-        rand_pose_3d.linear.position = pos
+        # access through the "position" property and assert
+        pos, _ = rand_pose_3d.position
+        assert isinstance(pos, np.ndarray)
+        assert pos.ndim == 1
+        assert pos.shape == (3,)
 
-        assert rand_pose_3d.linear.position == pytest.approx(pos)
-        assert rand_pose_3d.position[0] == pytest.approx(pos)
+        # set property through the "linear" property
+        rand_pose_3d.linear.position = rand_vector_3d
+        # access through the "linear" property and assert
+        pos = rand_pose_3d.linear.position
+        assert isinstance(pos, np.ndarray)
+        assert pos.ndim == 1
+        assert pos.shape == (3,)
+        assert pos == pytest.approx(rand_vector_3d)
 
-    def test_getset_linear_velocity(self, rand_pose_3d: cdpyr.motion.Pose):
+        # access through the "position" property and assert
+        pos, _ = rand_pose_3d.position
+        assert isinstance(pos, np.ndarray)
+        assert pos.ndim == 1
+        assert pos.shape == (3,)
+        assert pos == pytest.approx(rand_vector_3d)
+
+    def test_getset_linear_velocity(self, rand_pose_3d: cdpyr.motion.Pose,
+                                    rand_vector_3d):
+        # access through the "linear" property and assert
         vel = rand_pose_3d.linear.velocity
-
+        assert isinstance(vel, np.ndarray)
         assert vel.ndim == 1
         assert vel.shape == (3,)
+        assert vel == pytest.approx(np.asarray([0., 0., 0.]))
 
-        vel = np.random.random(3)
-        rand_pose_3d.linear.velocity = vel
+        # access through the "position" property and assert
+        vel, _ = rand_pose_3d.velocity
+        assert isinstance(vel, np.ndarray)
+        assert vel.ndim == 1
+        assert vel.shape == (3,)
+        assert vel == pytest.approx(np.asarray([0., 0., 0.]))
 
-        assert rand_pose_3d.linear.velocity == pytest.approx(vel)
-        assert rand_pose_3d.velocity[0] == pytest.approx(vel)
+        # set property through the "linear" property
+        rand_pose_3d.linear.velocity = rand_vector_3d
+        # access through the "linear" property and assert
+        vel = rand_pose_3d.linear.velocity
+        assert isinstance(vel, np.ndarray)
+        assert vel.ndim == 1
+        assert vel.shape == (3,)
+        assert vel == pytest.approx(rand_vector_3d)
+
+        # access through the "position" property and assert
+        vel, _ = rand_pose_3d.velocity
+        assert isinstance(vel, np.ndarray)
+        assert vel.ndim == 1
+        assert vel.shape == (3,)
+        assert vel == pytest.approx(rand_vector_3d)
 
     def test_getset_linear_acceleration(self,
-                                        rand_pose_3d: cdpyr.motion.Pose):
+                                        rand_pose_3d: cdpyr.motion.Pose,
+                                        rand_vector_3d):
+        # access through the "linear" property and assert
         acc = rand_pose_3d.linear.acceleration
-
+        assert isinstance(acc, np.ndarray)
         assert acc.ndim == 1
         assert acc.shape == (3,)
+        assert acc == pytest.approx(np.asarray([0., 0., 0.]))
 
-        acc = np.random.random(3)
-        rand_pose_3d.linear.acceleration = acc
+        # access through the "position" property and assert
+        acc, _ = rand_pose_3d.acceleration
+        assert isinstance(acc, np.ndarray)
+        assert acc.ndim == 1
+        assert acc.shape == (3,)
+        assert acc == pytest.approx(np.asarray([0., 0., 0.]))
 
-        assert rand_pose_3d.linear.acceleration == pytest.approx(acc)
-        assert rand_pose_3d.acceleration[0] == pytest.approx(acc)
+        # set property through the "linear" property
+        rand_pose_3d.linear.acceleration = rand_vector_3d
+        # access through the "linear" property and assert
+        acc = rand_pose_3d.linear.acceleration
+        assert isinstance(acc, np.ndarray)
+        assert acc.ndim == 1
+        assert acc.shape == (3,)
+        assert acc == pytest.approx(rand_vector_3d)
 
-    def test_getset_angular_position(self, rand_pose_3d: cdpyr.motion.Pose):
+        # access through the "position" property and assert
+        acc, _ = rand_pose_3d.acceleration
+        assert isinstance(acc, np.ndarray)
+        assert acc.ndim == 1
+        assert acc.shape == (3,)
+        assert acc == pytest.approx(rand_vector_3d)
+
+    def test_getset_angular_position(self, rand_pose_3d: cdpyr.motion.Pose, rand_rot):
+        # access through the "velocity" property and assert
         dcm = rand_pose_3d.angular.dcm
-
+        assert isinstance(dcm, np.ndarray)
         assert dcm.ndim == 2
-        assert dcm.shape == (3, 3)
+        assert dcm.shape == (3,3)
 
-        dcm = Rotation.random().as_dcm()
-        rand_pose_3d.angular.dcm = dcm
+        # access through the "position" property and assert
+        _, dcm = rand_pose_3d.position
+        assert isinstance(dcm, np.ndarray)
+        assert dcm.ndim == 2
+        assert dcm.shape == (3,3)
 
-        assert rand_pose_3d.angular.dcm == pytest.approx(dcm)
-        assert rand_pose_3d.position[1] == pytest.approx(dcm)
+        # set property through the "velocity" property
+        rand_pose_3d.angular.dcm = rand_rot
+        # access through the "velocity" property and assert
+        dcm = rand_pose_3d.angular.dcm
+        assert isinstance(dcm, np.ndarray)
+        assert dcm.ndim == 2
+        assert dcm.shape == (3,3)
+        assert dcm == pytest.approx(rand_rot)
 
-    def test_getset_angular_velocity(self, rand_pose_3d: cdpyr.motion.Pose):
+        # access through the "position" property and assert
+        _, dcm = rand_pose_3d.position
+        assert isinstance(dcm, np.ndarray)
+        assert dcm.ndim == 2
+        assert dcm.shape == (3,3)
+        assert dcm == pytest.approx(rand_rot)
+
+    def test_getset_angular_velocity(self, rand_pose_3d: cdpyr.motion.Pose, rand_vector_3d):
+        # access through the "velocity" property and assert
         vel = rand_pose_3d.angular.angular_velocity
-
+        assert isinstance(vel, np.ndarray)
         assert vel.ndim == 1
         assert vel.shape == (3,)
+        assert vel == pytest.approx(np.asarray([0., 0., 0.]))
 
-        vel = np.random.random(3)
-        rand_pose_3d.angular.angular_velocity = vel
+        # access through the "position" property and assert
+        _, vel = rand_pose_3d.velocity
+        assert isinstance(vel, np.ndarray)
+        assert vel.ndim == 1
+        assert vel.shape == (3,)
+        assert vel == pytest.approx(np.asarray([0., 0., 0.]))
 
-        assert rand_pose_3d.angular.angular_velocity == pytest.approx(vel)
-        assert rand_pose_3d.velocity[1] == pytest.approx(vel)
+        # set property through the "velocity" property
+        rand_pose_3d.angular.angular_velocity = rand_vector_3d
+        # access through the "velocity" property and assert
+        vel = rand_pose_3d.angular.angular_velocity
+        assert isinstance(vel, np.ndarray)
+        assert vel.ndim == 1
+        assert vel.shape == (3,)
+        assert vel == pytest.approx(rand_vector_3d)
+
+        # access through the "position" property and assert
+        _, vel = rand_pose_3d.velocity
+        assert isinstance(vel, np.ndarray)
+        assert vel.ndim == 1
+        assert vel.shape == (3,)
+        assert vel == pytest.approx(rand_vector_3d)
 
     def test_getset_angular_acceleration(self,
-                                         rand_pose_3d: cdpyr.motion.Pose):
+                                         rand_pose_3d: cdpyr.motion.Pose, rand_vector_3d):
+        # access through the "velocity" property and assert
         acc = rand_pose_3d.angular.angular_acceleration
-
+        assert isinstance(acc, np.ndarray)
         assert acc.ndim == 1
         assert acc.shape == (3,)
+        assert acc == pytest.approx(np.asarray([0., 0., 0.]))
 
-        acc = np.random.random(3)
-        rand_pose_3d.angular.angular_acceleration = acc
+        # access through the "position" property and assert
+        _, acc = rand_pose_3d.acceleration
+        assert isinstance(acc, np.ndarray)
+        assert acc.ndim == 1
+        assert acc.shape == (3,)
+        assert acc == pytest.approx(np.asarray([0., 0., 0.]))
 
-        assert rand_pose_3d.angular.angular_acceleration == pytest.approx(acc)
-        assert rand_pose_3d.acceleration[1] == pytest.approx(acc)
+        # set property through the "velocity" property
+        rand_pose_3d.angular.angular_acceleration = rand_vector_3d
+        # access through the "velocity" property and assert
+        acc = rand_pose_3d.angular.angular_acceleration
+        assert isinstance(acc, np.ndarray)
+        assert acc.ndim == 1
+        assert acc.shape == (3,)
+        assert acc == pytest.approx(rand_vector_3d)
+
+        # access through the "position" property and assert
+        _, acc = rand_pose_3d.acceleration
+        assert isinstance(acc, np.ndarray)
+        assert acc.ndim == 1
+        assert acc.shape == (3,)
+        assert acc == pytest.approx(rand_vector_3d)
 
     def test_get_state(self, rand_pose_3d: cdpyr.motion.Pose):
         state_is = rand_pose_3d.state
