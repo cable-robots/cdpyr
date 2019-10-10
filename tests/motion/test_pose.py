@@ -14,84 +14,84 @@ class PoseTestSuite(object):
                           cdpyr.kinematics.transformation.Angular)
         assert empty_pose.time is None
 
-    def test_getset_linear_position(self, random_pose_3d: cdpyr.motion.Pose):
-        pos = random_pose_3d.linear.position
+    def test_getset_linear_position(self, rand_pose_3d: cdpyr.motion.Pose):
+        pos = rand_pose_3d.linear.position
 
         assert pos.ndim == 1
         assert pos.shape == (3,)
 
         pos = np.random.random(3)
-        random_pose_3d.linear.position = pos
+        rand_pose_3d.linear.position = pos
 
-        assert random_pose_3d.linear.position == pytest.approx(pos)
-        assert random_pose_3d.position[0] == pytest.approx(pos)
+        assert rand_pose_3d.linear.position == pytest.approx(pos)
+        assert rand_pose_3d.position[0] == pytest.approx(pos)
 
-    def test_getset_linear_velocity(self, random_pose_3d: cdpyr.motion.Pose):
-        vel = random_pose_3d.linear.velocity
+    def test_getset_linear_velocity(self, rand_pose_3d: cdpyr.motion.Pose):
+        vel = rand_pose_3d.linear.velocity
 
         assert vel.ndim == 1
         assert vel.shape == (3,)
 
         vel = np.random.random(3)
-        random_pose_3d.linear.velocity = vel
+        rand_pose_3d.linear.velocity = vel
 
-        assert random_pose_3d.linear.velocity == pytest.approx(vel)
-        assert random_pose_3d.velocity[0] == pytest.approx(vel)
+        assert rand_pose_3d.linear.velocity == pytest.approx(vel)
+        assert rand_pose_3d.velocity[0] == pytest.approx(vel)
 
     def test_getset_linear_acceleration(self,
-                                        random_pose_3d: cdpyr.motion.Pose):
-        acc = random_pose_3d.linear.acceleration
+                                        rand_pose_3d: cdpyr.motion.Pose):
+        acc = rand_pose_3d.linear.acceleration
 
         assert acc.ndim == 1
         assert acc.shape == (3,)
 
         acc = np.random.random(3)
-        random_pose_3d.linear.acceleration = acc
+        rand_pose_3d.linear.acceleration = acc
 
-        assert random_pose_3d.linear.acceleration == pytest.approx(acc)
-        assert random_pose_3d.acceleration[0] == pytest.approx(acc)
+        assert rand_pose_3d.linear.acceleration == pytest.approx(acc)
+        assert rand_pose_3d.acceleration[0] == pytest.approx(acc)
 
-    def test_getset_angular_position(self, random_pose_3d: cdpyr.motion.Pose):
-        dcm = random_pose_3d.angular.dcm
+    def test_getset_angular_position(self, rand_pose_3d: cdpyr.motion.Pose):
+        dcm = rand_pose_3d.angular.dcm
 
         assert dcm.ndim == 2
         assert dcm.shape == (3, 3)
 
         dcm = Rotation.random().as_dcm()
-        random_pose_3d.angular.dcm = dcm
+        rand_pose_3d.angular.dcm = dcm
 
-        assert random_pose_3d.angular.dcm == pytest.approx(dcm)
-        assert random_pose_3d.position[1] == pytest.approx(dcm)
+        assert rand_pose_3d.angular.dcm == pytest.approx(dcm)
+        assert rand_pose_3d.position[1] == pytest.approx(dcm)
 
-    def test_getset_angular_velocity(self, random_pose_3d: cdpyr.motion.Pose):
-        vel = random_pose_3d.angular.angular_velocity
+    def test_getset_angular_velocity(self, rand_pose_3d: cdpyr.motion.Pose):
+        vel = rand_pose_3d.angular.angular_velocity
 
         assert vel.ndim == 1
         assert vel.shape == (3,)
 
         vel = np.random.random(3)
-        random_pose_3d.angular.angular_velocity = vel
+        rand_pose_3d.angular.angular_velocity = vel
 
-        assert random_pose_3d.angular.angular_velocity == pytest.approx(vel)
-        assert random_pose_3d.velocity[1] == pytest.approx(vel)
+        assert rand_pose_3d.angular.angular_velocity == pytest.approx(vel)
+        assert rand_pose_3d.velocity[1] == pytest.approx(vel)
 
     def test_getset_angular_acceleration(self,
-                                         random_pose_3d: cdpyr.motion.Pose):
-        acc = random_pose_3d.angular.angular_acceleration
+                                         rand_pose_3d: cdpyr.motion.Pose):
+        acc = rand_pose_3d.angular.angular_acceleration
 
         assert acc.ndim == 1
         assert acc.shape == (3,)
 
         acc = np.random.random(3)
-        random_pose_3d.angular.angular_acceleration = acc
+        rand_pose_3d.angular.angular_acceleration = acc
 
-        assert random_pose_3d.angular.angular_acceleration == pytest.approx(acc)
-        assert random_pose_3d.acceleration[1] == pytest.approx(acc)
+        assert rand_pose_3d.angular.angular_acceleration == pytest.approx(acc)
+        assert rand_pose_3d.acceleration[1] == pytest.approx(acc)
 
-    def test_get_state(self, random_pose_3d: cdpyr.motion.Pose):
-        state_is = random_pose_3d.state
+    def test_get_state(self, rand_pose_3d: cdpyr.motion.Pose):
+        state_is = rand_pose_3d.state
         state_expected = np.hstack(
-            (random_pose_3d.linear.position, random_pose_3d.angular.quaternion))
+            (rand_pose_3d.linear.position, rand_pose_3d.angular.quaternion))
 
         assert state_is == pytest.approx(state_expected)
 
