@@ -1,4 +1,4 @@
-import numpy as np_
+import numpy as np
 import pytest
 
 from cdpyr.validator import positive
@@ -36,7 +36,7 @@ class PositiveTestSuite(object):
             positive((-1, -2, -3, -4))
 
     def test_numpy_vector_passes(self):
-        positive(np_.asarray((1, 2, 3, 4)))
+        positive(np.asarray((1, 2, 3, 4)))
 
     def test_numpy_vector_fails(self):
         with pytest.raises(ValueError):

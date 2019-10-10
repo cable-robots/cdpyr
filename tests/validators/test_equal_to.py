@@ -1,4 +1,4 @@
-import numpy as np_
+import numpy as np
 import pytest
 
 from cdpyr.validator import equal_to
@@ -26,15 +26,15 @@ class EqualToTestSuite(object):
             equal_to(((1, 1), (1, 1)), 0)
 
     def test_numpyarray_passes(self):
-        equal_to(np_.asarray((1, 1, 1, 1)), 1)
+        equal_to(np.asarray((1, 1, 1, 1)), 1)
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
-            equal_to(np_.asarray((1, 1, 1, 1)), 0)
+            equal_to(np.asarray((1, 1, 1, 1)), 0)
 
     def test_numpyarray_passes(self):
-        equal_to(np_.asarray(((1, 1), (1, 1))), 1)
+        equal_to(np.asarray(((1, 1), (1, 1))), 1)
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
-            equal_to(np_.asarray(((1, 1), (1, 1))), 0)
+            equal_to(np.asarray(((1, 1), (1, 1))), 0)

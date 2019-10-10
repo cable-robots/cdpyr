@@ -1,4 +1,4 @@
-import numpy as np_
+import numpy as np
 import pytest
 
 from cdpyr.validator import greater_than
@@ -25,15 +25,15 @@ class GreaterThanTestSuite(object):
             greater_than(((1, 2), (3, 4)), 5)
 
     def test_numpyarray_passes(self):
-        greater_than(np_.asarray((1, 2, 3, 4)), 0)
+        greater_than(np.asarray((1, 2, 3, 4)), 0)
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
-            greater_than(np_.asarray((1, 2, 3, 4)), 5)
+            greater_than(np.asarray((1, 2, 3, 4)), 5)
 
     def test_numpyarray_passes(self):
-        greater_than(np_.asarray(((1, 2), (3, 4))), 0)
+        greater_than(np.asarray(((1, 2), (3, 4))), 0)
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
-            greater_than(np_.asarray(((1, 2), (3, 4))), 5)
+            greater_than(np.asarray(((1, 2), (3, 4))), 5)

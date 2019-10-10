@@ -1,4 +1,4 @@
-import numpy as np_
+import numpy as np
 import pytest
 
 from cdpyr.validator import less_than
@@ -25,15 +25,15 @@ class LessThanTestSuite(object):
             less_than(((1, 2), (3, 4)), 0)
 
     def test_numpyarray_passes(self):
-        less_than(np_.asarray((1, 2, 3, 4)), 5)
+        less_than(np.asarray((1, 2, 3, 4)), 5)
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
-            less_than(np_.asarray((1, 2, 3, 4)), 0)
+            less_than(np.asarray((1, 2, 3, 4)), 0)
 
     def test_numpyarray_passes(self):
-        less_than(np_.asarray(((1, 2), (3, 4))), 5)
+        less_than(np.asarray(((1, 2), (3, 4))), 5)
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
-            less_than(np_.asarray(((1, 2), (3, 4))), 0)
+            less_than(np.asarray(((1, 2), (3, 4))), 0)

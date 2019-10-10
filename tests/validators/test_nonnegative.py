@@ -1,4 +1,4 @@
-import numpy as np_
+import numpy as np
 import pytest
 
 from cdpyr.validator import nonnegative
@@ -24,7 +24,7 @@ class NonnegativeTestSuite(object):
 
     def test_numpy_vector_passes(self):
         nonnegative((0, 0, 0, 0))
-        nonnegative(np_.asarray((1, 2, 3, 4)))
+        nonnegative(np.asarray((1, 2, 3, 4)))
 
     def test_numpy_vector_fails_negative(self):
         with pytest.raises(ValueError):

@@ -1,4 +1,4 @@
-import numpy as np_
+import numpy as np
 import pytest
 
 from cdpyr.validator import greater_than_or_equal_to
@@ -26,15 +26,15 @@ class GreaterThanOrEqualToTestSuite(object):
             greater_than_or_equal_to(((1, 2), (3, 4)), 4)
 
     def test_numpyarray_passes(self):
-        greater_than_or_equal_to(np_.asarray((1, 2, 3, 4)), 1)
+        greater_than_or_equal_to(np.asarray((1, 2, 3, 4)), 1)
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
-            greater_than_or_equal_to(np_.asarray((1, 2, 3, 4)), 4)
+            greater_than_or_equal_to(np.asarray((1, 2, 3, 4)), 4)
 
     def test_numpyarray_passes(self):
-        greater_than_or_equal_to(np_.asarray(((1, 2), (3, 4))), 1)
+        greater_than_or_equal_to(np.asarray(((1, 2), (3, 4))), 1)
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
-            greater_than_or_equal_to(np_.asarray(((1, 2), (3, 4))), 4)
+            greater_than_or_equal_to(np.asarray(((1, 2), (3, 4))), 4)

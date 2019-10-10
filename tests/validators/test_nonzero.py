@@ -1,4 +1,4 @@
-import numpy as np_
+import numpy as np
 import pytest
 
 from cdpyr.validator import nonzero
@@ -23,8 +23,8 @@ class NonzeroTestSuite(object):
             nonzero([0] * 4)
 
     def test_numpy_vector_passes(self):
-        nonzero(np_.asarray([4] * 4))
-        nonzero(np_.asarray([-4] * 4))
+        nonzero(np.asarray([4] * 4))
+        nonzero(np.asarray([-4] * 4))
 
     def test_numpy_vector_fails(self):
         with pytest.raises(ValueError):
