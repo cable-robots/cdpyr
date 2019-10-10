@@ -82,7 +82,7 @@ class Pose(object):
 
     @property
     def position(self):
-        return self.linear.position, self.angular.dcm
+        return [self.linear.position, self.angular.dcm]
 
     @position.setter
     def position(self, position: Tuple[Vector, Matrix]):
@@ -96,7 +96,7 @@ class Pose(object):
 
     @property
     def velocity(self):
-        return self.linear.velocity, self.angular.angular_velocity
+        return [self.linear.velocity, self.angular.angular_velocity]
 
     @velocity.setter
     def velocity(self, velocity: Tuple[Vector, Vector]):
@@ -110,7 +110,7 @@ class Pose(object):
 
     @property
     def acceleration(self):
-        return self.linear.acceleration, self.angular.angular_acceleration
+        return [self.linear.acceleration, self.angular.angular_acceleration]
 
     @acceleration.setter
     def acceleration(self, acceleration: Tuple[Vector, Vector]):
