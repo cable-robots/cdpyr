@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from scipy.spatial.transform import Rotation
 
-from cdpyr.motion import pose
+import cdpyr
 
 
 @pytest.fixture
@@ -52,53 +52,53 @@ def unit_rot():
 
 @pytest.fixture
 def empty_pose():
-    return pose.Pose()
+    return cdpyr.motion.Pose()
 
 
 @pytest.fixture
 def rand_pose_1t(rand_pos_1t, unit_rot):
-    return pose.Pose(
+    return cdpyr.motion.Pose(
         position=(rand_pos_1t, unit_rot)
     )
 
 
 @pytest.fixture
 def rand_pose_2t(rand_pos_2t, unit_rot):
-    return pose.Pose(
+    return cdpyr.motion.Pose(
         position=(rand_pos_2t, unit_rot)
     )
 
 
 @pytest.fixture
 def rand_pose_3t(rand_pos_3t, unit_rot):
-    return pose.Pose(
+    return cdpyr.motion.Pose(
         position=(rand_pos_3t, unit_rot)
     )
 
 
 @pytest.fixture
 def rand_pose_1r2t(rand_pos_2t, rand_rot_1r):
-    return pose.Pose(
+    return cdpyr.motion.Pose(
         position=(rand_pos_2t, rand_rot_1r)
     )
 
 
 @pytest.fixture
 def rand_pose_2r3t(rand_pos_3t, rand_rot_2r):
-    return pose.Pose(
+    return cdpyr.motion.Pose(
         position=(rand_pos_3t, rand_rot_2r)
     )
 
 
 @pytest.fixture
 def rand_pose_3r3t(rand_pos_3t, rand_rot_3r):
-    return pose.Pose(
+    return cdpyr.motion.Pose(
         position=(rand_pos_3t, rand_rot_3r)
     )
 
 
 @pytest.fixture
 def rand_pose_3d(rand_pos_3t, rand_rot_3r):
-    return pose.Pose(
+    return cdpyr.motion.Pose(
         position=(rand_pos_3t, rand_rot_3r)
     )
