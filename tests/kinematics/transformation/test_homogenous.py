@@ -75,7 +75,7 @@ class HomogenousTransformationTestSuite(object):
             rotation=rotation
         )
 
-        assert homogenous.translation.shape == (3, )
+        assert homogenous.translation.shape == (3,)
         assert homogenous.translation == approx([0., 0., 0.])
         assert homogenous.rotation.shape == (3, 3)
         assert homogenous.rotation == approx(np.asarray(rotation))
@@ -95,7 +95,7 @@ class HomogenousTransformationTestSuite(object):
             rotation=rotation
         )
 
-        assert homogenous.translation.shape == (3, )
+        assert homogenous.translation.shape == (3,)
         assert homogenous.translation == approx([0., 0., 0.])
         assert homogenous.rotation.shape == (3, 3)
         assert homogenous.rotation == approx(rotation)
