@@ -96,6 +96,26 @@ class KinematicChainList(DispatcherList):
     def __dir__(self):
         return KinematicChain.__dict__.keys()
 
+    def with_frame_anchor(self, anchor: '_frameanchor.FrameAnchor'):
+        anchor = anchor if isinstance(anchor, Sequence) else [anchor]
+
+        return self.__class__([d for d in self.data if d.frame_anchor in anchor])
+
+    def with_platform(self, platform: '_platform.Platform'):
+        platform = platform if isinstance(platform, Sequence) else [platform]
+
+        return self.__class__([d for d in self.data if d.platform in platform])
+
+    def with_platform_anchor(self, anchor: '_platform.Platform'):
+        anchor = anchor if isinstance(anchor, Sequence) else [anchor]
+
+        return self.__class__([d for d in self.data if d.platform_anchor in anchor])
+
+    def with_cable(self, cable: '_cable.Cable'):
+        cable = cable if isinstance(cable, Sequence) else [cable]
+
+        return self.__class__([d for d in self.data if d.cable in cable])
+
 
 __all__ = [
     'KinematicChain',
