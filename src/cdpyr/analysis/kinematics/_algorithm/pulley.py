@@ -1,23 +1,28 @@
+from typing import Sequence, Tuple, Union
+
 from magic_repr import make_repr
 
 from cdpyr.analysis.kinematics._algorithm.algorithm import Algorithm as \
     KinematicsInterface
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
+from cdpyr.typing import Matrix, Vector
 
 
 class Pulley(KinematicsInterface):
 
     def forward(self,
                 robot: '_robot.Robot',
-                pose: '_pose.Pose'
-                ):
+                lengths: Sequence[Vector]
+                ) -> Union[Tuple[Vector, Matrix],
+                           Tuple[Sequence[Vector], Sequence[Matrix]]]:
         raise NotImplementedError()
 
     def backward(self,
                  robot: '_robot.Robot',
-                 pose: '_pose.Pose'
-                 ):
+                 pose: Sequence['_pose.Pose']
+                 ) -> Union[Tuple[Vector, Matrix],
+                            Tuple[Sequence[Vector], Sequence[Matrix]]]:
         raise NotImplementedError()
 
 
