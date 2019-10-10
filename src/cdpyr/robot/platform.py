@@ -46,7 +46,7 @@ class Platform(object):
 
     @property
     def bi(self):
-        return np_.vstack(list(self.anchors.position))
+        return np_.vstack(self.anchors.position).T
 
     @property
     def anchors(self):
