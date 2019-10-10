@@ -1,20 +1,29 @@
 from magic_repr import make_repr
 
+from typing import Union, Sequence
+
 from cdpyr.mixin.list import DispatcherList
 from cdpyr.typing import Num
 
+from cdpyr.robot import (
+    platform as _platform,
+    cable as _cable
+)
+from cdpyr.robot.anchor import frameanchor as _frameanchor
+from cdpyr.robot.anchor import  platformanchor as _platformanchor
+
 
 class KinematicChain(object):
-    _cable: Num
-    _platform: Num
-    _frame_anchor: Num
-    _platform_anchor: Num
+    _cable: '_cable.Cable'
+    _platform: '_platform.Platform'
+    _frame_anchor: '_frameanchor.FrameAnchor'
+    _platform_anchor: '_platformanchor.PlatformAnchor'
 
     def __init__(self,
-                 frame_anchor: Num,
-                 platform: Num,
-                 platform_anchor: Num,
-                 cable: Num
+                 frame_anchor: Union['_frameanchor.FrameAnchor', Num],
+                 platform: Union['_platform.Platform', Num],
+                 platform_anchor: Union['_platformanchor.PlatformAnchor', Num],
+                 cable: Union['_cable.Cable', Num]
                  ):
         self.cable = cable
         self.platform = platform
@@ -26,7 +35,7 @@ class KinematicChain(object):
         return self._cable
 
     @cable.setter
-    def cable(self, cable: Num):
+    def cable(self, cable: Union['_cable.Cable', Num]):
         self._cable = cable
 
     @cable.deleter
@@ -38,7 +47,7 @@ class KinematicChain(object):
         return self._platform
 
     @platform.setter
-    def platform(self, platform: Num):
+    def platform(self, platform: Union['_platform.Platform', Num]):
         self._platform = platform
 
     @platform.deleter
@@ -50,7 +59,7 @@ class KinematicChain(object):
         return self._frame_anchor
 
     @frame_anchor.setter
-    def frame_anchor(self, anchor: Num):
+    def frame_anchor(self, anchor: Union['_frameanchor.FrameAnchor', Num]):
         self._frame_anchor = anchor
 
     @frame_anchor.deleter
@@ -62,7 +71,7 @@ class KinematicChain(object):
         return self._platform_anchor
 
     @platform_anchor.setter
-    def platform_anchor(self, anchor: Num):
+    def platform_anchor(self, anchor: Union['_platform.Platform', Num]):
         self._platform_anchor = anchor
 
     @platform_anchor.deleter
