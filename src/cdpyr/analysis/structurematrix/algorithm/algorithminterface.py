@@ -5,7 +5,7 @@ from cdpyr.robot import platform as _platform
 from cdpyr.typing import Matrix
 
 
-class Algorithm(ABC):
+class AlgorithmInterface(ABC):
 
     @classmethod
     @abstractmethod

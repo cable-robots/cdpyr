@@ -1,12 +1,12 @@
 from typing import Sequence, Union
 
-from cdpyr.analysis.structurematrix.algorithm.algorithm import Algorithm
+from cdpyr.analysis.structurematrix.algorithm.algorithminterface import AlgorithmInterface
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import platform as _platform
 from cdpyr.typing import Matrix
 
 
-class StructureMatrix2T(Algorithm):
+class StructureMatrix2T(AlgorithmInterface):
 
     @classmethod
     def calculate(cls,

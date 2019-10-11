@@ -3,12 +3,12 @@
 import numpy as np_
 from enum import Enum
 
-from cdpyr.analysis.forcedistribution.algorithm.algorithminterface import \
-    AlgorithmInterface as ForceDistributionAlgorithm
-from cdpyr.analysis.forcedistribution.algorithm.closedform import ClosedForm
-from cdpyr.analysis.forcedistribution.algorithm.closedformimproved import \
-    ClosedFormImproved
-from cdpyr.analysis.forcedistribution.algorithm.dykstra import Dykstra
+from cdpyr.analysis.forcedistribution.algorithm import (
+    AlgorithmInterface as ForceDistributionAlgorithm,
+    ClosedForm,
+    ClosedFormImproved,
+    Dykstra,
+)
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 

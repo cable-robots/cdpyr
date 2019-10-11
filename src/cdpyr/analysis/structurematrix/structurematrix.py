@@ -1,15 +1,14 @@
-from typing import Dict, Sequence, Union
+from typing import Sequence, Union
 
-import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.analysis.structurematrix.algorithm import (
-    structurematrix1r2t as _mp1r2t,
-    structurematrix1t as _mp1t,
-    structurematrix2r3t as _mp2r3t,
-    structurematrix2t as _mp2t,
-    structurematrix3r3t as _mp3r3t,
-    structurematrix3t as _mp3t,
+    StructureMatrix1R2T as _StructureMatrix1R2T,
+    StructureMatrix1T as _StructureMatrix1T,
+    StructureMatrix2R3T as _StructureMatrix2R3T,
+    StructureMatrix2T as _StructureMatrix2T,
+    StructureMatrix3R3T as _StructureMatrix3R3T,
+    StructureMatrix3T as _StructureMatrix3T,
 )
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import motionpattern as _motionpattern
@@ -21,14 +20,12 @@ class StructureMatrix(object):
     # mapping of literal motion pattern name to the structure matrix class
     # for the motion pattern
     _MAPPING = {
-        _motionpattern.Motionpattern.MP_1T.name:   _mp1t.StructureMatrix1T(),
-        _motionpattern.Motionpattern.MP_2T.name:   _mp2t.StructureMatrix2T(),
-        _motionpattern.Motionpattern.MP_3T.name:   _mp3t.StructureMatrix3T(),
-        _motionpattern.Motionpattern.MP_1R2T.name:
-                                                   _mp1r2t.StructureMatrix1R2T(),
-        _motionpattern.Motionpattern.MP_2R3T.name:
-                                                   _mp2r3t.StructureMatrix2R3T(),
-        _motionpattern.Motionpattern.MP_3R3T.name: _mp3r3t.StructureMatrix3R3T()
+        _motionpattern.Motionpattern.MP_1T.name:   _StructureMatrix1T(),
+        _motionpattern.Motionpattern.MP_2T.name:   _StructureMatrix2T(),
+        _motionpattern.Motionpattern.MP_3T.name:   _StructureMatrix3T(),
+        _motionpattern.Motionpattern.MP_1R2T.name: _StructureMatrix1R2T(),
+        _motionpattern.Motionpattern.MP_2R3T.name: _StructureMatrix2R3T(),
+        _motionpattern.Motionpattern.MP_3R3T.name: _StructureMatrix3R3T()
     }
 
     @classmethod
