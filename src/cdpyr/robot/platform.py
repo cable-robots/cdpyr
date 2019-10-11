@@ -1,52 +1,39 @@
-from typing import Optional, Sequence, Union
+from typing import Optional, Sequence, Union, Tuple
 
 import numpy as np_
 from magic_repr import make_repr
 
+from cdpyr import validator as _validator
+from cdpyr.mechanics import inertia as _inertia
 from cdpyr.mixin.list import DispatcherList
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import motionpattern as _motionpattern
 from cdpyr.robot.anchor import platformanchor as _platformanchor
-from cdpyr.typing import Vector
+from cdpyr.typing import Matrix, Num, Vector
 
 
 class Platform(object):
-    _pose: '_pose.Pose'
+    _motion_pattern: '_motionpattern.Motionpattern'
     _anchors: '_platformanchor.PlatformAnchorList'
+    _inertia: '_inertia.Inertia'
     _center_of_gravity: np_.ndarray
     _center_of_linkage: np_.ndarray
-    _motion_pattern: '_motionpattern.Motionpattern'
 
     def __init__(self,
                  motionpattern: '_motionpattern.Motionpattern',
-                 pose: Optional['_pose.Pose'] = None,
-                 anchors: Optional[
-                     Union['_platformanchor.PlatformAnchorList', Sequence[
-                         '_platformanchor.PlatformAnchor']]] = None,
+                 anchors: Optional[Union[
+                     '_platformanchor.PlatformAnchorList',
+                     Sequence['_platformanchor.PlatformAnchor']
+                 ]] = None,
+                 inertia: '_inertia.Inertia' = None,
                  center_of_gravity: Vector = None,
                  center_of_linkage: Vector = None
                  ):
         self.anchors = anchors or []
-        self.pose = pose or None
         self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]
         self.center_of_linkage = center_of_linkage or [0.0, 0.0, 0.0]
         self.motionpattern = motionpattern
-
-    @property
-    def pose(self):
-        return self._pose
-
-    @pose.setter
-    def pose(self, pose: '_pose.Pose'):
-        self._pose = pose
-
-    @pose.deleter
-    def pose(self):
-        del self._pose
-
-    @property
-    def bi(self):
-        return np_.vstack(self.anchors.position).T
+        self.inertia = inertia if inertia is not None else _inertia.Inertia()
 
     @property
     def anchors(self):
@@ -54,8 +41,10 @@ class Platform(object):
 
     @anchors.setter
     def anchors(self,
-                anchors: Union['_platformanchor.PlatformAnchorList', Sequence[
-                    '_platformanchor.PlatformAnchor']]):
+                anchors: Union[
+                    '_platformanchor.PlatformAnchorList',
+                    Sequence['_platformanchor.PlatformAnchor']
+                ]):
         if not isinstance(anchors, _platformanchor.PlatformAnchorList):
             anchors = _platformanchor.PlatformAnchorList(anchors)
 
@@ -66,8 +55,50 @@ class Platform(object):
         del self._anchors
 
     @property
+    def bi(self):
+        return np_.vstack(self.anchors.position).T
+
+    @property
     def num_anchors(self):
         return len(self._anchors)
+
+    @property
+    def inertia(self):
+        return self._inertia
+
+    @inertia.setter
+    def inertia(self,
+                inertia: Union[
+                    Tuple[
+                        Union[Num, Vector],
+                        Union[Vector, Matrix]
+                    ],
+                    '_inertia.Inertia'
+                ]):
+        if not isinstance(inertia, _inertia.Inertia):
+            inertia = _inertia.Inertia(inertia[0], inertia[1])
+
+        self._inertia = inertia
+
+    @inertia.deleter
+    def inertia(self):
+        del self._inertia
+
+    @property
+    def linear_inertia(self):
+        return self.inertia.linear
+
+    @linear_inertia.setter
+    def linear_inertia(self, inertia: Union[Num, Vector]):
+        self.inertia.linear = inertia
+
+    @property
+    def angular_inertia(self):
+        return self.inertia.angular
+
+    @angular_inertia.setter
+    def angular_inertia(self, inertia: Union[Vector, Matrix]):
+        self.inertia.angular = inertia
 
     @property
     def center_of_gravity(self):
@@ -77,16 +108,7 @@ class Platform(object):
     def center_of_gravity(self, position: Vector):
         position = np_.asarray(position)
 
-        if not position.ndim == 1:
-            raise ValueError(
-                'center_of_gravity position must be a 1-dimensional numpy '
-                'array, was {}'.format(
-                    position.ndim))
-
-        if not position.shape == (3,):
-            raise ValueError(
-                'center_of_gravity position must be (3,), was {}'.format(
-                    position.shape))
+        _validator.shape(position, (3,), 'center_of_gravity')
 
         self._center_of_gravity = position
 
@@ -102,16 +124,7 @@ class Platform(object):
     def center_of_linkage(self, position: Vector):
         position = np_.asarray(position)
 
-        if not position.ndim == 1:
-            raise ValueError(
-                'center_of_linkage position must be a 1-dimensional numpy '
-                'array, was {}'.format(
-                    position.ndim))
-
-        if not position.shape == (3,):
-            raise ValueError(
-                'center_of_linkage position must be (3,), was {}'.format(
-                    position.shape))
+        _validator.shape(position, (3,), 'center_of_linkage')
 
         self._center_of_linkage = position
 
@@ -137,8 +150,10 @@ class Platform(object):
 
 Platform.__repr__ = make_repr(
     'motionpattern',
-    'pose',
+    'inertia',
     'anchors',
+    'center_of_gravity',
+    'center_of_linkage',
 )
 
 
