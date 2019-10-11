@@ -18,8 +18,7 @@ class Geometry(ABC):
 
     @mass.setter
     def mass(self, mass: Num):
-        if mass < 0:
-            raise ValueError('mass must be nonnegative')
+        _validator.positive(mass, 'mass')
 
         self._mass = mass
 
