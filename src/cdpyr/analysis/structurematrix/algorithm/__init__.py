@@ -1,17 +1,17 @@
 from cdpyr.analysis.structurematrix.algorithm.algorithm import Algorithm
-from cdpyr.analysis.structurematrix.algorithm.mp_1r2t import MP_1R2T
-from cdpyr.analysis.structurematrix.algorithm.mp_1t import MP_1T
-from cdpyr.analysis.structurematrix.algorithm.mp_2r3t import MP_2R3T
-from cdpyr.analysis.structurematrix.algorithm.mp_2t import MP_2T
-from cdpyr.analysis.structurematrix.algorithm.mp_3r3t import MP_3R3T
-from cdpyr.analysis.structurematrix.algorithm.mp_3t import MP_3T
+from cdpyr.analysis.structurematrix.algorithm.motionpattern_1r2t import MotionPattern_1R2T
+from cdpyr.analysis.structurematrix.algorithm.motionpattern_1t import MotionPattern_1T
+from cdpyr.analysis.structurematrix.algorithm.motionpattern_2r3t import MotionPattern_2R3T
+from cdpyr.analysis.structurematrix.algorithm.motionpattern_2t import MotionPattern_2T
+from cdpyr.analysis.structurematrix.algorithm.motionpattern_3r3t import MotionPattern_3R3T
+from cdpyr.analysis.structurematrix.algorithm.motionpattern_3t import MotionPattern_3T
 
 __all__ = [
     'Algorithm',
-    'MP_1T',
-    'MP_2T',
-    'MP_3T',
-    'MP_1R2T',
-    'MP_2R3T',
-    'MP_3R3T',
+    'MotionPattern_1T',
+    'MotionPattern_2T',
+    'MotionPattern_3T',
+    'MotionPattern_1R2T',
+    'MotionPattern_2R3T',
+    'MotionPattern_3R3T',
 ]

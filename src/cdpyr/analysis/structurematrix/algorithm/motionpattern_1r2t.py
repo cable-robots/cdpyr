@@ -8,7 +8,7 @@ from cdpyr.robot import platform as _platform
 from cdpyr.typing import Matrix
 
 
-class MP_2R3T(Algorithm):
+class MotionPattern_1R2T(Algorithm):
 
     @classmethod
     def calculate(cls,
@@ -20,8 +20,8 @@ class MP_2R3T(Algorithm):
             np_.cross(
                 pose.angular.dcm.dot(
                     platform.bi
-                ),
+                )[0:platform.motionpattern.dof_translation, :],
                 uis,
                 axis=0
-            )[0:platform.motionpattern.dof_rotation, :]
+            )
         ))

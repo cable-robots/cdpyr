@@ -6,12 +6,12 @@ from cdpyr.typing import Num
 
 
 class Motionpattern(Enum):
-    _1T = (1, 0, '1T')
-    _2T = (2, 0, '2T')
-    _3T = (3, 0, '3T')
-    _1R2T = (2, 1, '1R2T')
-    _2R3T = (3, 2, '2R3T')
-    _3R3T = (3, 3, '3R3T')
+    MP_1T = (1, 0, '1T')
+    MP_2T = (2, 0, '2T')
+    MP_3T = (3, 0, '3T')
+    MP_1R2T = (2, 1, '1R2T')
+    MP_2R3T = (3, 2, '2R3T')
+    MP_3R3T = (3, 3, '3R3T')
 
     _dof_translation: int
     _dof_rotation: int
@@ -32,6 +32,10 @@ class Motionpattern(Enum):
     @property
     def dof_rotation(self):
         return self._dof_rotation
+
+    @property
+    def dof(self):
+        return self.dof_translation + self.dof_rotation
 
     @property
     def human(self):

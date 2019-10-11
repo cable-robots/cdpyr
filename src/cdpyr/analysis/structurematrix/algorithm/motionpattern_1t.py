@@ -6,11 +6,11 @@ from cdpyr.robot import platform as _platform
 from cdpyr.typing import Matrix
 
 
-class MP_2T(Algorithm):
+class MotionPattern_1T(Algorithm):
 
     @classmethod
     def calculate(cls,
                   platform: '_platform.Platform',
                   uis: Matrix,
                   pose: '_pose.Pose' = None):
-        return uis[0:2, :]
+        return uis[0:1, :]

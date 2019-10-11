@@ -3,12 +3,12 @@ from typing import Sequence, Union
 from magic_repr import make_repr
 
 from cdpyr.analysis.structurematrix.algorithm import (
-    mp_1r2t as _mp_1r2t,
-    mp_1t as _mp_1t,
-    mp_2r3t as _mp_2r3t,
-    mp_2t as _mp_2t,
-    mp_3r3t as _mp_3r3t,
-    mp_3t as _mp_3t,
+    motionpattern_1r2t as _mp_1r2t,
+    motionpattern_1t as _mp_1t,
+    motionpattern_2r3t as _mp_2r3t,
+    motionpattern_2t as _mp_2t,
+    motionpattern_3r3t as _mp_3r3t,
+    motionpattern_3t as _mp_3t,
 )
 # from cdpyr.analysis.kinematics import algorithm as _kinematicsalgorithm
 from cdpyr.motion import pose as _pose
@@ -21,12 +21,12 @@ class StructureMatrix(object):
     # mapping of literal motion pattern name to the structure matrix class
     # for the motion pattern
     _MAPPING = {
-        _motionpattern.Motionpattern._1T.name:   _mp_1t.MP_1T(),
-        _motionpattern.Motionpattern._2T.name:   _mp_2t.MP_2T(),
-        _motionpattern.Motionpattern._3T.name:   _mp_3t.MP_3T(),
-        _motionpattern.Motionpattern._1R2T.name: _mp_1r2t.MP_1R2T(),
-        _motionpattern.Motionpattern._2R3T.name: _mp_2r3t.MP_2R3T(),
-        _motionpattern.Motionpattern._3R3T.name: _mp_3r3t.MP_3R3T()
+        _motionpattern.Motionpattern.MP_1T.name:   _mp_1t.MotionPattern_1T(),
+        _motionpattern.Motionpattern.MP_2T.name:   _mp_2t.MotionPattern_2T(),
+        _motionpattern.Motionpattern.MP_3T.name:   _mp_3t.MotionPattern_3T(),
+        _motionpattern.Motionpattern.MP_1R2T.name: _mp_1r2t.MotionPattern_1R2T(),
+        _motionpattern.Motionpattern.MP_2R3T.name: _mp_2r3t.MotionPattern_2R3T(),
+        _motionpattern.Motionpattern.MP_3R3T.name: _mp_3r3t.MotionPattern_3R3T()
     }
 
     def __call__(self,
