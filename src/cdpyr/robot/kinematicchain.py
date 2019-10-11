@@ -1,16 +1,14 @@
+from typing import Sequence, Union
+
 from magic_repr import make_repr
 
-from typing import Union, Sequence
-
 from cdpyr.mixin.list import DispatcherList
-from cdpyr.typing import Num
-
-from cdpyr.robot import (
-    platform as _platform,
-    cable as _cable
+from cdpyr.robot import (cable as _cable, platform as _platform)
+from cdpyr.robot.anchor import (
+    frameanchor as _frameanchor,
+    platformanchor as _platformanchor,
 )
-from cdpyr.robot.anchor import frameanchor as _frameanchor
-from cdpyr.robot.anchor import  platformanchor as _platformanchor
+from cdpyr.typing import Num
 
 
 class KinematicChain(object):
@@ -91,7 +89,15 @@ class KinematicChainList(DispatcherList):
 
     def __init__(self, initlist=None):
         super().__init__()
-        self.data = list(set(initlist)) if initlist else []
+        # We only support unique kinematic chains i.e., one cable may only be
+        # attached to one winch and one platform anchor at a time. That's why
+        # we will remove duplicate kinematic chains from the list but in a
+        # way that the original order is preserved (FIFO-style).
+        # @SEE https://stackoverflow.com/questions/44628186
+        seen = set()
+        seen_add = seen.add
+        self.data = [x for x in initlist if
+                     not (x in seen or seen_add(x))] if initlist else []
 
     def __dir__(self):
         return KinematicChain.__dict__.keys()
@@ -99,7 +105,8 @@ class KinematicChainList(DispatcherList):
     def with_frame_anchor(self, anchor: '_frameanchor.FrameAnchor'):
         anchor = anchor if isinstance(anchor, Sequence) else [anchor]
 
-        return self.__class__([d for d in self.data if d.frame_anchor in anchor])
+        return self.__class__(
+            [d for d in self.data if d.frame_anchor in anchor])
 
     def with_platform(self, platform: '_platform.Platform'):
         platform = platform if isinstance(platform, Sequence) else [platform]
@@ -109,7 +116,8 @@ class KinematicChainList(DispatcherList):
     def with_platform_anchor(self, anchor: '_platform.Platform'):
         anchor = anchor if isinstance(anchor, Sequence) else [anchor]
 
-        return self.__class__([d for d in self.data if d.platform_anchor in anchor])
+        return self.__class__(
+            [d for d in self.data if d.platform_anchor in anchor])
 
     def with_cable(self, cable: '_cable.Cable'):
         cable = cable if isinstance(cable, Sequence) else [cable]
