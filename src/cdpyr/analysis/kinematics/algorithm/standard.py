@@ -3,7 +3,7 @@ from typing import Sequence, Tuple, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.analysis.kinematics._algorithm.algorithm import Algorithm as \
+from cdpyr.analysis.kinematics.algorithm.algorithm import Algorithm as \
     KinematicsInterface
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import (
@@ -16,14 +16,16 @@ from cdpyr.typing import Matrix, Vector
 
 class Standard(KinematicsInterface):
 
-    def forward(self,
+    @classmethod
+    def forward(cls,
                 robot: '_robot.Robot',
                 lengths: Sequence[Vector]
                 ) -> Union[Tuple[Vector, Matrix],
                            Tuple[Sequence[Vector], Sequence[Matrix]]]:
         raise NotImplementedError()
 
-    def backward(self,
+    @classmethod
+    def backward(cls,
                  robot: '_robot.Robot',
                  pose: Sequence['_pose.Pose']
                  ) -> Union[Tuple[Vector, Matrix],
@@ -46,7 +48,7 @@ class Standard(KinematicsInterface):
             pos, rot = pose[idx].position
 
             # solve the vector loop for the given platform
-            cable_vectors = self._vector_loop(
+            cable_vectors = cls._vector_loop(
                 pos,
                 rot,
                 platform.bi,
@@ -67,7 +69,8 @@ class Standard(KinematicsInterface):
 
         return cable_lengths, unit_vectors
 
-    def _vector_loop(self, pos, rot, ai, bi):
+    @classmethod
+    def _vector_loop(cls, pos, rot, ai, bi):
         return ai - (pos[:, np_.newaxis] + rot.dot(bi))
 
 

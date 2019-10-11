@@ -1,0 +1,22 @@
+from abc import ABC, abstractmethod
+
+from cdpyr.motion import pose as _pose
+from cdpyr.robot import platform as _platform
+from cdpyr.typing import Matrix
+
+
+class Algorithm(ABC):
+
+    @classmethod
+    @abstractmethod
+    def calculate(cls,
+                  platform: '_platform.Platform',
+                  uis: Matrix,
+                  pose: '_pose.Pose' = None):
+        raise NotImplementedError()
+
+    def __call__(self,
+                 platform: '_platform.Platform',
+                 uis: Matrix,
+                 pose: '_pose.Pose' = None):
+        return self.calculate(platform, uis, pose)

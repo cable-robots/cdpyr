@@ -3,7 +3,7 @@ from typing import Sequence, Tuple, Union
 from enum import Enum
 from magic_repr import make_repr
 
-from cdpyr.analysis.kinematics._algorithm import (
+from cdpyr.analysis.kinematics.algorithm import (
     Algorithm as KinematicsAlgorithm,
     Pulley,
     Standard,

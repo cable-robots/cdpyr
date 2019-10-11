@@ -1,6 +1,6 @@
 from typing import Sequence, Tuple, Union
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from magic_repr import make_repr
 
 from cdpyr.motion import pose as _pose
@@ -10,21 +10,26 @@ from cdpyr.typing import Matrix, Vector
 
 class Algorithm(ABC):
 
-    def forward(self,
+    @classmethod
+    @abstractmethod
+    def forward(cls,
                 robot: '_robot.Robot',
                 lengths: Sequence[Vector]
                 ) -> Union[Tuple[Vector, Matrix],
                            Tuple[Sequence[Vector], Sequence[Matrix]]]:
         raise NotImplementedError()
 
-    def backward(self,
+    @classmethod
+    @abstractmethod
+    def backward(cls,
                  robot: '_robot.Robot',
                  pose: Sequence['_pose.Pose']
                  ) -> Union[Tuple[Vector, Matrix],
                             Tuple[Sequence[Vector], Sequence[Matrix]]]:
         raise NotImplementedError()
 
-    def validate_inputs_forward(self,
+    @classmethod
+    def validate_inputs_forward(cls,
                                 robot: '_robot.Robot',
                                 lengths: Union[Sequence[Vector], Vector]):
 
@@ -38,7 +43,8 @@ class Algorithm(ABC):
                     len(lengths)
                 ))
 
-    def validate_inputs_backward(self,
+    @classmethod
+    def validate_inputs_backward(cls,
                                  robot: '_robot.Robot',
                                  pose: Sequence['_pose.Pose']):
 
