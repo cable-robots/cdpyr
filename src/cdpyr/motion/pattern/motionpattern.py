@@ -39,15 +39,15 @@ class Motionpattern(Enum):
 
     @property
     def moves_linear(self):
-        return self.dof_translation == 1 and self.dof_rotation == 0
+        return self.dof_translation == 1
 
     @property
     def moves_planar(self):
-        return self.dof_translation == 2 and self.dof_rotation == 1
+        return self.dof_translation == 2
 
     @property
     def moves_spatial(self):
-        return not self.is_planar
+        return self.dof_translation == 3
 
     @property
     def is_point(self):
