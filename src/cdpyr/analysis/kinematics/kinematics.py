@@ -4,7 +4,7 @@ from enum import Enum
 from magic_repr import make_repr
 
 from cdpyr.analysis.kinematics.algorithm import (
-    Algorithm as KinematicsAlgorithm,
+    AlgorithmInterface as KinematicsAlgorithm,
     Pulley,
     Standard,
 )

@@ -8,7 +8,7 @@ from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 
 
-class Algorithm(ABC):
+class AlgorithmInterface(ABC):
 
     @classmethod
     @abstractmethod
@@ -59,8 +59,8 @@ class Algorithm(ABC):
                 ))
 
 
-Algorithm.__repr__ = make_repr()
+AlgorithmInterface.__repr__ = make_repr()
 
 __all__ = [
-    'Algorithm'
+    'AlgorithmInterface'
 ]

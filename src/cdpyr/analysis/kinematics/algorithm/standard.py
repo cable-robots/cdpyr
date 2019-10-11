@@ -3,8 +3,8 @@ from typing import Sequence, Tuple, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.analysis.kinematics.algorithm.algorithm import Algorithm as \
-    KinematicsInterface
+from cdpyr.analysis.kinematics.algorithm.algorithminterface import \
+    AlgorithmInterface as KinematicsAlgorithmInterface
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import (
     kinematicchain as _kinematicchain,
@@ -14,7 +14,7 @@ from cdpyr.robot import (
 from cdpyr.typing import Matrix, Vector
 
 
-class Standard(KinematicsInterface):
+class Standard(KinematicsAlgorithmInterface):
 
     @classmethod
     def forward(cls,
@@ -55,7 +55,8 @@ class Standard(KinematicsInterface):
                 platform.bi
             )
             # strip additional spatial dimensions
-            cable_vectors = cable_vectors[0:platform.motionpattern.dof_translation,:]
+            cable_vectors = cable_vectors[
+                            0:platform.motionpattern.dof_translation, :]
 
             # calculate norm of columns i.e., cable lengths
             cable_length = np_.linalg.norm(cable_vectors, axis=0)
