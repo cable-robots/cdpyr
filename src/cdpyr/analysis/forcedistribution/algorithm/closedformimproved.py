@@ -93,7 +93,8 @@ class ClosedFormImproved(ForceDistributionAlgorithmInterface):
 
         # if there are any violations, we need to check to see if we can
         # reduce the structure matrix by the amount of violations
-        if current_structure_matrix.shape[1] - num_violations > current_structure_matrix.shape[0]:
+        if current_structure_matrix.shape[1] - num_violations > \
+            current_structure_matrix.shape[0]:
             raise ArithmeticError(
                 'Unable to reduce structure matrix further. Expected it to be '
                 '({}, {}), but was {}.'.format(
