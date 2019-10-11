@@ -51,8 +51,8 @@ class Standard(KinematicsInterface):
             cable_vectors = cls._vector_loop(
                 pos,
                 rot,
-                platform.bi,
-                np_.vstack(kc.frame_anchor.position).T
+                np_.vstack(kc.frame_anchor.position).T,
+                platform.bi
             )
             # strip additional spatial dimensions
             cable_vectors = cable_vectors[0:platform.motionpattern.dof_translation,:]
