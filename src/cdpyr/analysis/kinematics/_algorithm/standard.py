@@ -30,8 +30,8 @@ class Standard(KinematicsInterface):
                             Tuple[Sequence[Vector], Sequence[Matrix]]]:
 
         # init return values
-        cable_lengths = []  # np_.zeros((robot.num_kinematic_chains,))
-        unit_vectors = []  # np_.zeros((3, robot.num_kinematic_chains))
+        cable_lengths = []
+        unit_vectors = []
 
         # some type hinting
         kcs: _kinematicchain.KinematicChainList = robot.kinematic_chains
@@ -52,6 +52,9 @@ class Standard(KinematicsInterface):
                 platform.bi,
                 np_.vstack(kc.frame_anchor.position).T
             )
+            # strip additional spatial dimensions
+            cable_vectors = cable_vectors[0:platform.motionpattern.dof_translation,:]
+
             # calculate norm of columns i.e., cable lengths
             cable_length = np_.linalg.norm(cable_vectors, axis=0)
             cable_lengths.append(cable_length)
