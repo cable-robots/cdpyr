@@ -9,8 +9,8 @@ class Motionpattern(Enum):
     _1T = (1, 0, '1T')
     _2T = (2, 0, '2T')
     _3T = (3, 0, '3T')
-    _1R2T = (1, 2, '1R2T')
-    _2R3T = (2, 3, '2R3T')
+    _1R2T = (2, 1, '1R2T')
+    _2R3T = (3, 2, '2R3T')
     _3R3T = (3, 3, '3R3T')
 
     _dof_translation: int
