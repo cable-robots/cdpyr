@@ -1,5 +1,4 @@
 import numpy as np_
-import scipy
 
 from cdpyr.analysis.forcedistribution.algorithm.algorithminterface import \
     AlgorithmInterface as ForceDistributionAlgorithmInterface
@@ -28,7 +27,7 @@ class ClosedFormImproved(ForceDistributionAlgorithmInterface):
         # if the structure matrix is square, we can just return the straight
         # forward solution to A.T * x = -w
         if linalg.issquare(structurematrix):
-            return scipy.linalg.solve(structurematrix, -wrench)
+            return np_.linalg.solve(structurematrix, -wrench)
 
         # get number of cables/forces from the number of columns of the
         # structure matrix
