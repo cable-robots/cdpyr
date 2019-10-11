@@ -18,9 +18,7 @@ class StandardKinematicsTestSuite(object):
         assert length.ndim == 1
         assert length.shape == (robot_1t.num_kinematic_chains,)
         assert (length >= 0).all()
-        assert unit_directions.shape == (3, robot_1t.num_kinematic_chains)
-        assert unit_directions[1:, :] == pytest.approx(
-            np.zeros((2, robot_1t.num_kinematic_chains)))
+        assert unit_directions.shape == (1, robot_1t.num_kinematic_chains)
         assert np.linalg.norm(unit_directions, axis=0) == pytest.approx(
             np.ones(robot_1t.num_kinematic_chains, ))
 
@@ -34,9 +32,7 @@ class StandardKinematicsTestSuite(object):
         assert length.ndim == 1
         assert length.shape == (robot_2t.num_kinematic_chains,)
         assert (length >= 0).all()
-        assert unit_directions.shape == (3, robot_2t.num_kinematic_chains)
-        assert unit_directions[2:, :] == pytest.approx(
-            np.zeros((1, robot_2t.num_kinematic_chains)))
+        assert unit_directions.shape == (2, robot_2t.num_kinematic_chains)
         assert np.linalg.norm(unit_directions, axis=0) == pytest.approx(
             np.ones(robot_2t.num_kinematic_chains, ))
 
@@ -65,7 +61,7 @@ class StandardKinematicsTestSuite(object):
         assert length.ndim == 1
         assert length.shape == (robot_1r2t.num_kinematic_chains,)
         assert (length >= 0).all()
-        assert unit_directions.shape == (3, robot_1r2t.num_kinematic_chains)
+        assert unit_directions.shape == (2, robot_1r2t.num_kinematic_chains)
         assert np.linalg.norm(unit_directions, axis=0) == pytest.approx(
             np.ones(robot_1r2t.num_kinematic_chains, ))
 
