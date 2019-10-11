@@ -2,7 +2,7 @@ from typing import Sequence, Union
 
 from magic_repr import make_repr
 
-from cdpyr.mixin.list import DispatcherList
+from cdpyr.mixin.list import ObjectList
 from cdpyr.robot import (cable as _cable, platform as _platform)
 from cdpyr.robot.anchor import (
     frameanchor as _frameanchor,
@@ -85,7 +85,11 @@ KinematicChain.__repr__ = make_repr(
 )
 
 
-class KinematicChainList(DispatcherList):
+class KinematicChainList(ObjectList):
+
+    @property
+    def __wraps__(self):
+        return KinematicChain
 
     def __init__(self, initlist=None):
         super().__init__()

@@ -4,7 +4,7 @@ import numpy as np_
 from colour import Color
 from magic_repr import make_repr
 
-from cdpyr.mixin.list import DispatcherList
+from cdpyr.mixin.list import ObjectList
 from cdpyr.typing import Num
 from cdpyr import  validator as _validator
 
@@ -169,7 +169,11 @@ Cable.__repr__ = make_repr(
 )
 
 
-class CableList(DispatcherList):
+class CableList(ObjectList):
+
+    @property
+    def __wraps__(self):
+        return Cable
 
     def __dir__(self):
         return Cable.__dict__.keys()

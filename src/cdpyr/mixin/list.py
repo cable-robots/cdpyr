@@ -1,15 +1,19 @@
 from collections import UserList
 
 
-class DispatcherList(UserList):
+class ObjectList(UserList):
+
+    @property
+    def __wraps__(self):
+        return None
 
     def __getattr__(self, name):
-        res = self.__class__()
+        res = []
 
         for data in self.data:
             attr = getattr(data, name)
 
-            if not callable(attr) or isinstance(attr, DispatcherList):
+            if not callable(attr) or isinstance(attr, ObjectList):
                 res.append(attr)
 
                 continue
@@ -19,12 +23,23 @@ class DispatcherList(UserList):
 
             res.append(wrapper)
 
-        return res
+        # if a custom class is wrapped and the current result contains only
+        # these objects, we will return the original ObjectList with the results
+        if self.__wraps__ is not None and \
+            all([isinstance(o, self.__wraps__) for o in res]):
+            return self.__class__(res)
+
+        return ObjectList(res)
 
     def __call__(self, *args, **kwargs):
-        res = self.__class__()
+        res = []
 
         for data in self.data:
             res.append(data(*args, **kwargs))
 
-        return res
+        # if a custom class is wrapped and the current result contains only
+        # these objects, we will return the original ObjectList with the results
+        if self.__wraps__ is not None and all([isinstance(o, self.__wraps__) for o in res]):
+            return self.__class__(res)
+
+        return ObjectList(res)

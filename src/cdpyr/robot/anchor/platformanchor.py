@@ -42,6 +42,10 @@ PlatformAnchor.__repr__ = make_repr(
 
 class PlatformAnchorList(_anchor.AnchorList):
 
+    @property
+    def __wraps__(self):
+        return PlatformAnchor
+
     def __dir__(self):
         return PlatformAnchor.__dict__.keys()
 

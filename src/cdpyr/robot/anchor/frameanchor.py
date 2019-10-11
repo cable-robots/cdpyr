@@ -69,6 +69,10 @@ FrameAnchor.__repr__ = make_repr(
 
 class FrameAnchorList(_anchor.AnchorList):
 
+    @property
+    def __wraps__(self):
+        return FrameAnchor
+
     def __dir__(self):
         return FrameAnchor.__dict__.keys()
 

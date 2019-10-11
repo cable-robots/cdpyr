@@ -1,5 +1,5 @@
-from cdpyr.mixin.list import DispatcherList
+from cdpyr.mixin.list import ObjectList
 
 __all__ = [
-    'DispatcherList',
+    'ObjectList',
 ]

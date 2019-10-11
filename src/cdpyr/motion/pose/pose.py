@@ -9,7 +9,7 @@ from cdpyr.kinematics.transformation import (
     homogenous as _homogenoustransformation,
     linear as _lineartransformation,
 )
-from cdpyr.mixin.list import DispatcherList
+from cdpyr.mixin.list import ObjectList
 from cdpyr.typing import Matrix, Num, Vector
 
 
@@ -206,8 +206,10 @@ PoseList.__repr__ = make_repr(
 )
 
 
-class PoseList(DispatcherList):
-    pass
+class PoseList(ObjectList):
+    @property
+    def __wraps__(self):
+        return Pose
 
 
 __all__ = [

@@ -5,7 +5,7 @@ from magic_repr import make_repr
 
 from cdpyr import validator as _validator
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.mixin.list import DispatcherList
+from cdpyr.mixin.list import ObjectList
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import motionpattern as _motionpattern
 from cdpyr.robot.anchor import platformanchor as _platformanchor
@@ -157,7 +157,11 @@ Platform.__repr__ = make_repr(
 )
 
 
-class PlatformList(DispatcherList):
+class PlatformList(ObjectList):
+
+    @property
+    def __wraps__(self):
+        return Platform
 
     def __dir__(self):
         return Platform.__dict__.keys()

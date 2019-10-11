@@ -1,5 +1,6 @@
 from typing import Optional, Union
 
+from abc import ABC
 from magic_repr import make_repr
 
 from cdpyr.kinematics.transformation.angular import (
@@ -10,7 +11,7 @@ from cdpyr.kinematics.transformation.linear import (
     Linear as LinearTransformation,
     # LinearSchema as LinearTransformationSchema,
 )
-from cdpyr.mixin.list import DispatcherList
+from cdpyr.mixin.list import ObjectList
 from cdpyr.typing import Matrix, Vector
 
 
@@ -134,7 +135,7 @@ Anchor.__repr__ = make_repr(
 )
 
 
-class AnchorList(DispatcherList):
+class AnchorList(ObjectList, ABC):
 
     def __dir__(self):
         return Anchor.__dict__.keys()
