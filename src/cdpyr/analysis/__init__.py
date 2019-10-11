@@ -1,4 +1,5 @@
 from cdpyr.analysis import (
+    forcedistribution,
     kinematics,
     kinetostatics,
     stiffness,
