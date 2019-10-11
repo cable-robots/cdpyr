@@ -8,6 +8,7 @@ from cdpyr.analysis import (
 )
 
 __all__ = [
+    'forcedistribution',
     'kinematics',
     'kinetostatics',
     'stiffness',
