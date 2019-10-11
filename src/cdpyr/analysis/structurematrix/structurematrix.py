@@ -3,14 +3,13 @@ from typing import Sequence, Union
 from magic_repr import make_repr
 
 from cdpyr.analysis.structurematrix.algorithm import (
-    motionpattern_1r2t as _mp_1r2t,
-    motionpattern_1t as _mp_1t,
-    motionpattern_2r3t as _mp_2r3t,
-    motionpattern_2t as _mp_2t,
-    motionpattern_3r3t as _mp_3r3t,
-    motionpattern_3t as _mp_3t,
+    structurematrix1r2t as _mp1r2t,
+    structurematrix1t as _mp1t,
+    structurematrix2r3t as _mp2r3t,
+    structurematrix2t as _mp2t,
+    structurematrix3r3t as _mp3r3t,
+    structurematrix3t as _mp3t,
 )
-# from cdpyr.analysis.kinematics import algorithm as _kinematicsalgorithm
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import motionpattern as _motionpattern
 from cdpyr.robot import robot as _robot
@@ -21,12 +20,12 @@ class StructureMatrix(object):
     # mapping of literal motion pattern name to the structure matrix class
     # for the motion pattern
     _MAPPING = {
-        _motionpattern.Motionpattern.MP_1T.name:   _mp_1t.MotionPattern_1T(),
-        _motionpattern.Motionpattern.MP_2T.name:   _mp_2t.MotionPattern_2T(),
-        _motionpattern.Motionpattern.MP_3T.name:   _mp_3t.MotionPattern_3T(),
-        _motionpattern.Motionpattern.MP_1R2T.name: _mp_1r2t.MotionPattern_1R2T(),
-        _motionpattern.Motionpattern.MP_2R3T.name: _mp_2r3t.MotionPattern_2R3T(),
-        _motionpattern.Motionpattern.MP_3R3T.name: _mp_3r3t.MotionPattern_3R3T()
+        _motionpattern.Motionpattern.MP_1T.name:   _mp1t.StructureMatrix1T(),
+        _motionpattern.Motionpattern.MP_2T.name:   _mp2t.StructureMatrix2T(),
+        _motionpattern.Motionpattern.MP_3T.name:   _mp3t.StructureMatrix3T(),
+        _motionpattern.Motionpattern.MP_1R2T.name: _mp1r2t.StructureMatrix1R2T(),
+        _motionpattern.Motionpattern.MP_2R3T.name: _mp2r3t.StructureMatrix2R3T(),
+        _motionpattern.Motionpattern.MP_3R3T.name: _mp3r3t.StructureMatrix3R3T()
     }
 
     def __call__(self,
@@ -58,7 +57,7 @@ class StructureMatrix(object):
             # calculate the platforms structure matrix
             structurematrices.append(self._MAPPING[
                                          platform.motionpattern.name
-                                     ](platform, uis[idx], pose[idx])
+                                     ].calculate(platform, uis[idx], pose[idx])
                                      )
 
         # in case of robots with only one platform, make the return value a

@@ -6,7 +6,7 @@ from cdpyr.robot import platform as _platform
 from cdpyr.typing import Matrix
 
 
-class MotionPattern_3T(Algorithm):
+class StructureMatrix3T(Algorithm):
 
     @classmethod
     def calculate(cls,

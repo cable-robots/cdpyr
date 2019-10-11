@@ -14,9 +14,3 @@ class Algorithm(ABC):
                   uis: Matrix,
                   pose: '_pose.Pose' = None):
         raise NotImplementedError()
-
-    def __call__(self,
-                 platform: '_platform.Platform',
-                 uis: Matrix,
-                 pose: '_pose.Pose' = None):
-        return self.calculate(platform, uis, pose)
