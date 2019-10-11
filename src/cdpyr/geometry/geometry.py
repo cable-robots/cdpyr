@@ -1,13 +1,14 @@
-from abc import ABC
-
+from abc import ABC, abstractmethod
 from magic_repr import make_repr
 
+from cdpyr import validator as _validator
 from cdpyr.typing import Num
 
 
 class Geometry(ABC):
     _mass: float
 
+    @abstractmethod
     def moment_of_inertia(self):
         raise NotImplementedError('method not implemented by child class.')
 
