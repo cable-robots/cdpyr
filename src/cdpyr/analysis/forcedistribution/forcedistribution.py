@@ -8,6 +8,7 @@ from cdpyr.analysis.forcedistribution.algorithm.algorithminterface import \
 from cdpyr.analysis.forcedistribution.algorithm.closedform import ClosedForm
 from cdpyr.analysis.forcedistribution.algorithm.closedformimproved import \
     ClosedFormImproved
+from cdpyr.analysis.forcedistribution.algorithm.dykstra import Dykstra
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 
@@ -15,6 +16,7 @@ from cdpyr.typing import Matrix, Vector
 class ForceDistribution(Enum):
     CLOSED_FORM = (ClosedForm())
     CLOSED_FORM_IMPROVED = (ClosedFormImproved())
+    DYKSTRA = (Dykstra())
 
     @property
     def algorithm(self) -> ForceDistributionAlgorithm:
