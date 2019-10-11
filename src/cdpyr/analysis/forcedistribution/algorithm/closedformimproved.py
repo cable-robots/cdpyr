@@ -14,16 +14,6 @@ class ClosedFormImproved(ForceDistributionAlgorithmInterface):
                   structurematrix: Matrix,
                   wrench: Vector,
                   **kwargs):
-        # validate structure matrix has at least as many columns as rows
-        if structurematrix.shape[1] < structurematrix.shape[0]:
-            raise ValueError(
-                'Expected structure to be at least ({}, {}) but received {'
-                '}.'.format(
-                    wrench.shape[1],
-                    wrench.shape[1],
-                    structurematrix.shape
-                ))
-
         # if the structure matrix is square, we can just return the straight
         # forward solution to A.T * x = -w
         if linalg.issquare(structurematrix):
