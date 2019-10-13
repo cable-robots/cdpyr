@@ -9,8 +9,8 @@ class AlgorithmInterface(ABC):
 
     @classmethod
     @abstractmethod
-    def calculate(cls,
-                  platform: '_platform.Platform',
-                  uis: Matrix,
-                  pose: '_pose.Pose' = None):
+    def evaluate(cls,
+                 platform: '_platform.Platform',
+                 uis: Matrix,
+                 pose: '_pose.Pose' = None):
         raise NotImplementedError()

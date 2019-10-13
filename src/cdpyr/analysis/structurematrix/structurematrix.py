@@ -29,11 +29,11 @@ class StructureMatrix(object):
     }
 
     @classmethod
-    def calculate(cls,
-                  robot: '_robot.Robot',
-                  uis: Union[Matrix, Sequence[Matrix]],
-                  pose: Union['_pose.Pose', Sequence['_pose.Pose']] = None,
-                  ):
+    def evaluate(cls,
+                 robot: '_robot.Robot',
+                 uis: Union[Matrix, Sequence[Matrix]],
+                 pose: Union['_pose.Pose', Sequence['_pose.Pose']] = None,
+                 ):
         # and make sure we are dealing with a sequence of poses
         pose = pose if isinstance(pose, Sequence) else [pose]
 
@@ -58,7 +58,7 @@ class StructureMatrix(object):
             # calculate the platforms structure matrix
             structurematrices.append(cls._MAPPING[
                                          platform.motionpattern.name
-                                     ].calculate(platform, uis[idx], pose[idx])
+                                     ].evaluate(platform, uis[idx], pose[idx])
                                      )
 
         # in case of robots with only one platform, make the return value a
@@ -72,7 +72,7 @@ class StructureMatrix(object):
                  uis: Union[Matrix, Sequence[Matrix]],
                  pose: Union['_pose.Pose', Sequence['_pose.Pose']] = None,
                  ):
-        return self.calculate(robot, uis, pose)
+        return self.evaluate(robot, uis, pose)
 
     def _resolve_structure_matrix(self, platform, pose, ui):
         pass

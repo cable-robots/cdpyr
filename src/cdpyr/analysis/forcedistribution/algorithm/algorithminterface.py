@@ -12,11 +12,11 @@ class AlgorithmInterface(ABC):
 
     @classmethod
     @abstractmethod
-    def calculate(cls,
-                  robot: '_robot.Robot',
-                  structurematrix: Matrix,
-                  wrench: Vector,
-                  **kwargs):
+    def evaluate(cls,
+                 robot: '_robot.Robot',
+                 structurematrix: Matrix,
+                 wrench: Vector,
+                 **kwargs):
         raise NotImplementedError()
 
     @classmethod

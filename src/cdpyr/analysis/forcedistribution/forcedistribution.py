@@ -22,11 +22,11 @@ class ForceDistribution(Enum):
     def algorithm(self) -> ForceDistributionAlgorithm:
         return self._value_
 
-    def calculate(self,
-                  robot: '_robot.Robot',
-                  structurematrix: Matrix,
-                  wrench: Vector,
-                  **kwargs):
+    def evaluate(self,
+                 robot: '_robot.Robot',
+                 structurematrix: Matrix,
+                 wrench: Vector,
+                 **kwargs):
         # validate structure matrix has at least as many columns as rows
         if structurematrix.shape[1] < structurematrix.shape[0]:
             raise ValueError(
@@ -37,14 +37,14 @@ class ForceDistribution(Enum):
                     structurematrix.shape
                 ))
 
-        return self.algorithm.calculate(robot,
-                                        np_.asarray(structurematrix),
-                                        np_.asarray(wrench),
-                                        **kwargs)
+        return self.algorithm.evaluate(robot,
+                                       np_.asarray(structurematrix),
+                                       np_.asarray(wrench),
+                                       **kwargs)
 
     def __call__(self,
                  robot: '_robot.Robot',
                  structurematrix: Matrix,
                  wrench: Vector,
                  **kwargs):
-        return self.calculate(robot, structurematrix, wrench, **kwargs)
+        return self.evaluate(robot, structurematrix, wrench, **kwargs)

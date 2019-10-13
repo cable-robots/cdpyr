@@ -9,11 +9,11 @@ from cdpyr.typing import Matrix, Vector
 class ClosedFormImproved(ForceDistributionAlgorithmInterface):
 
     @classmethod
-    def calculate(cls,
-                  robot: '_robot.Robot',
-                  structurematrix: Matrix,
-                  wrench: Vector,
-                  **kwargs):
+    def evaluate(cls,
+                 robot: '_robot.Robot',
+                 structurematrix: Matrix,
+                 wrench: Vector,
+                 **kwargs):
         # if the structure matrix is square, we can just return the straight
         # forward solution to A.T * x = -w
         if linalg.issquare(structurematrix):

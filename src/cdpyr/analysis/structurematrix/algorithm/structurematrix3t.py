@@ -9,8 +9,8 @@ from cdpyr.typing import Matrix
 class StructureMatrix3T(AlgorithmInterface):
 
     @classmethod
-    def calculate(cls,
-                  platform: '_platform.Platform',
-                  uis: Matrix,
-                  pose: '_pose.Pose' = None):
+    def evaluate(cls,
+                 platform: '_platform.Platform',
+                 uis: Matrix,
+                 pose: '_pose.Pose' = None):
         return uis[0:3, :]
