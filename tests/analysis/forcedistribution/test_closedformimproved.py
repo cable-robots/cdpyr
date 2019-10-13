@@ -25,7 +25,7 @@ class ClosedFormForceDistributionTestSuite(object):
         wrench[0] = -9.81 * 1
 
         # and calculate force distribution
-        force_distribution: cdpyr.typing.Vector = fdist.calculate(
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_1t,
             structmat,
             wrench,
@@ -58,7 +58,7 @@ class ClosedFormForceDistributionTestSuite(object):
         wrench[1] = -9.81 * 1
 
         # and calculate force distribution
-        force_distribution: cdpyr.typing.Vector = fdist.calculate(
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_2t,
             structmat,
             wrench,
@@ -91,7 +91,7 @@ class ClosedFormForceDistributionTestSuite(object):
         wrench[2] = -9.81 * 1
 
         # and calculate force distribution
-        force_distribution: cdpyr.typing.Vector = fdist.calculate(
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_3t,
             structmat,
             wrench,
@@ -124,7 +124,7 @@ class ClosedFormForceDistributionTestSuite(object):
         wrench[1] = -9.81 * 1
 
         # and calculate force distribution
-        force_distribution: cdpyr.typing.Vector = fdist.calculate(
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_1r2t,
             structmat,
             wrench,
@@ -157,7 +157,7 @@ class ClosedFormForceDistributionTestSuite(object):
         wrench[2] = -9.81 * 1
 
         # and calculate force distribution
-        force_distribution: cdpyr.typing.Vector = fdist.calculate(
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_2r3t,
             structmat,
             wrench,
@@ -191,7 +191,7 @@ class ClosedFormForceDistributionTestSuite(object):
         wrench[2] = -9.81 * 1
 
         # and calculate force distribution
-        force_distribution: cdpyr.typing.Vector = fdist.calculate(
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_3r3t,
             structmat,
             wrench,
