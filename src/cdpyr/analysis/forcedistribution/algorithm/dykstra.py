@@ -2,12 +2,12 @@ import numpy as np_
 
 from cdpyr import validator as _validator
 from cdpyr.analysis.forcedistribution.algorithm.algorithminterface import \
-    AlgorithmInterface as ForceDistributionAlgorithmInterface
+    AlgorithmInterface as ForceDistributionAlgorithm
 from cdpyr.numpy import linalg
 from cdpyr.typing import Matrix, Vector
 
 
-class Dykstra(ForceDistributionAlgorithmInterface):
+class Dykstra(ForceDistributionAlgorithm):
 
     @classmethod
     def evaluate(cls,

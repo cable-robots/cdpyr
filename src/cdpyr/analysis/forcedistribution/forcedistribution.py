@@ -4,11 +4,12 @@ import numpy as np_
 from enum import Enum
 
 from cdpyr.analysis.forcedistribution.algorithm import (
-    AlgorithmInterface as ForceDistributionAlgorithm,
     ClosedForm,
     ClosedFormImproved,
     Dykstra,
 )
+from cdpyr.analysis.forcedistribution.algorithm.algorithminterface import \
+    AlgorithmInterface as ForceDistributionAlgorithm
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 

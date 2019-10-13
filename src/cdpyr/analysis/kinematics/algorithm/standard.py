@@ -4,7 +4,7 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.analysis.kinematics.algorithm.algorithminterface import \
-    AlgorithmInterface as KinematicsAlgorithmInterface
+    AlgorithmInterface as KinematicsAlgorithm
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import (
     kinematicchain as _kinematicchain,
@@ -14,7 +14,7 @@ from cdpyr.robot import (
 from cdpyr.typing import Matrix, Vector
 
 
-class Standard(KinematicsAlgorithmInterface):
+class Standard(KinematicsAlgorithm):
 
     @classmethod
     def forward(cls,

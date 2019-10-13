@@ -1,13 +1,13 @@
 import numpy as np_
 
 from cdpyr.analysis.forcedistribution.algorithm.algorithminterface import \
-    AlgorithmInterface as ForceDistributionAlgorithmInterface
+    AlgorithmInterface as ForceDistributionAlgorithm
 from cdpyr.numpy import linalg
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 
 
-class ClosedForm(ForceDistributionAlgorithmInterface):
+class ClosedForm(ForceDistributionAlgorithm):
 
     @classmethod
     def evaluate(cls,

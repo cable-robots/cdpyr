@@ -3,13 +3,13 @@ from typing import Sequence, Tuple, Union
 from magic_repr import make_repr
 
 from cdpyr.analysis.kinematics.algorithm.algorithminterface import \
-    AlgorithmInterface as KinematicsAlgorithmInterface
+    AlgorithmInterface as KinematicsAlgorithm
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 
 
-class Pulley(KinematicsAlgorithmInterface):
+class Pulley(KinematicsAlgorithm):
 
     @classmethod
     def forward(cls,

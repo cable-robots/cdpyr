@@ -4,10 +4,11 @@ from enum import Enum
 from magic_repr import make_repr
 
 from cdpyr.analysis.kinematics.algorithm import (
-    AlgorithmInterface as KinematicsAlgorithm,
     Pulley,
     Standard,
 )
+from cdpyr.analysis.kinematics.algorithm.algorithminterface import \
+    AlgorithmInterface as KinematicsAlgorithm
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
