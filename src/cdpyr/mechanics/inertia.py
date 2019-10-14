@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Sequence
 
 import numpy as np_
 from magic_repr import make_repr
@@ -13,23 +13,23 @@ class Inertia(object):
     _angular: np_.ndarray
 
     def __init__(self,
-                 linear: Union[Vector, Num] = None,
-                 angular: Union[Vector, Matrix] = None
+                 linear: Matrix = None,
+                 angular: Matrix = None
                  ):
-        self.linear = linear if linear else np_.full((3, ), np_.inf)
-        self.angular = angular if angular else np_.diag(np_.full((3, ), np_.inf))
+        self.linear = linear if linear is not None else np_.diag(np_.full((3, ), np_.inf))
+        self.angular = angular if angular is not None else np_.diag(np_.full((3, ), np_.inf))
 
     @property
     def linear(self):
         return self._linear
 
     @linear.setter
-    def linear(self, inertia: Union[Vector, Num]):
+    def linear(self, inertia: Matrix):
         inertia = np_.asarray(inertia)
 
-        _validator.dimensions(inertia, 1, 'linear')
-        _validator.shape(inertia, (3, ), 'linear')
-        _validator.positive(inertia, 'linear')
+        _validator.dimensions(inertia, 2, 'linear')
+        _validator.shape(inertia, (3, 3), 'linear')
+        _validator.positive(np_.diag(inertia), 'linear')
 
         self._linear = inertia
 
@@ -38,7 +38,7 @@ class Inertia(object):
         return self._angular
 
     @angular.setter
-    def angular(self, inertia: Union[Matrix, Vector]):
+    def angular(self, inertia: Matrix):
         inertia = np_.asarray(inertia)
 
         _validator.dimensions(inertia, 2, 'angular')
