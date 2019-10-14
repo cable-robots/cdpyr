@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import symmetric
+from cdpyr.validator.linalg import symmetric
 
 
 class SymmetricTestSuite(object):

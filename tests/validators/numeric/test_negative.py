@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import negative
+from cdpyr.validator.numeric import negative
 
 
 class NegativeTestSuite(object):

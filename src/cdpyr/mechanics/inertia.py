@@ -27,9 +27,9 @@ class Inertia(object):
     def linear(self, inertia: Matrix):
         inertia = np_.asarray(inertia)
 
-        _validator.dimensions(inertia, 2, 'linear')
-        _validator.shape(inertia, (3, 3), 'linear')
-        _validator.positive(np_.diag(inertia), 'linear')
+        _validator.linalg.dimensions(inertia, 2, 'linear')
+        _validator.linalg.shape(inertia, (3, 3), 'linear')
+        _validator.numeric.positive(np_.diag(inertia), 'linear')
 
         self._linear = inertia
 
@@ -41,9 +41,9 @@ class Inertia(object):
     def angular(self, inertia: Matrix):
         inertia = np_.asarray(inertia)
 
-        _validator.dimensions(inertia, 2, 'angular')
-        _validator.shape(inertia, (3, 3), 'angular')
-        _validator.nonnegative(inertia.diagonal(), 'angular')
+        _validator.linalg.dimensions(inertia, 2, 'angular')
+        _validator.linalg.shape(inertia, (3, 3), 'angular')
+        _validator.numeric.nonnegative(inertia.diagonal(), 'angular')
 
         self._angular = inertia
 

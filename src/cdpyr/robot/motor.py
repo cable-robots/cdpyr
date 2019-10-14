@@ -48,7 +48,7 @@ class Motor(object):
 
     @stall_torque.setter
     def stall_torque(self, stall_torque: Num):
-        _validator.positive(stall_torque, 'stall_torque')
+        _validator.numeric.positive(stall_torque, 'stall_torque')
 
         self.torques['stall'] = stall_torque
 
@@ -62,7 +62,7 @@ class Motor(object):
 
     @peak_torque.setter
     def peak_torque(self, peak_torque: Num):
-        _validator.positive(peak_torque, 'peak_torque')
+        _validator.numeric.positive(peak_torque, 'peak_torque')
 
         self.torques['peak'] = peak_torque
 
@@ -76,7 +76,7 @@ class Motor(object):
 
     @rated_speed.setter
     def rated_speed(self, rated_speed: Num):
-        _validator.positive(rated_speed, 'rated_speed')
+        _validator.numeric.positive(rated_speed, 'rated_speed')
 
         self._rated_speed = rated_speed
 
@@ -90,7 +90,7 @@ class Motor(object):
 
     @rated_power.setter
     def rated_power(self, rated_power: Num):
-        _validator.positive(rated_power, 'rated_power')
+        _validator.numeric.positive(rated_power, 'rated_power')
 
         self._rated_power = rated_power
 
@@ -104,7 +104,7 @@ class Motor(object):
 
     @rated_torque.setter
     def rated_torque(self, rated_torque: Num):
-        _validator.non(rated_torque, 'rated_torque')
+        _validator.numeric.positive(rated_torque, 'rated_torque')
 
         self.torques['rated'] = rated_torque
 
@@ -118,7 +118,7 @@ class Motor(object):
 
     @moment_of_inertia.setter
     def moment_of_inertia(self, moment_of_inertia: Num):
-        _validator.positive(moment_of_inertia, 'moment_of_inertia')
+        _validator.numeric.positive(moment_of_inertia, 'moment_of_inertia')
 
         self._moment_of_inertia = moment_of_inertia
 
@@ -132,7 +132,7 @@ class Motor(object):
 
     @rms_torque.setter
     def rms_torque(self, rms_torque: Num):
-        _validator.positive(rms_torque, 'rms_torque')
+        _validator.numeric.positive(rms_torque, 'rms_torque')
 
         self.torques['rms'] = rms_torque
 
@@ -146,7 +146,7 @@ class Motor(object):
 
     @max_torque.setter
     def max_torque(self, max_torque: Num):
-        _validator.positive(max_torque, 'max_torque')
+        _validator.numeric.positive(max_torque, 'max_torque')
 
         self.peak_torque = max_torque
 

@@ -1,38 +1,38 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import finite
+from cdpyr.validator.numeric import nonnan
 
 
-class FiniteTestSuite(object):
+class NonnanTestSuite(object):
 
     def test_scalar_pass(self):
-        finite(4)
-        finite(-4)
+        nonnan(4)
+        nonnan(-4)
 
     def test_scalar_failses(self):
         with pytest.raises(ValueError):
-            finite(np.inf)
+            nonnan(np.nan)
 
         with pytest.raises(ValueError):
-            finite(-np.inf)
+            nonnan(-np.nan)
 
     def test_list_passes(self):
-        finite([1, 2, 3, 4])
+        nonnan([1, 2, 3, 4])
 
     def test_list_fails(self):
         with pytest.raises(ValueError):
-            finite([np.inf, np.inf, np.inf, np.inf])
+            nonnan([np.nan, np.nan, np.nan, np.nan])
 
         with pytest.raises(ValueError):
-            finite([np.inf, -np.inf, np.inf, -np.inf])
+            nonnan([np.nan, -np.nan, np.nan, -np.nan])
 
     def test_numpyarray_passes(self):
-        finite(np.asarray((1, 2, 3, 4)))
+        nonnan(np.asarray((1, 2, 3, 4)))
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
-            finite(np.asarray((np.inf, np.inf, np.inf, np.inf)))
+            nonnan(np.asarray((np.nan, np.nan, np.nan, np.nan)))
 
         with pytest.raises(ValueError):
-            finite(np.asarray((-np.inf, np.inf, -np.inf, np.inf)))
+            nonnan(np.asarray((-np.nan, np.nan, -np.nan, np.nan)))

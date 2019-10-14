@@ -25,7 +25,7 @@ class Gearbox(object):
 
     @ratio.setter
     def ratio(self, ratio: Num):
-        _validator.nonnegative(ratio, 'ratio')
+        _validator.numeric.nonnegative(ratio, 'ratio')
 
         self._ratio = ratio
 
@@ -39,7 +39,7 @@ class Gearbox(object):
 
     @moment_of_inertia.setter
     def moment_of_inertia(self, inertia: Num):
-        _validator.positive(inertia, 'inertia')
+        _validator.numeric.positive(inertia, 'inertia')
 
         self._moment_of_inertia = inertia
 

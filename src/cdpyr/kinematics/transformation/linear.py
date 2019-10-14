@@ -34,8 +34,8 @@ class Linear(object):
     def position(self, position: Vector):
         position = np_.asarray(position)
 
-        _validator.dimensions(position, 1, 'position')
-        _validator.shape(position, (3, ), 'position')
+        _validator.linalg.dimensions(position, 1, 'position')
+        _validator.linalg.shape(position, (3,), 'position')
 
         self._position = position
 
@@ -51,8 +51,8 @@ class Linear(object):
     def velocity(self, velocity: Vector):
         velocity = np_.asarray(velocity)
 
-        _validator.dimensions(velocity, 1, 'velocity')
-        _validator.shape(velocity, (3, ), 'velocity')
+        _validator.linalg.dimensions(velocity, 1, 'velocity')
+        _validator.linalg.shape(velocity, (3,), 'velocity')
 
         self._velocity = velocity
 
@@ -68,8 +68,8 @@ class Linear(object):
     def acceleration(self, acceleration: Vector):
         acceleration = np_.asarray(acceleration)
 
-        _validator.dimensions(acceleration, 1, 'acceleration')
-        _validator.shape(acceleration, (3, ), 'acceleration')
+        _validator.linalg.dimensions(acceleration, 1, 'acceleration')
+        _validator.linalg.shape(acceleration, (3,), 'acceleration')
 
         self._acceleration = acceleration
 

@@ -45,7 +45,7 @@ class AlgorithmInterface(ABC):
                             )
 
         # finally validate these values
-        _validator.greater_than_or_equal_to(force_min, 0, 'force_min')
-        _validator.less_than_or_equal_to(force_max, np_.inf, 'force_max')
+        _validator.numeric.greater_than_or_equal_to(force_min, 0, 'force_min')
+        _validator.numeric.less_than_or_equal_to(force_max, np_.inf, 'force_max')
 
         return force_min, force_max

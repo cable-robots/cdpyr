@@ -78,7 +78,7 @@ class Motionpattern(Enum):
         gravity = np_.pad(gravity, (self.dof_translation - gravity.size, 0))
 
         # validate shape of the gravity vector is (n_trans, )
-        _validator.shape(gravity, (self.dof_translation,))
+        _validator.linalg.shape(gravity, (self.dof_translation,))
 
         # and return it
         return gravity

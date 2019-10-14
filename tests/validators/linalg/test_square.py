@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import square
+from cdpyr.validator.linalg import square
 
 
 class SquareTestSuite(object):

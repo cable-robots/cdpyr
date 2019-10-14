@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import equal_to
+from cdpyr.validator.numeric import equal_to
 
 
 class EqualToTestSuite(object):

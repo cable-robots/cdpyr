@@ -108,7 +108,7 @@ class Platform(object):
     def center_of_gravity(self, position: Vector):
         position = np_.asarray(position)
 
-        _validator.shape(position, (3,), 'center_of_gravity')
+        _validator.linalg.shape(position, (3,), 'center_of_gravity')
 
         self._center_of_gravity = position
 
@@ -124,7 +124,7 @@ class Platform(object):
     def center_of_linkage(self, position: Vector):
         position = np_.asarray(position)
 
-        _validator.shape(position, (3,), 'center_of_linkage')
+        _validator.linalg.shape(position, (3,), 'center_of_linkage')
 
         self._center_of_linkage = position
 

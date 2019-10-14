@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import positive
+from cdpyr.validator.numeric import positive
 
 
 class PositiveTestSuite(object):

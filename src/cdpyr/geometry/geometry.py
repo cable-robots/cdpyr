@@ -18,7 +18,7 @@ class Geometry(ABC):
 
     @mass.setter
     def mass(self, mass: Num):
-        _validator.positive(mass, 'mass')
+        _validator.numeric.positive(mass, 'mass')
 
         self._mass = mass
 

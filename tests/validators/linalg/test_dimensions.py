@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import dimensions
+from cdpyr.validator.linalg import dimensions
 
 
 class DimensionsTestSuite(object):

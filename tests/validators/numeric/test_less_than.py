@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import less_than
+from cdpyr.validator.numeric import less_than
 
 
 class LessThanTestSuite(object):

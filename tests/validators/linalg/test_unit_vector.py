@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import unit_vector
+from cdpyr.validator.linalg import unit_vector
 
 
 class UnitVectorTestSuite(object):

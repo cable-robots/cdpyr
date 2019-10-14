@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import greater_than
+from cdpyr.validator.numeric import greater_than
 
 
 class GreaterThanTestSuite(object):

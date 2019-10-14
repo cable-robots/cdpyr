@@ -58,7 +58,7 @@ class Cable(object):
 
     @diameter.setter
     def diameter(self, diameter: Num):
-        _validator.nonnegative(diameter, 'diameter')
+        _validator.numeric.nonnegative(diameter, 'diameter')
 
         self._diameter = diameter
 
@@ -72,7 +72,7 @@ class Cable(object):
 
     @breaking_load.setter
     def breaking_load(self, breaking_load: Num):
-        _validator.nonnegative(breaking_load, 'breaking_load')
+        _validator.numeric.nonnegative(breaking_load, 'breaking_load')
 
         self._breaking_load = breaking_load
 

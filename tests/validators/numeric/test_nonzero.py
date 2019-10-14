@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import nonzero
+from cdpyr.validator.numeric import nonzero
 
 
 class NonzeroTestSuite(object):

@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import rotation_matrix
+from cdpyr.validator.linalg import rotation_matrix
 
 
 class RotationMatrixTestSuite(object):

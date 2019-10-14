@@ -22,15 +22,15 @@ class Dykstra(ForceDistributionAlgorithm):
 
         # number of maximum iterations
         max_iter = kwargs.get('maxiter', 5000)
-        _validator.greater_than(max_iter, 0, 'max_iter')
+        _validator.numeric.greater_than(max_iter, 0, 'max_iter')
         # threshold for projection
         eps_projection = kwargs.get('eps_projection', 1e-3)
-        _validator.greater_than(eps_projection, 0, 'eps_projection')
-        _validator.less_than(eps_projection, 1, 'eps_projection')
+        _validator.numeric.greater_than(eps_projection, 0, 'eps_projection')
+        _validator.numeric.less_than(eps_projection, 1, 'eps_projection')
         # threshold for convergence
         eps_convergence = kwargs.get('eps_convergence', 1e-6)
-        _validator.greater_than(eps_convergence, 0, 'eps_convergence')
-        _validator.less_than(eps_convergence, 1, 'eps_convergence')
+        _validator.numeric.greater_than(eps_convergence, 0, 'eps_convergence')
+        _validator.numeric.less_than(eps_convergence, 1, 'eps_convergence')
 
         # get number of cables/forces from the number of columns of the
         # structure matrix

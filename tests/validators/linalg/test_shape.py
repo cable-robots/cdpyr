@@ -1,6 +1,6 @@
 import pytest
 
-from cdpyr.validator import shape
+from cdpyr.validator.linalg import shape
 
 
 class ShapeTestSuite(object):

@@ -140,8 +140,8 @@ class Angular(object):
     def euler(self, euler: Vector):
         euler = np_.asarray(euler)
 
-        _validator.dimensions(euler, 1, 'euler')
-        _validator.shape(euler, (3,), 'euler')
+        _validator.linalg.dimensions(euler, 1, 'euler')
+        _validator.linalg.shape(euler, (3,), 'euler')
 
         self.rotation = Rotation.from_euler(self.sequence, euler)
 
@@ -157,8 +157,8 @@ class Angular(object):
     def dcm(self, dcm: Matrix):
         dcm = np_.asarray(dcm)
 
-        _validator.dimensions(dcm, 2, 'dcm')
-        _validator.shape(dcm, (3, 3), 'dcm')
+        _validator.linalg.dimensions(dcm, 2, 'dcm')
+        _validator.linalg.shape(dcm, (3, 3), 'dcm')
 
         self.rotation = Rotation.from_dcm(dcm)
 
@@ -174,8 +174,8 @@ class Angular(object):
     def quaternion(self, quaternion: Vector):
         quaternion = np_.asarray(quaternion)
 
-        _validator.dimensions(quaternion, 1, 'quaternion')
-        _validator.shape(quaternion, (4,), 'quaternion')
+        _validator.linalg.dimensions(quaternion, 1, 'quaternion')
+        _validator.linalg.shape(quaternion, (4,), 'quaternion')
 
         self.rotation = Rotation.from_quat(quaternion)
 
@@ -191,8 +191,8 @@ class Angular(object):
     def rotvec(self, rotvec: Vector):
         rotvec = np_.asarray(rotvec)
 
-        _validator.dimensions(rotvec, 1, 'rotvec')
-        _validator.shape(rotvec, (3, ), 'rotvec')
+        _validator.linalg.dimensions(rotvec, 1, 'rotvec')
+        _validator.linalg.shape(rotvec, (3,), 'rotvec')
 
         self.rotation = Rotation.from_rotvec(rotvec)
 
@@ -208,8 +208,8 @@ class Angular(object):
     def angular_velocity(self, velocity: Vector):
         velocity = np_.asarray(velocity)
 
-        _validator.dimensions(velocity, 1, 'angular_velocity')
-        _validator.shape(velocity, (3, ), 'angular_velocity')
+        _validator.linalg.dimensions(velocity, 1, 'angular_velocity')
+        _validator.linalg.shape(velocity, (3,), 'angular_velocity')
 
         self._angular_velocity = velocity
 
@@ -225,8 +225,8 @@ class Angular(object):
     def angular_acceleration(self, acceleration: Vector):
         acceleration = np_.asarray(acceleration)
 
-        _validator.dimensions(acceleration, 1, 'angular_acceleration')
-        _validator.shape(acceleration, (3, ), 'angular_acceleration')
+        _validator.linalg.dimensions(acceleration, 1, 'angular_acceleration')
+        _validator.linalg.shape(acceleration, (3,), 'angular_acceleration')
 
         self._angular_acceleration = acceleration
 

@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.validator import inertia_tensor
+from cdpyr.validator.linalg import inertia_tensor
 
 
 class InertiaTensorTestSuite(object):
