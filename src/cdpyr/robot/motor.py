@@ -1,10 +1,8 @@
+import numpy as np_
 from magic_repr import make_repr
 
-import numpy as np_
-
+from cdpyr import validator as _validator
 from cdpyr.typing import Num
-
-from cdpyr import  validator as _validator
 
 
 class Motor(object):

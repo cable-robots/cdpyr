@@ -4,7 +4,7 @@ from magic_repr import make_repr
 
 from cdpyr.geometry import geometry as __geometry
 from cdpyr.mechanics import inertia as __inertia
-from cdpyr.typing import Matrix, Num, Vector
+from cdpyr.typing import Matrix, Vector
 
 
 class Drum(object):
@@ -13,7 +13,8 @@ class Drum(object):
 
     def __init__(self,
                  geometry: Optional['__geometry.Geometry'] = None,
-                 inertia: Optional[Union[Tuple[Vector, Matrix], '__inertia.Inertia']] = None
+                 inertia: Optional[
+                     Union[Tuple[Vector, Matrix], '__inertia.Inertia']] = None
                  ):
         self.geometry = geometry or __geometry.Geometry()
         self.inertia = inertia or __inertia.Inertia()

@@ -1,5 +1,6 @@
-from abc import ABC, abstractmethod
 from typing import AnyStr, Sequence
+
+from abc import ABC, abstractmethod
 
 
 class Parser(ABC):

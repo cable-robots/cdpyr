@@ -8,7 +8,7 @@ from cdpyr.kinematics.transformation.angular import (
     # AngularSchema as AngularTransformationSchema,
 )
 from cdpyr.mechanics.inertia import Inertia  # , InertiaSchema
-from cdpyr.typing import Matrix, Num, Vector
+from cdpyr.typing import Matrix, Vector
 
 
 class Pulley(object):
@@ -18,7 +18,8 @@ class Pulley(object):
 
     def __init__(self,
                  geometry: Optional[Geometry] = None,
-                 inertia: Optional[Union[Tuple[Vector, Matrix], Inertia]] = None,
+                 inertia: Optional[
+                     Union[Tuple[Vector, Matrix], Inertia]] = None,
                  rotation: Optional[
                      Union[Matrix, AngularTransformation]] = None
                  ):

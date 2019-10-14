@@ -1,12 +1,12 @@
-from typing import Union, Sequence
+from typing import Sequence, Union
 
 import numpy as np_
 
-from cdpyr.typing import Num, Vector, Matrix
+from cdpyr.typing import Matrix, Num, Vector
 from cdpyr.validator.numeric import (
+    equal_to,
     greater_than_or_equal_to,
     less_than_or_equal_to,
-    equal_to,
 )
 
 

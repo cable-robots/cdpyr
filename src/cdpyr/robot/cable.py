@@ -4,9 +4,9 @@ import numpy as np_
 from colour import Color
 from magic_repr import make_repr
 
+from cdpyr import validator as _validator
 from cdpyr.mixin.list import ObjectList
 from cdpyr.typing import Num
-from cdpyr import  validator as _validator
 
 
 class Cable(object):

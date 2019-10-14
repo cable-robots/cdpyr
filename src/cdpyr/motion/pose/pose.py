@@ -1,5 +1,4 @@
-from collections import UserList
-from typing import Optional, Sequence, Tuple, Union
+from typing import Optional, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -9,7 +8,6 @@ from cdpyr.kinematics.transformation import (
     homogenous as _homogenoustransformation,
     linear as _lineartransformation,
 )
-from cdpyr.mixin.list import ObjectList
 from cdpyr.typing import Matrix, Num, Vector
 
 
@@ -41,8 +39,9 @@ class Pose(object):
     @property
     def transformationmatrix(self):
         return _homogenoustransformation.Homogenous(
-            translation=self.linear.position,
-            rotation=self.angular.dcm)
+            self.linear.position,
+            self.angular.dcm
+        )
 
     @property
     def time(self):
@@ -184,35 +183,6 @@ Pose.__repr__ = make_repr(
     'acceleration'
 )
 
-
-class PoseList(UserList):
-    data: Sequence['Pose']
-
-    @property
-    def poses(self):
-        return self.data
-
-    @poses.setter
-    def poses(self, poses: Sequence['Pose']):
-        self.data = poses
-
-    @poses.deleter
-    def poses(self):
-        del self.data
-
-
-PoseList.__repr__ = make_repr(
-    'pose'
-)
-
-
-class PoseList(ObjectList):
-    @property
-    def __wraps__(self):
-        return Pose
-
-
 __all__ = [
     'Pose',
-    'PoseList',
 ]

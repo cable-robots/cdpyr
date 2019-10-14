@@ -1,11 +1,10 @@
 from typing import Optional
 
+import numpy as np_
 from magic_repr import make_repr
 
-import numpy as np_
-
-from cdpyr.typing import Num, Vector
 from cdpyr import validator as _validator
+from cdpyr.typing import Num, Vector
 
 
 class Gearbox(object):

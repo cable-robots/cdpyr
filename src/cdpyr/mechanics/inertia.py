@@ -1,11 +1,8 @@
-from typing import Union, Sequence
-
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.typing import Matrix, Num, Vector
-
-from cdpyr import  validator as _validator
+from cdpyr import validator as _validator
+from cdpyr.typing import Matrix
 
 
 class Inertia(object):
@@ -16,8 +13,10 @@ class Inertia(object):
                  linear: Matrix = None,
                  angular: Matrix = None
                  ):
-        self.linear = linear if linear is not None else np_.diag(np_.full((3, ), np_.inf))
-        self.angular = angular if angular is not None else np_.diag(np_.full((3, ), np_.inf))
+        self.linear = linear if linear is not None else np_.diag(
+            np_.full((3,), np_.inf))
+        self.angular = angular if angular is not None else np_.diag(
+            np_.full((3,), np_.inf))
 
     @property
     def linear(self):

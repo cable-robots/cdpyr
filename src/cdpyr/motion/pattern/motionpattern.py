@@ -105,8 +105,10 @@ class Motionpattern(Enum):
 
         # reduce dimensions of vectors and matrices for quicker calculations
         gravity: np_.ndarray = gravity[0:self.dof_translation]
-        linear_inertia: np_.ndarray = linear_inertia[0:self.dof_translation, 0:self.dof_translation]
-        rot: np_.ndarray = rot[0:(self.dof_rotation+1),0:(self.dof_rotation+1)]
+        linear_inertia: np_.ndarray = linear_inertia[0:self.dof_translation,
+                                      0:self.dof_translation]
+        rot: np_.ndarray = rot[0:(self.dof_rotation + 1),
+                           0:(self.dof_rotation + 1)]
         cog: np_.ndarray = cog[0:self.dof_translation]
 
         # wrench that acts on the platform is composed of the gravitational
@@ -115,7 +117,8 @@ class Motionpattern(Enum):
         if self.dof_rotation > 1:
             return np_.hstack((
                 linear_inertia.dot(gravity),
-                np_.cross(rot.dot(cog), linear_inertia.dot(gravity))[0:self.dof_rotation]
+                np_.cross(rot.dot(cog), linear_inertia.dot(gravity))[
+                0:self.dof_rotation]
             ))
         elif self.dof_rotation == 1:
             return np_.hstack((

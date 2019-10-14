@@ -2,9 +2,8 @@ import numpy as np_
 from magic_repr import make_repr
 from scipy.spatial.transform import Rotation
 
-from cdpyr.typing import Matrix, Vector
-
 from cdpyr import validator as _validator
+from cdpyr.typing import Matrix, Vector
 
 
 class Angular(object):
@@ -97,7 +96,7 @@ class Angular(object):
             self.dcm = dcm
         if euler is None and \
             quaternion is None and \
-            dcm is None and rotvec is\
+            dcm is None and rotvec is \
             not None:
             self.rotvec = rotvec
 
