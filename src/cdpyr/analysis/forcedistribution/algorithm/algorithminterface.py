@@ -28,10 +28,6 @@ class AlgorithmInterface(ABC):
         force_min: Vector = np_.asarray(force_min)
         force_max: Vector = np_.asarray(force_max)
 
-        # validate these values
-        _validator.greater_than_or_equal_to(force_min, 0, 'force_min')
-        _validator.less_than_or_equal_to(force_max, np_.inf, 'force_max')
-
         # turn scalar force limits into (1,) arrays
         if force_min.ndim == 0:
             force_min = np_.asarray([force_min])
@@ -47,5 +43,9 @@ class AlgorithmInterface(ABC):
                             (0, num_cable - force_max.size),
                             constant_values=(0, force_max[0])
                             )
+
+        # finally validate these values
+        _validator.greater_than_or_equal_to(force_min, 0, 'force_min')
+        _validator.less_than_or_equal_to(force_max, np_.inf, 'force_max')
 
         return force_min, force_max
