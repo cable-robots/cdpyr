@@ -13,8 +13,7 @@ class Drum(object):
 
     def __init__(self,
                  geometry: Optional['__geometry.Geometry'] = None,
-                 inertia: Optional[Union[Tuple[Union[Num, Vector], Union[
-                     Vector, Matrix]], '__inertia.Inertia']] = None
+                 inertia: Optional[Union[Tuple[Vector, Matrix], '__inertia.Inertia']] = None
                  ):
         self.geometry = geometry or __geometry.Geometry()
         self.inertia = inertia or __inertia.Inertia()
@@ -37,8 +36,7 @@ class Drum(object):
 
     @inertia.setter
     def inertia(self,
-                inertia: Union[Tuple[Union[Num, Vector], Union[
-                    Vector, Matrix]], '__inertia.Inertia']):
+                inertia: Union[Tuple[Vector, Matrix], '__inertia.Inertia']):
         if not isinstance(inertia, __inertia.Inertia):
             inertia = __inertia.Inertia(linear=inertia[0], angular=inertia[1])
 

@@ -1,8 +1,11 @@
-from enum import Enum
+from typing import Optional, Union
 
+import numpy as np_
+from enum import Enum
 from magic_repr import make_repr
 
-from cdpyr.typing import Num
+from cdpyr import validator as _validator
+from cdpyr.typing import Matrix, Num, Vector
 
 
 class Motionpattern(Enum):

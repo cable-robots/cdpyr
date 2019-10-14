@@ -18,8 +18,7 @@ class Pulley(object):
 
     def __init__(self,
                  geometry: Optional[Geometry] = None,
-                 inertia: Optional[Union[Tuple[Union[Num, Vector], Union[
-                     Vector, Matrix]], Inertia]] = None,
+                 inertia: Optional[Union[Tuple[Vector, Matrix], Inertia]] = None,
                  rotation: Optional[
                      Union[Matrix, AngularTransformation]] = None
                  ):
