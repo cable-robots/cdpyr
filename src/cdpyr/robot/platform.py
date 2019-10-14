@@ -144,8 +144,13 @@ class Platform(object):
     def motionpattern(self):
         del self._motion_pattern
 
-    def structurematrix(self, pose: '_pose.Pose'):
-        return self.motionpattern.structurematrix(self, pose)
+    def wrench(self,
+               pose: '_pose.Pose',
+               gravity: Optional[Union[Num, Vector]] = None):
+        return self.motionpattern.wrench(self.inertia.linear,
+                                         self.motionpattern.gravity(gravity),
+                                         pose.angular.dcm,
+                                         self.center_of_gravity)
 
 
 Platform.__repr__ = make_repr(
