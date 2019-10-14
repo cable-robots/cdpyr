@@ -65,12 +65,6 @@ def equal_to(value: Union[Num, Vector, Sequence[Num]],
              name: str = None,
              *args,
              **kwargs):
-    # TODO add support for comparing
-    #  (Num, Num)           `Num` == `Num`
-    #  (Num, Vector)        `Vector_k` == `Num`
-    #  (Vector1, Vector2)   `Vector1_k` == `Vector2_k` (compare each row)
-    #  (Matrix, Vector)     `Matrix_col` == `Vector` (compare each column)
-    #  (Matrix1, Matrix2)   `Matrix1_jk` == `Matrix2_jk` (compare each value)
     value = np_.asarray(value)
     if not np_.allclose(value, expected, *args, **kwargs):
         raise ValueError(
@@ -86,12 +80,6 @@ def equal_to(value: Union[Num, Vector, Sequence[Num]],
 def greater_than(value: Union[Num, Vector, Sequence[Num]],
                  expected: Num,
                  name: str = None):
-    # TODO add support for comparing
-    #  (Num, Num)           `Num` > `Num`
-    #  (Num, Vector)        `Vector_k` > `Num`
-    #  (Vector1, Vector2)   `Vector1_k` > `Vector2_k` (compare each row)
-    #  (Matrix, Vector)     `Matrix_col` > `Vector` (compare each column)
-    #  (Matrix1, Matrix2)   `Matrix1_jk` > `Matrix2_jk` (compare each value)
     value = np_.asarray(value)
     if (value <= expected).any():
         raise ValueError(
@@ -107,12 +95,6 @@ def greater_than(value: Union[Num, Vector, Sequence[Num]],
 def greater_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
                              expected: Num,
                              name: str = None):
-    # TODO add support for comparing
-    #  (Num, Num)           `Num` >= `Num`
-    #  (Num, Vector)        `Vector_k` >= `Num`
-    #  (Vector1, Vector2)   `Vector1_k` >= `Vector2_k` (compare each row)
-    #  (Matrix, Vector)     `Matrix_col` >= `Vector` (compare each column)
-    #  (Matrix1, Matrix2)   `Matrix1_jk` >= `Matrix2_jk` (compare each value)
     value = np_.asarray(value)
     if (value < expected).any():
         raise ValueError(
@@ -129,12 +111,6 @@ def greater_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
 def less_than(value: Union[Num, Vector, Sequence[Num]],
               expected: Num,
               name: str = None):
-    # TODO add support for comparing
-    #  (Num, Num)           `Num` < `Num`
-    #  (Num, Vector)        `Vector_k` < `Num`
-    #  (Vector1, Vector2)   `Vector1_k` < `Vector2_k` (compare each row)
-    #  (Matrix, Vector)     `Matrix_col` < `Vector` (compare each column)
-    #  (Matrix1, Matrix2)   `Matrix1_jk` < `Matrix2_jk` (compare each value)
     value = np_.asarray(value)
     if (value >= expected).any():
         raise ValueError(
@@ -150,12 +126,6 @@ def less_than(value: Union[Num, Vector, Sequence[Num]],
 def less_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
                           expected: Num,
                           name: str = None):
-    # TODO add support for comparing
-    #  (Num, Num)           `Num` <= `Num`
-    #  (Num, Vector)        `Vector_k` <= `Num`
-    #  (Vector1, Vector2)   `Vector1_k` <= `Vector2_k` (compare each row)
-    #  (Matrix, Vector)     `Matrix_col` <= `Vector` (compare each column)
-    #  (Matrix1, Matrix2)   `Matrix1_jk` <= `Matrix2_jk` (compare each value)
     value = np_.asarray(value)
     if (value > expected).any():
         raise ValueError(
