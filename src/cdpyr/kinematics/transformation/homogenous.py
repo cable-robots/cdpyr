@@ -65,16 +65,22 @@ class Homogenous(object):
 
     @property
     def matrix(self):
-        return np_.concatenate([
-            np_.concatenate([self.rotation, self.translation[:, np_.newaxis]],
-                            axis=1),
-            [np_.concatenate([np_.zeros(3), np_.ones(1)], axis=0)]
-        ], axis=0)
-
-        # m[:-1, :-1] = self.rotation
-        # m[:3, -1] = self.translation
-        #
-        # return m
+        return np_.vstack(
+            (
+                np_.hstack(
+                    (
+                        self.rotation,
+                        self.translation[:, np_.newaxis]
+                    ),
+                ),
+                np_.hstack(
+                    (
+                        np_.zeros(3),
+                        np_.ones(1)
+                    ),
+                )
+            ),
+        )
 
 
 Homogenous.__repr__ = make_repr(

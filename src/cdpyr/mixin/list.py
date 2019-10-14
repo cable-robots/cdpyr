@@ -26,7 +26,7 @@ class ObjectList(UserList):
         # if a custom class is wrapped and the current result contains only
         # these objects, we will return the original ObjectList with the results
         if self.__wraps__ is not None and \
-            all([isinstance(o, self.__wraps__) for o in res]):
+            all(isinstance(o, self.__wraps__) for o in res):
             return self.__class__(res)
 
         return ObjectList(res)
@@ -39,7 +39,8 @@ class ObjectList(UserList):
 
         # if a custom class is wrapped and the current result contains only
         # these objects, we will return the original ObjectList with the results
-        if self.__wraps__ is not None and all([isinstance(o, self.__wraps__) for o in res]):
+        if self.__wraps__ is not None and all(
+            isinstance(o, self.__wraps__) for o in res):
             return self.__class__(res)
 
         return ObjectList(res)

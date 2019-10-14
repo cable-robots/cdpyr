@@ -36,7 +36,7 @@ class Pose(object):
 
     @property
     def state(self):
-        return np_.hstack([self.linear.position, self.angular.quaternion])
+        return np_.hstack((self.linear.position, self.angular.quaternion))
 
     @property
     def transformationmatrix(self):
