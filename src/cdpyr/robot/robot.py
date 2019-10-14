@@ -96,20 +96,6 @@ class Robot(object):
     def bi(self):
         return list(self.platforms.bi)
 
-    # @property
-    # def poses(self):
-    #     return list(self.platforms.pose)
-    #
-    # @poses.setter
-    # def poses(self,
-    #           poses: Sequence['_pose.Pose']):
-    #     self.platforms.pose = poses
-
-    # @poses.deleter
-    # def poses(self):
-    #     for platform in self.platforms:
-    #         del platform.pose
-
     @property
     def cables(self):
         return self._cables
