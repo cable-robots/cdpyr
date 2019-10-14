@@ -1,4 +1,4 @@
-from typing import Optional, Sequence, Union, Tuple
+from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -70,8 +70,8 @@ class Platform(object):
     def inertia(self,
                 inertia: Union[
                     Tuple[
-                        Union[Num, Vector],
-                        Union[Vector, Matrix]
+                        Vector,
+                        Matrix
                     ],
                     '_inertia.Inertia'
                 ]):
@@ -89,7 +89,7 @@ class Platform(object):
         return self.inertia.linear
 
     @linear_inertia.setter
-    def linear_inertia(self, inertia: Union[Num, Vector]):
+    def linear_inertia(self, inertia: Matrix):
         self.inertia.linear = inertia
 
     @property
@@ -97,7 +97,7 @@ class Platform(object):
         return self.inertia.angular
 
     @angular_inertia.setter
-    def angular_inertia(self, inertia: Union[Vector, Matrix]):
+    def angular_inertia(self, inertia: Matrix):
         self.inertia.angular = inertia
 
     @property
