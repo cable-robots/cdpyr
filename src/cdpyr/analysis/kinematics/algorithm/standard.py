@@ -51,7 +51,7 @@ class Standard(KinematicsAlgorithm):
             cable_vectors = cls._vector_loop(
                 pos,
                 rot,
-                np_.vstack(kc.frame_anchor.position).T,
+                np_.vstack((ai.position for ai in kc.frame_anchor)).T,
                 platform.bi
             )
             # strip additional spatial dimensions

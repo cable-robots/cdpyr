@@ -1,3 +1,4 @@
+from collections import UserList
 from typing import Optional, Sequence, Union
 
 import numpy as np_
@@ -5,7 +6,6 @@ from colour import Color
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
-from cdpyr.mixin.list import ObjectList
 from cdpyr.typing import Num
 
 
@@ -165,19 +165,48 @@ Cable.__repr__ = make_repr(
     'diameter',
     'modulus',
     'color',
-    'breaking_load'
+    'breaking_load',
 )
 
 
-class CableList(ObjectList):
+class CableList(UserList):
 
     @property
-    def __wraps__(self):
-        return Cable
+    def name(self):
+        return (cable.name for cable in self.data)
 
-    def __dir__(self):
-        return Cable.__dict__.keys()
+    @property
+    def material(self):
+        return (cable.material for cable in self.data)
 
+    @property
+    def diameter(self):
+        return (cable.diameter for cable in self.data)
+
+    @property
+    def modulus(self):
+        return (cable.modulus for cable in self.data)
+
+    @property
+    def color(self):
+        return (cable.color for cable in self.data)
+
+    @property
+    def breaking_load(self):
+        return (cable.breaking_load for cable in self.data)
+
+    @property
+    def elasticities(self):
+        return (cable.elasticities for cable in self.data)
+
+    @property
+    def viscosities(self):
+        return (cable.viscosities for cable in self.data)
+
+
+CableList.__repr__ = make_repr(
+    'data'
+)
 
 __all__ = [
     'Cable',

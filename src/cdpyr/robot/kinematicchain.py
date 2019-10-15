@@ -1,8 +1,8 @@
+from collections import UserList
 from typing import Sequence, Union
 
 from magic_repr import make_repr
 
-from cdpyr.mixin.list import ObjectList
 from cdpyr.robot import (cable as _cable, platform as _platform)
 from cdpyr.robot.anchor import (
     frameanchor as _frameanchor,
@@ -85,11 +85,7 @@ KinematicChain.__repr__ = make_repr(
 )
 
 
-class KinematicChainList(ObjectList):
-
-    @property
-    def __wraps__(self):
-        return KinematicChain
+class KinematicChainList(UserList):
 
     def __init__(self, initlist=None):
         super().__init__()
@@ -103,8 +99,21 @@ class KinematicChainList(ObjectList):
         self.data = [x for x in initlist if
                      not (x in seen or seen_add(x))] if initlist else []
 
-    def __dir__(self):
-        return KinematicChain.__dict__.keys()
+    @property
+    def frame_anchor(self):
+        return (kinematicchain.frame_anchor for kinematicchain in self.data)
+
+    @property
+    def platform(self):
+        return (kinematicchain.platform for kinematicchain in self.data)
+
+    @property
+    def platform_anchor(self):
+        return (kinematicchain.platform_anchor for kinematicchain in self.data)
+
+    @property
+    def cable(self):
+        return (kinematicchain.cable for kinematicchain in self.data)
 
     def with_frame_anchor(self, anchor: '_frameanchor.FrameAnchor'):
         anchor = anchor if isinstance(anchor, Sequence) else [anchor]
@@ -119,13 +128,18 @@ class KinematicChainList(ObjectList):
     def with_platform_anchor(self, anchor: '_platform.Platform'):
         anchor = anchor if isinstance(anchor, Sequence) else [anchor]
 
-        return self.__class__(d for d in self.data if d.platform_anchor in anchor)
+        return self.__class__(
+            d for d in self.data if d.platform_anchor in anchor)
 
     def with_cable(self, cable: '_cable.Cable'):
         cable = cable if isinstance(cable, Sequence) else [cable]
 
         return self.__class__(d for d in self.data if d.cable in cable)
 
+
+KinematicChainList.__repr__ = make_repr(
+    'data'
+)
 
 __all__ = [
     'KinematicChain',

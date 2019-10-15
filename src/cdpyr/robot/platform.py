@@ -1,3 +1,4 @@
+from collections import UserList
 from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
@@ -5,7 +6,6 @@ from magic_repr import make_repr
 
 from cdpyr import validator as _validator
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.mixin.list import ObjectList
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import motionpattern as _motionpattern
 from cdpyr.robot.anchor import platformanchor as _platformanchor
@@ -69,10 +69,7 @@ class Platform(object):
     @inertia.setter
     def inertia(self,
                 inertia: Union[
-                    Tuple[
-                        Vector,
-                        Matrix
-                    ],
+                    Tuple[Vector, Matrix],
                     '_inertia.Inertia'
                 ]):
         if not isinstance(inertia, _inertia.Inertia):
@@ -162,15 +159,40 @@ Platform.__repr__ = make_repr(
 )
 
 
-class PlatformList(ObjectList):
+class PlatformList(UserList):
 
     @property
-    def __wraps__(self):
-        return Platform
+    def motionpattern(self):
+        return (platform.motionpattern for platform in self.data)
 
-    def __dir__(self):
-        return Platform.__dict__.keys()
+    @property
+    def inertia(self):
+        return (platform.inertia for platform in self.data)
 
+    @property
+    def linear_inertia(self):
+        return (platform.linear_inertia for platform in self.data)
+
+    @property
+    def angular_inertia(self):
+        return (platform.angular_inertia for platform in self.data)
+
+    @property
+    def anchors(self):
+        return (platform.anchors for platform in self.data)
+
+    @property
+    def center_of_gravity(self):
+        return (platform.center_of_gravity for platform in self.data)
+
+    @property
+    def center_of_linkage(self):
+        return (platform.center_of_linkage for platform in self.data)
+
+
+PlatformList.__repr__ = make_repr(
+    'data'
+)
 
 __all__ = [
     'Platform',
