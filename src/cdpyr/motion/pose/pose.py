@@ -20,7 +20,7 @@ class Pose(object):
                  position: Optional[Tuple[Vector, Matrix]] = None,
                  velocity: Optional[Tuple[Vector, Vector]] = None,
                  acceleration: Optional[Tuple[Vector, Vector]] = None,
-                 time: Num = None,
+                 time: Num = np_.NaN,
                  ):
         self.linear = _lineartransformation.Linear()
         self.angular = _angulartransformation.Angular()
@@ -49,7 +49,7 @@ class Pose(object):
 
     @time.setter
     def time(self, time: Num):
-        self._time = time
+        self._time = time if time is not None else np_.NaN
 
     @time.deleter
     def time(self):
@@ -124,24 +124,28 @@ class Pose(object):
     def __eq__(self, other: Union['Pose', object]):
         try:
             return np_.allclose(self.state, other.state) \
-                   and np_.allclose(self.time, other.time)
+                   and np_.allclose(self.time, other.time, equal_nan=True)
         except AttributeError as AttributeException:
             try:
                 return np_.allclose(self.state, np_.asarray(other))
             except ValueError as ValueException:
-                return np_.allclose(np_.hstack((self.time, self.state)), np_.asarray(other))
+                return np_.allclose(np_.hstack((self.time, self.state)),
+                                    np_.asarray(other), equal_nan=True)
             except TypeError as TypeException:
                 raise TypeException from None
 
     def __ne__(self, other: Union['Pose', object]):
+        # if times differ => different poses
+        # if times are equal and states differ => different poses
         try:
             return not (np_.allclose(self.state, other.state)
-                        and np_.allclose(self.time, other.time))
+                        and np_.allclose(self.time, other.time, equal_nan=True))
         except AttributeError as AttributeException:
             try:
                 return not np_.allclose(self.state, np_.asarray(other))
             except ValueError as ValueException:
-                return not np_.allclose(np_.hstack((self.time, self.state)), np_.asarray(other))
+                return not np_.allclose(np_.hstack((self.time, self.state)),
+                                        np_.asarray(other), equal_nan=True)
             except TypeError as TypeException:
                 raise TypeException from None
 

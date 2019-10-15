@@ -11,7 +11,7 @@ class PoseTestSuite(object):
                           cdpyr.kinematics.transformation.Linear)
         assert isinstance(empty_pose.angular,
                           cdpyr.kinematics.transformation.Angular)
-        assert empty_pose.time is None
+        assert empty_pose.time is np.NaN
 
     def test_getset_linear_position(self, rand_pose_3d: cdpyr.motion.Pose,
                                     rand_vector_3d):
@@ -211,9 +211,11 @@ class PoseTestSuite(object):
         assert state_is == pytest.approx(state_expected)
 
     def test_compare_two_poses_eq(self):
+        pose_nan = cdpyr.motion.Pose()
         pose_0 = cdpyr.motion.Pose(time=0)
         pose_1 = cdpyr.motion.Pose(time=0)
 
+        assert pose_nan == pose_nan
         assert pose_0 == pose_1
         assert pose_0 == [0.0,  # time
                           0.0, 0.0, 0.0,  # position
@@ -222,11 +224,16 @@ class PoseTestSuite(object):
                           0.0, 0.0, 0.0, 1.0]  # orientation as quaternion
 
     def test_compare_two_poses_ne(self):
+        pose_none = cdpyr.motion.Pose()
         pose_0 = cdpyr.motion.Pose(time=0)
         pose_1 = cdpyr.motion.Pose(time=1)
 
+        assert pose_none != pose_0
         assert pose_0 != pose_1
         assert pose_0 != [1.0,  # time
+                          0.0, 0.0, 1.0,  # position
+                          0.0, 0.0, 0.0, 1.0]  # orientation as quaternion
+        assert pose_0 != [np.NaN,  # time
                           0.0, 0.0, 1.0,  # position
                           0.0, 0.0, 0.0, 1.0]  # orientation as quaternion
         assert pose_0 != [0.0, 0.0, 1.0,  # position
