@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, post_load
 
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion.pose import pose as _pose, poselist as _poselist
 
 
 class PoseSchema(Schema):
@@ -19,7 +19,7 @@ class PoseSchema(Schema):
 class PoseListSchema(Schema):
     data = fields.List(fields.Nested(PoseSchema))
 
-    __model__ = _pose.PoseList
+    __model__ = _poselist.PoseList
 
     @post_load
     def make_object(self, data, **kwargs):
