@@ -93,8 +93,8 @@ def interval(pose: '_pose.Pose', boundaries: Union[Vector, Matrix],
     # case of [[min, max], [min, max]]
     if boundaries.ndim == 2 and boundaries.shape == (2, 2):
         boundaries = np_.hstack((
-            np_.repeat(boundaries[0,:,np_.newaxis], 3, axis=1),  # position
-            np_.repeat(boundaries[1,:,np_.newaxis], 3, axis=1),  # orientation
+            np_.repeat(boundaries[0, :, np_.newaxis], 3, axis=1),  # position
+            np_.repeat(boundaries[1, :, np_.newaxis], 3, axis=1),  # orientation
         ))
 
     # case of [[min, max], [min, max], ..., [min, max]]
