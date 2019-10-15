@@ -123,19 +123,25 @@ class Pose(object):
 
     def __eq__(self, other: Union['Pose', object]):
         try:
-            return self.time == other.time
+            return np_.allclose(self.state, other.state) \
+                   and np_.allclose(self.time, other.time)
         except AttributeError as AttributeException:
             try:
-                return self.time == other
+                return np_.allclose(self.state, np_.asarray(other))
+            except ValueError as ValueException:
+                return np_.allclose(np_.hstack((self.time, self.state)), np_.asarray(other))
             except TypeError as TypeException:
                 raise TypeException from None
 
     def __ne__(self, other: Union['Pose', object]):
         try:
-            return self.time != other.time
+            return not (np_.allclose(self.state, other.state)
+                        and np_.allclose(self.time, other.time))
         except AttributeError as AttributeException:
             try:
-                return self.time != other
+                return not np_.allclose(self.state, np_.asarray(other))
+            except ValueError as ValueException:
+                return not np_.allclose(np_.hstack((self.time, self.state)), np_.asarray(other))
             except TypeError as TypeException:
                 raise TypeException from None
 
