@@ -1,13 +1,7 @@
-# from typing import Sequence, Tuple, Union
-
 import numpy as np_
 from enum import Enum
 
-from cdpyr.analysis.forcedistribution.algorithm import (
-    ClosedForm,
-    ClosedFormImproved,
-    Dykstra,
-)
+from cdpyr.analysis.forcedistribution import algorithm as _algorithm
 from cdpyr.analysis.forcedistribution.algorithm.algorithminterface import \
     AlgorithmInterface as ForceDistributionAlgorithm
 from cdpyr.robot import robot as _robot
@@ -15,9 +9,9 @@ from cdpyr.typing import Matrix, Vector
 
 
 class ForceDistribution(Enum):
-    CLOSED_FORM = (ClosedForm())
-    CLOSED_FORM_IMPROVED = (ClosedFormImproved())
-    DYKSTRA = (Dykstra())
+    CLOSED_FORM = _algorithm.ClosedForm
+    CLOSED_FORM_IMPROVED = _algorithm.ClosedFormImproved
+    DYKSTRA = _algorithm.Dykstra
 
     @property
     def algorithm(self) -> ForceDistributionAlgorithm:

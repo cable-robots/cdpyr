@@ -3,10 +3,7 @@ from typing import Sequence, Tuple, Union
 from enum import Enum
 from magic_repr import make_repr
 
-from cdpyr.analysis.kinematics.algorithm import (
-    Pulley,
-    Standard,
-)
+from cdpyr.analysis.kinematics import algorithm as _algorithm
 from cdpyr.analysis.kinematics.algorithm.algorithminterface import \
     AlgorithmInterface as KinematicsAlgorithm
 from cdpyr.motion import pose as _pose
@@ -15,8 +12,8 @@ from cdpyr.typing import Matrix, Vector
 
 
 class Kinematics(Enum):
-    STANDARD = (Standard())
-    PULLEY = (Pulley())
+    STANDARD = _algorithm.Standard
+    PULLEY = _algorithm.Pulley
 
     @property
     def algorithm(self) -> KinematicsAlgorithm:
