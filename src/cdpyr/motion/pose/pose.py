@@ -100,7 +100,7 @@ class Pose(object):
     @position.deleter
     def position(self):
         del self.linear.position
-        del self.angular.rotation
+        del self.angular.dcm
 
     @property
     def velocity(self):

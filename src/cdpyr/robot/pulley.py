@@ -66,6 +66,14 @@ class Pulley(object):
     def angular(self):
         del self.angular
 
+    @property
+    def dcm(self):
+        return self.angular.dcm
+
+    @dcm.setter
+    def dcm(self, dcm: Matrix):
+        self.angular.dcm = dcm
+
 
 Pulley.__repr__ = make_repr(
     'geometry',

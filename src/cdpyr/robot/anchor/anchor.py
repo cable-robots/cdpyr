@@ -17,7 +17,7 @@ class Anchor(object):
 
     def __init__(self,
                  position: Optional[Vector] = None,
-                 rotation: Optional[Matrix] = None,
+                 dcm: Optional[Matrix] = None,
                  linear: Optional['_linear.Linear'] = None,
                  angular: Optional['_angular.Angular'] = None,
                  ):
@@ -28,7 +28,7 @@ class Anchor(object):
         position : Vector
             (3,) vector of the (relative) position of the anchor in a
             reference coordinate system
-        rotation : Matrix
+        dcm : Matrix
             (3,3) matrix representing the rotation matrix `dcm` of the
             platform anchor. Use only where applicable.
         linear : Linear
@@ -48,9 +48,8 @@ class Anchor(object):
 
         # initialize and set angularlinear property if not given by the user
         if angular is None:
-            self.angular = _angular.Angular()
-            self.dcm = rotation or [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0],
-                                    [0.0, 0.0, 1.0]]
+            self.angular = _angular.Angular(
+                dcm=dcm if dcm is not None else np_.eye(3))
         # set angular transformation to user-defined value
         else:
             self.angular = angular

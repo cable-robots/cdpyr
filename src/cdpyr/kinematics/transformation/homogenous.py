@@ -9,14 +9,14 @@ from cdpyr import validator as _validator
 
 class Homogenous(object):
     _translation: np_.ndarray
-    _rotation: np_.ndarray
+    _dcm: np_.ndarray
 
     def __init__(self,
                  translation: Optional[Vector] = None,
-                 rotation: Optional[Matrix] = None
+                 dcm: Optional[Matrix] = None
                  ):
         self.translation = translation if translation is not None else [0, 0, 0]
-        self.rotation = rotation if rotation is not None else np_.eye(3)
+        self.dcm = dcm if dcm is not None else np_.eye(3)
 
     @property
     def translation(self):
@@ -35,20 +35,20 @@ class Homogenous(object):
         del self._translation
 
     @property
-    def rotation(self):
-        return self._rotation
+    def dcm(self):
+        return self._dcm
 
-    @rotation.setter
-    def rotation(self, rotation: Matrix):
-        rotation = np_.asarray(rotation)
+    @dcm.setter
+    def dcm(self, dcm: Matrix):
+        dcm = np_.asarray(dcm)
 
-        _validator.linalg.rotation_matrix(rotation, 'rotation')
+        _validator.linalg.rotation_matrix(dcm, 'dcm')
 
-        self._rotation = rotation
+        self._dcm = dcm
 
-    @rotation.deleter
-    def rotation(self):
-        del self._rotation
+    @dcm.deleter
+    def dcm(self):
+        del self._dcm
 
     @property
     def matrix(self):
@@ -56,7 +56,7 @@ class Homogenous(object):
             (
                 np_.hstack(
                     (
-                        self.rotation,
+                        self.dcm,
                         self.translation[:, np_.newaxis]
                     ),
                 ),
@@ -72,7 +72,7 @@ class Homogenous(object):
 
 Homogenous.__repr__ = make_repr(
     'translation',
-    'rotation',
+    'dcm',
 )
 
 __all__ = [
