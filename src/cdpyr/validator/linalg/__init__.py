@@ -112,6 +112,21 @@ def rotation_matrix(value: Union[Sequence[Sequence[Num]], Matrix],
         ) from verr
 
 
+def space_coordinate(value: Union[Sequence[Sequence[Num]], Matrix],
+                     name: Optional[AnyStr] = None):
+    value = np_.asarray(value)
+
+    try:
+        dimensions(value, 1, name)
+        shape(value, (3,), name)
+    except ValueError as verr:
+        raise ValueError(
+            'Expected `{}` to be a valid space coordinate, but was not.'.format(
+                name if name is not None else 'value',
+            )
+        ) from verr
+
+
 def unit_vector(value: Union[Sequence[Num], Vector],
                 name: Optional[AnyStr] = None):
     value = np_.asarray(value)
@@ -126,3 +141,35 @@ def unit_vector(value: Union[Sequence[Num], Vector],
                 name if name is not None else 'value',
             )
         ) from verr
+
+
+def landspace(value: Union[Sequence[Num], Vector, Matrix],
+              name: Optional[AnyStr] = None):
+    value = np_.asarray(value)
+
+    dimensions(value, 2, name)
+
+    if value.shape[1] < value.shape[0]:
+        raise ValueError(
+            'Expected `{}` for be rectangular of landscape shape, '
+            'but received a {} matrix.'.format(
+                name if name is not None else 'value',
+                value.shape
+            )
+        )
+
+
+def portrait(value: Union[Sequence[Num], Vector, Matrix],
+             name: Optional[AnyStr] = None):
+    value = np_.asarray(value)
+
+    dimensions(value, 2, name)
+
+    if value.shape[0] < value.shape[1]:
+        raise ValueError(
+            'Expected `{}` for be rectangular of portrait shape, but received '
+            'a {} matrix.'.format(
+                name if name is not None else 'value',
+                value.shape
+            )
+        )
