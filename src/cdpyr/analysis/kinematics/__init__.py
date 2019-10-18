@@ -1,7 +1,5 @@
-from cdpyr.analysis.kinematics import algorithm
-from cdpyr.analysis.kinematics.kinematics import Kinematics
+from cdpyr.analysis.kinematics.calculator import Calculator
 
 __all__ = [
-    'Kinematics',
-    'algorithm',
+    'Calculator',
 ]
