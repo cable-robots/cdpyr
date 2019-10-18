@@ -1,7 +1,5 @@
-from cdpyr.analysis.structurematrix import algorithm
-from cdpyr.analysis.structurematrix.structurematrix import StructureMatrix
+from cdpyr.analysis.structurematrix.calculator import Calculator
 
 __all__ = [
-    'StructureMatrix',
-    'algorithm',
+    'Calculator',
 ]
