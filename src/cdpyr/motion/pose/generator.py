@@ -132,3 +132,103 @@ def interval(pose: '_pose.Pose',
     # now that we have a start and end pose, we will just pass down to the
     # steps generator
     return steps(start, end, step)
+
+
+def translation(start: '_linear.Linear',
+                end: '_linear.Linear',
+                angular: Optional['_angular.Angular'] = None,
+                step: Optional[Union[Num, Vector]] = None):
+    """
+    Generator for purely translational
+    Parameters
+    ----------
+    start : Pose
+        Start pose at which to start the translation-only pose generator
+    end : Pose
+        Final pose at which to end the translation-only pose generator
+    angular : Matrix
+        Fixed rotation matrix which to use at every pose. If not given,
+        defaults to unit rotation matrix.
+    step : Num | Vector | 3-tuple
+        Number of discretization steps for the translation generator
+
+    Returns
+    -------
+
+    """
+
+    # by default, we will make 10 steps
+    step = step if step else 10
+
+    # ensure step has the right format (either (), (1,) or (3,))
+    step = np_.asarray(step)
+    if step.ndim == 0:
+        step = np_.asarray([step])
+    if step.size < 3:
+        step = np_.repeat(step, 4 - step.size)[0:3]
+
+    # no rotation matrix given, then take unity
+    if angular is None:
+        angular = _angular.Angular()
+
+    # validate `step` is the right shape
+    _validator.linalg.shape(step, (3,), 'step')
+
+    # ensure both poses have the same rotation
+    start.angular = angular
+    end.angular = angular
+
+    # return the steps iterator
+    return steps(start, end, np_.pad(step, (0, 3)))
+
+
+def orientation(start: '_angular.Angular',
+                end: '_angular.Angular',
+                position: Optional['_linear.Linear'] = None,
+                step: Optional[Union[Num, Vector]] = None):
+    """
+    Create a generator of poses where only the orientation changes throughout
+    the iteration
+
+    Parameters
+    ----------
+    start : Matrix
+        Initial rotation matrix given as
+    end : Matrix
+        Final rotation matrix.
+    position : Pose
+        Position at which to perform the rotation. If not given, defaults to
+        [0.0, 0.0, 0.0]
+    step : Num | Vector | 3-tuple
+        Number of discretization steps for the orientation generator
+
+    Returns
+    -------
+    generator
+        A pose generator that loops over all poses defined in the orientation
+        set of the given start and end rotation matrices. It is discretized
+        in step steps per the three axes
+    """
+
+    # ensure step has the right format (either (), (1,) or (3,))
+    step = np_.asarray(step)
+    if step.ndim == 0:
+        step = np_.asarray([step])
+    if step.size < 3:
+        step = np_.repeat(step, 4 - step.size)[0:3]
+
+    # default position value
+    if position is None:
+        position = _linear.Linear()
+
+    # validate step has the right shape
+    _validator.linalg.rotation_matrix(step, (3,), 'step')
+
+    # create start pose from the position pose given
+    start = _pose.Pose(linear=position, angular=start)
+
+    # create end pose from the position pose given
+    end = _pose.Pose(linear=position, angular=end)
+
+    # return the steps iterator
+    return steps(start, end, np_.pad(step, (3, 0)))
