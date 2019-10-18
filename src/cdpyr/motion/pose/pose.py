@@ -4,41 +4,44 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.kinematics.transformation import (
-    angular as _angulartransformation,
-    homogenous as _homogenoustransformation,
-    linear as _lineartransformation,
+    angular as _angular,
+    homogenous as _homogenous,
+    linear as _linear,
 )
 from cdpyr.typing import Matrix, Num, Vector
 
 
 class Pose(object):
-    _linear: '_lineartransformation.Linear'
-    _angular: '_angulartransformation.Angular'
+    _linear: '_linear.Linear'
+    _angular: '_angular.Angular'
     _time: Num
 
     def __init__(self,
                  position: Optional[Tuple[Vector, Matrix]] = None,
                  velocity: Optional[Tuple[Vector, Vector]] = None,
                  acceleration: Optional[Tuple[Vector, Vector]] = None,
-                 linear: Optional['_lineartransformation.Linear'] = None,
-                 angular: Optional['_angulartransformation.Angular'] = None,
+                 linear: Optional['_linear.Linear'] = None,
+                 angular: Optional['_angular.Angular'] = None,
                  time: Optional[Num] = np_.NaN,
                  ):
         if linear is None:
-            self.linear = _lineartransformation.Linear()
+            self.linear = _linear.Linear(
+                position[0] if position is not None else np_.zeros((3,)),
+                velocity[0] if velocity is not None else np_.zeros((3, )),
+                acceleration[0] if acceleration is not None else np_.zeros((3, )),
+            )
         else:
             self.linear = linear
 
         if angular is None:
-            self.angular = _angulartransformation.Angular()
+            self.angular = _angular.Angular(
+                dcm=position[1] if position is not None else np_.eye(3),
+                angular_velocity=velocity[1] if velocity is not None else np_.zeros((3, )),
+                angular_acceleration=acceleration[1] if acceleration is not None else np_.zeros((3, )),
+            )
         else:
             self.angular = angular
 
-        self.position = position or (
-            [0.0, 0.0, 0.0],
-            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
-        self.velocity = velocity or ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
-        self.acceleration = acceleration or ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
         self.time = time
 
     @property
@@ -47,7 +50,7 @@ class Pose(object):
 
     @property
     def transformationmatrix(self):
-        return _homogenoustransformation.Homogenous(
+        return _homogenous.Homogenous(
             self.linear.position,
             self.angular.dcm
         )
@@ -69,7 +72,7 @@ class Pose(object):
         return self._linear
 
     @linear.setter
-    def linear(self, linear: '_lineartransformation.Linear'):
+    def linear(self, linear: '_linear.Linear'):
         self._linear = linear
 
     @linear.deleter
@@ -81,7 +84,7 @@ class Pose(object):
         return self._angular
 
     @angular.setter
-    def angular(self, angular: '_angulartransformation.Angular'):
+    def angular(self, angular: '_angular.Angular'):
         self._angular = angular
 
     @angular.deleter
