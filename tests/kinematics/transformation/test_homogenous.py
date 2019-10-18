@@ -17,8 +17,8 @@ class HomogenousTransformationTestSuite(object):
 
         assert homogenous.translation.shape == (3,)
         assert homogenous.translation == approx([0., 0., 0.])
-        assert homogenous.rotation.shape == (3, 3)
-        assert homogenous.rotation == approx(np.eye(3))
+        assert homogenous.dcm.shape == (3, 3)
+        assert homogenous.dcm == approx(np.eye(3))
         assert homogenous.matrix.shape == (4, 4)
         assert homogenous.matrix[0:3, 0:3] == approx(np.eye(3))
         assert homogenous.matrix[0:3, -1] == approx([0., 0., 0.])
@@ -37,8 +37,8 @@ class HomogenousTransformationTestSuite(object):
 
         assert homogenous.translation.shape == (len(translation),)
         assert homogenous.translation == approx(translation)
-        assert homogenous.rotation.shape == (3, 3)
-        assert homogenous.rotation == approx(np.eye(3))
+        assert homogenous.dcm.shape == (3, 3)
+        assert homogenous.dcm == approx(np.eye(3))
         assert homogenous.matrix.shape == (4, 4)
         assert homogenous.matrix[0:3, 0:3] == approx(np.eye(3))
         assert homogenous.matrix[0:3, -1] == approx(translation)
@@ -57,49 +57,49 @@ class HomogenousTransformationTestSuite(object):
 
         assert homogenous.translation.shape == translation.shape
         assert homogenous.translation == approx(translation)
-        assert homogenous.rotation.shape == (3, 3)
-        assert homogenous.rotation == approx(np.eye(3))
+        assert homogenous.dcm.shape == (3, 3)
+        assert homogenous.dcm == approx(np.eye(3))
         assert homogenous.matrix.shape == (4, 4)
         assert homogenous.matrix[0:3, 0:3] == approx(np.eye(3))
         assert homogenous.matrix[0:3, -1] == approx(translation)
         assert homogenous.matrix[-1, -1] == approx(1)
 
     @mark.parametrize(
-        "rotation",
+        "dcm",
         [
             (Rotation.random().as_dcm().tolist())
         ]
     )
-    def test_with_rotation_from_list(self, rotation: Sequence[Sequence]):
+    def test_with_dcm_from_list(self, dcm: Sequence[Sequence]):
         homogenous = cdpyr.kinematics.transformation.Homogenous(
-            rotation=rotation
+            dcm=dcm
         )
 
         assert homogenous.translation.shape == (3,)
         assert homogenous.translation == approx([0., 0., 0.])
-        assert homogenous.rotation.shape == (3, 3)
-        assert homogenous.rotation == approx(np.asarray(rotation))
+        assert homogenous.dcm.shape == (3, 3)
+        assert homogenous.dcm == approx(np.asarray(dcm))
         assert homogenous.matrix.shape == (4, 4)
-        assert homogenous.matrix[0:3, 0:3] == approx(np.asarray(rotation))
+        assert homogenous.matrix[0:3, 0:3] == approx(np.asarray(dcm))
         assert homogenous.matrix[0:3, -1] == approx([0., 0., 0.])
         assert homogenous.matrix[-1, -1] == approx(1)
 
     @mark.parametrize(
-        "rotation",
+        "dcm",
         [
             (Rotation.random().as_dcm())
         ]
     )
-    def test_with_rotation_from_numpyarray(self, rotation: np.ndarray):
+    def test_with_dcm_from_numpyarray(self, dcm: np.ndarray):
         homogenous = cdpyr.kinematics.transformation.Homogenous(
-            rotation=rotation
+            dcm=dcm
         )
 
         assert homogenous.translation.shape == (3,)
         assert homogenous.translation == approx([0., 0., 0.])
-        assert homogenous.rotation.shape == (3, 3)
-        assert homogenous.rotation == approx(rotation)
+        assert homogenous.dcm.shape == (3, 3)
+        assert homogenous.dcm == approx(dcm)
         assert homogenous.matrix.shape == (4, 4)
-        assert homogenous.matrix[0:3, 0:3] == approx(rotation)
+        assert homogenous.matrix[0:3, 0:3] == approx(dcm)
         assert homogenous.matrix[0:3, -1] == approx([0., 0., 0.])
         assert homogenous.matrix[-1, -1] == approx(1)
