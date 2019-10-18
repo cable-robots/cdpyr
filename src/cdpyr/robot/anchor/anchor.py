@@ -1,47 +1,66 @@
-from typing import Optional, Union
+from collections import UserList
+from typing import Optional, Sequence
 
 from abc import ABC
 from magic_repr import make_repr
 
-from cdpyr.kinematics.transformation.angular import (
-    Angular as AngularTransformation,
-    # AngularSchema as AngularTransformationSchema,
+from cdpyr.kinematics.transformation import (
+    angular as _angular,
+    linear as _linear,
 )
-from cdpyr.kinematics.transformation.linear import (
-    Linear as LinearTransformation,
-    # LinearSchema as LinearTransformationSchema,
-)
-from cdpyr.mixin.list import ObjectList
 from cdpyr.typing import Matrix, Vector
 
 
 class Anchor(object):
-    _linear: LinearTransformation
-    _angular: AngularTransformation
+    _linear: '_linear.Linear'
+    _angular: '_angular.Angular'
 
     def __init__(self,
-                 position: Optional[
-                     Union[Vector, LinearTransformation]] = None,
-                 rotation: Optional[
-                     Union[Matrix, AngularTransformation]] = None
+                 position: Optional[Vector] = None,
+                 rotation: Optional[Matrix] = None,
+                 linear: Optional['_linear.Linear'] = None,
+                 angular: Optional['_angular.Angular'] = None,
                  ):
-        # initialize properties
-        self.linear = LinearTransformation()
-        self.angular = AngularTransformation()
+        """
 
-        # set value
-        self.position = position or [0, 0, 0]
-        self.dcm = rotation or [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+        Parameters
+        ----------
+        position : Vector
+            (3,) vector of the (relative) position of the anchor in a
+            reference coordinate system
+        rotation : Matrix
+            (3,3) matrix representing the rotation matrix `dcm` of the
+            platform anchor. Use only where applicable.
+        linear : Linear
+            Linear transformation object that is to be used instead of
+            `position`  if given.
+        angular : Angular
+            Angular transformation object that is to be used instead of
+            `rotation` if given.
+        """
+        # initialize and set linear property if not given by the user
+        if linear is None:
+            self.linear = _linear.Linear()
+            self.position = position or [0.0, 0.0, 0.0]
+        # set linear transformation to user-defined value
+        else:
+            self.linear = linear
+
+        # initialize and set angularlinear property if not given by the user
+        if angular is None:
+            self.angular = _angular.Angular()
+            self.dcm = rotation or [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0],
+                                    [0.0, 0.0, 1.0]]
+        # set angular transformation to user-defined value
+        else:
+            self.angular = angular
 
     @property
     def position(self):
         return self.linear.position
 
     @position.setter
-    def position(self, position: Union[Vector, LinearTransformation]):
-        if isinstance(position, LinearTransformation):
-            position = position.position
-
+    def position(self, position: Vector):
         self.linear.position = position
 
     @position.deleter
@@ -53,7 +72,7 @@ class Anchor(object):
         return self._linear
 
     @linear.setter
-    def linear(self, linear: LinearTransformation):
+    def linear(self, linear: '_linear.Linear'):
         self._linear = linear
 
     @linear.deleter
@@ -65,7 +84,7 @@ class Anchor(object):
         return self._angular
 
     @angular.setter
-    def angular(self, angular: AngularTransformation):
+    def angular(self, angular: '_angular.Angular'):
         self._angular = angular
 
     @angular.deleter
@@ -77,9 +96,7 @@ class Anchor(object):
         return self.angular.dcm
 
     @dcm.setter
-    def dcm(self, dcm: Union[Matrix, AngularTransformation]):
-        if isinstance(dcm, AngularTransformation):
-            dcm = dcm.dcm
+    def dcm(self, dcm: Matrix):
         self.angular.dcm = dcm
 
     @dcm.deleter
@@ -91,9 +108,7 @@ class Anchor(object):
         return self.angular.quaternion
 
     @quaternion.setter
-    def quaternion(self, quaternion: Union[Vector, AngularTransformation]):
-        if isinstance(quaternion, AngularTransformation):
-            quaternion = quaternion.quaternion
+    def quaternion(self, quaternion: Vector):
         self.angular.quaternion = quaternion
 
     @quaternion.deleter
@@ -105,9 +120,7 @@ class Anchor(object):
         return self.angular.rotvec
 
     @rotvec.setter
-    def rotvec(self, rotvec: Union[Vector, AngularTransformation]):
-        if isinstance(rotvec, AngularTransformation):
-            rotvec = rotvec.rotvec
+    def rotvec(self, rotvec: Vector):
         self.angular.rotvec = rotvec
 
     @rotvec.deleter
@@ -119,9 +132,7 @@ class Anchor(object):
         return self.angular.euler
 
     @euler.setter
-    def euler(self, euler: Union[Vector, AngularTransformation]):
-        if isinstance(euler, AngularTransformation):
-            euler = euler.euler
+    def euler(self, euler: Vector):
         self.angular.euler = euler
 
     @euler.deleter
@@ -131,14 +142,42 @@ class Anchor(object):
 
 Anchor.__repr__ = make_repr(
     'position',
-    'dcm'
+    'dcm',
+    'quaternion',
+    'rotvec'
 )
 
 
-class AnchorList(ObjectList, ABC):
+class AnchorList(UserList, ABC):
+    data: Sequence[Anchor]
 
-    def __dir__(self):
-        return Anchor.__dict__.keys()
+    @property
+    def angular(self):
+        return (anchor.angular for anchor in self.data)
+
+    @property
+    def dcm(self):
+        return (anchor.dcm for anchor in self.data)
+
+    @property
+    def euler(self):
+        return (anchor.euler for anchor in self.data)
+
+    @property
+    def linear(self):
+        return (anchor.linear for anchor in self.data)
+
+    @property
+    def position(self):
+        return (anchor.position for anchor in self.data)
+
+    @property
+    def quaternion(self):
+        return (anchor.quaternion for anchor in self.data)
+
+    @property
+    def rotvec(self):
+        return (anchor.rotvec for anchor in self.data)
 
 
 __all__ = [

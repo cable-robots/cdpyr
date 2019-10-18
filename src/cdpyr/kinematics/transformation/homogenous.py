@@ -1,7 +1,10 @@
+from typing import Optional
+
 import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.typing import Matrix, Vector
+from cdpyr import validator as _validator
 
 
 class Homogenous(object):
@@ -9,8 +12,8 @@ class Homogenous(object):
     _rotation: np_.ndarray
 
     def __init__(self,
-                 translation: Vector = None,
-                 rotation: Matrix = None
+                 translation: Optional[Vector] = None,
+                 rotation: Optional[Matrix] = None
                  ):
         self.translation = translation if translation is not None else [0, 0, 0]
         self.rotation = rotation if rotation is not None else np_.eye(3)
@@ -23,15 +26,7 @@ class Homogenous(object):
     def translation(self, translation: Vector):
         translation = np_.asarray(translation)
 
-        if translation.ndim != 1:
-            raise ValueError(
-                'translation must be a 1-dimensional vector, was {}'.format(
-                    translation.ndim))
-
-        if translation.shape != (3,):
-            raise ValueError(
-                'translation must be a (3,) vector, was {}'.format(
-                    translation.shape))
+        _validator.linalg.space_coordinate(translation, 'translation')
 
         self._translation = translation
 
@@ -47,15 +42,7 @@ class Homogenous(object):
     def rotation(self, rotation: Matrix):
         rotation = np_.asarray(rotation)
 
-        if rotation.ndim != 2:
-            raise ValueError(
-                'rotation must be a 2-dimensional matrix, was {}'.format(
-                    rotation.ndim))
-
-        if rotation.shape != (3, 3):
-            raise ValueError(
-                'rotation must be a (3,3) matrix, was {}'.format(
-                    rotation.shape))
+        _validator.linalg.rotation_matrix(rotation, 'rotation')
 
         self._rotation = rotation
 
@@ -75,8 +62,8 @@ class Homogenous(object):
                 ),
                 np_.hstack(
                     (
-                        np_.zeros(3),
-                        np_.ones(1)
+                        np_.zeros((3,)),
+                        1
                     ),
                 )
             ),

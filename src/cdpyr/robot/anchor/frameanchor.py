@@ -1,14 +1,9 @@
-from typing import Optional, Union
+from typing import Optional, Sequence
 
 from magic_repr import make_repr
 
-from cdpyr.kinematics.transformation.angular import \
-    Angular as AngularTransformation
-from cdpyr.kinematics.transformation.linear import Linear as \
-    LinearTransformation
 from cdpyr.robot import drivetrain as _drivetrain, pulley as _pulley
 from cdpyr.robot.anchor import anchor as _anchor
-from cdpyr.typing import Matrix, Vector
 
 
 class FrameAnchor(_anchor.Anchor):
@@ -16,14 +11,12 @@ class FrameAnchor(_anchor.Anchor):
     _drivetrain: '_drivetrain.DriveTrain'
 
     def __init__(self,
-                 position: Optional[
-                     Union[Vector, LinearTransformation]] = None,
-                 rotation: Optional[
-                     Union[Matrix, AngularTransformation]] = None,
+                 *args,
                  pulley: Optional['_pulley.Pulley'] = None,
-                 drivetrain: Optional['_drivetrain.DriveTrain'] = None
+                 drivetrain: Optional['_drivetrain.DriveTrain'] = None,
+                 **kwargs,
                  ):
-        _anchor.Anchor.__init__(self, position=position, rotation=rotation)
+        _anchor.Anchor.__init__(self, *args, **kwargs)
         self.pulley = pulley or None
         self.drivetrain = drivetrain or None
 
@@ -56,29 +49,23 @@ FrameAnchor.__repr__ = make_repr(
     'position',
     'dcm',
     'pulley',
-    'drivetrain'
+    'drivetrain',
 )
 
 
-# class FrameAnchorSchema(_anchor.AnchorSchema):
-#     pulley = fields.Nested(_pulley.PulleySchema)
-#     drivetrain = fields.Nested(_drivetrain.DriveTrainSchema)
-#
-#     __model__ = FrameAnchor
-
-
 class FrameAnchorList(_anchor.AnchorList):
+    data: Sequence[FrameAnchor]
 
     @property
-    def __wraps__(self):
-        return FrameAnchor
+    def drivetrain(self):
+        return (anchor.drivetrain for anchor in self.data)
 
-    def __dir__(self):
-        return FrameAnchor.__dict__.keys()
+    @property
+    def pulley(self):
+        return (anchor.pulley for anchor in self.data)
 
 
 __all__ = [
     'FrameAnchor',
     'FrameAnchorList',
-    # 'FrameAnchorSchema',
 ]

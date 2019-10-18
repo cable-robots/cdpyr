@@ -1,5 +1,5 @@
 from collections import UserList
-from typing import Optional, Sequence, Union
+from typing import Optional, Sequence, Union, AnyStr
 
 import numpy as np_
 from colour import Color
@@ -13,25 +13,25 @@ class Cable(object):
     _breaking_load: Num
     _color: Color
     _diameter: Num
-    _material: str
+    _material: AnyStr
     _modulus: dict
-    _name: str
+    _name: AnyStr
 
     def __init__(self,
-                 name: Optional[str] = None,
-                 material: Optional[str] = None,
+                 name: Optional[AnyStr] = None,
+                 material: Optional[AnyStr] = None,
                  modulus: Optional[dict] = None,
                  diameter: Optional[Num] = None,
-                 color: Optional[Union[str, Color]] = None,
+                 color: Optional[Union[AnyStr, Color]] = None,
                  breaking_load: Optional[Num] = None
                  ):
         """ Base cable class that represents a rigid, elastic, viscous,
         or viscoelastic cable object.
 
         :rtype: Cable
-        :param str name: Optional string representing a human-readable name of
+        :param AnyStr name: Optional string representing a human-readable name of
         the cable
-        :param str material: Optional string representing a human-readable
+        :param AnyStr material: Optional string representing a human-readable
         name of the cable's material
         :param dict modulus: Optional dictionary mapping of elastic and viscous
         modulus of the cable. Contains the case-sensitive fields `elasticities`
@@ -39,7 +39,7 @@ class Cable(object):
         :param float diameter: Optional float representing the cable's
         diameter in SI
         unit [ m ] (Meter)
-        :param str|Color color: Optional string or Color object representing
+        :param AnyStr|Color color: Optional string or Color object representing
         the object's color. Used mostly for visualizing the cable correctly.
         :param float|np_.Infinity breaking_load: Optional float or
         np_.Infinity representing the cable's rated breaking load. Set to
@@ -85,7 +85,7 @@ class Cable(object):
         return self._material
 
     @material.setter
-    def material(self, material: str):
+    def material(self, material: AnyStr):
         self._material = material
 
     @material.deleter
@@ -97,7 +97,7 @@ class Cable(object):
         return self._name
 
     @name.setter
-    def name(self, name: str):
+    def name(self, name: AnyStr):
         self._name = name
 
     @name.deleter
@@ -109,7 +109,7 @@ class Cable(object):
         return self._color
 
     @color.setter
-    def color(self, color: Union[str, Color]):
+    def color(self, color: Union[AnyStr, Color]):
         if not isinstance(color, Color):
             color = Color(color)
 

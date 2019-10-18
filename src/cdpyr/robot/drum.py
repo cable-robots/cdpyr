@@ -2,29 +2,29 @@ from typing import Optional, Tuple, Union
 
 from magic_repr import make_repr
 
-from cdpyr.geometry import geometry as __geometry
-from cdpyr.mechanics import inertia as __inertia
+from cdpyr.geometry import geometry as _geometry
+from cdpyr.mechanics import inertia as _inertia
 from cdpyr.typing import Matrix, Vector
 
 
 class Drum(object):
-    _geometry: '__geometry.Geometry'
-    _inertia: '__inertia.Inertia'
+    _geometry: '_geometry.Geometry'
+    _inertia: '_inertia.Inertia'
 
     def __init__(self,
-                 geometry: Optional['__geometry.Geometry'] = None,
+                 geometry: Optional['_geometry.Geometry'] = None,
                  inertia: Optional[
-                     Union[Tuple[Vector, Matrix], '__inertia.Inertia']] = None
+                     Union[Tuple[Vector, Matrix], '_inertia.Inertia']] = None
                  ):
-        self.geometry = geometry or __geometry.Geometry()
-        self.inertia = inertia or __inertia.Inertia()
+        self.geometry = geometry or _geometry.Geometry()
+        self.inertia = inertia or _inertia.Inertia()
 
     @property
     def geometry(self):
         return self.geometry
 
     @geometry.setter
-    def geometry(self, geometry: '__geometry.Geometry'):
+    def geometry(self, geometry: '_geometry.Geometry'):
         self._geometry = geometry
 
     @geometry.deleter
@@ -37,9 +37,9 @@ class Drum(object):
 
     @inertia.setter
     def inertia(self,
-                inertia: Union[Tuple[Vector, Matrix], '__inertia.Inertia']):
-        if not isinstance(inertia, __inertia.Inertia):
-            inertia = __inertia.Inertia(linear=inertia[0], angular=inertia[1])
+                inertia: Union[Tuple[Vector, Matrix], '_inertia.Inertia']):
+        if not isinstance(inertia, _inertia.Inertia):
+            inertia = _inertia.Inertia(linear=inertia[0], angular=inertia[1])
 
         self._inertia = inertia
 

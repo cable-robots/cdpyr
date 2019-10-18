@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np_
 from magic_repr import make_repr
 
@@ -11,8 +13,11 @@ class Motor(object):
     _rated_speed: Num
     _rated_power: Num
 
-    def __init__(self, torques: dict = None, inertia: Num = None,
-                 rated_speed: Num = None, rated_power: Num = None):
+    def __init__(self,
+                 torques: Optional[dict] = None,
+                 inertia: Optional[Num] = None,
+                 rated_speed: Optional[Num] = None,
+                 rated_power: Optional[Num] = None):
         self.torques = {
             'stall': None,
             'peak':  None,

@@ -20,10 +20,19 @@ class Pose(object):
                  position: Optional[Tuple[Vector, Matrix]] = None,
                  velocity: Optional[Tuple[Vector, Vector]] = None,
                  acceleration: Optional[Tuple[Vector, Vector]] = None,
-                 time: Num = np_.NaN,
+                 linear: Optional['_lineartransformation.Linear'] = None,
+                 angular: Optional['_angulartransformation.Angular'] = None,
+                 time: Optional[Num] = np_.NaN,
                  ):
-        self.linear = _lineartransformation.Linear()
-        self.angular = _angulartransformation.Angular()
+        if linear is None:
+            self.linear = _lineartransformation.Linear()
+        else:
+            self.linear = linear
+
+        if angular is None:
+            self.angular = _angulartransformation.Angular()
+        else:
+            self.angular = angular
 
         self.position = position or (
             [0.0, 0.0, 0.0],

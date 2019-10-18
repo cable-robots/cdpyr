@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional, Union, AnyStr
 
 import numpy as np_
 from enum import Enum
@@ -18,12 +18,12 @@ class Motionpattern(Enum):
 
     _dof_translation: int
     _dof_rotation: int
-    _human: str
+    _human: AnyStr
 
     def __init__(self,
                  translation: Num,
                  rotation: Num,
-                 name: str):
+                 name: AnyStr):
         self._dof_translation = translation
         self._dof_rotation = rotation
         self._human = name

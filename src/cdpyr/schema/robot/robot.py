@@ -10,7 +10,7 @@ from cdpyr.robot import (
 
 
 class RobotSchema(Schema):
-    name = fields.Str()
+    name = fields.AnyStr()
     frame = fields.Nested(_frame.FrameSchema)
     platforms = fields.List(fields.Nested(_platform.PlatformSchema))
     cables = fields.List(fields.Nested(_cable.CableSchema))

@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np_
 from magic_repr import make_repr
 
@@ -10,8 +12,8 @@ class Inertia(object):
     _angular: np_.ndarray
 
     def __init__(self,
-                 linear: Matrix = None,
-                 angular: Matrix = None
+                 linear: Optional[Matrix] = None,
+                 angular: Optional[Matrix] = None
                  ):
         self.linear = linear if linear is not None else np_.diag(
             np_.full((3,), np_.inf))

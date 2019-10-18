@@ -1,4 +1,4 @@
-from typing import Sequence, Union
+from typing import Optional, Sequence, Union, AnyStr
 
 import numpy as np_
 
@@ -10,8 +10,9 @@ from cdpyr.validator.numeric import (
 )
 
 
-def dimensions(value: Union[Num, Vector, Matrix, Sequence[Num]], expected: int,
-               name: str = None):
+def dimensions(value: Union[Num, Vector, Matrix, Sequence[Num]],
+               expected: int,
+               name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if value.ndim != expected:
         raise ValueError(
@@ -26,7 +27,7 @@ def dimensions(value: Union[Num, Vector, Matrix, Sequence[Num]], expected: int,
 
 def shape(value: Union[Num, Vector, Matrix, Sequence[Num]],
           expected: Union[int, tuple],
-          name: str = None):
+          name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if value.shape != expected:
         raise ValueError(
@@ -38,7 +39,8 @@ def shape(value: Union[Num, Vector, Matrix, Sequence[Num]],
         )
 
 
-def square(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
+def square(value: Union[Num, Vector, Matrix, Sequence[Num]],
+           name: Optional[AnyStr] = None):
     value = np_.asarray(value)
 
     try:
@@ -54,7 +56,7 @@ def square(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
 
 
 def symmetric(value: Union[Num, Vector, Matrix, Sequence[Num]],
-              name: str = None):
+              name: Optional[AnyStr] = None):
     value = np_.asarray(value)
 
     try:
@@ -75,7 +77,7 @@ def symmetric(value: Union[Num, Vector, Matrix, Sequence[Num]],
 
 
 def inertia_tensor(value: Union[Sequence[Sequence[Num]], Matrix],
-                   name: str = None):
+                   name: Optional[AnyStr] = None):
     value = np_.asarray(value)
 
     try:
@@ -92,7 +94,7 @@ def inertia_tensor(value: Union[Sequence[Sequence[Num]], Matrix],
 
 
 def rotation_matrix(value: Union[Sequence[Sequence[Num]], Matrix],
-                    name: str = None):
+                    name: Optional[AnyStr] = None):
     value = np_.asarray(value)
 
     try:
@@ -110,7 +112,8 @@ def rotation_matrix(value: Union[Sequence[Sequence[Num]], Matrix],
         ) from verr
 
 
-def unit_vector(value: Union[Sequence[Num], Vector], name: str = None):
+def unit_vector(value: Union[Sequence[Num], Vector],
+                name: Optional[AnyStr] = None):
     value = np_.asarray(value)
 
     try:

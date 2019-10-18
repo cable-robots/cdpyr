@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Sequence, Tuple, Union
+from typing import Dict, List, Optional, Sequence, Tuple, Union, AnyStr
 
 from magic_repr import make_repr
 
@@ -15,14 +15,14 @@ from cdpyr.robot.anchor import (
 
 
 class Robot(object):
-    _name: str
+    _name: AnyStr
     _frame: '_frame.Frame'
     _platforms: '_platform.PlatformList'
     _cables: '_cable.CableList'
     _chains: '_kinematicchain.KinematicChainList'
 
     def __init__(self,
-                 name: Optional[str] = None,
+                 name: Optional[AnyStr] = None,
                  frame: Optional['_frame.Frame'] = None,
                  platforms: Optional[Union[
                      '_platform.PlatformList',
@@ -36,7 +36,7 @@ class Robot(object):
                      '_kinematicchain.KinematicChainList',
                      Sequence['_kinematicchain.KinematicChain'],
                      Sequence[Tuple[int, int, int, int]],
-                     Sequence[Dict[str, int]]
+                     Sequence[Dict[AnyStr, int]]
                  ]] = None
                  ):
         self.name = name or 'default'
@@ -50,7 +50,7 @@ class Robot(object):
         return self._name
 
     @name.setter
-    def name(self, name: str):
+    def name(self, name: AnyStr):
         self._name = name
 
     @name.deleter
@@ -125,7 +125,7 @@ class Robot(object):
                              '_kinematicchain.KinematicChainList',
                              Sequence['_kinematicchain.KinematicChain'],
                              Sequence[Tuple[int, int, int, int]],
-                             Sequence[Dict[str, int]]
+                             Sequence[Dict[AnyStr, int]]
                          ]):
         # turn anything not a set into a set (also removes already redundant
         # objects)

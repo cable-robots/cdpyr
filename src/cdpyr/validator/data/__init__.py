@@ -1,7 +1,9 @@
-from typing import Sized
+from typing import Optional, Sized, AnyStr
 
 
-def length(value: Sized, expected: int, name: str = None):
+def length(value: Sized,
+           expected: int,
+           name: Optional[AnyStr] = None):
     if len(value) != expected:
         raise ValueError(
             'Expected `{}` to have {} element{}, got {} instead.'.format(

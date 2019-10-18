@@ -16,8 +16,8 @@ class Platform(object):
     _motion_pattern: '_motionpattern.Motionpattern'
     _anchors: '_platformanchor.PlatformAnchorList'
     _inertia: '_inertia.Inertia'
-    _center_of_gravity: np_.ndarray
-    _center_of_linkage: np_.ndarray
+    _center_of_gravity: 'np_.ndarray'
+    _center_of_linkage: 'np_.ndarray'
 
     def __init__(self,
                  motionpattern: '_motionpattern.Motionpattern',
@@ -25,9 +25,9 @@ class Platform(object):
                      '_platformanchor.PlatformAnchorList',
                      Sequence['_platformanchor.PlatformAnchor']
                  ]] = None,
-                 inertia: '_inertia.Inertia' = None,
-                 center_of_gravity: Vector = None,
-                 center_of_linkage: Vector = None
+                 inertia: Optional['_inertia.Inertia'] = None,
+                 center_of_gravity: Optional[Vector] = None,
+                 center_of_linkage: Optional[Vector] = None
                  ):
         self.anchors = anchors or []
         self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]

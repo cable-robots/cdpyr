@@ -1,3 +1,5 @@
+from typing import Optional, AnyStr
+
 import numpy as np_
 from magic_repr import make_repr
 from scipy.spatial.transform import Rotation
@@ -10,7 +12,7 @@ class Angular(object):
     _angular_rotation: Rotation = Rotation.from_quat([0., 0., 0., 1.])
     _angular_velocity: np_.ndarray = np_.asarray((0., 0., 0.))
     _angular_acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
-    _rotation_sequence: str = 'zyx'
+    _rotation_sequence: AnyStr = 'zyx'
 
     """
     A kinematic angular transformation object.
@@ -24,7 +26,7 @@ class Angular(object):
     ----------
     rotation : Rotation
     
-    sequence : str
+    sequence : AnyStr
     
     dcm : ndarray
     
@@ -40,13 +42,13 @@ class Angular(object):
     """
 
     def __init__(self,
-                 euler: Vector = None,
-                 quaternion: Vector = None,
-                 dcm: Matrix = None,
-                 rotvec: Vector = None,
-                 angular_velocity: Vector = None,
-                 angular_acceleration: Vector = None,
-                 rotation_sequence: str = None
+                 euler: Optional[Vector] = None,
+                 quaternion: Optional[Vector] = None,
+                 dcm: Optional[Matrix] = None,
+                 rotvec: Optional[Vector] = None,
+                 angular_velocity: Optional[Vector] = None,
+                 angular_acceleration: Optional[Vector] = None,
+                 rotation_sequence: Optional[AnyStr] = None
                  ):
         """
         Parameters
@@ -68,7 +70,7 @@ class Angular(object):
         angular_acceleration : iterable or (3, ) ndarray, optional
             Angular acceleration as given in the local coordinate system.
             Defaults to [0., 0., 0.]
-        rotation_sequence : str
+        rotation_sequence : AnyStr
             Valid rotation sequences to instantiate the object with. Refers
             to the Euler extrinsic or intrinsic parameter. Defaults to 'zyx'
 
@@ -124,7 +126,7 @@ class Angular(object):
         return self._rotation_sequence
 
     @sequence.setter
-    def sequence(self, sequence: str):
+    def sequence(self, sequence: AnyStr):
         self._rotation_sequence = sequence
 
     @sequence.deleter
@@ -156,8 +158,7 @@ class Angular(object):
     def dcm(self, dcm: Matrix):
         dcm = np_.asarray(dcm)
 
-        _validator.linalg.dimensions(dcm, 2, 'dcm')
-        _validator.linalg.shape(dcm, (3, 3), 'dcm')
+        _validator.linalg.rotation_matrix(dcm, 'dcm')
 
         self.rotation = Rotation.from_dcm(dcm)
 
@@ -207,8 +208,7 @@ class Angular(object):
     def angular_velocity(self, velocity: Vector):
         velocity = np_.asarray(velocity)
 
-        _validator.linalg.dimensions(velocity, 1, 'angular_velocity')
-        _validator.linalg.shape(velocity, (3,), 'angular_velocity')
+        _validator.linalg.space_coordinate(velocity, 'angular_velocity')
 
         self._angular_velocity = velocity
 
@@ -224,8 +224,7 @@ class Angular(object):
     def angular_acceleration(self, acceleration: Vector):
         acceleration = np_.asarray(acceleration)
 
-        _validator.linalg.dimensions(acceleration, 1, 'angular_acceleration')
-        _validator.linalg.shape(acceleration, (3,), 'angular_acceleration')
+        _validator.linalg.space_coordinate(acceleration, 'angular_acceleration')
 
         self._angular_acceleration = acceleration
 

@@ -1,11 +1,12 @@
-from typing import Sequence, Union
+from typing import Optional, Sequence, Union, AnyStr
 
 import numpy as np_
 
 from cdpyr.typing import Matrix, Num, Vector
 
 
-def nonzero(value: Union[Num, Vector, Sequence[Num]], name: str = None):
+def nonzero(value: Union[Num, Vector],
+            name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if (value == 0).any():
         raise ValueError(
@@ -16,7 +17,8 @@ def nonzero(value: Union[Num, Vector, Sequence[Num]], name: str = None):
         )
 
 
-def negative(value: Union[Num, Vector, Sequence[Num]], name: str = None):
+def negative(value: Union[Num, Vector],
+             name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if (value >= 0).any():
         raise ValueError(
@@ -27,7 +29,8 @@ def negative(value: Union[Num, Vector, Sequence[Num]], name: str = None):
         )
 
 
-def nonnegative(value: Union[Num, Vector, Sequence[Num]], name: str = None):
+def nonnegative(value: Union[Num, Vector],
+                name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if (value < 0).any():
         raise ValueError(
@@ -38,7 +41,8 @@ def nonnegative(value: Union[Num, Vector, Sequence[Num]], name: str = None):
         )
 
 
-def positive(value: Union[Num, Vector, Sequence[Num]], name: str = None):
+def positive(value: Union[Num, Vector],
+             name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if (value <= 0).any():
         raise ValueError(
@@ -49,7 +53,8 @@ def positive(value: Union[Num, Vector, Sequence[Num]], name: str = None):
         )
 
 
-def nonpositive(value: Union[Num, Vector, Sequence[Num]], name: str = None):
+def nonpositive(value: Union[Num, Vector],
+                name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if (value > 0).any():
         raise ValueError(
@@ -60,9 +65,9 @@ def nonpositive(value: Union[Num, Vector, Sequence[Num]], name: str = None):
         )
 
 
-def equal_to(value: Union[Num, Vector, Sequence[Num]],
+def equal_to(value: Union[Num, Vector],
              expected: Num,
-             name: str = None,
+             name: AnyStr = Optional[None],
              *args,
              **kwargs):
     value = np_.asarray(value)
@@ -77,9 +82,9 @@ def equal_to(value: Union[Num, Vector, Sequence[Num]],
         )
 
 
-def greater_than(value: Union[Num, Vector, Sequence[Num]],
+def greater_than(value: Union[Num, Vector],
                  expected: Num,
-                 name: str = None):
+                 name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if (value <= expected).any():
         raise ValueError(
@@ -92,9 +97,9 @@ def greater_than(value: Union[Num, Vector, Sequence[Num]],
         )
 
 
-def greater_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
+def greater_than_or_equal_to(value: Union[Num, Vector],
                              expected: Num,
-                             name: str = None):
+                             name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if (value < expected).any():
         raise ValueError(
@@ -108,9 +113,9 @@ def greater_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
         )
 
 
-def less_than(value: Union[Num, Vector, Sequence[Num]],
+def less_than(value: Union[Num, Vector],
               expected: Num,
-              name: str = None):
+              name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if (value >= expected).any():
         raise ValueError(
@@ -123,9 +128,9 @@ def less_than(value: Union[Num, Vector, Sequence[Num]],
         )
 
 
-def less_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
+def less_than_or_equal_to(value: Union[Num, Vector],
                           expected: Num,
-                          name: str = None):
+                          name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if (value > expected).any():
         raise ValueError(
@@ -138,7 +143,8 @@ def less_than_or_equal_to(value: Union[Num, Vector, Sequence[Num]],
         )
 
 
-def finite(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
+def finite(value: Union[Num, Vector, Matrix, Sequence[Num]],
+           name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if np_.invert(np_.isfinite(value)).any():
         raise ValueError(
@@ -148,7 +154,8 @@ def finite(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
         )
 
 
-def nonnan(value: Union[Num, Vector, Matrix, Sequence[Num]], name: str = None):
+def nonnan(value: Union[Num, Vector, Matrix, Sequence[Num]],
+           name: Optional[AnyStr] = None):
     value = np_.asarray(value)
     if np_.isnan(value).any():
         raise ValueError(

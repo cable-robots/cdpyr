@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np_
 from magic_repr import make_repr
 
@@ -11,9 +13,9 @@ class Linear(object):
     _acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
 
     def __init__(self,
-                 position: Vector = None,
-                 velocity: Vector = None,
-                 acceleration: Vector = None
+                 position: Optional[Vector] = None,
+                 velocity: Optional[Vector] = None,
+                 acceleration: Optional[Vector] = None
                  ):
         self.position = position \
             if position is not None \
@@ -33,8 +35,7 @@ class Linear(object):
     def position(self, position: Vector):
         position = np_.asarray(position)
 
-        _validator.linalg.dimensions(position, 1, 'position')
-        _validator.linalg.shape(position, (3,), 'position')
+        _validator.linalg.space_coordinate(position, 'position')
 
         self._position = position
 
@@ -50,8 +51,7 @@ class Linear(object):
     def velocity(self, velocity: Vector):
         velocity = np_.asarray(velocity)
 
-        _validator.linalg.dimensions(velocity, 1, 'velocity')
-        _validator.linalg.shape(velocity, (3,), 'velocity')
+        _validator.linalg.space_coordinate(velocity, 'velocity')
 
         self._velocity = velocity
 
@@ -67,8 +67,7 @@ class Linear(object):
     def acceleration(self, acceleration: Vector):
         acceleration = np_.asarray(acceleration)
 
-        _validator.linalg.dimensions(acceleration, 1, 'acceleration')
-        _validator.linalg.shape(acceleration, (3,), 'acceleration')
+        _validator.linalg.space_coordinate(acceleration, 'acceleration')
 
         self._acceleration = acceleration
 

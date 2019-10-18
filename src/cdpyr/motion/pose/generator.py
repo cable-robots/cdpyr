@@ -1,14 +1,21 @@
 import itertools
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np_
 from scipy.spatial import transform as _transform
 
+from cdpyr import validator as _validator
+from cdpyr.kinematics.transformation import (
+    angular as _angular,
+    linear as _linear,
+)
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.typing import Matrix, Num, Vector
 
 
-def steps(start: '_pose.Pose', end: '_pose.Pose', step: Union[Num, Vector]):
+def steps(start: '_pose.Pose',
+          end: '_pose.Pose',
+          step: Union[Num, Vector]):
     # get an array
     step = np_.asarray(step)
 
@@ -16,14 +23,14 @@ def steps(start: '_pose.Pose', end: '_pose.Pose', step: Union[Num, Vector]):
     if step.ndim == 0:
         step = np_.asarray([step])
 
-    # [pos, rot]
+    # [pos, rot] to [pos, pos, pos, rot, rot, rot]
     if step.size == 2:
         step = np_.hstack((
             np_.repeat(step[0], 3, axis=0),
             np_.repeat(step[1], 3, axis=0),
         ))
 
-    # make sure the number of steps is 6 i.e., one per parameter
+    # make sure the number of steps is 6 i.e., one per spatial degree of freedom
     if step.size != 6:
         step = np_.repeat(step, np_.ceil(6 / step.size))[0:6]
 
@@ -38,7 +45,7 @@ def steps(start: '_pose.Pose', end: '_pose.Pose', step: Union[Num, Vector]):
     diff_rot = end.angular.euler - start.angular.euler
     end.angular.sequence = old_sequence
 
-    # delta of each step to perform
+    # delta in position to perform per step
     deltas = np_.hstack((diff_pos, diff_rot)) / step
     # set deltas to zero where no step is needed
     deltas[np_.isclose(step, 0)] = 0
@@ -47,6 +54,8 @@ def steps(start: '_pose.Pose', end: '_pose.Pose', step: Union[Num, Vector]):
     iterations = step * np_.logical_not(
         np_.hstack((np_.isclose(diff_pos, 0), np_.isclose(diff_rot, 0))))
 
+    # TODO make creation of rotation matrix faster as `from_euler` seems to
+    #  be a major bottleneck here
     # return the generator object
     return (_pose.Pose((
         start.linear.position + deltas[0:3] * a[0:3],
@@ -60,7 +69,8 @@ def steps(start: '_pose.Pose', end: '_pose.Pose', step: Union[Num, Vector]):
     ))
 
 
-def interval(pose: '_pose.Pose', boundaries: Union[Vector, Matrix],
+def interval(pose: '_pose.Pose',
+             boundaries: Union[Vector, Matrix],
              step: Union[Num, Vector] = 10):
     """
 
@@ -100,17 +110,6 @@ def interval(pose: '_pose.Pose', boundaries: Union[Vector, Matrix],
     # case of [[min, max], [min, max], ..., [min, max]]
     if boundaries.ndim == 2 and boundaries.shape == (6, 2):
         boundaries = boundaries.T
-
-    # # get an array of steps
-    # step = np_.asarray(step)
-    #
-    # # convert scalar arrays into vectorial arrays
-    # if step.ndim == 0:
-    #     step = np_.asarray([step])
-    #
-    # # make sure the number of steps is 6 i.e., one per parameter
-    # if step.size != 6:
-    #     step = np_.repeat(step, np_.ceil(6 / step.size))[0:6]
 
     # calculate start and end pose
     start = _pose.Pose(

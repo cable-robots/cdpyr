@@ -1,4 +1,4 @@
-from typing import IO, Union
+from typing import IO, Union, AnyStr
 
 from cdpyr.stream.parser.parser import Parser
 
@@ -6,7 +6,7 @@ from cdpyr.stream.parser.parser import Parser
 class Stream(object):
     _parser: Parser
 
-    def __init__(self, parser: Union[str, Parser]):
+    def __init__(self, parser: Union[AnyStr, Parser]):
         self.parser = parser
 
     @property
@@ -53,9 +53,9 @@ class Stream(object):
         """
         return self.parser.encode(o, *args, **kwargs)
 
-    def decodes(self, s: str, *args, **kwargs):
+    def decodes(self, s: AnyStr, *args, **kwargs):
         """
 
-        :type s: str A string representing the encoded object
+        :type s: AnyStr A string representing the encoded object
         """
         return self.parser.decode(s, *args, **kwargs)
