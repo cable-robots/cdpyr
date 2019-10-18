@@ -13,11 +13,11 @@ class DykstraForceDistributionTestSuite(object):
         _, uis = ik_standard.backward(robot_1t, empty_pose)
 
         # get structure matrix for the current pose
-        sms = cdpyr.analysis.structurematrix.StructureMatrix()
+        sms = cdpyr.analysis.structurematrix.Calculator()
         structmat = sms(robot_1t, uis, empty_pose)
 
         # force distribution solver
-        fdist = cdpyr.analysis.forcedistribution.ForceDistribution.DYKSTRA
+        fdist = cdpyr.analysis.forcedistribution.Calculator.DYKSTRA
 
         # create a gravitational wrench
         wrench = np.zeros(robot_1t.platforms[0].motionpattern.dof)
@@ -46,11 +46,11 @@ class DykstraForceDistributionTestSuite(object):
         _, uis = ik_standard.backward(robot_2t, empty_pose)
 
         # get structure matrix for the current pose
-        sms = cdpyr.analysis.structurematrix.StructureMatrix()
+        sms = cdpyr.analysis.structurematrix.Calculator()
         structmat = sms(robot_2t, uis, empty_pose)
 
         # force distribution solver
-        fdist = cdpyr.analysis.forcedistribution.ForceDistribution.DYKSTRA
+        fdist = cdpyr.analysis.forcedistribution.Calculator.DYKSTRA
 
         # create a gravitational wrench
         wrench = np.zeros(robot_2t.platforms[0].motionpattern.dof)
@@ -79,11 +79,11 @@ class DykstraForceDistributionTestSuite(object):
         _, uis = ik_standard.backward(robot_3t, empty_pose)
 
         # get structure matrix for the current pose
-        sms = cdpyr.analysis.structurematrix.StructureMatrix()
+        sms = cdpyr.analysis.structurematrix.Calculator()
         structmat = sms(robot_3t, uis, empty_pose)
 
         # force distribution solver
-        fdist = cdpyr.analysis.forcedistribution.ForceDistribution.DYKSTRA
+        fdist = cdpyr.analysis.forcedistribution.Calculator.DYKSTRA
 
         # create a gravitational wrench
         wrench = np.zeros(robot_3t.platforms[0].motionpattern.dof)
@@ -112,11 +112,11 @@ class DykstraForceDistributionTestSuite(object):
         _, uis = ik_standard.backward(robot_1r2t, empty_pose)
 
         # get structure matrix for the current pose
-        sms = cdpyr.analysis.structurematrix.StructureMatrix()
+        sms = cdpyr.analysis.structurematrix.Calculator()
         structmat = sms(robot_1r2t, uis, empty_pose)
 
         # force distribution solver
-        fdist = cdpyr.analysis.forcedistribution.ForceDistribution.DYKSTRA
+        fdist = cdpyr.analysis.forcedistribution.Calculator.DYKSTRA
 
         # create a gravitational wrench
         wrench = np.zeros(robot_1r2t.platforms[0].motionpattern.dof)
@@ -145,11 +145,11 @@ class DykstraForceDistributionTestSuite(object):
         _, uis = ik_standard.backward(robot_2r3t, empty_pose)
 
         # get structure matrix for the current pose
-        sms = cdpyr.analysis.structurematrix.StructureMatrix()
+        sms = cdpyr.analysis.structurematrix.Calculator()
         structmat = sms(robot_2r3t, uis, empty_pose)
 
         # force distribution solver
-        fdist = cdpyr.analysis.forcedistribution.ForceDistribution.DYKSTRA
+        fdist = cdpyr.analysis.forcedistribution.Calculator.DYKSTRA
 
         # create a gravitational wrench
         wrench = np.zeros(robot_2r3t.platforms[0].motionpattern.dof)
@@ -179,11 +179,11 @@ class DykstraForceDistributionTestSuite(object):
         _, uis = ik_standard.backward(robot_3r3t, empty_pose)
 
         # get structure matrix for the current pose
-        sms = cdpyr.analysis.structurematrix.StructureMatrix()
+        sms = cdpyr.analysis.structurematrix.Calculator()
         structmat = sms(robot_3r3t, uis, empty_pose)
 
         # force distribution solver
-        fdist = cdpyr.analysis.forcedistribution.ForceDistribution.DYKSTRA
+        fdist = cdpyr.analysis.forcedistribution.Calculator.DYKSTRA
 
         # create a gravitational wrench
         wrench = np.zeros(robot_3r3t.platforms[0].motionpattern.dof)

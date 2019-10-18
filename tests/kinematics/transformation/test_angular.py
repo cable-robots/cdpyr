@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Sequence, AnyStr
 
 import numpy as np
 import scipy.linalg
@@ -52,7 +52,7 @@ class AngularTransformationTestSuite(object):
         ]
     )
     def test_with_euler_from_list_as_keyword_argument(self, eul: Sequence,
-                                                      seq: str):
+                                                      seq: AnyStr):
         angular = cdpyr.kinematics.transformation.Angular(
             euler=eul,
             rotation_sequence=seq
@@ -87,7 +87,7 @@ class AngularTransformationTestSuite(object):
     )
     def test_with_euler_from_numpyarray_as_keyword_argument(self,
                                                             eul: np.ndarray,
-                                                            seq: str):
+                                                            seq: AnyStr):
         angular = cdpyr.kinematics.transformation.Angular(
             euler=eul,
             rotation_sequence=seq
