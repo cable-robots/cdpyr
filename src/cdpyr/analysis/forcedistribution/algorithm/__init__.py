@@ -1,10 +1,11 @@
-from cdpyr.analysis.forcedistribution.algorithm.closedform import ClosedForm
-from cdpyr.analysis.forcedistribution.algorithm.closedformimproved import \
-    ClosedFormImproved
-from cdpyr.analysis.forcedistribution.algorithm.dykstra import Dykstra
+from cdpyr.analysis.forcedistribution.algorithm import (
+    closed_form,
+    closed_form_improved,
+    dykstra,
+)
 
 __all__ = [
-    'ClosedForm',
-    'ClosedFormImproved',
-    'Dykstra',
+    'closed_form',
+    'closed_form_improved',
+    'dykstra',
 ]

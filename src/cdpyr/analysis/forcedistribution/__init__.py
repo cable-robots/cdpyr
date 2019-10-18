@@ -1,7 +1,5 @@
-from cdpyr.analysis.forcedistribution import algorithm
-from cdpyr.analysis.forcedistribution.forcedistribution import ForceDistribution
+from cdpyr.analysis.forcedistribution.calculator import Calculator
 
 __all__ = [
-    'ForceDistribution',
-    'algorithm',
+    'Calculator',
 ]
