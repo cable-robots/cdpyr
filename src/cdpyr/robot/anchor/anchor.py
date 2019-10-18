@@ -1,6 +1,7 @@
 from collections import UserList
 from typing import Optional, Sequence
 
+import numpy as np_
 from abc import ABC
 from magic_repr import make_repr
 
