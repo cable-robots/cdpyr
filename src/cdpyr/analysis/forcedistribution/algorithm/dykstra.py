@@ -3,7 +3,6 @@ import numpy as np_
 from cdpyr import validator as _validator
 from cdpyr.analysis.forcedistribution import calculator as _forcedistribution
 from cdpyr.numpy import linalg
-from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 
 
@@ -82,9 +81,9 @@ def evaluate(calculator: '_forcedistribution.Calculator',
         # fail if not converged
         if kiter >= max_iter:
             raise ArithmeticError(
-                'Could not find a valid force distribution using the '
-                'current algorithm_old. Please check your arguments or try '
-                'another algorithm_old if you are sure there must be a valid '
+                'Could not find a valid force distribution using the current '
+                'current algorithm. Please check your arguments or try '
+                'another algorithm if you are sure there must be a valid '
                 'force distribution.')
 
     return projection_a

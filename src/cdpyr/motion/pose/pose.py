@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Union
+from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -26,18 +26,42 @@ class Pose(object):
                  ):
         if linear is None:
             self.linear = _linear.Linear(
-                position[0] if position is not None else np_.zeros((3,)),
-                velocity[0] if velocity is not None else np_.zeros((3, )),
-                acceleration[0] if acceleration is not None else np_.zeros((3, )),
+                position[0]
+                if isinstance(position, Sequence)
+                   and 0 < len(position)
+                   and position is not None
+                else np_.zeros((3,)),
+                velocity[0]
+                if isinstance(velocity, Sequence)
+                   and 0 < len(velocity)
+                   and velocity is not None
+                else np_.zeros((3,)),
+                acceleration[0]
+                if isinstance(acceleration, Sequence)
+                   and 0 < len(acceleration)
+                   and acceleration is not None
+                else np_.zeros((3,)),
             )
         else:
             self.linear = linear
 
         if angular is None:
             self.angular = _angular.Angular(
-                dcm=position[1] if position is not None else np_.eye(3),
-                angular_velocity=velocity[1] if velocity is not None else np_.zeros((3, )),
-                angular_acceleration=acceleration[1] if acceleration is not None else np_.zeros((3, )),
+                dcm=position[1]
+                if isinstance(position, Sequence)
+                   and 1 < len(position)
+                   and position[1] is not None
+                else np_.eye(3),
+                angular_velocity=velocity[1]
+                if isinstance(velocity, Sequence)
+                   and 1 < len(velocity)
+                   and velocity is not None
+                else np_.zeros((3,)),
+                angular_acceleration=acceleration[1]
+                if isinstance(acceleration, Sequence)
+                   and 1 < len(acceleration)
+                   and acceleration is not None
+                else np_.zeros((3,)),
             )
         else:
             self.angular = angular

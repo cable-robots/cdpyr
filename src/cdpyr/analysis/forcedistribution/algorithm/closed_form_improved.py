@@ -2,7 +2,6 @@ import numpy as np_
 
 from cdpyr.analysis.forcedistribution import calculator as _forcedistribution
 from cdpyr.numpy import linalg
-from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 
 
@@ -34,12 +33,12 @@ def evaluate(calculator: '_forcedistribution.Calculator',
             force_min,
             force_max
         )
-    except ArithmeticError as arrexc:
+    except ArithmeticError as ArithmeticException:
         raise ValueError(
             'Could not find a valid force distribution using the current '
-            'algorithm_old. Please check your arguments or try another '
-            'algorithm_old if you are sure there must be a valid force '
-            'distribution.') from arrexc
+            'algorithm. Please check your arguments or try another algorithm '
+            'if you are sure there must be a valid force distribution.')\
+            from ArithmeticException
     else:
         return force_distribution
 
