@@ -12,7 +12,7 @@ class Angular(object):
     _angular_rotation: Rotation = Rotation.from_quat([0., 0., 0., 1.])
     _angular_velocity: np_.ndarray = np_.asarray((0., 0., 0.))
     _angular_acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
-    _rotation_sequence: AnyStr = 'zyx'
+    _rotation_sequence: AnyStr = 'xyz'
 
     """
     A kinematic angular transformation object.
@@ -80,7 +80,9 @@ class Angular(object):
         rotation object
         """
 
-        self.sequence = rotation_sequence or 'zyx'
+        # by default, we will have an extrinsic rotation about [x,y,z] given
+        # as [a,b,c] so that it is Rz(c) * Ry(b) * Rx(a)
+        self.sequence = rotation_sequence or 'xyz'
         if euler is not None and \
             quaternion is None and \
             dcm is None and \

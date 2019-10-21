@@ -11,7 +11,7 @@ def poses(archetype, coordinate):
     start = _pose.Pose((
         archetype.position,
         _transform.Rotation.from_euler(
-            'zyx',
+            'xyz',
             np_.pi * np_.asarray((-1.0, -1.0, -1.0))
         ).as_dcm()
     ))
@@ -19,7 +19,7 @@ def poses(archetype, coordinate):
     end = _pose.Pose((
         archetype.position,
         _transform.Rotation.from_euler(
-            'zyx',
+            'xyz',
             np_.pi * np_.asarray((1.0, 1.0, 1.0))
         ).as_dcm()
     ))

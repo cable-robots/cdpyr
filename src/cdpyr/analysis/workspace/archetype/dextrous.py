@@ -7,11 +7,12 @@ comparator = all
 
 
 def poses(archetype, coordinate):
+    # extrinsic rotation of 180° about [x, y, z]
     euler = np_.pi * np_.asarray([1, 1, 1])
     # and return the generator
     return _generator.steps(_pose.Pose(
-        (coordinate, _transform.Rotation.from_euler('zyx', -euler).as_dcm())),
+        (coordinate, _transform.Rotation.from_euler('xyz', -euler).as_dcm())),
         _pose.Pose((coordinate,
-                    _transform.Rotation.from_euler('zyx',
+                    _transform.Rotation.from_euler('xyz',
                                                    +euler).as_dcm())),
         1)

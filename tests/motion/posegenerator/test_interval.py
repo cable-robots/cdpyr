@@ -192,9 +192,9 @@ class IntervalPoseGeneratorTestSuite(object):
                 [-0.0, 0.0],
                 [-0.0, 0.0],
                 [-0.0, 0.0],
-                np.deg2rad([-45.0, 45.0]),
                 np.deg2rad([  0.0,  0.0]),
-                np.deg2rad([  0.0,  0.0])
+                np.deg2rad([  0.0,  0.0]),
+                np.deg2rad([-45.0, 45.0])
             ],
             step=2
         )
@@ -241,23 +241,23 @@ class IntervalPoseGeneratorTestSuite(object):
         # assertion
         assert len(poses) == 9
         assert poses[0].angular.dcm == pytest.approx(
-            Rotation.from_euler('zy', [-45, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xy', [-45, -45], degrees=True).as_dcm())
         assert poses[1].angular.dcm == pytest.approx(
-            Rotation.from_euler('zy', [-45, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xy', [-45, 0], degrees=True).as_dcm())
         assert poses[2].angular.dcm == pytest.approx(
-            Rotation.from_euler('zy', [-45, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xy', [-45, +45], degrees=True).as_dcm())
         assert poses[3].angular.dcm == pytest.approx(
-            Rotation.from_euler('zy', [0, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xy', [0, -45], degrees=True).as_dcm())
         assert poses[4].angular.dcm == pytest.approx(
-            Rotation.from_euler('zy', [0, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xy', [0, 0], degrees=True).as_dcm())
         assert poses[5].angular.dcm == pytest.approx(
-            Rotation.from_euler('zy', [0, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xy', [0, +45], degrees=True).as_dcm())
         assert poses[6].angular.dcm == pytest.approx(
-            Rotation.from_euler('zy', [+45, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xy', [+45, -45], degrees=True).as_dcm())
         assert poses[7].angular.dcm == pytest.approx(
-            Rotation.from_euler('zy', [+45, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xy', [+45, 0], degrees=True).as_dcm())
         assert poses[8].angular.dcm == pytest.approx(
-            Rotation.from_euler('zy', [+45, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xy', [+45, +45], degrees=True).as_dcm())
 
     def test_interval_with_two_steps_on_three_changes_in_orientation(self):
         pose = cdpyr.motion.Pose((
@@ -289,58 +289,58 @@ class IntervalPoseGeneratorTestSuite(object):
         # assertion
         assert len(poses) == 27
         assert poses[0].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [-45, -45, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [-45, -45, -45], degrees=True).as_dcm())
         assert poses[1].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [-45, -45, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [-45, -45, 0], degrees=True).as_dcm())
         assert poses[2].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [-45, -45, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [-45, -45, +45], degrees=True).as_dcm())
         assert poses[3].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [-45, 0, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [-45, 0, -45], degrees=True).as_dcm())
         assert poses[4].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [-45, 0, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [-45, 0, 0], degrees=True).as_dcm())
         assert poses[5].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [-45, 0, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [-45, 0, +45], degrees=True).as_dcm())
         assert poses[6].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [-45, +45, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [-45, +45, -45], degrees=True).as_dcm())
         assert poses[7].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [-45, +45, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [-45, +45, 0], degrees=True).as_dcm())
         assert poses[8].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [-45, +45, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [-45, +45, +45], degrees=True).as_dcm())
 
         assert poses[9].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+0, -45, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+0, -45, -45], degrees=True).as_dcm())
         assert poses[10].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+0, -45, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+0, -45, 0], degrees=True).as_dcm())
         assert poses[11].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+0, -45, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+0, -45, +45], degrees=True).as_dcm())
         assert poses[12].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+0, 0, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+0, 0, -45], degrees=True).as_dcm())
         assert poses[13].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+0, 0, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+0, 0, 0], degrees=True).as_dcm())
         assert poses[14].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+0, 0, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+0, 0, +45], degrees=True).as_dcm())
         assert poses[15].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+0, +45, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+0, +45, -45], degrees=True).as_dcm())
         assert poses[16].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+0, +45, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+0, +45, 0], degrees=True).as_dcm())
         assert poses[17].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+0, +45, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+0, +45, +45], degrees=True).as_dcm())
 
         assert poses[18].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+45, -45, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+45, -45, -45], degrees=True).as_dcm())
         assert poses[19].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+45, -45, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+45, -45, 0], degrees=True).as_dcm())
         assert poses[20].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+45, -45, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+45, -45, +45], degrees=True).as_dcm())
         assert poses[21].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+45, 0, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+45, 0, -45], degrees=True).as_dcm())
         assert poses[22].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+45, 0, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+45, 0, 0], degrees=True).as_dcm())
         assert poses[23].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+45, 0, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+45, 0, +45], degrees=True).as_dcm())
         assert poses[24].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+45, +45, -45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+45, +45, -45], degrees=True).as_dcm())
         assert poses[25].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+45, +45, 0], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+45, +45, 0], degrees=True).as_dcm())
         assert poses[26].angular.dcm == pytest.approx(
-            Rotation.from_euler('zyx', [+45, +45, +45], degrees=True).as_dcm())
+            Rotation.from_euler('xyz', [+45, +45, +45], degrees=True).as_dcm())
