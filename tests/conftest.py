@@ -525,7 +525,7 @@ def rand_rot_1r():
 
 @pytest.fixture
 def rand_rot_2r():
-    return Rotation.from_euler('xy', np.random.random(2)).as_dcm()
+    return Rotation.from_euler('yx', np.random.random(2)).as_dcm()
 
 
 @pytest.fixture
