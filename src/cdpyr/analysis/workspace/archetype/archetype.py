@@ -1,4 +1,4 @@
-from typing import Any, AnyStr, Dict, Sequence, Tuple, Callable
+from typing import Callable
 
 import numpy as np_
 from enum import Enum
@@ -63,7 +63,8 @@ class Archetype(Enum):
         -------
 
         """
-        return self.implementation.poses(self, np_.pad(coordinate, (0, 3 - coordinate.size)))
+        return self.implementation.poses(self, np_.pad(coordinate, (
+        0, 3 - coordinate.size)))
 
     def __dir__(self):
         """

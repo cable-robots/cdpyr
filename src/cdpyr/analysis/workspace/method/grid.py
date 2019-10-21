@@ -42,7 +42,8 @@ def evaluate(self: '_method.Method',
             for criterion, _ in criteria:
                 # append criterion and the flag of the criterion at the pose
                 # to the list of values
-                value.append((criterion, criterion.evaluate(robot, calculator, pose)))
+                value.append(
+                    (criterion, criterion.evaluate(robot, calculator, pose)))
             # append the evaluated criteria at the current pose
             flags.append(value)
 
@@ -64,7 +65,8 @@ def coordinates(min_coord: Vector, max_coord: Vector, step: Union[Num, Vector]):
 
     # make sure the number of steps is 6 i.e., one per spatial degree of freedom
     if step.size != min_coord.size:
-        step = np_.repeat(step, np_.ceil(min_coord.size / step.size))[0:min_coord.size]
+        step = np_.repeat(step, np_.ceil(min_coord.size / step.size))[
+               0:min_coord.size]
 
     # differences in position
     diff_pos = max_coord - min_coord

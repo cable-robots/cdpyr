@@ -1,4 +1,4 @@
-from typing import IO, Union, AnyStr
+from typing import AnyStr, IO, Union
 
 from cdpyr.stream.parser.parser import Parser
 

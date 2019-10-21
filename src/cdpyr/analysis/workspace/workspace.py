@@ -49,7 +49,8 @@ class Workspace(object):
         Tuple['_criterion.Criterion', Dict[AnyStr, Any]]]):
         # make sure every criterion is stored as tuple (Criterion, OptionsDict)
         for idx, criterion in enumerate(criteria):
-            criteria[idx] = criterion if isinstance(criterion, Tuple) else (criterion, {})
+            criteria[idx] = criterion if isinstance(criterion, Tuple) else (
+                criterion, {})
             if len(criteria[idx][1]):
                 for key, value in criteria[idx][1].items():
                     setattr(criteria[idx][0], key, value)
@@ -107,7 +108,8 @@ class Workspace(object):
 
         # then, dispatch to the workspace method algorithm to calculate the
         # workspace
-        workspace = self.method.evaluate(robot, self, self.archetype, self.criteria)
+        workspace = self.method.evaluate(robot, self, self.archetype,
+                                         self.criteria)
 
         # after the workspace is calculated, we will tear down every criterion
         for criterion, _ in self.criteria:

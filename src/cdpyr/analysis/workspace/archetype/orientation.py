@@ -1,8 +1,7 @@
 import numpy as np_
+from scipy.spatial import transform as _transform
 
 from cdpyr.motion.pose import generator as _generator, pose as _pose
-
-from scipy.spatial import transform as _transform
 
 comparator = all
 

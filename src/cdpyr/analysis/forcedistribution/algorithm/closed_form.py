@@ -1,8 +1,8 @@
 import numpy as np_
 
-from cdpyr.analysis.forcedistribution import forcedistribution as _forcedistribution
+from cdpyr.analysis.forcedistribution import forcedistribution as \
+    _forcedistribution
 from cdpyr.numpy import linalg
-from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 
 

@@ -1,10 +1,7 @@
-import numpy as np_
-
 from cdpyr.analysis.workspace import workspace as _calculator
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
-
 
 __vars__ = [
 ]

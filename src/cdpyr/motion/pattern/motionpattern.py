@@ -1,4 +1,4 @@
-from typing import Optional, Union, AnyStr
+from typing import AnyStr, Optional, Union
 
 import numpy as np_
 from enum import Enum

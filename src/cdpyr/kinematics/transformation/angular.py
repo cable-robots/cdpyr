@@ -1,4 +1,4 @@
-from typing import Optional, AnyStr
+from typing import AnyStr, Optional
 
 import numpy as np_
 from magic_repr import make_repr

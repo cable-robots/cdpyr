@@ -33,7 +33,8 @@ class Method(Enum):
                      '_criterion.Criterion',
                      Dict[AnyStr, Any]
                  ]]):
-        return self.implementation.evaluate(self, robot, calculator, archetype, criteria)
+        return self.implementation.evaluate(self, robot, calculator, archetype,
+                                            criteria)
 
     def __dir__(self):
         """

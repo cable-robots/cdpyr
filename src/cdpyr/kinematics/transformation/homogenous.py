@@ -3,8 +3,8 @@ from typing import Optional
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.typing import Matrix, Vector
 from cdpyr import validator as _validator
+from cdpyr.typing import Matrix, Vector
 
 
 class Homogenous(object):

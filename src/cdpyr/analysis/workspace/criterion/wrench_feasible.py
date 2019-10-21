@@ -2,7 +2,8 @@ from typing import Sequence
 
 import numpy as np_
 
-from cdpyr.analysis.forcedistribution import forcedistribution as _forcedistribution
+from cdpyr.analysis.forcedistribution import forcedistribution as \
+    _forcedistribution
 from cdpyr.analysis.structurematrix import structurematrix as _structurematrix
 from cdpyr.analysis.workspace import workspace as _calculator
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
@@ -11,7 +12,8 @@ from cdpyr.robot import robot as _robot
 
 __vars__ = [
     ('wrenches', np_.zeros((6,))),
-    ('forcedistribution', _forcedistribution.ForceDistribution.CLOSED_FORM_IMPROVED),
+    ('forcedistribution',
+     _forcedistribution.ForceDistribution.CLOSED_FORM_IMPROVED),
 ]
 
 

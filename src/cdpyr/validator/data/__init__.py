@@ -1,4 +1,4 @@
-from typing import Optional, Sized, AnyStr
+from typing import AnyStr, Optional, Sized
 
 
 def length(value: Sized,

@@ -1,6 +1,7 @@
 import numpy as np_
 
-from cdpyr.analysis.forcedistribution import forcedistribution as _forcedistribution
+from cdpyr.analysis.forcedistribution import forcedistribution as \
+    _forcedistribution
 from cdpyr.numpy import linalg
 from cdpyr.typing import Matrix, Vector
 
@@ -37,7 +38,7 @@ def evaluate(calculator: '_forcedistribution.Calculator',
         raise ValueError(
             'Could not find a valid force distribution using the current '
             'algorithm. Please check your arguments or try another algorithm '
-            'if you are sure there must be a valid force distribution.')\
+            'if you are sure there must be a valid force distribution.') \
             from ArithmeticException
     else:
         return force_distribution

@@ -1,4 +1,4 @@
-from typing import Sequence, Union, Optional
+from typing import Optional, Sequence, Union
 
 from magic_repr import make_repr
 
@@ -32,7 +32,8 @@ class StructureMatrix(object):
     def evaluate(self,
                  robot: '_robot.Robot',
                  uis: Union[Matrix, Sequence[Matrix]],
-                 pose: Optional[Union['_pose.Pose', Sequence['_pose.Pose']]] = None,
+                 pose: Optional[
+                     Union['_pose.Pose', Sequence['_pose.Pose']]] = None,
                  ):
         if robot.num_platforms > 1:
             raise NotImplementedError(
@@ -55,13 +56,6 @@ class StructureMatrix(object):
             robot.platforms[0],
             uis,
             pose)
-
-    # def __call__(self,
-    #              robot: '_robot.Robot',
-    #              uis: Union[Matrix, Sequence[Matrix]],
-    #              pose: Optional[Union['_pose.Pose', Sequence['_pose.Pose']]] = None,
-    #              ):
-    #     return self.evaluate(robot, uis, pose)
 
 
 StructureMatrix.__repr__ = make_repr()

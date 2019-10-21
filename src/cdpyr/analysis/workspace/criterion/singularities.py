@@ -28,14 +28,16 @@ def evaluate(criterion: '_criterion.Criterion',
     _, uis = calculator.kinematics.backward(robot, pose)
 
     # get the structure matrix
-    structmat: np_.ndarray = criterion.structurematrix.evaluate(robot, uis, pose)
+    structmat: np_.ndarray = criterion.structurematrix.evaluate(robot, uis,
+                                                                pose)
 
     # according to Pott.2018, a pose is singular if the structure matrix's
     # rank is smaller than the number of degrees of freedom i.e., the structure
     # matrix's number of rows
     return np_.linalg.matrix_rank(structmat) >= structmat.shape[0]
     # get the structure matrix
-    structmat: np_.ndarray = criterion.structurematrix.evaluate(robot, uis, pose)
+    structmat: np_.ndarray = criterion.structurematrix.evaluate(robot, uis,
+                                                                pose)
 
     # according to Pott.2018, a pose is singular if the structure matrix's
     # rank is smaller than the number of degrees of freedom i.e., the structure

@@ -1,13 +1,12 @@
+from typing import Callable
+
 import numpy as np_
 from enum import Enum
 
-from typing import Callable
-
-from cdpyr.robot import robot as _robot
-from cdpyr.typing import Num, Vector, Matrix
 from cdpyr import validator as _validator
-
 from cdpyr.analysis.forcedistribution import algorithm
+from cdpyr.robot import robot as _robot
+from cdpyr.typing import Matrix, Num, Vector
 
 
 class ForceDistribution(Enum):
@@ -28,22 +27,14 @@ class ForceDistribution(Enum):
         _validator.linalg.landspace(structurematrix, 'structurematrix')
 
         # get force limits from the passed arguments
-        force_min, force_max = self._parse_force_limits(structurematrix.shape[1], **kwargs)
+        force_min, force_max = self._parse_force_limits(
+            structurematrix.shape[1], **kwargs)
         kwargs.update(force_min=force_min, force_max=force_max)
 
         return self.implementation.evaluate(self,
                                             np_.asarray(structurematrix),
                                             np_.asarray(wrench),
                                             **kwargs)
-
-    # def __call__(self,
-    #              robot: '_robot.Robot',
-    #              structurematrix: Matrix,
-    #              wrench: Vector,
-    #              **kwargs):
-    #     return self.evaluate(robot, structurematrix, wrench, **kwargs)
-
-
 
     @classmethod
     def _parse_force_limits(cls,

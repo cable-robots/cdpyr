@@ -1,5 +1,5 @@
 from collections import UserList
-from typing import Optional, Sequence, Union, AnyStr
+from typing import AnyStr, Optional, Sequence, Union
 
 import numpy as np_
 from colour import Color
@@ -29,7 +29,8 @@ class Cable(object):
         or viscoelastic cable object.
 
         :rtype: Cable
-        :param AnyStr name: Optional string representing a human-readable name of
+        :param AnyStr name: Optional string representing a human-readable
+        name of
         the cable
         :param AnyStr material: Optional string representing a human-readable
         name of the cable's material

@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Sequence, Tuple, Union, AnyStr
+from typing import AnyStr, Dict, List, Optional, Sequence, Tuple, Union
 
 from magic_repr import make_repr
 

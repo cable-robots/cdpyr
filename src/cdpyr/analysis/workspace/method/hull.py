@@ -41,7 +41,8 @@ def coordinates(method: '_method.Method',
 #     for search_direction in search_directions:  # THIS IS PART OF THE
 #         pass
 #         # # WORKSPACE ALGORITHM
-#         # # ask the archetype to validate the current coordinate on all criteria
+#         # # ask the archetype to validate the current coordinate on all
+#         criteria
 #         # checked_poses, checked_flags = archetype(robot,
 #         #                                          coordinate,
 #         #                                          criteria,
@@ -103,4 +104,5 @@ def coordinates(method: '_method.Method',
 #             pos = np_.min(robot.ai, axis=1)
 #
 #     # ensure we are returning a pose object from here
-#     return pos if isinstance(pos, _pose.Pose) else _pose.Pose((pos, np_.eye(3)))
+#     return pos if isinstance(pos, _pose.Pose) else _pose.Pose((pos,
+#     np_.eye(3)))

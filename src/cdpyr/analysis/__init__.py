@@ -13,5 +13,5 @@ __all__ = [
     'kinetostatics',
     'stiffness',
     'structurematrix',
-    'workspace'
+    'workspace',
 ]

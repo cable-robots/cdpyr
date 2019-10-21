@@ -28,7 +28,8 @@ class Kinematics(Enum):
         # ensure each platform gets as many cable lengths as it has kinematic
         # chains
         [_validator.data.length(joints[idx],
-                                len(robot.kinematic_chains.with_platform(platform)),
+                                len(robot.kinematic_chains.with_platform(
+                                    platform)),
                                 'joints[{}]'.format(idx)) for idx, platform in
          robot.platforms]
 
