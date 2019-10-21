@@ -10,7 +10,7 @@ from cdpyr import validator as _validator
 from cdpyr.analysis.forcedistribution import algorithm
 
 
-class Calculator(Enum):
+class ForceDistribution(Enum):
     CLOSED_FORM = [algorithm.closed_form]
     CLOSED_FORM_IMPROVED = [algorithm.closed_form_improved]
     DYKSTRA = [algorithm.dykstra]
@@ -36,12 +36,12 @@ class Calculator(Enum):
                                             np_.asarray(wrench),
                                             **kwargs)
 
-    def __call__(self,
-                 robot: '_robot.Robot',
-                 structurematrix: Matrix,
-                 wrench: Vector,
-                 **kwargs):
-        return self.evaluate(robot, structurematrix, wrench, **kwargs)
+    # def __call__(self,
+    #              robot: '_robot.Robot',
+    #              structurematrix: Matrix,
+    #              wrench: Vector,
+    #              **kwargs):
+    #     return self.evaluate(robot, structurematrix, wrench, **kwargs)
 
 
 

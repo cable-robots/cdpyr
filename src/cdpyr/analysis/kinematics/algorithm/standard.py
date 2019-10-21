@@ -2,7 +2,7 @@ from typing import Sequence
 
 import numpy as np_
 
-from cdpyr.analysis.kinematics.calculator import calculator as _calculator
+from cdpyr.analysis.kinematics import kinematics as _calculator
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import (
     kinematicchain as _kinematicchain,

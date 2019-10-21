@@ -9,7 +9,7 @@ from cdpyr.robot import robot as _robot
 from cdpyr.typing import Vector
 
 
-class Calculator(Enum):
+class Kinematics(Enum):
     STANDARD = [standard]
     PULLEY = [pulley]
 
@@ -50,5 +50,5 @@ class Calculator(Enum):
 
 
 __all__ = [
-    'Calculator',
+    'Kinematics',
 ]

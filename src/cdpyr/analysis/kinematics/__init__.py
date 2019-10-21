@@ -1,4 +1,4 @@
-from cdpyr.analysis.kinematics.calculator import Calculator
+from cdpyr.analysis.kinematics.kinematics import Kinematics as Calculator
 
 __all__ = [
     'Calculator',

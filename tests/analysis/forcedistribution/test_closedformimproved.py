@@ -14,7 +14,7 @@ class ClosedFormImprovedForceDistributionTestSuite(object):
 
         # get structure matrix for the current pose
         sms = cdpyr.analysis.structurematrix.Calculator()
-        structmat = sms(robot_1t, uis, empty_pose)
+        structmat = sms.evaluate(robot_1t, uis, empty_pose)
 
         # force distribution solver
         fdist = cdpyr.analysis.forcedistribution.Calculator.CLOSED_FORM_IMPROVED
@@ -47,7 +47,7 @@ class ClosedFormImprovedForceDistributionTestSuite(object):
 
         # get structure matrix for the current pose
         sms = cdpyr.analysis.structurematrix.Calculator()
-        structmat = sms(robot_2t, uis, empty_pose)
+        structmat = sms.evaluate(robot_2t, uis, empty_pose)
 
         # force distribution solver
         fdist = cdpyr.analysis.forcedistribution.Calculator.CLOSED_FORM_IMPROVED
@@ -80,7 +80,7 @@ class ClosedFormImprovedForceDistributionTestSuite(object):
 
         # get structure matrix for the current pose
         sms = cdpyr.analysis.structurematrix.Calculator()
-        structmat = sms(robot_3t, uis, empty_pose)
+        structmat = sms.evaluate(robot_3t, uis, empty_pose)
 
         # force distribution solver
         fdist = cdpyr.analysis.forcedistribution.Calculator.CLOSED_FORM_IMPROVED
@@ -113,7 +113,7 @@ class ClosedFormImprovedForceDistributionTestSuite(object):
 
         # get structure matrix for the current pose
         sms = cdpyr.analysis.structurematrix.Calculator()
-        structmat = sms(robot_1r2t, uis, empty_pose)
+        structmat = sms.evaluate(robot_1r2t, uis, empty_pose)
 
         # force distribution solver
         fdist = cdpyr.analysis.forcedistribution.Calculator.CLOSED_FORM_IMPROVED
@@ -146,7 +146,7 @@ class ClosedFormImprovedForceDistributionTestSuite(object):
 
         # get structure matrix for the current pose
         sms = cdpyr.analysis.structurematrix.Calculator()
-        structmat = sms(robot_2r3t, uis, empty_pose)
+        structmat = sms.evaluate(robot_2r3t, uis, empty_pose)
 
         # force distribution solver
         fdist = cdpyr.analysis.forcedistribution.Calculator.CLOSED_FORM_IMPROVED
@@ -180,7 +180,7 @@ class ClosedFormImprovedForceDistributionTestSuite(object):
 
         # get structure matrix for the current pose
         sms = cdpyr.analysis.structurematrix.Calculator()
-        structmat = sms(robot_3r3t, uis, empty_pose)
+        structmat = sms.evaluate(robot_3r3t, uis, empty_pose)
 
         # force distribution solver
         fdist = cdpyr.analysis.forcedistribution.Calculator.CLOSED_FORM_IMPROVED

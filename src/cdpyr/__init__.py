@@ -18,8 +18,10 @@ from cdpyr import mechanics
 from cdpyr import geometry
 from cdpyr import kinematics
 from cdpyr import robot
-from cdpyr import analysis
 from cdpyr import motion
+from cdpyr import analysis
+
+# and I/O imports
 from cdpyr import stream
 from cdpyr import schema
 

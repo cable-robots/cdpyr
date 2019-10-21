@@ -16,7 +16,7 @@ from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix
 
 
-class Calculator(object):
+class StructureMatrix(object):
     _MAPPING: dict
 
     def __init__(self):
@@ -56,16 +56,16 @@ class Calculator(object):
             uis,
             pose)
 
-    def __call__(self,
-                 robot: '_robot.Robot',
-                 uis: Union[Matrix, Sequence[Matrix]],
-                 pose: Optional[Union['_pose.Pose', Sequence['_pose.Pose']]] = None,
-                 ):
-        return self.evaluate(robot, uis, pose)
+    # def __call__(self,
+    #              robot: '_robot.Robot',
+    #              uis: Union[Matrix, Sequence[Matrix]],
+    #              pose: Optional[Union['_pose.Pose', Sequence['_pose.Pose']]] = None,
+    #              ):
+    #     return self.evaluate(robot, uis, pose)
 
 
-Calculator.__repr__ = make_repr()
+StructureMatrix.__repr__ = make_repr()
 
 __all__ = [
-    'Calculator'
+    'StructureMatrix'
 ]

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from cdpyr.analysis.structurematrix import calculator as _structurematrix
+from cdpyr.analysis.structurematrix import structurematrix as _structurematrix
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import platform as _platform
 from cdpyr.typing import Matrix

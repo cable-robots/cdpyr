@@ -1,4 +1,4 @@
-from cdpyr.analysis.forcedistribution.calculator import Calculator
+from cdpyr.analysis.forcedistribution.forcedistribution import ForceDistribution as Calculator
 
 __all__ = [
     'Calculator',

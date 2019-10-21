@@ -1,7 +1,7 @@
 import numpy as np_
 
 from cdpyr import validator as _validator
-from cdpyr.analysis.forcedistribution import calculator as _forcedistribution
+from cdpyr.analysis.forcedistribution import forcedistribution as _forcedistribution
 from cdpyr.numpy import linalg
 from cdpyr.typing import Matrix, Vector
 
