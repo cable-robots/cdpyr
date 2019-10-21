@@ -2,7 +2,7 @@ import itertools
 from typing import Optional, Union
 
 import numpy as np_
-from scipy.spatial import transform as _transform
+import re
 
 from cdpyr import validator as _validator
 from cdpyr.kinematics.transformation import (
@@ -59,14 +59,69 @@ def steps(start: '_pose.Pose',
     # return the generator object
     return (_pose.Pose((
         start.linear.position + deltas[0:3] * a[0:3],
-        _transform.Rotation.from_euler(start.angular.sequence,
-                                       start.angular.euler
-                                       + deltas[3:6]
-                                       * a[3:6]
-                                       ).as_dcm()
+        from_euler(start.angular.sequence,
+                   start.angular.euler + deltas[3:6] * a[3:6])
     )) for a in itertools.product(
         *(range(0, iterations[k] + 1) for k in range(0, 6))
     ))
+
+
+def rotation_x(angle):
+    return np_.asarray((
+        (1.0, 0.0, 0.0),
+        (0.0, np_.cos(angle), -np_.sin(angle)),
+        (0.0, np_.sin(angle), np_.cos(angle))
+    ))
+
+
+def rotation_y(angle):
+    return np_.asarray((
+        (np_.cos(angle), 0.0, np_.sin(angle)),
+        (0.0, 1.0, 0.0),
+        (-np_.sin(angle), 0.0, np_.cos(angle))
+    ))
+
+
+def rotation_z(angle):
+    return np_.asarray((
+        (np_.cos(angle), -np_.sin(angle), 0.0),
+        (np_.sin(angle), np_.cos(angle), 0.0),
+        (0.0, 0.0, 1.0)
+    ))
+
+
+rot_mapping = {
+    'x': rotation_x,
+    'y': rotation_y,
+    'z': rotation_z
+}
+
+
+def from_euler(seq, angles, degrees=False):
+    angles = np_.asarray(angles, dtype=float)
+    if degrees:
+        angles = np_.deg2rad(angles)
+
+    # find out if intrinsic or extrinsic rotation
+    intrinsic = (re.match(r'^[XYZ]{1,3}$', seq) is not None)
+    extrinsic = (re.match(r'^[xyz]{1,3}$', seq) is not None)
+
+    # now we only deal with the order of orientations
+    seq = seq.lower()
+
+    # init result
+    result = np_.eye(3)
+
+    # with intrinsic orientations, we post-multiply the rotation matrices
+    if intrinsic:
+        for idx, axis in enumerate(seq):
+            result = result.dot(rot_mapping[axis](angles[idx]))
+    # with extrinsic orientations, we pre-multiply the rotation matrices
+    elif extrinsic:
+        for idx, axis in enumerate(seq):
+            result = rot_mapping[axis](angles[idx]).dot(result)
+
+    return result
 
 
 def interval(pose: '_pose.Pose',
@@ -115,17 +170,15 @@ def interval(pose: '_pose.Pose',
     start = _pose.Pose(
         (
             pose.linear.position + boundaries[0, 0:3],
-            _transform.Rotation.from_euler(pose.angular.sequence,
-                                           pose.angular.euler + boundaries[0,
-                                                                3:6]).as_dcm()
+            from_euler(pose.angular.sequence,
+                       pose.angular.euler + boundaries[0, 3:6])
         )
     )
     end = _pose.Pose(
         (
             pose.linear.position + boundaries[1, 0:3],
-            _transform.Rotation.from_euler(pose.angular.sequence,
-                                           pose.angular.euler + boundaries[1,
-                                                                3:6]).as_dcm()
+            from_euler(pose.angular.sequence,
+                       pose.angular.euler + boundaries[1, 3:6])
         )
     )
 
