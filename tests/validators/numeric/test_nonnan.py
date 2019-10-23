@@ -36,3 +36,7 @@ class NonnanTestSuite(object):
 
         with pytest.raises(ValueError):
             nonnan(np.asarray((-np.nan, np.nan, -np.nan, np.nan)))
+
+
+if __name__ == "__main__":
+    pytest.main()

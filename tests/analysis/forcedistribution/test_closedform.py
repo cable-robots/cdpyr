@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 import cdpyr
 
@@ -170,7 +171,6 @@ class ClosedFormForceDistributionTestSuite(object):
         assert force_distribution.shape == (robot_2r3t.num_cables,)
         assert (force_distribution > 0).all()
 
-
     def test_3r3t(self,
                   robot_3r3t: cdpyr.robot.Robot,
                   empty_pose,
@@ -203,3 +203,7 @@ class ClosedFormForceDistributionTestSuite(object):
         assert force_distribution.ndim == 1
         assert force_distribution.shape == (robot_3r3t.num_cables,)
         assert (force_distribution > 0).all()
+
+
+if __name__ == "__main__":
+    pytest.main()

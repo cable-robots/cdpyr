@@ -28,3 +28,7 @@ class UnitVectorTestSuite(object):
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
             unit_vector(np.asarray((1, 1, 0)))
+
+
+if __name__ == "__main__":
+    pytest.main()

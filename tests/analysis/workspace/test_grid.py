@@ -1,3 +1,4 @@
+import pytest
 from matplotlib import use
 
 use('MacOSX')
@@ -11,8 +12,10 @@ import cdpyr
 
 def plot_workspace(dims, coordinates):
     # filter for the inside and outside coordinates
-    inside = np.asarray([coordinate[0] for coordinate in coordinates if all(coordinate[1].values())])
-    outside = np.asarray([coordinate[0] for coordinate in coordinates if not all(coordinate[1].values())])
+    inside = np.asarray([coordinate[0] for coordinate in coordinates if
+                         all(coordinate[1].values())])
+    outside = np.asarray([coordinate[0] for coordinate in coordinates if
+                          not all(coordinate[1].values())])
 
     fig: plt.Figure = plt.figure()
     # three dimensional case?
@@ -138,10 +141,10 @@ class GridWorkspaceTestSuite(object):
         assert False
 
     def test_1t_ik_standard_translation_wrench_closure(self,
-                                                        robot_1t:
-                                                        'cdpyr.robot.Robot',
-                                                        ik_standard:
-                                                        'cdpyr.analysis.kinematics.Calculator'):
+                                                       robot_1t:
+                                                       'cdpyr.robot.Robot',
+                                                       ik_standard:
+                                                       'cdpyr.analysis.kinematics.Calculator'):
         # workspace archetype we want to calculate
         archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
         archetype.dcm = np.eye(3)
@@ -194,7 +197,7 @@ class GridWorkspaceTestSuite(object):
             (
                 cdpyr.analysis.workspace.Criterion.WRENCH_FEASIBLE,
                 {
-                    'wrench': -1,
+                    'wrench':    -1,
                     'force_min': 1,
                     'force_max': 10,
                 }
@@ -273,10 +276,10 @@ class GridWorkspaceTestSuite(object):
         assert False
 
     def test_3r3t_ik_standard_translation_wrench_closure(self,
-                                                          robot_3r3t:
-                                                          'cdpyr.robot.Robot',
-                                                          ik_standard:
-                                                          'cdpyr.analysis.kinematics.Calculator'):
+                                                         robot_3r3t:
+                                                         'cdpyr.robot.Robot',
+                                                         ik_standard:
+                                                         'cdpyr.analysis.kinematics.Calculator'):
         # workspace archetype we want to calculate
         archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
         archetype.dcm = np.eye(3)
@@ -330,7 +333,7 @@ class GridWorkspaceTestSuite(object):
             (
                 cdpyr.analysis.workspace.Criterion.WRENCH_FEASIBLE,
                 {
-                    'wrench': [0.0, 0.0, -9.81, 0.0, 0.0, 0.0],
+                    'wrench':    [0.0, 0.0, -9.81, 0.0, 0.0, 0.0],
                     'force_min': 1,
                     'force_max': 10,
                 }
@@ -402,3 +405,7 @@ class GridWorkspaceTestSuite(object):
         plot_workspace(3, workspace)
 
         assert False
+
+
+if __name__ == "__main__":
+    pytest.main()

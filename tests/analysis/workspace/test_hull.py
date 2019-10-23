@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 import vtk
 
 import cdpyr
@@ -181,3 +182,7 @@ class GridWorkspaceTestSuite(object):
     #     draw_workspace(corners, faces)
     #
     #     assert False
+
+
+if __name__ == "__main__":
+    pytest.main()

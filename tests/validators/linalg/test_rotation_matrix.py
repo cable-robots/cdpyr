@@ -53,3 +53,7 @@ class RotationMatrixTestSuite(object):
             (np.sin(np.pi / 3), np.cos(np.pi / 3), 0),
             (0, 0, 1)
         )))
+
+
+if __name__ == "__main__":
+    pytest.main()

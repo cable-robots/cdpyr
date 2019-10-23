@@ -40,3 +40,7 @@ class DimensionsTestSuite(object):
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
             dimensions(np.asarray(((1, 2), (3, 4))), 1)
+
+
+if __name__ == "__main__":
+    pytest.main()

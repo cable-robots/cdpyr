@@ -42,7 +42,8 @@ class StepsPoseGeneratorTestSuite(object):
             np.asarray((0.0, 0.0, +1.0)))
 
         # create a generator object
-        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end, [0, 0, 2, 0, 0, 0])
+        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end,
+                                                      [0, 0, 2, 0, 0, 0])
 
         # convert the generator into a list
         poses = list(pose_generator)
@@ -103,7 +104,8 @@ class StepsPoseGeneratorTestSuite(object):
             np.asarray((0.0, 1.0, +1.0)))
 
         # create a generator object
-        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end, [0, 2, 2, 0, 0, 0])
+        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end,
+                                                      [0, 2, 2, 0, 0, 0])
 
         # convert the generator into a list
         poses = list(pose_generator)
@@ -212,7 +214,8 @@ class StepsPoseGeneratorTestSuite(object):
             np.asarray((+1.0, 1.0, +1.0)))
 
         # create a generator object
-        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end, [2, 2, 2, 0, 0, 0])
+        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end,
+                                                      [2, 2, 2, 0, 0, 0])
 
         # convert the generator into a list
         poses = list(pose_generator)
@@ -306,7 +309,8 @@ class StepsPoseGeneratorTestSuite(object):
             Rotation.from_euler('z', +45, degrees=True).as_dcm())
 
         # create a generator object
-        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end, [0, 0, 0, 0, 0, 2])
+        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end,
+                                                      [0, 0, 0, 0, 0, 2])
 
         # convert the generator into a list
         poses = list(pose_generator)
@@ -365,7 +369,8 @@ class StepsPoseGeneratorTestSuite(object):
             Rotation.from_euler('xy', [+45, +45], degrees=True).as_dcm())
 
         # create a generator object
-        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end, [0, 0, 0, 2, 2, 0])
+        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end,
+                                                      [0, 0, 0, 2, 2, 0])
 
         # convert the generator into a list
         poses = list(pose_generator)
@@ -476,7 +481,8 @@ class StepsPoseGeneratorTestSuite(object):
             Rotation.from_euler('xyz', [+45, +45, +45], degrees=True).as_dcm())
 
         # create a generator object
-        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end, [0, 0, 0, 2, 2, 2])
+        pose_generator = cdpyr.motion.generator.steps(pose_start, pose_end,
+                                                      [0, 0, 0, 2, 2, 2])
 
         # convert the generator into a list
         poses = list(pose_generator)
@@ -540,3 +546,7 @@ class StepsPoseGeneratorTestSuite(object):
             Rotation.from_euler('xyz', [+45, +45, 0], degrees=True).as_dcm())
         assert poses[26].angular.dcm == pytest.approx(
             Rotation.from_euler('xyz', [+45, +45, +45], degrees=True).as_dcm())
+
+
+if __name__ == "__main__":
+    pytest.main()

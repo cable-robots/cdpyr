@@ -29,3 +29,7 @@ class NonnegativeTestSuite(object):
     def test_numpy_vector_fails_negative(self):
         with pytest.raises(ValueError):
             nonnegative((-1, -2, -3, -4))
+
+
+if __name__ == "__main__":
+    pytest.main()

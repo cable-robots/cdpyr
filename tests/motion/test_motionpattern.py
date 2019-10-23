@@ -1,3 +1,5 @@
+import pytest
+
 import cdpyr
 
 
@@ -86,3 +88,7 @@ class MotionpatternTestSuite(object):
         assert not mp.is_point
         assert not mp.is_beam
         assert mp.is_cuboid
+
+
+if __name__ == "__main__":
+    pytest.main()

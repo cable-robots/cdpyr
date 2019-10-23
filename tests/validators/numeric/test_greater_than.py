@@ -52,4 +52,9 @@ class GreaterThanTestSuite(object):
             greater_than(np.asarray(((1, 2), (3, 4))), 5)
 
         with pytest.raises(ValueError):
-            greater_than(np.asarray(((1, 2), (3, 4))), np.asarray(((1, 2), (3, 4))))
+            greater_than(np.asarray(((1, 2), (3, 4))),
+                         np.asarray(((1, 2), (3, 4))))
+
+
+if __name__ == "__main__":
+    pytest.main()

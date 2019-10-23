@@ -274,3 +274,7 @@ class PoseTestSuite(object):
         assert pose_1 >= 0
         with pytest.raises(TypeError):
             assert pose_1 >= 'int'
+
+
+if __name__ == "__main__":
+    pytest.main()

@@ -36,3 +36,7 @@ class FiniteTestSuite(object):
 
         with pytest.raises(ValueError):
             finite(np.asarray((-np.inf, np.inf, -np.inf, np.inf)))
+
+
+if __name__ == "__main__":
+    pytest.main()

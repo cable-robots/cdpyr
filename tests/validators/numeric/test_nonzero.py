@@ -29,3 +29,7 @@ class NonzeroTestSuite(object):
     def test_numpy_vector_fails(self):
         with pytest.raises(ValueError):
             nonzero([0] * 4)
+
+
+if __name__ == "__main__":
+    pytest.main()

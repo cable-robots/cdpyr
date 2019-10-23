@@ -21,12 +21,12 @@ class IntervalPoseGeneratorTestSuite(object):
         pose_generator = cdpyr.motion.generator.interval(
             pose,
             [
-                [ 0.0, 0.0],
-                [ 0.0, 0.0],
+                [0.0, 0.0],
+                [0.0, 0.0],
                 [-0.5, 0.5],
-                [ 0.0, 0.0],
-                [ 0.0, 0.0],
-                [ 0.0, 0.0]
+                [0.0, 0.0],
+                [0.0, 0.0],
+                [0.0, 0.0]
             ],
             step=2
         )
@@ -57,12 +57,12 @@ class IntervalPoseGeneratorTestSuite(object):
         pose_generator = cdpyr.motion.generator.interval(
             pose,
             [
-                [ 0.0, 0.0],
+                [0.0, 0.0],
                 [-0.5, 0.5],
                 [-0.5, 0.5],
-                [ 0.0, 0.0],
-                [ 0.0, 0.0],
-                [ 0.0, 0.0]
+                [0.0, 0.0],
+                [0.0, 0.0],
+                [0.0, 0.0]
             ],
             step=2
         )
@@ -108,9 +108,9 @@ class IntervalPoseGeneratorTestSuite(object):
                 [-0.5, 0.5],
                 [-0.5, 0.5],
                 [-0.5, 0.5],
-                [ 0.0, 0.0],
-                [ 0.0, 0.0],
-                [ 0.0, 0.0]
+                [0.0, 0.0],
+                [0.0, 0.0],
+                [0.0, 0.0]
             ],
             step=2
         )
@@ -192,8 +192,8 @@ class IntervalPoseGeneratorTestSuite(object):
                 [-0.0, 0.0],
                 [-0.0, 0.0],
                 [-0.0, 0.0],
-                np.deg2rad([  0.0,  0.0]),
-                np.deg2rad([  0.0,  0.0]),
+                np.deg2rad([0.0, 0.0]),
+                np.deg2rad([0.0, 0.0]),
                 np.deg2rad([-45.0, 45.0])
             ],
             step=2
@@ -230,7 +230,7 @@ class IntervalPoseGeneratorTestSuite(object):
                 [-0.0, 0.0],
                 np.deg2rad([-45.0, 45.0]),
                 np.deg2rad([-45.0, 45.0]),
-                np.deg2rad([  0.0,  0.0])
+                np.deg2rad([0.0, 0.0])
             ],
             step=2
         )
@@ -344,3 +344,7 @@ class IntervalPoseGeneratorTestSuite(object):
             Rotation.from_euler('xyz', [+45, +45, 0], degrees=True).as_dcm())
         assert poses[26].angular.dcm == pytest.approx(
             Rotation.from_euler('xyz', [+45, +45, +45], degrees=True).as_dcm())
+
+
+if __name__ == "__main__":
+    pytest.main()

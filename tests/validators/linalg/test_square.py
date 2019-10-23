@@ -35,3 +35,7 @@ class SquareTestSuite(object):
 
         with pytest.raises(ValueError):
             square(np.random.random((2, 3, 4)))
+
+
+if __name__ == "__main__":
+    pytest.main()

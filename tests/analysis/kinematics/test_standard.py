@@ -107,3 +107,7 @@ class StandardKinematicsTestSuite(object):
         assert rand_pose_3r3t.linear.position[:, np.newaxis] \
                + rand_pose_3r3t.angular.dcm.dot(robot_3r3t.platforms[0].bi) \
                + length * directions == pytest.approx(robot_3r3t.ai)
+
+
+if __name__ == "__main__":
+    pytest.main()

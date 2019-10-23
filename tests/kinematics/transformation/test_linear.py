@@ -1,7 +1,7 @@
 from typing import Sequence
 
 import numpy as np
-from pytest import approx, mark
+import pytest
 
 import cdpyr
 
@@ -14,13 +14,13 @@ class LinearTransformationTestSuite(object):
         assert isinstance(linear, cdpyr.kinematics.transformation.Linear)
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx([0., 0., 0.])
+        assert linear.position == pytest.approx([0., 0., 0.])
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx([0., 0., 0.])
+        assert linear.velocity == pytest.approx([0., 0., 0.])
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx([0., 0., 0.])
+        assert linear.acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "pos",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
@@ -39,13 +39,13 @@ class LinearTransformationTestSuite(object):
                               )
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx(expected)
+        assert linear.position == pytest.approx(expected)
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx([0., 0., 0.])
+        assert linear.velocity == pytest.approx([0., 0., 0.])
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx([0., 0., 0.])
+        assert linear.acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "pos",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
@@ -63,13 +63,13 @@ class LinearTransformationTestSuite(object):
                               )
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx(expected)
+        assert linear.position == pytest.approx(expected)
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx([0., 0., 0.])
+        assert linear.velocity == pytest.approx([0., 0., 0.])
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx([0., 0., 0.])
+        assert linear.acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "pos",
         [
             (np.zeros((3,))),  # 3x1 zeros
@@ -86,13 +86,13 @@ class LinearTransformationTestSuite(object):
         expected = np.asarray(pos if isinstance(pos, np.ndarray) else [pos])
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx(expected)
+        assert linear.position == pytest.approx(expected)
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx([0., 0., 0.])
+        assert linear.velocity == pytest.approx([0., 0., 0.])
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx([0., 0., 0.])
+        assert linear.acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "pos",
         [
             (np.zeros((3,))),  # 3x1 zeros
@@ -108,13 +108,13 @@ class LinearTransformationTestSuite(object):
         expected = np.asarray(pos if isinstance(pos, np.ndarray) else [pos])
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx(expected)
+        assert linear.position == pytest.approx(expected)
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx([0., 0., 0.])
+        assert linear.velocity == pytest.approx([0., 0., 0.])
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx([0., 0., 0.])
+        assert linear.acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "vel",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
@@ -134,13 +134,13 @@ class LinearTransformationTestSuite(object):
                               )
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx([0., 0., 0.])
+        assert linear.position == pytest.approx([0., 0., 0.])
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx(expected)
+        assert linear.velocity == pytest.approx(expected)
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx([0., 0., 0.])
+        assert linear.acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "vel",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
@@ -158,13 +158,13 @@ class LinearTransformationTestSuite(object):
                               )
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx([0., 0., 0.])
+        assert linear.position == pytest.approx([0., 0., 0.])
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx(expected)
+        assert linear.velocity == pytest.approx(expected)
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx([0., 0., 0.])
+        assert linear.acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "vel",
         [
             (np.zeros((3,))),  # 3x1 zeros
@@ -182,13 +182,13 @@ class LinearTransformationTestSuite(object):
         expected = np.asarray(vel if isinstance(vel, np.ndarray) else [vel])
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx([0., 0., 0.])
+        assert linear.position == pytest.approx([0., 0., 0.])
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx(expected)
+        assert linear.velocity == pytest.approx(expected)
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx([0., 0., 0.])
+        assert linear.acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "vel",
         [
             (np.zeros((3,))),  # 3x1 zeros
@@ -204,13 +204,13 @@ class LinearTransformationTestSuite(object):
         expected = np.asarray(vel if isinstance(vel, np.ndarray) else [vel])
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx([0., 0., 0.])
+        assert linear.position == pytest.approx([0., 0., 0.])
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx(expected)
+        assert linear.velocity == pytest.approx(expected)
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx([0., 0., 0.])
+        assert linear.acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "acc",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
@@ -231,13 +231,13 @@ class LinearTransformationTestSuite(object):
                               )
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx([0., 0., 0.])
+        assert linear.position == pytest.approx([0., 0., 0.])
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx([0., 0., 0.])
+        assert linear.velocity == pytest.approx([0., 0., 0.])
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx(expected)
+        assert linear.acceleration == pytest.approx(expected)
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "acc",
         [
             (np.zeros((3,)).tolist()),  # 3x1 zeros
@@ -256,13 +256,13 @@ class LinearTransformationTestSuite(object):
                               )
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx([0., 0., 0.])
+        assert linear.position == pytest.approx([0., 0., 0.])
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx([0., 0., 0.])
+        assert linear.velocity == pytest.approx([0., 0., 0.])
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx(expected)
+        assert linear.acceleration == pytest.approx(expected)
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "acc",
         [
             (np.zeros((3,))),  # 3x1 zeros
@@ -281,13 +281,13 @@ class LinearTransformationTestSuite(object):
         expected = np.asarray(acc if isinstance(acc, np.ndarray) else [acc])
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx([0., 0., 0.])
+        assert linear.position == pytest.approx([0., 0., 0.])
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx([0., 0., 0.])
+        assert linear.velocity == pytest.approx([0., 0., 0.])
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx(expected)
+        assert linear.acceleration == pytest.approx(expected)
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "acc",
         [
             (np.zeros((3,))),  # 3x1 zeros
@@ -304,8 +304,12 @@ class LinearTransformationTestSuite(object):
         expected = np.asarray(acc if isinstance(acc, np.ndarray) else [acc])
 
         assert linear.position.shape == (3,)
-        assert linear.position == approx([0., 0., 0.])
+        assert linear.position == pytest.approx([0., 0., 0.])
         assert linear.velocity.shape == (3,)
-        assert linear.velocity == approx([0., 0., 0.])
+        assert linear.velocity == pytest.approx([0., 0., 0.])
         assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == approx(expected)
+        assert linear.acceleration == pytest.approx(expected)
+
+
+if __name__ == "__main__":
+    pytest.main()

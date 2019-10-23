@@ -50,4 +50,9 @@ class LessThanTestSuite(object):
             less_than(np.asarray(((1, 2), (3, 4))), 0)
 
         with pytest.raises(ValueError):
-            less_than(np.asarray(((1, 2), (3, 4))), np.asarray(((1, 2), (3, 4))))
+            less_than(np.asarray(((1, 2), (3, 4))),
+                      np.asarray(((1, 2), (3, 4))))
+
+
+if __name__ == "__main__":
+    pytest.main()

@@ -39,11 +39,11 @@ class PlatformTestSuite(object):
         assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_1t_empty_pose_nonzero_cog(self,
-                                  robot_1t: 'cdpyr.robot.Robot',
-                                  empty_pose: 'cdpyr.motion.Pose'):
+                                              robot_1t: 'cdpyr.robot.Robot',
+                                              empty_pose: 'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_1t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -74,11 +74,12 @@ class PlatformTestSuite(object):
         assert platform.wrench(rand_pose_1t, gravity) == pytest.approx(wrench)
 
     def test_wrench_1t_random_pose_nonzero_cog(self,
-                                   robot_1t: 'cdpyr.robot.Robot',
-                                   rand_pose_1t: 'cdpyr.motion.Pose'):
+                                               robot_1t: 'cdpyr.robot.Robot',
+                                               rand_pose_1t:
+                                               'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_1t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -109,11 +110,11 @@ class PlatformTestSuite(object):
         assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_2t_empty_pose_nonzero_cog(self,
-                                  robot_2t: 'cdpyr.robot.Robot',
-                                  empty_pose: 'cdpyr.motion.Pose'):
+                                              robot_2t: 'cdpyr.robot.Robot',
+                                              empty_pose: 'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_2t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -144,11 +145,12 @@ class PlatformTestSuite(object):
         assert platform.wrench(rand_pose_2t, gravity) == pytest.approx(wrench)
 
     def test_wrench_2t_random_pose_nonzero_cog(self,
-                                   robot_2t: 'cdpyr.robot.Robot',
-                                   rand_pose_2t: 'cdpyr.motion.Pose'):
+                                               robot_2t: 'cdpyr.robot.Robot',
+                                               rand_pose_2t:
+                                               'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_2t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -179,11 +181,11 @@ class PlatformTestSuite(object):
         assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_3t_empty_pose_nonzero_cog(self,
-                                  robot_3t: 'cdpyr.robot.Robot',
-                                  empty_pose: 'cdpyr.motion.Pose'):
+                                              robot_3t: 'cdpyr.robot.Robot',
+                                              empty_pose: 'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_3t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -214,11 +216,11 @@ class PlatformTestSuite(object):
         assert platform.wrench(rand_pose_3t, gravity) == pytest.approx(wrench)
 
     def test_wrench_3t_random_pose_nonzero_cog(self,
-                                   robot_3t: 'cdpyr.robot.Robot',
-                                   rand_pose_3t):
+                                               robot_3t: 'cdpyr.robot.Robot',
+                                               rand_pose_3t):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_3t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -252,11 +254,12 @@ class PlatformTestSuite(object):
         assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_1r2t_empty_pose_nonzero_cog(self,
-                                    robot_1r2t: 'cdpyr.robot.Robot',
-                                    empty_pose: 'cdpyr.motion.Pose'):
+                                                robot_1r2t: 'cdpyr.robot.Robot',
+                                                empty_pose:
+                                                'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_1r2t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -305,11 +308,13 @@ class PlatformTestSuite(object):
         assert platform.wrench(rand_pose_1r2t, gravity) == pytest.approx(wrench)
 
     def test_wrench_1r2t_random_pose_nonzero_cog(self,
-                                     robot_1r2t: 'cdpyr.robot.Robot',
-                                     rand_pose_1r2t: 'cdpyr.motion.Pose'):
+                                                 robot_1r2t:
+                                                 'cdpyr.robot.Robot',
+                                                 rand_pose_1r2t:
+                                                 'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_1r2t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -352,11 +357,12 @@ class PlatformTestSuite(object):
         assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_2r3t_empty_pose_nonzero_cog(self,
-                                    robot_2r3t: 'cdpyr.robot.Robot',
-                                    empty_pose: 'cdpyr.motion.Pose'):
+                                                robot_2r3t: 'cdpyr.robot.Robot',
+                                                empty_pose:
+                                                'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_2r3t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -405,11 +411,13 @@ class PlatformTestSuite(object):
         assert platform.wrench(rand_pose_2r3t, gravity) == pytest.approx(wrench)
 
     def test_wrench_2r3t_random_pose_nonzero_cog(self,
-                                     robot_2r3t: 'cdpyr.robot.Robot',
-                                     rand_pose_2r3t: 'cdpyr.motion.Pose'):
+                                                 robot_2r3t:
+                                                 'cdpyr.robot.Robot',
+                                                 rand_pose_2r3t:
+                                                 'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_2r3t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -452,11 +460,12 @@ class PlatformTestSuite(object):
         assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_3r3t_empty_pose_nonzero_cog(self,
-                                    robot_3r3t: 'cdpyr.robot.Robot',
-                                    empty_pose: 'cdpyr.motion.Pose'):
+                                                robot_3r3t: 'cdpyr.robot.Robot',
+                                                empty_pose:
+                                                'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_3r3t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -505,11 +514,13 @@ class PlatformTestSuite(object):
         assert platform.wrench(rand_pose_3r3t, gravity) == pytest.approx(wrench)
 
     def test_wrench_3r3t_random_pose_nonzero_cog(self,
-                                     robot_3r3t: 'cdpyr.robot.Robot',
-                                     rand_pose_3r3t: 'cdpyr.motion.Pose'):
+                                                 robot_3r3t:
+                                                 'cdpyr.robot.Robot',
+                                                 rand_pose_3r3t:
+                                                 'cdpyr.motion.Pose'):
         # get the first platform
         platform: cdpyr.robot.Platform = robot_3r3t.platforms[0]
-        platform.center_of_gravity = 0.3 * np.random.random((3, ))
+        platform.center_of_gravity = 0.3 * np.random.random((3,))
         # set mass of platform to 5 kg
         platform.linear_inertia = np.diag(np.full((3,), 5))
         # gravity scalar
@@ -530,3 +541,7 @@ class PlatformTestSuite(object):
         assert wrench.ndim == 1
         assert wrench.shape == (6,)
         assert platform.wrench(rand_pose_3r3t, gravity) == pytest.approx(wrench)
+
+
+if __name__ == "__main__":
+    pytest.main()

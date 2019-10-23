@@ -53,3 +53,7 @@ class EqualToTestSuite(object):
 
         with pytest.raises(ValueError):
             equal_to(np.asarray(((1, 1), (1, 1))), np.asarray(((0, 0), (0, 0))))
+
+
+if __name__ == "__main__":
+    pytest.main()

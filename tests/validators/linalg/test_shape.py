@@ -37,3 +37,7 @@ class ShapeTestSuite(object):
             shape((1, 2, 3), (2,))
         with pytest.raises(ValueError):
             shape((1, 2, 3), (1, 1))
+
+
+if __name__ == "__main__":
+    pytest.main()

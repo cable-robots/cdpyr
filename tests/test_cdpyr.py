@@ -1,5 +1,4 @@
 def test_cdpyr():
-
     import cdpyr
 
     r = cdpyr.robot.Robot()

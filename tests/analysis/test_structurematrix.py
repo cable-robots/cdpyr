@@ -1,3 +1,5 @@
+import pytest
+
 import cdpyr
 
 
@@ -56,3 +58,7 @@ class StructureMatrixTestSuite(object):
         structmat = sms.evaluate(robot_3r3t, uis, rand_pose_3r3t)
 
         assert structmat.shape == (6, robot_3r3t.num_kinematic_chains)
+
+
+if __name__ == "__main__":
+    pytest.main()

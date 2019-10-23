@@ -1,8 +1,8 @@
-from typing import Sequence, AnyStr
+from typing import AnyStr, Sequence
 
 import numpy as np
+import pytest
 import scipy.linalg
-from pytest import approx, mark
 from scipy.spatial.transform import Rotation
 
 import cdpyr
@@ -16,13 +16,13 @@ class AngularTransformationTestSuite(object):
         assert isinstance(angular, cdpyr.kinematics.transformation.Angular)
 
         assert angular.euler.shape == (3,)
-        assert angular.euler == approx([0., 0., 0.])
+        assert angular.euler == pytest.approx([0., 0., 0.])
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         ("eul", "seq"),
         [
             (np.random.random((3,)).tolist(), 'xyz'),  # 3-tuple
@@ -61,14 +61,14 @@ class AngularTransformationTestSuite(object):
         rot: Rotation = Rotation.from_euler(seq, eul)
 
         assert angular.euler.shape == (len(eul),)
-        assert angular.euler == approx(eul)
-        assert angular.dcm == approx(rot.as_dcm())
+        assert angular.euler == pytest.approx(eul)
+        assert angular.dcm == pytest.approx(rot.as_dcm())
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         ("eul", "seq"),
         [
             (np.pi * (np.random.random((3,)) - 0.5), 'xyz'),  # 3x1 vector
@@ -96,14 +96,14 @@ class AngularTransformationTestSuite(object):
         rot: Rotation = Rotation.from_euler(seq, eul)
 
         assert angular.euler.shape == eul.shape
-        assert angular.euler == approx(eul)
-        assert angular.dcm == approx(rot.as_dcm())
+        assert angular.euler == pytest.approx(eul)
+        assert angular.dcm == pytest.approx(rot.as_dcm())
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "quat",
         [
             ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
@@ -130,14 +130,15 @@ class AngularTransformationTestSuite(object):
         quat = np.asarray(quat)
 
         assert angular.quaternion.shape == quat.shape
-        assert angular.quaternion == approx(quat / scipy.linalg.norm(quat))
-        assert angular.dcm == approx(rot.as_dcm())
+        assert angular.quaternion == pytest.approx(
+            quat / scipy.linalg.norm(quat))
+        assert angular.dcm == pytest.approx(rot.as_dcm())
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "quat",
         [
             (np.random.random((4,)) - 0.5),  # 4x1 vector
@@ -164,14 +165,15 @@ class AngularTransformationTestSuite(object):
         rot: Rotation = Rotation.from_quat(quat)
 
         assert angular.quaternion.shape == quat.shape
-        assert angular.quaternion == approx(quat / scipy.linalg.norm(quat))
-        assert angular.dcm == approx(rot.as_dcm())
+        assert angular.quaternion == pytest.approx(
+            quat / scipy.linalg.norm(quat))
+        assert angular.dcm == pytest.approx(rot.as_dcm())
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "rotvec",
         [
             ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
@@ -200,14 +202,14 @@ class AngularTransformationTestSuite(object):
         rotvec = np.asarray(rotvec)
 
         assert angular.rotvec.shape == rotvec.shape
-        assert angular.rotvec == approx(rotvec)
-        assert angular.dcm == approx(rot.as_dcm())
+        assert angular.rotvec == pytest.approx(rotvec)
+        assert angular.dcm == pytest.approx(rot.as_dcm())
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "rotvec",
         [
             (np.random.random((3,)) - 0.5),  # 4x1 vector
@@ -234,14 +236,14 @@ class AngularTransformationTestSuite(object):
         rot: Rotation = Rotation.from_rotvec(rotvec)
 
         assert angular.rotvec.shape == rotvec.shape
-        assert angular.rotvec == approx(rotvec)
-        assert angular.dcm == approx(rot.as_dcm())
+        assert angular.rotvec == pytest.approx(rotvec)
+        assert angular.dcm == pytest.approx(rot.as_dcm())
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "dcm",
         [
             (Rotation.random().as_dcm().tolist()),
@@ -257,13 +259,13 @@ class AngularTransformationTestSuite(object):
         dcm = np.asarray(dcm)
 
         assert angular.dcm.shape == dcm.shape
-        assert angular.dcm == approx(dcm)
+        assert angular.dcm == pytest.approx(dcm)
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "dcm",
         [
             (Rotation.random().as_dcm()),
@@ -277,13 +279,13 @@ class AngularTransformationTestSuite(object):
         )
 
         assert angular.dcm.shape == dcm.shape
-        assert angular.dcm == approx(dcm)
+        assert angular.dcm == pytest.approx(dcm)
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "vel",
         [
             (np.random.random((3,)).tolist()),  # 3x1 vector
@@ -295,13 +297,13 @@ class AngularTransformationTestSuite(object):
         )
 
         assert angular.quaternion.shape == (4,)
-        assert angular.quaternion == approx([0., 0., 0., 1.])
+        assert angular.quaternion == pytest.approx([0., 0., 0., 1.])
         assert angular.angular_velocity.shape == (len(vel),)
-        assert angular.angular_velocity == approx(vel)
+        assert angular.angular_velocity == pytest.approx(vel)
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "vel",
         [
             (np.random.random((3,))),  # 3x1 vector
@@ -314,13 +316,13 @@ class AngularTransformationTestSuite(object):
         )
 
         assert angular.quaternion.shape == (4,)
-        assert angular.quaternion == approx([0., 0., 0., 1.])
+        assert angular.quaternion == pytest.approx([0., 0., 0., 1.])
         assert angular.angular_velocity.shape == vel.shape
-        assert angular.angular_velocity == approx(vel)
+        assert angular.angular_velocity == pytest.approx(vel)
         assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == approx([0., 0., 0.])
+        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "acc",
         [
             (np.random.random((3,)).tolist()),  # 3x1 vector
@@ -333,13 +335,13 @@ class AngularTransformationTestSuite(object):
         )
 
         assert angular.quaternion.shape == (4,)
-        assert angular.quaternion == approx([0., 0., 0., 1.])
+        assert angular.quaternion == pytest.approx([0., 0., 0., 1.])
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == (len(acc),)
-        assert angular.angular_acceleration == approx(acc)
+        assert angular.angular_acceleration == pytest.approx(acc)
 
-    @mark.parametrize(
+    @pytest.mark.parametrize(
         "acc",
         [
             (np.random.random((3,))),  # 3x1 vector
@@ -353,8 +355,12 @@ class AngularTransformationTestSuite(object):
         )
 
         assert angular.quaternion.shape == (4,)
-        assert angular.quaternion == approx([0., 0., 0., 1.])
+        assert angular.quaternion == pytest.approx([0., 0., 0., 1.])
         assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == approx([0., 0., 0.])
+        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
         assert angular.angular_acceleration.shape == acc.shape
-        assert angular.angular_acceleration == approx(acc)
+        assert angular.angular_acceleration == pytest.approx(acc)
+
+
+if __name__ == "__main__":
+    pytest.main()

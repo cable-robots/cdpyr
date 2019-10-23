@@ -34,22 +34,30 @@ class LessThanOrEqualToTestSuite(object):
 
     def test_numpyarray_passes(self):
         less_than_or_equal_to(np.asarray((1, 2, 3, 4)), 4)
-        less_than_or_equal_to(np.asarray((1, 2, 3, 4)), np.asarray((1, 2, 3, 4)))
+        less_than_or_equal_to(np.asarray((1, 2, 3, 4)),
+                              np.asarray((1, 2, 3, 4)))
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
             less_than_or_equal_to(np.asarray((1, 2, 3, 4)), 1)
 
         with pytest.raises(ValueError):
-            less_than_or_equal_to(np.asarray((1, 2, 3, 4)), np.asarray((0, 1, 2, 3)))
+            less_than_or_equal_to(np.asarray((1, 2, 3, 4)),
+                                  np.asarray((0, 1, 2, 3)))
 
     def test_numpyarray_passes(self):
         less_than_or_equal_to(np.asarray(((1, 2), (3, 4))), 4)
-        less_than_or_equal_to(np.asarray(((1, 2), (3, 4))), np.asarray(((1, 2), (3, 4))))
+        less_than_or_equal_to(np.asarray(((1, 2), (3, 4))),
+                              np.asarray(((1, 2), (3, 4))))
 
     def test_numpyarray_fails(self):
         with pytest.raises(ValueError):
             less_than_or_equal_to(np.asarray(((1, 2), (3, 4))), 1)
 
         with pytest.raises(ValueError):
-            less_than_or_equal_to(np.asarray(((1, 2), (3, 4))), np.asarray(((0, 1), (2, 3))))
+            less_than_or_equal_to(np.asarray(((1, 2), (3, 4))),
+                                  np.asarray(((0, 1), (2, 3))))
+
+
+if __name__ == "__main__":
+    pytest.main()

@@ -36,8 +36,8 @@ class InertiaTestSuite(object):
         assert inertia.angular == pytest.approx(angular_inertia)
 
     def test_initialize_fails(self):
-        linear_inertia = np.random.random((3, ))
-        angular_inertia = np.random.random((3, ))
+        linear_inertia = np.random.random((3,))
+        angular_inertia = np.random.random((3,))
 
         with pytest.raises(ValueError) as excinfo:
             inertia = cdpyr.mechanics.Inertia(linear_inertia, angular_inertia)
@@ -64,8 +64,8 @@ class InertiaTestSuite(object):
 
     def test_property_descriptor_passes(self):
         inertia = cdpyr.mechanics.Inertia()
-        linear_inertia = np.random.random((3, ))
-        angular_inertia = np.random.random((3, ))
+        linear_inertia = np.random.random((3,))
+        angular_inertia = np.random.random((3,))
 
         # setting the linear inertia
         with pytest.raises(ValueError) as excinfo:
@@ -74,3 +74,7 @@ class InertiaTestSuite(object):
         # setting the angular inertia
         with pytest.raises(ValueError) as excinfo:
             inertia.angular = angular_inertia
+
+
+if __name__ == "__main__":
+    pytest.main()
