@@ -6,7 +6,7 @@ from cdpyr.numpy import linalg
 from cdpyr.typing import Matrix, Vector
 
 
-def evaluate(calculator: '_forcedistribution.Calculator',
+def evaluate(self: '_forcedistribution.Calculator',
              structurematrix: Matrix,
              wrench: Vector,
              force_min: Vector,

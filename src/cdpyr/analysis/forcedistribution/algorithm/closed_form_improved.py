@@ -6,7 +6,7 @@ from cdpyr.numpy import linalg
 from cdpyr.typing import Matrix, Vector
 
 
-def evaluate(calculator: '_forcedistribution.Calculator',
+def evaluate(self: '_forcedistribution.Calculator',
              structurematrix: Matrix,
              wrench: Vector,
              force_min: Vector,
@@ -34,6 +34,10 @@ def evaluate(calculator: '_forcedistribution.Calculator',
             force_min,
             force_max
         )
+
+        if (force_distribution == np_.nan).any():
+            raise ArithmeticError(
+                'Calculation yielded NaN values in the force distribution.')
     except ArithmeticError as ArithmeticException:
         raise ValueError(
             'Could not find a valid force distribution using the current '
@@ -66,10 +70,10 @@ def _reduced_iteration(current_force_distribution: Vector,
 
     # also get the linear indices of the violations (needed for later
     # proper re-concatenation of full force vector)
-    idx_violated_below: Vector = np_.where(violated_below)[0]
-    idx_violated_above: Vector = np_.where(violated_above)[0]
+    # idx_violated_below: Vector = np_.where(violated_below)[0]
+    # idx_violated_above: Vector = np_.where(violated_above)[0]
     idx_violated: Vector = np_.where(violated)[0]
-    idx_valid: Vector = np_.where(valid)[0]
+    # idx_valid: Vector = np_.where(valid)[0]
     num_violations = idx_violated.size
 
     # if there are no violations, bail out right away
@@ -78,15 +82,14 @@ def _reduced_iteration(current_force_distribution: Vector,
 
     # if there are any violations, we need to check to see if we can
     # reduce the structure matrix by the amount of violations
-    if current_structure_matrix.shape[1] - num_violations > \
+    if num_violations > current_structure_matrix.shape[1] - \
         current_structure_matrix.shape[0]:
         raise ArithmeticError(
             'Unable to reduce structure matrix further. Expected it to be '
             '({}, {}), but was {}.'.format(
                 current_structure_matrix.shape[0],
                 current_structure_matrix.shape[0]
-                + idx_violated_below.size
-                + idx_violated_below.size,
+                + num_violations,
                 current_structure_matrix.shape
             ))
 
