@@ -54,7 +54,14 @@ def backward(calculator: '_calculator.Calculator',
         cable_lengths.append(cable_length)
 
         # and calculate the normalized direction vectors
-        unit_vectors.append(cable_vectors / cable_length)
+        unit_vector = cable_vectors / cable_length
+        # to avoid a division by zero yielding `NaN`, we will set all unit
+        # vectors to zero where the cable length is zero. technically,
+        # this case is not well-defined, however, from the standard
+        # kinematics algorithm there is no force transmitted, so ui == 0 in
+        # this case
+        unit_vector[:, cable_length == 0] = 0
+        unit_vectors.append(unit_vector)
 
     if robot.num_platforms == 1:
         return cable_lengths[0], unit_vectors[0]
