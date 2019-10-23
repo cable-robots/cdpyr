@@ -1,4 +1,4 @@
-from typing import Any, AnyStr, Dict, Sequence, Tuple, Union
+from typing import Any, AnyStr, Dict, Sequence, Tuple
 
 import numpy as np_
 
@@ -7,7 +7,6 @@ from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.analysis.workspace.method import method as _method
 from cdpyr.robot import robot as _robot
-from cdpyr.typing import Num, Vector
 
 
 def evaluate(self: '_method.Method',
@@ -22,6 +21,6 @@ def evaluate(self: '_method.Method',
 
 
 __vars__ = [
-    ('center', np_.zeros((3, ))),
+    ('center', np_.zeros((3,))),
     ('plane', 'xy')
 ]

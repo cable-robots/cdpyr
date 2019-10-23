@@ -11,7 +11,9 @@ from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 
 __vars__ = [
-    ('wrenches', np_.zeros((6,))),
+    ('wrench', np_.zeros((6,))),
+    ('force_min', 1),
+    ('force_max', 10),
     ('forcedistribution',
      _forcedistribution.ForceDistribution.CLOSED_FORM_IMPROVED),
 ]
@@ -25,6 +27,9 @@ def setup(criterion: '_criterion.Criterion',
                          else [criterion.wrench])
     if wrench.ndim == 0:
         wrench = np_.asarray([wrench])
+    if wrench.ndim == 1:
+        wrench = np_.vstack((wrench, wrench)).T
+        # wrench = wrench[:,np_.newaxis]
     criterion.wrench = np_.asarray(wrench)
 
 
@@ -44,10 +49,16 @@ def evaluate(criterion: '_criterion.Criterion',
     structmat = criterion.structurematrix.evaluate(robot, uis, pose)
 
     try:
-        flag = all(np_.alltrue(np_.logical_not(np_.isnan(
-            criterion.forcedistribution.evaluate(robot, structmat, wrench)
-        ))) for wrench in criterion.wrench)
-    except ArithmeticError:
+        [criterion.forcedistribution.evaluate(
+                robot,
+                structmat,
+                wrench,
+                force_min=criterion.force_min,
+                force_max=criterion.force_max
+            ) for wrench in criterion.wrench.T]
+    except (ArithmeticError, ValueError):
         flag = False
+    else:
+        flag = True
     finally:
         return flag

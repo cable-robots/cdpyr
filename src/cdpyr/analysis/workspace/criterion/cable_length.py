@@ -17,12 +17,11 @@ def setup(criterion: '_criterion.Criterion',
 
     # get limits stacked so that the first row is minimum, and the second row
     # is maximum
-    if limits.ndim == 2:
-        limits = limits.T
-    else:
+    if limits.ndim == 1:
         limits = np_.repeat(limits[:, np_.newaxis], robot.num_cables, axis=1)
-    # and push back in the right shape
-    criterion.limits = limits
+    # and push back in the right shape and sorted so that first row is
+    # minimum and second row is maximum
+    criterion.limits = np_.sort(limits, axis=0)
 
 
 def teardown(criterion: '_criterion.Criterion',

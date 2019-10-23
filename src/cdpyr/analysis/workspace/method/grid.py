@@ -33,23 +33,24 @@ def evaluate(self: '_method.Method',
     # arguments
     for coordinate in grid:  # THIS IS PART OF THE WORKSPACE ALGORITHM
         # local values
-        flags = []
+        flags: Dict[AnyStr, Sequence] = dict(
+            zip((criterion.name for criterion, _ in criteria),
+                [[]] * len(criteria)))
 
         # loop over each pose the archetype provides at this coordinate
         for pose in archetype.poses(coordinate):
-            value = [pose]
             # evaluate each criterion
             for criterion, _ in criteria:
-                # append criterion and the flag of the criterion at the pose
-                # to the list of values
-                value.append(
-                    (criterion, criterion.evaluate(robot, calculator, pose)))
-            # append the evaluated criteria at the current pose
-            flags.append(value)
+                # append flag of the criterion to the list of its previously
+                # flgas
+                flags[criterion.name].append(
+                    criterion.evaluate(robot, calculator, pose))
 
-        # append the current coordinate and the
         workspace.append(
-            (coordinate, list(archetype.comparator(flag[1]) for flag in flags)))
+            (coordinate, dict(zip(flags.keys(),
+                                  (archetype.comparator(criterion_flags) for
+                                   criterion_flags in flags.values()))))
+        )
 
     # return the tuple of poses that were evaluated
     return workspace
