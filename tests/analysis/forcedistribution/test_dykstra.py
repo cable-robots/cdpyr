@@ -8,7 +8,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_1t(self,
                 robot_1t: cdpyr.robot.Robot,
-                empty_pose,
+                empty_pose: cdpyr.motion.Pose,
                 ik_standard):
         # solve inverse kinematics
         _, uis = ik_standard.backward(robot_1t, empty_pose)
@@ -41,7 +41,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_2t(self,
                 robot_2t: cdpyr.robot.Robot,
-                empty_pose,
+                empty_pose: cdpyr.motion.Pose,
                 ik_standard):
         # solve inverse kinematics
         _, uis = ik_standard.backward(robot_2t, empty_pose)
@@ -74,7 +74,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_3t(self,
                 robot_3t: cdpyr.robot.Robot,
-                empty_pose,
+                empty_pose: cdpyr.motion.Pose,
                 ik_standard):
         # solve inverse kinematics
         _, uis = ik_standard.backward(robot_3t, empty_pose)
@@ -107,7 +107,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_1r2t(self,
                   robot_1r2t: cdpyr.robot.Robot,
-                  empty_pose,
+                  empty_pose: cdpyr.motion.Pose,
                   ik_standard):
         # solve inverse kinematics
         _, uis = ik_standard.backward(robot_1r2t, empty_pose)
@@ -140,7 +140,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_2r3t(self,
                   robot_2r3t: cdpyr.robot.Robot,
-                  empty_pose,
+                  empty_pose: cdpyr.motion.Pose,
                   ik_standard):
         # solve inverse kinematics
         _, uis = ik_standard.backward(robot_2r3t, empty_pose)
@@ -173,7 +173,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_3r3t(self,
                   robot_3r3t: cdpyr.robot.Robot,
-                  empty_pose,
+                  empty_pose: cdpyr.motion.Pose,
                   ik_standard):
         # solve inverse kinematics
         _, uis = ik_standard.backward(robot_3r3t, empty_pose)
