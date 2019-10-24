@@ -1,5 +1,4 @@
 import itertools
-from typing import Any, AnyStr, Dict, Sequence, Tuple
 
 import numpy as np_
 
@@ -15,10 +14,7 @@ def evaluate(self: '_method.Method',
              robot: '_robot.Robot',
              calculator: '_calculator.Calculator',
              archetype: '_archetype.Archetype',
-             criteria: Sequence[Tuple[
-                 '_criterion.Criterion',
-                 Dict[AnyStr, Any]
-             ]]):
+             criterion: '_criterion.Criterion'):
     try:
         center = np_.asarray(self.center)
     except AttributeError as AttributeException:
@@ -29,6 +25,7 @@ def evaluate(self: '_method.Method',
 
     # termination conditions for each direction
     min_step = 0.5 ** 6  # maximum halvings allowed
+    max_iters = 12
 
     # stores workspace boundaries
     workspace = []
@@ -38,11 +35,15 @@ def evaluate(self: '_method.Method',
         # step length along this coordinate
         step_length = 1
 
+        # iteration counter for reducing the likelihood to continue along one
+        # search direction to infinity and beyond
+        kiter = 0
+
         # init the current coordinate
         coordinate = center
 
         # as long as the step size isn't too small
-        while step_length >= min_step:
+        while step_length >= min_step and kiter <= max_iters:
             # calculate a trial coordinate along the search direction with
             # the current step length
             coordinate_trial = coordinate + step_length * search_direction
@@ -52,21 +53,11 @@ def evaluate(self: '_method.Method',
 
             # loop over each pose the archetype provides at this coordinate
             for pose in archetype.poses(coordinate_trial):
-                value = [pose]
-                # evaluate each criterion
-                for criterion, _ in criteria:
-                    # append criterion and the flag of the criterion at the pose
-                    # to the list of values
-                    value.append(
-                        (
-                            criterion,
-                            criterion.evaluate(robot, calculator, pose)))
-                # append the evaluated criteria at the current pose
-                flags.append(value)
+                flags.append(criterion.evaluate(robot, calculator, pose))
 
             # check if any pose is invalid at this coordinate, then we will
             # reduce the step size
-            if any(not flag[1][1] for flag in flags):
+            if not all(flags):
                 # halven step size
                 step_length /= 2
             # all poses are valid, so store the trial coordinate as
@@ -75,10 +66,12 @@ def evaluate(self: '_method.Method',
                 # advance the pose
                 coordinate = coordinate_trial
 
+            # increase iteration counter so that we don't continue along a
+            # search direction too far
+            kiter += 1
+
         # append the current coordinate and the
-        workspace.append(
-            (coordinate,
-             list(archetype.comparator(flag[1]) for flag in flags)))
+        workspace.append((coordinate, archetype.comparator(flags)))
 
     return workspace, faces
 

@@ -1,5 +1,3 @@
-from typing import Any, AnyStr, Dict, Sequence, Tuple
-
 import numpy as np_
 
 from cdpyr.analysis.workspace import workspace as _calculator
@@ -13,10 +11,7 @@ def evaluate(self: '_method.Method',
              robot: '_robot.Robot',
              calculator: '_calculator.Calculator',
              archetype: '_archetype.Archetype',
-             criteria: Sequence[Tuple[
-                 '_criterion.Criterion',
-                 Dict[AnyStr, Any]
-             ]]):
+             criterion: '_criterion.Criterion'):
     raise NotImplementedError
 
 

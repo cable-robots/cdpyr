@@ -1,5 +1,3 @@
-from typing import Any, AnyStr, Dict, Sequence, Tuple
-
 from enum import Enum
 
 from cdpyr.analysis.workspace import workspace as _calculator
@@ -29,12 +27,12 @@ class Method(Enum):
                  robot: '_robot.Robot',
                  calculator: '_calculator.Calculator',
                  archetype: '_archetype.Archetype',
-                 criteria: Sequence[Tuple[
-                     '_criterion.Criterion',
-                     Dict[AnyStr, Any]
-                 ]]):
-        return self.implementation.evaluate(self, robot, calculator, archetype,
-                                            criteria)
+                 criterion: '_criterion.Criterion'):
+        return self.implementation.evaluate(self,
+                                            robot,
+                                            calculator,
+                                            archetype,
+                                            criterion)
 
     def __dir__(self):
         """

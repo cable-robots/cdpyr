@@ -15,10 +15,7 @@ def evaluate(self: '_method.Method',
              robot: '_robot.Robot',
              calculator: '_calculator.Calculator',
              archetype: '_archetype.Archetype',
-             criteria: Sequence[Tuple[
-                 '_criterion.Criterion',
-                 Dict[AnyStr, Any]
-             ]]):
+             criterion: '_criterion.Criterion'):
     # get min and maximum coordinates
     min_coord = np_.asarray(self.min)
     max_coord = np_.asarray(self.max)
@@ -33,24 +30,13 @@ def evaluate(self: '_method.Method',
     # arguments
     for coordinate in grid:  # THIS IS PART OF THE WORKSPACE ALGORITHM
         # local values
-        flags: Dict[AnyStr, Sequence] = dict(
-            zip((criterion.name for criterion, _ in criteria),
-                [[]] * len(criteria)))
+        flags = []
 
         # loop over each pose the archetype provides at this coordinate
         for pose in archetype.poses(coordinate):
-            # evaluate each criterion
-            for criterion, _ in criteria:
-                # append flag of the criterion to the list of its previously
-                # flgas
-                flags[criterion.name].append(
-                    criterion.evaluate(robot, calculator, pose))
+            flags.append(criterion.evaluate(robot, calculator, pose))
 
-        workspace.append(
-            (coordinate, dict(zip(flags.keys(),
-                                  (archetype.comparator(criterion_flags) for
-                                   criterion_flags in flags.values()))))
-        )
+        workspace.append((coordinate, archetype.comparator(flags)))
 
     # return the tuple of poses that were evaluated
     return workspace

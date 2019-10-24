@@ -1,4 +1,4 @@
-from typing import Any, AnyStr, Dict, Sequence, Tuple
+from typing import Any, AnyStr, Dict
 
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
@@ -10,21 +10,20 @@ from cdpyr.robot import robot as _robot
 class Workspace(object):
     _archetype: '_archetype.Archetype'
     _method: '_method.Method'
-    _criteria: Sequence[Tuple['_criterion.Criterion', Dict[AnyStr, Any]]]
+    _criterion: '_criterion.Criterion'
     _parameters: Dict[AnyStr, Any]
     __kinematics: '_kinematics.Calculator'
 
     def __init__(self,
                  archetype: '_archetype.Archetype',
                  method: '_method.Method',
-                 criteria: Sequence[
-                     Tuple['_criterion.Criterion', Dict[AnyStr, Any]]],
+                 criterion: '_criterion.Criterion',
                  *args,
                  kinematics: '_kinematics.Calculator' = None,
                  **kwargs):
         self.archetype = archetype
         self.method = method
-        self.criteria = criteria
+        self.criterion = criterion
         self.parameters = kwargs
         self.kinematics = kinematics or _kinematics.Kinematics.STANDARD
 
@@ -41,25 +40,16 @@ class Workspace(object):
         del self._archetype
 
     @property
-    def criteria(self):
-        return self._criteria
+    def criterion(self):
+        return self._criterion
 
-    @criteria.setter
-    def criteria(self, criteria: Sequence[
-        Tuple['_criterion.Criterion', Dict[AnyStr, Any]]]):
-        # make sure every criterion is stored as tuple (Criterion, OptionsDict)
-        for idx, criterion in enumerate(criteria):
-            criteria[idx] = criterion if isinstance(criterion, Tuple) else (
-                criterion, {})
-            if len(criteria[idx][1]):
-                for key, value in criteria[idx][1].items():
-                    setattr(criteria[idx][0], key, value)
+    @criterion.setter
+    def criterion(self, criterion: '_criterion.Criterion'):
+        self._criterion = criterion
 
-        self._criteria = criteria
-
-    @criteria.deleter
-    def criteria(self):
-        del self._criteria
+    @criterion.deleter
+    def criterion(self):
+        del self._criterion
 
     @property
     def kinematics(self):
@@ -98,22 +88,18 @@ class Workspace(object):
         del self._parameters
 
     def evaluate(self, robot: '_robot.Robot'):
-        criterion: '_criterion.Criterion'
-        options: Dict[AnyStr, Any]
-
-        # first, we will parametrize every criterion with the parameters
-        # given. This will make all later evaluations quicker
-        for criterion, options in self.criteria:
-            criterion.setup(robot)
+        # setup the criterion
+        self.criterion.setup(robot)
 
         # then, dispatch to the workspace method algorithm to calculate the
         # workspace
-        workspace = self.method.evaluate(robot, self, self.archetype,
-                                         self.criteria)
+        workspace = self.method.evaluate(robot,
+                                         self,
+                                         self.archetype,
+                                         self.criterion)
 
-        # after the workspace is calculated, we will tear down every criterion
-        for criterion, _ in self.criteria:
-            criterion.teardown(robot)
+        # after the workspace is calculated, we will tear down the criterion
+        self.criterion.teardown(robot)
 
         # and return the result
         return workspace

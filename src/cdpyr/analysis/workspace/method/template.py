@@ -11,10 +11,7 @@ def evaluate(self: '_method.Method',
              robot: '_robot.Robot',
              calculator: '_calculator.Calculator',
              archetype: '_archetype.Archetype',
-             criteria: Sequence[Tuple[
-                 '_criterion.Criterion',
-                 Dict[AnyStr, Any]
-             ]]):
+             criterion: '_criterion.Criterion'):
     raise NotImplementedError
 
 
