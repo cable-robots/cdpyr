@@ -11,6 +11,8 @@ import cdpyr
 
 
 def plot_workspace(dims, coordinates):
+    return
+
     # filter for the inside and outside coordinates
     inside = np.asarray(
         [coordinate[0] for coordinate in coordinates if coordinate[1]])

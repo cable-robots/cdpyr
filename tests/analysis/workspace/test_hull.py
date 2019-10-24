@@ -5,7 +5,9 @@ import vtk
 import cdpyr
 
 
-def draw_workspace(vertices: np.ndarray, faces: np.ndarray):
+def plot_workspace(vertices: np.ndarray, faces: np.ndarray):
+    return
+
     colors = vtk.vtkNamedColors()
 
     # create polyhedron (cube)
@@ -92,7 +94,7 @@ class GridWorkspaceTestSuite(object):
         # get corners of workspace
         corners = np.asarray([p[0] for p in workspace])
 
-        draw_workspace(corners, faces)
+        plot_workspace(corners, faces)
 
         assert False
 
@@ -126,7 +128,7 @@ class GridWorkspaceTestSuite(object):
         # get corners of workspace
         corners = np.asarray([p[0] for p in workspace])
 
-        draw_workspace(corners, faces)
+        plot_workspace(corners, faces)
 
         assert False
 
@@ -163,7 +165,7 @@ class GridWorkspaceTestSuite(object):
         # get corners of workspace
         corners = np.asarray([p[0] for p in workspace])
 
-        draw_workspace(corners, faces)
+        plot_workspace(corners, faces)
 
         assert False
 
@@ -198,7 +200,7 @@ class GridWorkspaceTestSuite(object):
         # get corners of workspace
         corners = np.asarray([p[0] for p in workspace])
 
-        draw_workspace(corners, faces)
+        plot_workspace(corners, faces)
 
         assert False
 
