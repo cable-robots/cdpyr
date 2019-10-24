@@ -12,10 +12,10 @@ import cdpyr
 
 def plot_workspace(dims, coordinates):
     # filter for the inside and outside coordinates
-    inside = np.asarray([coordinate[0] for coordinate in coordinates if
-                         all(coordinate[1].values())])
-    outside = np.asarray([coordinate[0] for coordinate in coordinates if
-                          not all(coordinate[1].values())])
+    inside = np.asarray(
+        [coordinate[0] for coordinate in coordinates if coordinate[1]])
+    outside = np.asarray(
+        [coordinate[0] for coordinate in coordinates if not coordinate[1]])
 
     fig: plt.Figure = plt.figure()
     # three dimensional case?
@@ -64,17 +64,8 @@ class GridWorkspaceTestSuite(object):
         archetype.dcm = np.eye(3)
 
         # criteria and their parameters we want to evaluate
-        criteria = [
-            # (
-            #     cdpyr.analysis.workspace.Criterion.CABLE_LENGTH
-            # )
-            (
-                cdpyr.analysis.workspace.Criterion.CABLE_LENGTH,
-                {
-                    'limits': [0.5, 1.5],
-                }
-            )
-        ]
+        criterion = cdpyr.analysis.workspace.Criterion.CABLE_LENGTH
+        criterion.limits = [0.5, 1.5]
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.GRID
@@ -90,7 +81,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid
@@ -110,11 +101,7 @@ class GridWorkspaceTestSuite(object):
         archetype.dcm = np.eye(3)
 
         # criteria and their parameters we want to evaluate
-        criteria = [
-            (
-                cdpyr.analysis.workspace.Criterion.SINGULARITIES
-            )
-        ]
+        criterion = cdpyr.analysis.workspace.Criterion.SINGULARITIES
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.GRID
@@ -130,7 +117,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid
@@ -149,15 +136,9 @@ class GridWorkspaceTestSuite(object):
         archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
         archetype.dcm = np.eye(3)
 
-        # criteria and their parameters we want to evaluate
-        criteria = [
-            (
-                cdpyr.analysis.workspace.Criterion.WRENCH_CLOSURE,
-                {
-                    'wrench': -1,
-                }
-            )
-        ]
+        # criterion and their parameters we want to evaluate
+        criterion = cdpyr.analysis.workspace.Criterion.WRENCH_CLOSURE
+        criterion.wrench = -1
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.GRID
@@ -173,7 +154,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid
@@ -192,17 +173,11 @@ class GridWorkspaceTestSuite(object):
         archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
         archetype.dcm = np.eye(3)
 
-        # criteria and their parameters we want to evaluate
-        criteria = [
-            (
-                cdpyr.analysis.workspace.Criterion.WRENCH_FEASIBLE,
-                {
-                    'wrench':    -1,
-                    'force_min': 1,
-                    'force_max': 10,
-                }
-            )
-        ]
+        # criterion and their parameters we want to evaluate
+        criterion = cdpyr.analysis.workspace.Criterion.WRENCH_FEASIBLE
+        criterion.wrench = -1
+        criterion.force_min = 1
+        criterion.force_max = 10
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.GRID
@@ -218,7 +193,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid
@@ -237,18 +212,9 @@ class GridWorkspaceTestSuite(object):
         archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
         archetype.dcm = np.eye(3)
 
-        # criteria and their parameters we want to evaluate
-        criteria = [
-            # (
-            #     cdpyr.analysis.workspace.Criterion.CABLE_LENGTH
-            # )
-            (
-                cdpyr.analysis.workspace.Criterion.CABLE_LENGTH,
-                {
-                    'limits': [0.866025404, 2.598076211],
-                }
-            )
-        ]
+        # criterion and their parameters we want to evaluate
+        criterion = cdpyr.analysis.workspace.Criterion.CABLE_LENGTH
+        criterion.limits = [0.866025404, 2.598076211]
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.GRID
@@ -265,7 +231,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid
@@ -284,15 +250,9 @@ class GridWorkspaceTestSuite(object):
         archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
         archetype.dcm = np.eye(3)
 
-        # criteria and their parameters we want to evaluate
-        criteria = [
-            (
-                cdpyr.analysis.workspace.Criterion.WRENCH_CLOSURE,
-                {
-                    'wrench': [0.0, 0.0, -9.81, 0.0, 0.0, 0.0],
-                }
-            )
-        ]
+        # criterion and their parameters we want to evaluate
+        criterion = cdpyr.analysis.workspace.Criterion.WRENCH_CLOSURE
+        criterion.wrench = [0.0, 0.0, -9.81, 0.0, 0.0, 0.0]
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.GRID
@@ -309,7 +269,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid
@@ -328,17 +288,11 @@ class GridWorkspaceTestSuite(object):
         archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
         archetype.dcm = np.eye(3)
 
-        # criteria and their parameters we want to evaluate
-        criteria = [
-            (
-                cdpyr.analysis.workspace.Criterion.WRENCH_FEASIBLE,
-                {
-                    'wrench':    [0.0, 0.0, -9.81, 0.0, 0.0, 0.0],
-                    'force_min': 1,
-                    'force_max': 10,
-                }
-            )
-        ]
+        # criterion and their parameters we want to evaluate
+        criterion = cdpyr.analysis.workspace.Criterion.WRENCH_FEASIBLE
+        criterion.wrench = [0.0, 0.0, -9.81, 0.0, 0.0, 0.0]
+        criterion.force_min = 1
+        criterion.force_max = 10
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.GRID
@@ -355,7 +309,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid
@@ -374,12 +328,8 @@ class GridWorkspaceTestSuite(object):
         archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
         archetype.dcm = np.eye(3)
 
-        # criteria and their parameters we want to evaluate
-        criteria = [
-            (
-                cdpyr.analysis.workspace.Criterion.SINGULARITIES
-            )
-        ]
+        # criterion and their parameters we want to evaluate
+        criterion = cdpyr.analysis.workspace.Criterion.SINGULARITIES
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.GRID
@@ -396,7 +346,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid

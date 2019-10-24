@@ -70,15 +70,9 @@ class GridWorkspaceTestSuite(object):
         archetype.dcm = np.eye(3)
 
         # criteria and their parameters we want to evaluate
-        criteria = [
-            (
-                cdpyr.analysis.workspace.Criterion.CABLE_LENGTH,
-                {
-                    'limits': [np.sqrt(0.5 ** 2 + 0.5 ** 2 + 0.5 ** 2),
-                               np.sqrt(1.5 ** 2 + 1.5 ** 2 + 1.5 ** 2)],
-                }
-            )
-        ]
+        criterion = cdpyr.analysis.workspace.Criterion.CABLE_LENGTH
+        criterion.limits = [np.sqrt(0.5 ** 2 + 0.5 ** 2 + 0.5 ** 2),
+                            np.sqrt(1.5 ** 2 + 1.5 ** 2 + 1.5 ** 2)]
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.HULL
@@ -89,7 +83,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid
@@ -111,12 +105,8 @@ class GridWorkspaceTestSuite(object):
         archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
         archetype.dcm = np.eye(3)
 
-        # criteria and their parameters we want to evaluate
-        criteria = [
-            (
-                cdpyr.analysis.workspace.Criterion.SINGULARITIES
-            )
-        ]
+        # criterion and their parameters we want to evaluate
+        criterion = cdpyr.analysis.workspace.Criterion.SINGULARITIES
 
         # method we want to use to calculate the workspace
         method = cdpyr.analysis.workspace.Method.HULL
@@ -127,7 +117,7 @@ class GridWorkspaceTestSuite(object):
         workspace_calculator = cdpyr.analysis.workspace.Calculator(
             archetype,
             method,
-            criteria,
+            criterion,
             kinematics=ik_standard)
 
         # evaluate the workspace over the grid
@@ -140,48 +130,77 @@ class GridWorkspaceTestSuite(object):
 
         assert False
 
-    # def test_3r3t_ik_standard_translation_wrench_feasible(self,
-    #                                                       robot_3r3t:
-    #                                                       'cdpyr.robot.Robot',
-    #                                                       ik_standard:
-    #                                                       'cdpyr.analysis.kinematics.Calculator'):
-    #     # workspace archetype we want to calculate
-    #     archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
-    #     archetype.dcm = np.eye(3)
-    #
-    #     # criteria and their parameters we want to evaluate
-    #     criteria = [
-    #         (
-    #             cdpyr.analysis.workspace.Criterion.WRENCH_FEASIBLE,
-    #             {
-    #                 'wrench':    [0.0, 0.0, -9.81, 0.0, 0.0, 0.0],
-    #                 'force_min': 1,
-    #                 'force_max': 10,
-    #             }
-    #         )
-    #     ]
-    #
-    #     # method we want to use to calculate the workspace
-    #     method = cdpyr.analysis.workspace.Method.HULL
-    #     # place center of hull at the world origin
-    #     method.center = [0.0, 0.0, 0.0]
-    #
-    #     # a workspace calculator object
-    #     workspace_calculator = cdpyr.analysis.workspace.Calculator(
-    #         archetype,
-    #         method,
-    #         criteria,
-    #         kinematics=ik_standard)
-    #
-    #     # evaluate the workspace over the grid
-    #     workspace, faces = workspace_calculator.evaluate(robot_3r3t)
-    #
-    #     # get corners of workspace
-    #     corners = np.asarray([p[0] for p in workspace])
-    #
-    #     draw_workspace(corners, faces)
-    #
-    #     assert False
+    def test_3r3t_ik_standard_translation_wrench_feasible(self,
+                                                          robot_3r3t:
+                                                          'cdpyr.robot.Robot',
+                                                          ik_standard:
+                                                          'cdpyr.analysis.kinematics.Calculator'):
+        # workspace archetype we want to calculate
+        archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
+        archetype.dcm = np.eye(3)
+
+        # criterion and their parameters we want to evaluate
+        criterion = cdpyr.analysis.workspace.Criterion.WRENCH_FEASIBLE
+        criterion.wrench = [0.0, 0.0, -9.81, 0.0, 0.0, 0.0]
+        criterion.force_min = 1
+        criterion.force_max = 10
+
+        # method we want to use to calculate the workspace
+        method = cdpyr.analysis.workspace.Method.HULL
+        # place center of hull at the world origin
+        method.center = [0.0, 0.0, 0.0]
+
+        # a workspace calculator object
+        workspace_calculator = cdpyr.analysis.workspace.Calculator(
+            archetype,
+            method,
+            criterion,
+            kinematics=ik_standard)
+
+        # evaluate the workspace over the grid
+        workspace, faces = workspace_calculator.evaluate(robot_3r3t)
+
+        # get corners of workspace
+        corners = np.asarray([p[0] for p in workspace])
+
+        draw_workspace(corners, faces)
+
+        assert False
+
+    def test_3r3t_ik_standard_translation_wrench_closure(self,
+                                                          robot_3r3t:
+                                                          'cdpyr.robot.Robot',
+                                                          ik_standard:
+                                                          'cdpyr.analysis.kinematics.Calculator'):
+        # workspace archetype we want to calculate
+        archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
+        archetype.dcm = np.eye(3)
+
+        # criterion and their parameters we want to evaluate
+        criterion = cdpyr.analysis.workspace.Criterion.WRENCH_CLOSURE
+        criterion.wrench = [0.0, 0.0, -9.81, 0.0, 0.0, 0.0]
+
+        # method we want to use to calculate the workspace
+        method = cdpyr.analysis.workspace.Method.HULL
+        # place center of hull at the world origin
+        method.center = [0.0, 0.0, 0.0]
+
+        # a workspace calculator object
+        workspace_calculator = cdpyr.analysis.workspace.Calculator(
+            archetype,
+            method,
+            criterion,
+            kinematics=ik_standard)
+
+        # evaluate the workspace over the grid
+        workspace, faces = workspace_calculator.evaluate(robot_3r3t)
+
+        # get corners of workspace
+        corners = np.asarray([p[0] for p in workspace])
+
+        draw_workspace(corners, faces)
+
+        assert False
 
 
 if __name__ == "__main__":
