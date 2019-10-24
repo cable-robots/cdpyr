@@ -1,5 +1,8 @@
 from collections import UserList
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class ObjectList(UserList):
 

@@ -2,6 +2,9 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.motion import pattern as _pattern
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class MotionpatternSchema(Schema):
     translation = fields.Int()

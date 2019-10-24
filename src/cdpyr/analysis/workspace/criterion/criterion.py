@@ -15,6 +15,9 @@ from cdpyr.analysis.workspace.criterion import (
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as   _robot
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Criterion(Enum):
     CABLE_LENGTH = [cable_length]

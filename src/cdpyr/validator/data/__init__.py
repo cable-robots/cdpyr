@@ -1,5 +1,8 @@
 from typing import AnyStr, Optional, Sized
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def length(value: Sized,
            expected: int,

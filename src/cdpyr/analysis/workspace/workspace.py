@@ -6,6 +6,9 @@ from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.analysis.workspace.method import method as _method
 from cdpyr.robot import robot as _robot
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Workspace(object):
     _archetype: '_archetype.Archetype'

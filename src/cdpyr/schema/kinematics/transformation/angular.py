@@ -2,6 +2,9 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.kinematics.transformation import angular as _angular
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class AngularSchema(Schema):
     dcm = fields.List(fields.List(fields.Float()))

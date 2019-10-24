@@ -11,6 +11,9 @@ from cdpyr.robot import (
 )
 from cdpyr.typing import Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def forward(calculator: '_calculator.Calculator',
             robot: '_robot.Robot',

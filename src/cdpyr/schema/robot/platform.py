@@ -5,6 +5,9 @@ from cdpyr.schema.motion import pose as _pose
 from cdpyr.schema.motion.pattern import motionpattern as _motionpattern
 from cdpyr.schema.robot.anchor import platformanchor as _platformanchor
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class PlatformSchema(Schema):
     anchors = fields.List(fields.Nested(_platformanchor.PlatformAnchorSchema))

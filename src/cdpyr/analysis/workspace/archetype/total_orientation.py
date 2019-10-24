@@ -2,6 +2,8 @@ from scipy.spatial import transform as _transform
 
 from cdpyr.motion.pose import generator as _generator, pose as _pose
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 comparator = all
 
 

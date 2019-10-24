@@ -2,6 +2,9 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.robot import kinematicchain as _kinematicchain
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class KinematicChainSchema(Schema):
     frame_anchor = fields.Number()

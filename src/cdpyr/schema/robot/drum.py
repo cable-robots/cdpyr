@@ -4,6 +4,9 @@ from cdpyr.robot import drum as _drum
 from cdpyr.schema.geometry import geometry as _geometry
 from cdpyr.schema.mechanics import inertia as _inertia
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class DrumSchema(Schema):
     geometry = fields.Nested(_geometry.GeometrySchema)

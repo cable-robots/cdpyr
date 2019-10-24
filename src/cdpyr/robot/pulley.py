@@ -8,6 +8,9 @@ from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.typing import Matrix, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Pulley(object):
     _geometry: '_geometry.Geometry'

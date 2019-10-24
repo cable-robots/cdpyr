@@ -2,6 +2,9 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.kinematics.transformation import linear as _linear
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class LinearSchema(Schema):
     position = fields.List(fields.Float())

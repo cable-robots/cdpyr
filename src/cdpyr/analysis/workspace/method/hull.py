@@ -9,6 +9,9 @@ from cdpyr.analysis.workspace.method import method as _method
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def evaluate(self: '_method.Method',
              robot: '_robot.Robot',

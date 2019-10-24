@@ -2,6 +2,9 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.mechanics import inertia as _inertia
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class InertiaSchema(Schema):
     angular = fields.List(fields.Float())

@@ -10,6 +10,9 @@ from cdpyr.kinematics.transformation import (
 )
 from cdpyr.typing import Matrix, Num, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Pose(object):
     _linear: '_linear.Linear'

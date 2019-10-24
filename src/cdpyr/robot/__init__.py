@@ -27,6 +27,8 @@ from cdpyr.robot.platform import Platform, PlatformList
 from cdpyr.robot.pulley import Pulley
 from cdpyr.robot.robot import Robot
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 __all__ = [
     'Anchor',
     'AnchorList',

@@ -6,6 +6,9 @@ from magic_repr import make_repr
 from cdpyr import validator as _validator
 from cdpyr.typing import Num, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Gearbox(object):
     _ratio: Vector

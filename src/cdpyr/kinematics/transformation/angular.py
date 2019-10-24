@@ -7,6 +7,9 @@ from scipy.spatial.transform import Rotation
 from cdpyr import validator as _validator
 from cdpyr.typing import Matrix, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Angular(object):
     _angular_rotation: Rotation = Rotation.from_quat([0., 0., 0., 1.])

@@ -3,10 +3,6 @@
 """Top-level package for CDPyR."""
 from __future__ import annotations
 
-__author__ = 'Philipp Tempel'
-__email__ = 'p.tempel@tudelft.nl'
-__version__ = '1.0.0-dev'
-
 # vital imports
 from cdpyr import helpers
 from cdpyr import typing
@@ -24,6 +20,11 @@ from cdpyr import analysis
 # and I/O imports
 from cdpyr import stream
 from cdpyr import schema
+
+
+__author__ = 'Philipp Tempel'
+__email__ = 'p.tempel@tudelft.nl'
+__version__ = '1.0.0-dev'
 
 __all__ = [
     'analysis',

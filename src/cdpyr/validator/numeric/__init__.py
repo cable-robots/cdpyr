@@ -4,6 +4,9 @@ import numpy as np_
 
 from cdpyr.typing import Matrix, Num, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def nonzero(value: Union[Num, Vector],
             name: Optional[AnyStr] = None):

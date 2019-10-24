@@ -5,6 +5,9 @@ from magic_repr import make_repr
 from cdpyr.robot import drivetrain as _drivetrain, pulley as _pulley
 from cdpyr.robot.anchor import anchor as _anchor
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class FrameAnchor(_anchor.Anchor):
     _pulley: '_pulley.Pulley'

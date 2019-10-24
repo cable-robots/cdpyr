@@ -8,6 +8,8 @@ from cdpyr.robot.anchor.platformanchor import (
     PlatformAnchorList,
 )
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 __all__ = [
     'Anchor',
     'AnchorList',

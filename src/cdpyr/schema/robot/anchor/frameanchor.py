@@ -4,6 +4,9 @@ from cdpyr.robot.anchor import frameanchor as _frameanchor
 from cdpyr.schema.robot import drivetrain as _drivetrain, pulley as _pulley
 from cdpyr.schema.robot.anchor import anchor as _anchor
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class FrameAnchorSchema(_anchor.AnchorSchema):
     pulley = fields.Nested(_pulley.PulleySchema)

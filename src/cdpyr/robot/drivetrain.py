@@ -8,6 +8,9 @@ from cdpyr.robot import (
     motor as __motor,
 )
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class DriveTrain(object):
     _gearbox: '__gearbox.Gearbox'

@@ -6,6 +6,9 @@ from cdpyr.geometry import geometry as _geometry
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.typing import Matrix, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Drum(object):
     _geometry: '_geometry.Geometry'

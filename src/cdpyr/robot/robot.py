@@ -13,6 +13,9 @@ from cdpyr.robot.anchor import (
     platformanchor as _platformanchor,
 )
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Robot(object):
     _name: AnyStr

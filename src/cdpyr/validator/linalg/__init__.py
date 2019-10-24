@@ -9,6 +9,9 @@ from cdpyr.validator.numeric import (
     less_than_or_equal_to,
 )
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def dimensions(value: Union[Num, Vector, Matrix, Sequence[Num]],
                expected: int,

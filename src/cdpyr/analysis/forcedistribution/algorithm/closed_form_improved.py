@@ -5,6 +5,9 @@ from cdpyr.analysis.forcedistribution import forcedistribution as \
 from cdpyr.numpy import linalg
 from cdpyr.typing import Matrix, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def evaluate(self: '_forcedistribution.Calculator',
              structurematrix: Matrix,

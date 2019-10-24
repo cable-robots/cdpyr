@@ -6,6 +6,9 @@ from magic_repr import make_repr
 from cdpyr import validator as _validator
 from cdpyr.typing import Matrix, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Homogenous(object):
     _translation: np_.ndarray

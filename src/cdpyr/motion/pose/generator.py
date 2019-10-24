@@ -12,6 +12,9 @@ from cdpyr.kinematics.transformation import (
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.typing import Matrix, Num, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def steps(start: '_pose.Pose',
           end: '_pose.Pose',

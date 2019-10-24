@@ -6,6 +6,9 @@ from cdpyr.schema.robot import (
     motor as _motor,
 )
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class DriveTrainSchema(Schema):
     motor = fields.Nested(_motor.MotorSchema)

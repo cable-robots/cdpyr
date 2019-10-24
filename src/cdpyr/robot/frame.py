@@ -5,6 +5,9 @@ from magic_repr import make_repr
 
 from cdpyr.robot.anchor import frameanchor as _frameanchor
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Frame(object):
     _anchors: '_frameanchor.FrameAnchorList'

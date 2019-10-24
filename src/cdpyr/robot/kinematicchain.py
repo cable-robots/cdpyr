@@ -10,6 +10,9 @@ from cdpyr.robot.anchor import (
 )
 from cdpyr.typing import Num
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class KinematicChain(object):
     _cable: '_cable.Cable'

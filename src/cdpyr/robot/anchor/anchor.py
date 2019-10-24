@@ -11,6 +11,9 @@ from cdpyr.kinematics.transformation import (
 )
 from cdpyr.typing import Matrix, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Anchor(object):
     _linear: '_linear.Linear'

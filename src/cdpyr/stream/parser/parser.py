@@ -2,6 +2,9 @@ from typing import AnyStr, Sequence
 
 from abc import ABC, abstractmethod
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Parser(ABC):
 

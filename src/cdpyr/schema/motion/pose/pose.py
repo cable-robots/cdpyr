@@ -2,6 +2,9 @@ from marshmallow import Schema, fields, post_load
 
 from cdpyr.motion.pose import pose as _pose, poselist as _poselist
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class PoseSchema(Schema):
     time = fields.Float()

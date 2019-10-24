@@ -1,6 +1,9 @@
 import numpy as np_
 from marshmallow import fields
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Numpy(fields.Field):
 

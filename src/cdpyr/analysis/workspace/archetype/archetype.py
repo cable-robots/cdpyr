@@ -12,6 +12,9 @@ from cdpyr.analysis.workspace.archetype import (
     translation,
 )
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Archetype(Enum):
     DEXTROUS = [dextrous]
@@ -64,7 +67,7 @@ class Archetype(Enum):
 
         """
         return self.implementation.poses(self, np_.pad(coordinate, (
-        0, 3 - coordinate.size)))
+            0, 3 - coordinate.size)))
 
     def __dir__(self):
         """

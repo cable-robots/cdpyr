@@ -20,6 +20,8 @@ from cdpyr.schema.robot.platform import PlatformListSchema, PlatformSchema
 from cdpyr.schema.robot.pulley import PulleySchema
 from cdpyr.schema.robot.robot import RobotSchema
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 __all__ = [
     'AnchorSchema',
     'AnchorListSchema',

@@ -15,6 +15,9 @@ from cdpyr.motion.pattern import motionpattern as _motionpattern
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class StructureMatrix(object):
     _MAPPING: dict

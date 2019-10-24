@@ -6,6 +6,9 @@ from cdpyr.schema.kinematics.transformation import (
     linear as _linear,
 )
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class AnchorSchema(Schema):
     position = fields.Nested(_linear.LinearSchema)

@@ -5,6 +5,9 @@ from cdpyr.schema.geometry import geometry as _geometry
 from cdpyr.schema.kinematics.transformation import angular as _angular
 from cdpyr.schema.mechanics import inertia as _inertia
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class PulleySchema(Schema):
     geometry = fields.Nested(_geometry.GeometrySchema)

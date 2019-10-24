@@ -11,6 +11,9 @@ from cdpyr.motion.pattern import motionpattern as _motionpattern
 from cdpyr.robot.anchor import platformanchor as _platformanchor
 from cdpyr.typing import Matrix, Num, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Platform(object):
     _motion_pattern: '_motionpattern.Motionpattern'

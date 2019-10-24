@@ -2,6 +2,9 @@ from collections import UserList
 
 from magic_repr import make_repr
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class PoseList(UserList):
 

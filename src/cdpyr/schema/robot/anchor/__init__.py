@@ -11,6 +11,8 @@ from cdpyr.schema.robot.anchor.platformanchor import (
     PlatformAnchorSchema,
 )
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 __all__ = [
     'AnchorSchema',
     'AnchorListSchema',

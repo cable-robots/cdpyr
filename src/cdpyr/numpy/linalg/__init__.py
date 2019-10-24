@@ -4,6 +4,9 @@ import numpy as np_
 
 from cdpyr.typing import Matrix, Num, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def issquare(value: Union[Num, Vector, Matrix]):
     value = np_.asarray(value)

@@ -2,6 +2,9 @@ from typing import AnyStr, IO, Union
 
 from cdpyr.stream.parser.parser import Parser
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Stream(object):
     _parser: Parser

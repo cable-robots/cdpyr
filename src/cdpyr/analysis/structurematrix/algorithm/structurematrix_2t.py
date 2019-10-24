@@ -5,6 +5,9 @@ from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import platform as _platform
 from cdpyr.typing import Matrix
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def evaluate(calculator: '_structurematrix.Calculator',
              platform: '_platform.Platform',

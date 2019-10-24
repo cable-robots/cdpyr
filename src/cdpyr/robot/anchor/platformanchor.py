@@ -4,6 +4,9 @@ from magic_repr import make_repr
 
 from cdpyr.robot.anchor import anchor as _anchor
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class PlatformAnchor(_anchor.Anchor):
 

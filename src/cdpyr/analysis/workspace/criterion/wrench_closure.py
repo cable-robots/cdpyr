@@ -10,6 +10,8 @@ from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 __vars__ = [
     ('wrench', np_.zeros((6,))),
     ('forcedistribution',
@@ -48,12 +50,12 @@ def evaluate(criterion: '_criterion.Criterion',
 
     try:
         [criterion.forcedistribution.evaluate(
-                robot,
-                structmat,
-                wrench,
-                force_min=0,
-                force_max=np_.Inf
-            ) for wrench in criterion.wrench.T]
+            robot,
+            structmat,
+            wrench,
+            force_min=0,
+            force_max=np_.Inf
+        ) for wrench in criterion.wrench.T]
     except (ArithmeticError, ValueError):
         flag = False
     else:

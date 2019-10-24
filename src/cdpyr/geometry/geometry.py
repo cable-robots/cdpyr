@@ -4,6 +4,9 @@ from magic_repr import make_repr
 from cdpyr import validator as _validator
 from cdpyr.typing import Num
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Geometry(ABC):
     _mass: float

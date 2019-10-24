@@ -8,6 +8,9 @@ from cdpyr.analysis.forcedistribution import algorithm
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class ForceDistribution(Enum):
     CLOSED_FORM = [algorithm.closed_form]

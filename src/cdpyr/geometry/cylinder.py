@@ -6,6 +6,9 @@ from magic_repr import make_repr
 from cdpyr.geometry.geometry import Geometry
 from cdpyr.typing import Num
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Cylinder(Geometry):
     _diameter: float
