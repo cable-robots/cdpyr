@@ -22,6 +22,7 @@ class Platform(object):
     _inertia: '_inertia.Inertia'
     _center_of_gravity: 'np_.ndarray'
     _center_of_linkage: 'np_.ndarray'
+    _pose: '_pose.Pose'
 
     def __init__(self,
                  motionpattern: '_motionpattern.Motionpattern',
@@ -38,6 +39,7 @@ class Platform(object):
         self.center_of_linkage = center_of_linkage or [0.0, 0.0, 0.0]
         self.motionpattern = motionpattern
         self.inertia = inertia if inertia is not None else _inertia.Inertia()
+        self.pose = _pose.Pose()
 
     @property
     def anchors(self):
@@ -145,12 +147,28 @@ class Platform(object):
     def num_anchors(self):
         return len(self._anchors)
 
+    @property
+    def pose(self):
+        return self._pose
+
+    @pose.setter
+    def pose(self, pose: '_pose.Pose'):
+        self._pose = pose
+
+    @pose.deleter
+    def pose(self):
+        del self._pose
+
     def wrench(self,
-               pose: '_pose.Pose',
+               pose: '_pose.Pose' = None,
                gravity: Optional[Union[Num, Vector]] = None):
+        # get rotation matrix from the given or internal pose
+        dcm = (pose if pose is not None else self.pose).angular.dcm
+
+        # pass down to the motion pattern for handling
         return self.motionpattern.wrench(self.inertia.linear,
                                          self.motionpattern.gravity(gravity),
-                                         pose.angular.dcm,
+                                         dcm,
                                          self.center_of_gravity)
 
 
