@@ -4,6 +4,7 @@ from cdpyr.kinematics.transformation.linear import Linear
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+
 __all__ = [
     'Angular',
     'Linear',

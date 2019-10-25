@@ -4,6 +4,7 @@ from cdpyr.motion.pose.poselist import PoseList
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+
 __all__ = [
     'Pose',
     'PoseList',

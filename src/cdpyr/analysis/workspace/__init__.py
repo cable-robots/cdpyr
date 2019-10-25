@@ -5,6 +5,7 @@ from cdpyr.analysis.workspace.workspace import Workspace as Calculator
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+
 __all__ = [
     'Calculator',
     'Archetype',
