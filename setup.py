@@ -26,7 +26,7 @@ def read(*names, **kwargs):
 setup(
     name='cdpyr',
     version='1.0.dev0',
-    license='BSD-3-Clause',
+    license='EUPL v1.2',
     description='A Python 3 package for designing, analyzing, and simulating cable-driven parallel robots.',
     long_description='%s\n%s' % (
         re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
