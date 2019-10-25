@@ -60,6 +60,10 @@ class Motionpattern(Enum):
         return self.dof_translation == 3
 
     @property
+    def can_rotate(self):
+        return self.dof_rotation > 0
+
+    @property
     def is_point(self):
         return self.dof_rotation == 0
 
