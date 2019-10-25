@@ -17,11 +17,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Platform(object):
-    _motion_pattern: '_motionpattern.Motionpattern'
     _anchors: '_platformanchor.PlatformAnchorList'
-    _inertia: '_inertia.Inertia'
     _center_of_gravity: 'np_.ndarray'
     _center_of_linkage: 'np_.ndarray'
+    _inertia: '_inertia.Inertia'
+    _motion_pattern: '_motionpattern.Motionpattern'
+    _name: str
     _pose: '_pose.Pose'
 
     def __init__(self,
@@ -32,7 +33,8 @@ class Platform(object):
                  ]] = None,
                  inertia: Optional['_inertia.Inertia'] = None,
                  center_of_gravity: Optional[Vector] = None,
-                 center_of_linkage: Optional[Vector] = None
+                 center_of_linkage: Optional[Vector] = None,
+                 name: str = None
                  ):
         self.anchors = anchors or []
         self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]
@@ -40,6 +42,7 @@ class Platform(object):
         self.motionpattern = motionpattern
         self.inertia = inertia if inertia is not None else _inertia.Inertia()
         self.pose = _pose.Pose()
+        self.name = name or 'default'
 
     @property
     def anchors(self):
@@ -142,6 +145,18 @@ class Platform(object):
     @motionpattern.deleter
     def motionpattern(self):
         del self._motion_pattern
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name: str):
+        self._name = name
+
+    @name.deleter
+    def name(self):
+        del self._name
 
     @property
     def num_anchors(self):
