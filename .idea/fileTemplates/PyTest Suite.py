@@ -1,4 +1,5 @@
-#set( $CAMEL_NAME = ${StringUtils.removeAndHump(${NAME}, "_.")} )
+#set( $SUITE_NAME = ${StringUtils.sub(${NAME}, 'test_', '')} )
+#set( $CAMEL_NAME = ${StringUtils.removeAndHump(${SUITE_NAME})} )
 
 import pytest
 
@@ -8,7 +9,7 @@ __email__ = "${FULLEMAIL}"
 __copyright__ = "${COPYRIGHT}"
 __license__ = "${LICENSE}"
 
-class ${CAMEL_NAME}(object):
+class ${CAMEL_NAME}TestSuite(object):
     pass
 
 
