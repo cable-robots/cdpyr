@@ -1,3 +1,4 @@
+import itertools
 from collections import UserList
 from typing import Optional, Sequence, Tuple, Union
 
@@ -58,47 +59,16 @@ class Platform(object):
         del self._anchors
 
     @property
-    def bi(self):
-        return np_.vstack(self.anchors.position).T
-
-    @property
-    def num_anchors(self):
-        return len(self._anchors)
-
-    @property
-    def inertia(self):
-        return self._inertia
-
-    @inertia.setter
-    def inertia(self,
-                inertia: Union[
-                    Tuple[Vector, Matrix],
-                    '_inertia.Inertia'
-                ]):
-        if not isinstance(inertia, _inertia.Inertia):
-            inertia = _inertia.Inertia(inertia[0], inertia[1])
-
-        self._inertia = inertia
-
-    @inertia.deleter
-    def inertia(self):
-        del self._inertia
-
-    @property
-    def linear_inertia(self):
-        return self.inertia.linear
-
-    @linear_inertia.setter
-    def linear_inertia(self, inertia: Matrix):
-        self.inertia.linear = inertia
-
-    @property
     def angular_inertia(self):
         return self.inertia.angular
 
     @angular_inertia.setter
     def angular_inertia(self, inertia: Matrix):
         self.inertia.angular = inertia
+
+    @property
+    def bi(self):
+        return np_.vstack([anchor.position for anchor in self.anchors]).T
 
     @property
     def center_of_gravity(self):
@@ -133,6 +103,33 @@ class Platform(object):
         del self._center_of_linkage
 
     @property
+    def inertia(self):
+        return self._inertia
+
+    @inertia.setter
+    def inertia(self,
+                inertia: Union[
+                    Tuple[Vector, Matrix],
+                    '_inertia.Inertia'
+                ]):
+        if not isinstance(inertia, _inertia.Inertia):
+            inertia = _inertia.Inertia(inertia[0], inertia[1])
+
+        self._inertia = inertia
+
+    @inertia.deleter
+    def inertia(self):
+        del self._inertia
+
+    @property
+    def linear_inertia(self):
+        return self.inertia.linear
+
+    @linear_inertia.setter
+    def linear_inertia(self, inertia: Matrix):
+        self.inertia.linear = inertia
+
+    @property
     def motionpattern(self):
         return self._motion_pattern
 
@@ -144,6 +141,10 @@ class Platform(object):
     def motionpattern(self):
         del self._motion_pattern
 
+    @property
+    def num_anchors(self):
+        return len(self._anchors)
+
     def wrench(self,
                pose: '_pose.Pose',
                gravity: Optional[Union[Num, Vector]] = None):
@@ -154,11 +155,11 @@ class Platform(object):
 
 
 Platform.__repr__ = make_repr(
-    'motionpattern',
-    'inertia',
     'anchors',
     'center_of_gravity',
     'center_of_linkage',
+    'inertia',
+    'motionpattern',
 )
 
 
