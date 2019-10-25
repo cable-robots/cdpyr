@@ -648,27 +648,31 @@ def rand_vector_3d():
 
 @pytest.fixture
 def rand_pos_1t():
-    return np.pad(np.random.random(1), (0, 2))
+    return np.pad(2 * (np.random.random(1) - 0.5), (0, 2))
 
 
 @pytest.fixture
 def rand_pos_2t():
-    return np.pad(np.random.random(2), (0, 1))
+    return np.pad(2 * (np.random.random(2) - 0.5), (0, 1))
 
 
 @pytest.fixture
 def rand_pos_3t():
-    return np.pad(np.random.random(3), (0, 0))
+    return np.pad(2 * (np.random.random(3) - 0.5), (0, 0))
 
 
 @pytest.fixture
 def rand_rot_1r():
-    return Rotation.from_euler('z', np.random.rand()).as_dcm()
+    return Rotation.from_euler('z',
+                               (2 * np.pi * (np.random.rand() - 0.5))
+                               ).as_dcm()
 
 
 @pytest.fixture
 def rand_rot_2r():
-    return Rotation.from_euler('yx', np.random.random(2)).as_dcm()
+    return Rotation.from_euler('yx',
+                               (2 * np.pi * (np.random.random(2) - 0.5))
+                               ).as_dcm()
 
 
 @pytest.fixture
