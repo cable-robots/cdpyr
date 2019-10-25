@@ -178,14 +178,31 @@ Platform.__repr__ = make_repr(
     'center_of_linkage',
     'inertia',
     'motionpattern',
+    'pose',
 )
 
 
 class PlatformList(UserList):
 
     @property
-    def motionpattern(self):
-        return (platform.motionpattern for platform in self.data)
+    def all_combinations(self):
+        return itertools.combinations_with_replacement(self.data, 2)
+
+    @property
+    def anchors(self):
+        return (platform.anchors for platform in self.data)
+
+    @property
+    def angular_inertia(self):
+        return (platform.angular_inertia for platform in self.data)
+
+    @property
+    def center_of_gravity(self):
+        return (platform.center_of_gravity for platform in self.data)
+
+    @property
+    def center_of_linkage(self):
+        return (platform.center_of_linkage for platform in self.data)
 
     @property
     def inertia(self):
@@ -196,20 +213,8 @@ class PlatformList(UserList):
         return (platform.linear_inertia for platform in self.data)
 
     @property
-    def angular_inertia(self):
-        return (platform.angular_inertia for platform in self.data)
-
-    @property
-    def anchors(self):
-        return (platform.anchors for platform in self.data)
-
-    @property
-    def center_of_gravity(self):
-        return (platform.center_of_gravity for platform in self.data)
-
-    @property
-    def center_of_linkage(self):
-        return (platform.center_of_linkage for platform in self.data)
+    def motionpattern(self):
+        return (platform.motionpattern for platform in self.data)
 
 
 PlatformList.__repr__ = make_repr(
