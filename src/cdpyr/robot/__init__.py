@@ -5,6 +5,8 @@
 #  platforms center of gravity. Or we'll add this to the `robot.Robot` object
 #  as a method...
 
+from typing import Sequence, Union
+
 from cdpyr.robot.anchor import (
     Anchor,
     AnchorList,
@@ -27,8 +29,34 @@ from cdpyr.robot.platform import Platform, PlatformList
 from cdpyr.robot.pulley import Pulley
 from cdpyr.robot.robot import Robot
 
+RobotComponent = Union[
+    Cable,
+    Sequence[Cable],
+    CableList,
+    DriveTrain,
+    Drum,
+    Frame,
+    FrameAnchor,
+    Sequence[FrameAnchor],
+    FrameAnchorList,
+    Gearbox,
+    KinematicChain,
+    Sequence[KinematicChain],
+    KinematicChainList,
+    Motor,
+    Platform,
+    Sequence[Platform],
+    PlatformList,
+    PlatformAnchor,
+    Sequence[PlatformAnchor],
+    PlatformAnchorList,
+    Pulley,
+    Robot,
+]
+
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+
 __all__ = [
     'Anchor',
     'AnchorList',
@@ -49,4 +77,5 @@ __all__ = [
     'PlatformList',
     'Pulley',
     'Robot',
+    'RobotComponent',
 ]
