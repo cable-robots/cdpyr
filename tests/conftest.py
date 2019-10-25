@@ -346,28 +346,28 @@ def robot_2r3t():
                 motionpattern=cdpyr.motion.Motionpattern.MP_2R3T,
                 anchors=[
                     cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.1],
+                        position=[-0.01, 0.01, 0.1],
                     ),
                     cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.1],
+                        position=[0.01, 0.01, 0.1],
                     ),
                     cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.1],
+                        position=[0.01, -0.01, 0.1],
                     ),
                     cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.1],
+                        position=[-0.01, -0.01, 0.1],
                     ),
                     cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., -0.1],
+                        position=[-0.01, 0.01, -0.1],
                     ),
                     cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., -0.1],
+                        position=[0.01, 0.01, -0.1],
                     ),
                     cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., -0.1],
+                        position=[0.01, -0.01, -0.1],
                     ),
                     cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., -0.1],
+                        position=[-0.01, -0.01, -0.1],
                     ),
                 ]
             )
