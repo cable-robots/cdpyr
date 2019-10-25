@@ -49,7 +49,7 @@ class Frame(object):
 
     @property
     def ai(self):
-        return np_.vstack(self.anchors.position).T
+        return np_.vstack([anchor.position for anchor in self.anchors]).T
 
 
 Frame.__repr__ = make_repr(
