@@ -60,7 +60,7 @@ def plot_workspace(vertices: np.ndarray, faces: np.ndarray):
     window_interactor.Start()
 
 
-class GridWorkspaceTestSuite(object):
+class HullWorkspaceTestSuite(object):
 
     def test_3r3t_ik_standard_translation_cable_length(self,
                                                        robot_3r3t:
