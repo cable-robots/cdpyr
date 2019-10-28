@@ -1,10 +1,11 @@
-from typing import Callable
+from typing import Callable, Union
 
 import numpy as np_
 from enum import Enum
 
 from cdpyr import validator as _validator
 from cdpyr.analysis.forcedistribution import algorithm
+from cdpyr.analysis.structurematrix import result as _structurematrix
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
 
@@ -12,7 +13,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class ForceDistribution(Enum):
+class Calculator(Enum):
     CLOSED_FORM = [algorithm.closed_form]
     CLOSED_FORM_IMPROVED = [algorithm.closed_form_improved]
     DYKSTRA = [algorithm.dykstra]
@@ -23,9 +24,14 @@ class ForceDistribution(Enum):
 
     def evaluate(self,
                  robot: '_robot.Robot',
-                 structurematrix: Matrix,
+                 structurematrix: Union['_structurematrix.Result', Matrix],
                  wrench: Vector,
                  **kwargs):
+        # if a structure matrix result was passed, retrieve the matrix from it
+        structurematrix = structurematrix.matrix \
+            if isinstance(structurematrix, _structurematrix.Result) \
+            else structurematrix
+
         # ensure structure matrix is landscape rectangular
         _validator.linalg.landspace(structurematrix, 'structurematrix')
 
@@ -69,3 +75,12 @@ class ForceDistribution(Enum):
                                                  'force_max')
 
         return force_min, force_max
+
+
+class Result(object):
+    pass
+
+__all__ = [
+    'Calculator',
+    'Result',
+]

@@ -1,35 +1,29 @@
 from typing import Optional, Sequence, Union
 
+import numpy as np_
 from magic_repr import make_repr
+from scipy.linalg import null_space
 
-from cdpyr.analysis.structurematrix.algorithm import (
-    structurematrix_1r2t,
-    structurematrix_1t,
-    structurematrix_2r3t,
-    structurematrix_2t,
-    structurematrix_3r3t,
-    structurematrix_3t,
-)
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import motionpattern as _motionpattern
-from cdpyr.robot import robot as _robot
+from cdpyr.robot import platform as _platform, robot as _robot
 from cdpyr.typing import Matrix
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class StructureMatrix(object):
+class Calculator(object):
     _MAPPING: dict
 
     def __init__(self):
         self._MAPPING = {
-            _motionpattern.Motionpattern.MP_1T.name:   structurematrix_1t,
-            _motionpattern.Motionpattern.MP_2T.name:   structurematrix_2t,
-            _motionpattern.Motionpattern.MP_3T.name:   structurematrix_3t,
-            _motionpattern.Motionpattern.MP_1R2T.name: structurematrix_1r2t,
-            _motionpattern.Motionpattern.MP_2R3T.name: structurematrix_2r3t,
-            _motionpattern.Motionpattern.MP_3R3T.name: structurematrix_3r3t,
+            _motionpattern.Motionpattern.MP_1T.name:   self._mp_1t,
+            _motionpattern.Motionpattern.MP_2T.name:   self._mp_2t,
+            _motionpattern.Motionpattern.MP_3T.name:   self._mp_3t,
+            _motionpattern.Motionpattern.MP_1R2T.name: self._mp_1r2t,
+            _motionpattern.Motionpattern.MP_2R3T.name: self._mp_2r3t,
+            _motionpattern.Motionpattern.MP_3R3T.name: self._mp_3r3t,
         }
 
     def evaluate(self,
@@ -37,7 +31,7 @@ class StructureMatrix(object):
                  uis: Union[Matrix, Sequence[Matrix]],
                  pose: Optional[
                      Union['_pose.Pose', Sequence['_pose.Pose']]] = None,
-                 ):
+                 ) -> 'Result':
         if robot.num_platforms > 1:
             raise NotImplementedError(
                 'Currently, the structure matrix can only be computed for '
@@ -54,15 +48,118 @@ class StructureMatrix(object):
         #  matrix for multi-platform CDPRs
 
         # calculate the platforms structure matrix
-        return self._MAPPING[robot.platforms[0].motionpattern.name].evaluate(
-            self,
-            robot.platforms[0],
-            uis,
-            pose)
+        return Result(pose, self._MAPPING[
+            robot.platforms[0].motionpattern.name](pose,
+                                                   robot.platforms[0],
+                                                   uis)
+                      )
+
+    def _mp_1t(self,
+               pose: '_pose.Pose',
+               platform: '_platform.Platform',
+               uis: Matrix):
+        return uis[0:1, :]
+
+    def _mp_2t(self,
+               pose: '_pose.Pose',
+               platform: '_platform.Platform',
+               uis: Matrix):
+        return uis[0:2, :]
+
+    def _mp_3t(self,
+               pose: '_pose.Pose',
+               platform: '_platform.Platform',
+               uis: Matrix):
+        return uis[0:3, :]
+
+    def _mp_1r2t(self,
+                 pose: '_pose.Pose',
+                 platform: '_platform.Platform',
+                 uis: Matrix):
+        return np_.vstack(
+            (
+                uis,
+                np_.cross(
+                    pose.angular.dcm.dot(
+                        platform.bi
+                    )[0:platform.motionpattern.dof_translation, :],
+                    uis,
+                    axis=0
+                )
+            )
+        )
+
+    def _mp_2r3t(self,
+                 pose: '_pose.Pose',
+                 platform: '_platform.Platform',
+                 uis: Matrix):
+        return np_.vstack(
+            (
+                uis,
+                np_.cross(
+                    pose.angular.dcm.dot(
+                        platform.bi
+                    ),
+                    uis,
+                    axis=0
+                )[0:platform.motionpattern.dof_rotation, :]
+            )
+        )
+
+    def _mp_3r3t(self,
+                 pose: '_pose.Pose',
+                 platform: '_platform.Platform',
+                 uis: Matrix):
+        return np_.vstack(
+            (
+                uis,
+                np_.cross(
+                    pose.angular.dcm.dot(
+                        platform.bi
+                    ),
+                    uis,
+                    axis=0
+                )
+            )
+        )
 
 
-StructureMatrix.__repr__ = make_repr()
+Calculator.__repr__ = make_repr()
+
+
+class Result(object):
+    _matrix: np_.ndarray
+    _nullspace: np_.ndarray
+    _pose: '_pose.Pose'
+
+    def __init__(self, pose: '_pose.Pose', matrix: Matrix):
+        self.pose = pose
+        self._matrix = matrix
+        self._nullspace = None
+
+    @property
+    def matrix(self):
+        return self._matrix
+
+    @property
+    def nullspace(self):
+        if self._nullspace is None:
+            self._nullspace = null_space(self.matrix)
+
+        return self._nullspace
+
+    @property
+    def is_singular(self):
+        return np_.linalg.matrix_rank(self.matrix) >= self.matrix.shape[0]
+
+
+Result.__repr__ = make_repr(
+    'matrix',
+    'nullspace',
+    'pose',
+)
 
 __all__ = [
-    'StructureMatrix'
+    'Calculator',
+    'Result',
 ]
