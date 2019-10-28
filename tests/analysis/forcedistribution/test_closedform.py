@@ -28,6 +28,20 @@ class ClosedFormForceDistributionTestSuite(object):
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_1t,
+            structmat.matrix,
+            wrench,
+            force_min=1,
+            force_max=10,
+        )
+
+        # assertion
+        assert force_distribution.ndim == 1
+        assert force_distribution.shape == (robot_1t.num_cables,)
+        assert (force_distribution > 0).all()
+
+        # and calculate force distribution
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
+            robot_1t,
             structmat,
             wrench,
             force_min=1,
@@ -57,6 +71,20 @@ class ClosedFormForceDistributionTestSuite(object):
         wrench = np.zeros(robot_2t.platforms[0].motionpattern.dof)
         # add gravity at last translational degree of freedom
         wrench[1] = -9.81 * 1
+
+        # and calculate force distribution
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
+            robot_2t,
+            structmat.matrix,
+            wrench,
+            force_min=1,
+            force_max=10,
+        )
+
+        # assertion
+        assert force_distribution.ndim == 1
+        assert force_distribution.shape == (robot_2t.num_cables,)
+        assert (force_distribution > 0).all()
 
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
@@ -94,6 +122,20 @@ class ClosedFormForceDistributionTestSuite(object):
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_3t,
+            structmat.matrix,
+            wrench,
+            force_min=1,
+            force_max=10,
+        )
+
+        # assertion
+        assert force_distribution.ndim == 1
+        assert force_distribution.shape == (robot_3t.num_cables,)
+        assert (force_distribution > 0).all()
+
+        # and calculate force distribution
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
+            robot_3t,
             structmat,
             wrench,
             force_min=1,
@@ -123,6 +165,20 @@ class ClosedFormForceDistributionTestSuite(object):
         wrench = np.zeros(robot_1r2t.platforms[0].motionpattern.dof)
         # add gravity at last translational degree of freedom
         wrench[1] = -9.81 * 1
+
+        # and calculate force distribution
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
+            robot_1r2t,
+            structmat.matrix,
+            wrench,
+            force_min=1,
+            force_max=10,
+        )
+
+        # assertion
+        assert force_distribution.ndim == 1
+        assert force_distribution.shape == (robot_1r2t.num_cables,)
+        assert (force_distribution > 0).all()
 
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
@@ -160,6 +216,20 @@ class ClosedFormForceDistributionTestSuite(object):
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_2r3t,
+            structmat.matrix,
+            wrench,
+            force_min=1,
+            force_max=10,
+        )
+
+        # assertion
+        assert force_distribution.ndim == 1
+        assert force_distribution.shape == (robot_2r3t.num_cables,)
+        assert (force_distribution > 0).all()
+
+        # and calculate force distribution
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
+            robot_2r3t,
             structmat,
             wrench,
             force_min=1,
@@ -189,6 +259,20 @@ class ClosedFormForceDistributionTestSuite(object):
         wrench = np.zeros(robot_3r3t.platforms[0].motionpattern.dof)
         # add gravity at last translational degree of freedom
         wrench[2] = -9.81 * 1
+
+        # and calculate force distribution
+        force_distribution: cdpyr.typing.Vector = fdist.evaluate(
+            robot_3r3t,
+            structmat.matrix,
+            wrench,
+            force_min=1,
+            force_max=10,
+        )
+
+        # assertion
+        assert force_distribution.ndim == 1
+        assert force_distribution.shape == (robot_3r3t.num_cables,)
+        assert (force_distribution > 0).all()
 
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(

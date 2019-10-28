@@ -28,7 +28,7 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_1t,
-            structmat,
+            structmat.matrix,
             wrench,
             force_min=1,
             force_max=10,
@@ -61,7 +61,7 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_2t,
-            structmat,
+            structmat.matrix,
             wrench,
             force_min=1,
             force_max=10,
@@ -94,7 +94,7 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_3t,
-            structmat,
+            structmat.matrix,
             wrench,
             force_min=1,
             force_max=10,
@@ -127,7 +127,7 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_1r2t,
-            structmat,
+            structmat.matrix,
             wrench,
             force_min=1,
             force_max=10,
@@ -160,7 +160,7 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_2r3t,
-            structmat,
+            structmat.matrix,
             wrench,
             force_min=1,
             force_max=10,
@@ -193,7 +193,7 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         force_distribution: cdpyr.typing.Vector = fdist.evaluate(
             robot_3r3t,
-            structmat,
+            structmat.matrix,
             wrench,
             force_min=1,
             force_max=10,
