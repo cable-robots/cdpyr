@@ -17,13 +17,13 @@ __vars__ = [
     ('force_min', 1),
     ('force_max', 10),
     ('forcedistribution',
-     _forcedistribution.ForceDistribution.CLOSED_FORM_IMPROVED),
+     _forcedistribution.Calculator.CLOSED_FORM_IMPROVED),
 ]
 
 
 def setup(criterion: '_criterion.Criterion',
           robot: '_robot.Robot'):
-    criterion.structurematrix = _structurematrix.StructureMatrix()
+    criterion.structurematrix = _structurematrix.Calculator()
     wrench = np_.asarray(criterion.wrench
                          if isinstance(criterion.wrench, Sequence)
                          else [criterion.wrench])

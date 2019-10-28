@@ -14,7 +14,7 @@ __vars__ = [
 
 def setup(criterion: '_criterion.Criterion',
           robot: '_robot.Robot'):
-    criterion.structurematrix = _structurematrix.StructureMatrix()
+    criterion.structurematrix = _structurematrix.Calculator()
 
 
 def teardown(criterion: '_criterion.Criterion',

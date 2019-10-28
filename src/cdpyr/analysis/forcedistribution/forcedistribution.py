@@ -5,7 +5,7 @@ from enum import Enum
 
 from cdpyr import validator as _validator
 from cdpyr.analysis.forcedistribution import algorithm
-from cdpyr.analysis.structurematrix import result as _structurematrix
+from cdpyr.analysis.structurematrix import structurematrix as _structurematrix
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
 
