@@ -180,16 +180,20 @@ class Robot(object):
         del self._chains
 
     @property
+    def num_cables(self):
+        return len(self.cables)
+
+    @property
+    def num_dof(self):
+        return sum(platform.dof for platform in self.platforms)
+
+    @property
     def num_platforms(self):
         return len(self.platforms)
 
     @property
     def num_kinematic_chains(self):
         return len(self.kinematic_chains)
-
-    @property
-    def num_cables(self):
-        return len(self.cables)
 
 
 Robot.__repr__ = make_repr(
