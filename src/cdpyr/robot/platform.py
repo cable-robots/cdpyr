@@ -108,6 +108,18 @@ class Platform(object):
         del self._center_of_linkage
 
     @property
+    def dof(self):
+        return self.motionpattern.dof
+
+    @property
+    def dof_rotation(self):
+        return self.motionpattern.dof_rotation
+
+    @property
+    def dof_translation(self):
+        return self.motionpattern.dof_translation
+
+    @property
     def inertia(self):
         return self._inertia
 
