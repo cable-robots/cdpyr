@@ -11,7 +11,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Motionpattern(Enum):
+class MotionPattern(Enum):
     MP_1T = (1, 0, '1T')
     MP_2T = (2, 0, '2T')
     MP_3T = (3, 0, '3T')
@@ -136,12 +136,12 @@ class Motionpattern(Enum):
             return linear_inertia.dot(gravity)
 
 
-Motionpattern.__repr__ = make_repr(
+MotionPattern.__repr__ = make_repr(
     'human',
     'dof_translation',
     'dof_rotation',
 )
 
 __all__ = [
-    'Motionpattern',
+    'MotionPattern',
 ]

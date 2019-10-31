@@ -5,7 +5,7 @@ from magic_repr import make_repr
 from scipy.linalg import null_space
 
 from cdpyr.motion import pose as _pose
-from cdpyr.motion.pattern import motionpattern as _motionpattern
+from cdpyr.motion.pattern import motion_pattern as _motion_pattern
 from cdpyr.robot import platform as _platform, robot as _robot
 from cdpyr.typing import Matrix
 
@@ -18,12 +18,12 @@ class Calculator(object):
 
     def __init__(self):
         self._MAPPING = {
-            _motionpattern.Motionpattern.MP_1T.name:   self._mp_1t,
-            _motionpattern.Motionpattern.MP_2T.name:   self._mp_2t,
-            _motionpattern.Motionpattern.MP_3T.name:   self._mp_3t,
-            _motionpattern.Motionpattern.MP_1R2T.name: self._mp_1r2t,
-            _motionpattern.Motionpattern.MP_2R3T.name: self._mp_2r3t,
-            _motionpattern.Motionpattern.MP_3R3T.name: self._mp_3r3t,
+            _motion_pattern.MotionPattern.MP_1T.name:   self._mp_1t,
+            _motion_pattern.MotionPattern.MP_2T.name:   self._mp_2t,
+            _motion_pattern.MotionPattern.MP_3T.name:   self._mp_3t,
+            _motion_pattern.MotionPattern.MP_1R2T.name: self._mp_1r2t,
+            _motion_pattern.MotionPattern.MP_2R3T.name: self._mp_2r3t,
+            _motion_pattern.MotionPattern.MP_3R3T.name: self._mp_3r3t,
         }
 
     def evaluate(self,

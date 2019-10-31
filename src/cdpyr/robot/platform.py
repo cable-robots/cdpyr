@@ -8,7 +8,7 @@ from magic_repr import make_repr
 from cdpyr import validator as _validator
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.motion import pose as _pose
-from cdpyr.motion.pattern import motionpattern as _motionpattern
+from cdpyr.motion.pattern import motion_pattern as _motion_pattern
 from cdpyr.robot.anchor import platformanchor as _platformanchor
 from cdpyr.typing import Matrix, Num, Vector
 
@@ -21,12 +21,12 @@ class Platform(object):
     _center_of_gravity: 'np_.ndarray'
     _center_of_linkage: 'np_.ndarray'
     _inertia: '_inertia.Inertia'
-    _motion_pattern: '_motionpattern.Motionpattern'
+    _motion_pattern: '_motion_pattern.MotionPattern'
     _name: str
     _pose: '_pose.Pose'
 
     def __init__(self,
-                 motionpattern: '_motionpattern.Motionpattern',
+                 motionpattern: '_motion_pattern.MotionPattern',
                  anchors: Optional[Union[
                      '_platformanchor.PlatformAnchorList',
                      Sequence['_platformanchor.PlatformAnchor']
@@ -139,7 +139,7 @@ class Platform(object):
         return self._motion_pattern
 
     @motionpattern.setter
-    def motionpattern(self, motionpattern: '_motionpattern.Motionpattern'):
+    def motionpattern(self, motionpattern: '_motion_pattern.MotionPattern'):
         self._motion_pattern = motionpattern
 
     @motionpattern.deleter

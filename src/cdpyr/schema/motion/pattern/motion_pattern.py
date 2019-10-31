@@ -1,16 +1,16 @@
 from marshmallow import Schema, fields, post_load
 
-from cdpyr.motion import pattern as _pattern
+from cdpyr.motion.pattern import motion_pattern as _motion_pattern
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class MotionpatternSchema(Schema):
+class MotionPatternSchema(Schema):
     translation = fields.Int()
     rotation = fields.Int()
 
-    __model__ = _pattern.Motionpattern
+    __model__ = _motion_pattern.MotionPattern
 
     @post_load
     def make_object(self, data, **kwargs):
@@ -18,5 +18,5 @@ class MotionpatternSchema(Schema):
 
 
 __all__ = [
-    'MotionpatternSchema',
+    'MotionPatternSchema',
 ]
