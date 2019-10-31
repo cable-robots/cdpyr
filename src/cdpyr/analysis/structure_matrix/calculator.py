@@ -1,0 +1,83 @@
+from cdpyr.analysis.kinematics import algorithm as _kinematics
+from cdpyr.analysis.structure_matrix import (
+    motion_pattern_1r2t as _structure_matrix_1r2t,
+    motion_pattern_1t as _structure_matrix_1t,
+    motion_pattern_2r3t as _structure_matrix_2r3t,
+    motion_pattern_2t as _structure_matrix_2t,
+    motion_pattern_3r3t as _structure_matrix_3r3t,
+    motion_pattern_3t as _structure_matrix_3t,
+    result as _result,
+)
+from cdpyr.motion.pattern import motion_pattern as _motion_pattern
+from cdpyr.motion.pose import pose as _pose
+from cdpyr.robot import robot as _robot
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__copyright__ = "Copyright 2019, Philipp Tempel"
+__license__ = "EUPL v1.2"
+
+
+class Calculator(object):
+    _kinematics: '_kinematics.Algorithm'
+
+    def __init__(self,
+                 kinematics: '_kinematics.Algorithm',
+                 resolver: dict = None):
+        self.kinematics = kinematics
+        if resolver is None:
+            resolver = {
+                _motion_pattern.MotionPattern.MP_1T:
+                    _structure_matrix_1t.MotionPattern1T(),
+                _motion_pattern.MotionPattern.MP_2T:
+                    _structure_matrix_2t.MotionPattern2T(),
+                _motion_pattern.MotionPattern.MP_3T:
+                    _structure_matrix_3t.MotionPattern3T(),
+                _motion_pattern.MotionPattern.MP_1R2T:
+                    _structure_matrix_1r2t.MotionPattern1R2T(),
+                _motion_pattern.MotionPattern.MP_2R3T:
+                    _structure_matrix_2r3t.MotionPattern2R3T(),
+                _motion_pattern.MotionPattern.MP_3R3T:
+                    _structure_matrix_3r3t.MotionPattern3R3T(),
+            }
+
+        self.resolver = resolver
+
+    @property
+    def kinematics(self):
+        return self._kinematics
+
+    @kinematics.setter
+    def kinematics(self, kinematics: '_kinematics.Algorithm'):
+        self._kinematics = kinematics
+
+    @kinematics.deleter
+    def kinematics(self):
+        del self._kinematics
+
+    def evaluate(self,
+                 robot: '_robot.Robot',
+                 pose: '_pose.Pose'):
+        if robot.num_platforms > 1:
+            raise NotImplementedError(
+                'Structure matrices are currently not implemented for robots '
+                'with more than one platform.'
+            )
+
+        # solve inverse kinematics
+        kinematics = self.kinematics.backward(robot, pose)
+
+        # get first platform
+        platform = robot.platforms[0]
+
+        return _result.Result(**self.resolver[platform.motionpattern]
+                              .evaluate(platform,
+                                        pose,
+                                        kinematics.directions
+                                        )
+                              )
+
+
+__all__ = [
+    'Calculator',
+]
