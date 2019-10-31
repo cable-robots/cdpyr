@@ -9,7 +9,7 @@ from cdpyr import validator as _validator
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import motion_pattern as _motion_pattern
-from cdpyr.robot.anchor import platformanchor as _platformanchor
+from cdpyr.robot.anchor import platform_anchor as _platform_anchor
 from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
@@ -17,7 +17,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Platform(object):
-    _anchors: '_platformanchor.PlatformAnchorList'
+    _anchors: '_platform_anchor.PlatformAnchorList'
     _center_of_gravity: 'np_.ndarray'
     _center_of_linkage: 'np_.ndarray'
     _inertia: '_inertia.Inertia'
@@ -28,8 +28,8 @@ class Platform(object):
     def __init__(self,
                  motionpattern: '_motion_pattern.MotionPattern',
                  anchors: Optional[Union[
-                     '_platformanchor.PlatformAnchorList',
-                     Sequence['_platformanchor.PlatformAnchor']
+                     '_platform_anchor.PlatformAnchorList',
+                     Sequence['_platform_anchor.PlatformAnchor']
                  ]] = None,
                  inertia: Optional['_inertia.Inertia'] = None,
                  center_of_gravity: Optional[Vector] = None,
@@ -51,11 +51,11 @@ class Platform(object):
     @anchors.setter
     def anchors(self,
                 anchors: Union[
-                    '_platformanchor.PlatformAnchorList',
-                    Sequence['_platformanchor.PlatformAnchor']
+                    '_platform_anchor.PlatformAnchorList',
+                    Sequence['_platform_anchor.PlatformAnchor']
                 ]):
-        if not isinstance(anchors, _platformanchor.PlatformAnchorList):
-            anchors = _platformanchor.PlatformAnchorList(anchors)
+        if not isinstance(anchors, _platform_anchor.PlatformAnchorList):
+            anchors = _platform_anchor.PlatformAnchorList(anchors)
 
         self._anchors = anchors
 

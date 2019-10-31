@@ -9,8 +9,8 @@ from cdpyr.robot import (
     platform as _platform,
 )
 from cdpyr.robot.anchor import (
-    frameanchor as _frameanchor,
-    platformanchor as _platformanchor,
+    frame_anchor as _frame_anchor,
+    platform_anchor as _platform_anchor,
 )
 
 __author__ = "Philipp Tempel"
@@ -148,14 +148,14 @@ class Robot(object):
                 elif isinstance(v, List) or isinstance(v, Tuple):
                     frame_anchor, platform, platform_anchor, cable = v
 
-                if not isinstance(frame_anchor, _frameanchor.FrameAnchor):
+                if not isinstance(frame_anchor, _frame_anchor.FrameAnchor):
                     frame_anchor = self.frame.anchors[frame_anchor]
 
                 if not isinstance(platform, _platform.Platform):
                     platform = self.platforms[platform]
 
                 if not isinstance(platform_anchor,
-                                  _platformanchor.PlatformAnchor):
+                                  _platform_anchor.PlatformAnchor):
                     platform_anchor = self.platforms[
                         self.platforms.index(platform)
                     ].anchors[platform_anchor]

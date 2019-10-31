@@ -31,5 +31,4 @@ class PlatformAnchorList(_anchor.AnchorList):
 __all__ = [
     'PlatformAnchor',
     'PlatformAnchorList',
-    # 'PlatformAnchorSchema',
 ]

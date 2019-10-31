@@ -3,14 +3,14 @@ from marshmallow import Schema, fields, post_load
 from cdpyr.robot import platform as _platform
 from cdpyr.schema.motion import pose as _pose
 from cdpyr.schema.motion.pattern import motion_pattern as _motion_pattern
-from cdpyr.schema.robot.anchor import platformanchor as _platformanchor
+from cdpyr.schema.robot.anchor import platformanchor as _platform_anchor
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class PlatformSchema(Schema):
-    anchors = fields.List(fields.Nested(_platformanchor.PlatformAnchorSchema))
+    anchors = fields.List(fields.Nested(_platform_anchor.PlatformAnchorSchema))
     pose = fields.Nested(_pose.PoseSchema)
     motionpattern = fields.Nested(_motion_pattern.MotionPatternSchema)
 

@@ -5,8 +5,8 @@ from magic_repr import make_repr
 
 from cdpyr.robot import (cable as _cable, platform as _platform)
 from cdpyr.robot.anchor import (
-    frameanchor as _frameanchor,
-    platformanchor as _platformanchor,
+    frame_anchor as _frame_anchor,
+    platform_anchor as _platform_anchor,
 )
 from cdpyr.typing import Num
 
@@ -17,13 +17,13 @@ __email__ = "p.tempel@tudelft.nl"
 class KinematicChain(object):
     _cable: '_cable.Cable'
     _platform: '_platform.Platform'
-    _frame_anchor: '_frameanchor.FrameAnchor'
-    _platform_anchor: '_platformanchor.PlatformAnchor'
+    _frame_anchor: '_frame_anchor.FrameAnchor'
+    _platform_anchor: '_platform_anchor.PlatformAnchor'
 
     def __init__(self,
-                 frame_anchor: Union['_frameanchor.FrameAnchor', Num],
+                 frame_anchor: Union['_frame_anchor.FrameAnchor', Num],
                  platform: Union['_platform.Platform', Num],
-                 platform_anchor: Union['_platformanchor.PlatformAnchor', Num],
+                 platform_anchor: Union['_platform_anchor.PlatformAnchor', Num],
                  cable: Union['_cable.Cable', Num]
                  ):
         self.cable = cable
@@ -60,7 +60,7 @@ class KinematicChain(object):
         return self._frame_anchor
 
     @frame_anchor.setter
-    def frame_anchor(self, anchor: Union['_frameanchor.FrameAnchor', Num]):
+    def frame_anchor(self, anchor: Union['_frame_anchor.FrameAnchor', Num]):
         self._frame_anchor = anchor
 
     @frame_anchor.deleter
@@ -118,7 +118,7 @@ class KinematicChainList(UserList):
     def cable(self):
         return (kinematicchain.cable for kinematicchain in self.data)
 
-    def with_frame_anchor(self, anchor: '_frameanchor.FrameAnchor'):
+    def with_frame_anchor(self, anchor: '_frame_anchor.FrameAnchor'):
         anchor = anchor if isinstance(anchor, Sequence) else [anchor]
 
         return self.__class__(d for d in self.data if d.frame_anchor in anchor)

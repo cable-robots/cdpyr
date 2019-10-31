@@ -3,19 +3,19 @@ from typing import Optional, Sequence, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.robot.anchor import frameanchor as _frameanchor
+from cdpyr.robot.anchor import frame_anchor as _frame_anchor
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class Frame(object):
-    _anchors: '_frameanchor.FrameAnchorList'
+    _anchors: '_frame_anchor.FrameAnchorList'
 
     def __init__(self,
                  anchors: Optional[
-                     Union['_frameanchor.FrameAnchorList', Sequence[
-                         '_frameanchor.FrameAnchor']]] = None
+                     Union['_frame_anchor.FrameAnchorList', Sequence[
+                         '_frame_anchor.FrameAnchor']]] = None
                  ):
         """ A general cable robot frame object.
 
@@ -33,9 +33,9 @@ class Frame(object):
 
     @anchors.setter
     def anchors(self, anchors: Union[
-        '_frameanchor.FrameAnchorList', Sequence['_frameanchor.FrameAnchor']]):
-        if not isinstance(anchors, _frameanchor.FrameAnchorList):
-            anchors = _frameanchor.FrameAnchorList(anchors)
+        '_frame_anchor.FrameAnchorList', Sequence['_frame_anchor.FrameAnchor']]):
+        if not isinstance(anchors, _frame_anchor.FrameAnchorList):
+            anchors = _frame_anchor.FrameAnchorList(anchors)
 
         self._anchors = anchors
 
