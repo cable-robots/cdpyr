@@ -1,9 +1,7 @@
 from cdpyr.analysis import (
-    forcedistribution,
+    force_distribution,
     kinematics,
-    kinetostatics,
-    stiffness,
-    structurematrix,
+    structure_matrix,
     workspace,
 )
 
@@ -11,10 +9,8 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 __all__ = [
-    'forcedistribution',
+    'force_distribution',
     'kinematics',
-    'kinetostatics',
-    'stiffness',
-    'structurematrix',
+    'structure_matrix',
     'workspace',
 ]
