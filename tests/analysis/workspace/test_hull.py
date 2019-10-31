@@ -1,26 +1,27 @@
+import sys
+
 import numpy as np
 import pytest
 import vtk
 
-import cdpyr
+from cdpyr.analysis import force_distribution, workspace
+from cdpyr.analysis.kinematics.algorithm import Algorithm as Kinematics
+from cdpyr.robot import Robot
 
 
-def plot_workspace(vertices: np.ndarray, faces: np.ndarray):
+def plot_workspace(ws: workspace.HULL_RESULT, title):
     return
 
     colors = vtk.vtkNamedColors()
 
-    # create polyhedron (cube)
-    # The point Ids are: [0, 1, 2, 3, 4, 5, 6, 7]
-
     points = vtk.vtkPoints()
-    for vertex in vertices:
+    for vertex in ws.vertices:
         points.InsertNextPoint(*vertex)
 
     # These are the point ids corresponding to each face.
     faceId = vtk.vtkIdList()
-    faceId.InsertNextId(faces.shape[0])  # Six faces make up the cell.
-    for face in faces:
+    faceId.InsertNextId(ws.faces.shape[0])  # Six faces make up the cell.
+    for face in ws.faces:
         faceId.InsertNextId(len(face))  # The number of points in the face.
         [faceId.InsertNextId(i) for i in face]
 
@@ -32,12 +33,6 @@ def plot_workspace(vertices: np.ndarray, faces: np.ndarray):
     mapper = vtk.vtkDataSetMapper()
     mapper.SetInputData(ugrid)
 
-    writer = vtk.vtkXMLUnstructuredGridWriter()
-    writer.SetInputData(ugrid)
-    writer.SetFileName('polyhedron.vtu')
-    writer.SetDataModeToAscii()
-    writer.Update()
-
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetColor(colors.GetColor3d('Silver'))
@@ -46,7 +41,7 @@ def plot_workspace(vertices: np.ndarray, faces: np.ndarray):
     renderer = vtk.vtkRenderer()
     window = vtk.vtkRenderWindow()
     window.SetSize(1600, 1000)
-    window.SetWindowName('Polyhedron')
+    window.SetWindowName(title)
     window.AddRenderer(renderer)
     window_interactor = vtk.vtkRenderWindowInteractor()
     window_interactor.SetRenderWindow(window)
@@ -62,145 +57,280 @@ def plot_workspace(vertices: np.ndarray, faces: np.ndarray):
 
 class HullWorkspaceTestSuite(object):
 
+    # def test_1t_ik_standard_translation_cable_length(self,
+    #                                                  robot_1t: Robot,
+    #                                                  ik_standard: Kinematics):
+    #     # workspace archetype we want to calculate
+    #     archetype = workspace.archetype.TRANSLATION(
+    #         dcm=np.eye(3)
+    #     )
+    #
+    #     # criterion and its parameters we want to evaluate
+    #     criterion = workspace.criterion.CABLE_LENGTH(
+    #         kinematics=ik_standard,
+    #         limits=[0.5, 1.5]
+    #     )
+    #
+    #     # method we want to use to calculate the workspace
+    #     method = workspace.HULL(
+    #         ik_standard,
+    #         archetype,
+    #         criterion,
+    #         # place center of hull at the world origin
+    #         center=0.0
+    #     )
+    #
+    #     # evaluate the workspace over the grid
+    #     ws = method.evaluate(robot_1t)
+    #
+    #     plot_workspace(ws, sys._getframe().f_code.co_name)
+    #
+    #     assert False
+
+    # def test_1t_ik_standard_translation_singularities(self,
+    #                                                   robot_1t: Robot,
+    #                                                   ik_standard:
+    #                                                   Kinematics):
+    #     # workspace archetype we want to calculate
+    #     archetype = workspace.archetype.TRANSLATION(
+    #         dcm=np.eye(3)
+    #     )
+    #
+    #     # criteria and their parameters we want to evaluate
+    #     criterion = workspace.criterion.SINGULARITIES(
+    #         kinematics=ik_standard
+    #     )
+    #
+    #     # method we want to use to calculate the workspace
+    #     method = workspace.HULL(
+    #         ik_standard,
+    #         archetype,
+    #         criterion,
+    #         # place center of hull at the world origin
+    #         center=0.0
+    #     )
+    #
+    #     # evaluate the workspace over the grid
+    #     ws = method.evaluate(robot_1t)
+    #
+    #     plot_workspace(ws, sys._getframe().f_code.co_name)
+    #
+    #     assert False
+
+    # def test_1t_ik_standard_translation_wrench_closure(self,
+    #                                                    robot_1t: Robot,
+    #                                                    ik_standard:
+    #                                                    Kinematics):
+    #     # workspace archetype we want to calculate
+    #     archetype = workspace.archetype.TRANSLATION(
+    #         dcm=np.eye(3)
+    #     )
+    #
+    #     # criterion and their parameters we want to evaluate
+    #     criterion = workspace.criterion.WRENCH_CLOSURE(
+    #         force_distribution=force_distribution.CLOSED_FORM(
+    #             ik_standard,
+    #             force_minimum=[1],
+    #             force_maximum=[10],
+    #         ),
+    #         wrench=-1
+    #     )
+    #
+    #     # method we want to use to calculate the workspace
+    #     method = workspace.HULL(
+    #         ik_standard,
+    #         archetype,
+    #         criterion,
+    #         # place center of hull at the world origin
+    #         center=0.0
+    #     )
+    #
+    #     # evaluate the workspace over the grid
+    #     ws = method.evaluate(robot_1t)
+    #
+    #     plot_workspace(ws, sys._getframe().f_code.co_name)
+    #
+    #     assert False
+
+    # def test_1t_ik_standard_translation_wrench_feasible(self,
+    #                                                     robot_1t: Robot,
+    #                                                     ik_standard:
+    #                                                     Kinematics):
+    #     # workspace archetype we want to calculate
+    #     archetype = workspace.archetype.TRANSLATION(
+    #         dcm=np.eye(3)
+    #     )
+    #
+    #     # criterion and their parameters we want to evaluate
+    #     criterion = workspace.criterion.WRENCH_FEASIBLE(
+    #         force_distribution=force_distribution.CLOSED_FORM(
+    #             ik_standard,
+    #             force_minimum=[0],
+    #             force_maximum=[np.inf]
+    #         ),
+    #         wrench=-1
+    #     )
+    #
+    #     # method we want to use to calculate the workspace
+    #     method = workspace.HULL(
+    #         ik_standard,
+    #         archetype,
+    #         criterion,
+    #         # place center of hull at the world origin
+    #         center=0.0
+    #     )
+    #
+    #     # evaluate the workspace over the grid
+    #     ws = method.evaluate(robot_1t)
+    #
+    #     plot_workspace(ws, sys._getframe().f_code.co_name)
+    #
+    #     assert False
+
     def test_3r3t_ik_standard_translation_cable_length(self,
-                                                       robot_3r3t:
-                                                       'cdpyr.robot.Robot',
+                                                       robot_3r3t: Robot,
                                                        ik_standard:
-                                                       'cdpyr.analysis.kinematics.Calculator'):
+                                                       Kinematics):
         # workspace archetype we want to calculate
-        archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
-        archetype.dcm = np.eye(3)
+        archetype = workspace.archetype.TRANSLATION(
+            dcm=np.eye(3)
+        )
 
-        # criteria and their parameters we want to evaluate
-        criterion = cdpyr.analysis.workspace.Criterion.CABLE_LENGTH
-        criterion.limits = [np.sqrt(0.5 ** 2 + 0.5 ** 2 + 0.5 ** 2),
-                            np.sqrt(1.5 ** 2 + 1.5 ** 2 + 1.5 ** 2)]
+        # criterion and its parameters we want to evaluate
+        criterion = workspace.criterion.CABLE_LENGTH(
+            kinematics=ik_standard,
+            limits=[0.866025404, 2.598076211]
+        )
 
         # method we want to use to calculate the workspace
-        method = cdpyr.analysis.workspace.Method.HULL
-        # place center of hull at the world origin
-        method.center = [0.0, 0.0, 0.0]
-
-        # a workspace calculator object
-        workspace_calculator = cdpyr.analysis.workspace.Calculator(
+        method = workspace.HULL(
+            ik_standard,
             archetype,
-            method,
             criterion,
-            kinematics=ik_standard)
+            # place center of hull at the world origin
+            center=[0.0, 0.0, 0.0]
+        )
 
         # evaluate the workspace over the grid
-        workspace, faces = workspace_calculator.evaluate(robot_3r3t)
+        ws = method.evaluate(robot_3r3t)
 
-        # get corners of workspace
-        corners = np.asarray([p[0] for p in workspace])
+        test_coordinate_1 = [0.0, 0.0, 0.0] in ws
+        test_coordinate_2 = [0.5, 0.5, 0.5] in ws
+        test_coordinate_3 = [1.0, 1.0, 1.0] in ws
 
-        plot_workspace(corners, faces)
-
-        assert False
-
-    def test_3r3t_ik_standard_translation_singularities(self,
-                                                        robot_3r3t:
-                                                        'cdpyr.robot.Robot',
-                                                        ik_standard:
-                                                        'cdpyr.analysis.kinematics.Calculator'):
-        # workspace archetype we want to calculate
-        archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
-        archetype.dcm = np.eye(3)
-
-        # criterion and their parameters we want to evaluate
-        criterion = cdpyr.analysis.workspace.Criterion.SINGULARITIES
-
-        # method we want to use to calculate the workspace
-        method = cdpyr.analysis.workspace.Method.HULL
-        # place center of hull at the world origin
-        method.center = [0.0, 0.0, 0.0]
-
-        # a workspace calculator object
-        workspace_calculator = cdpyr.analysis.workspace.Calculator(
-            archetype,
-            method,
-            criterion,
-            kinematics=ik_standard)
-
-        # evaluate the workspace over the grid
-        workspace, faces = workspace_calculator.evaluate(robot_3r3t)
-
-        # get corners of workspace
-        corners = np.asarray([p[0] for p in workspace])
-
-        plot_workspace(corners, faces)
-
-        assert False
-
-    def test_3r3t_ik_standard_translation_wrench_feasible(self,
-                                                          robot_3r3t:
-                                                          'cdpyr.robot.Robot',
-                                                          ik_standard:
-                                                          'cdpyr.analysis.kinematics.Calculator'):
-        # workspace archetype we want to calculate
-        archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
-        archetype.dcm = np.eye(3)
-
-        # criterion and their parameters we want to evaluate
-        criterion = cdpyr.analysis.workspace.Criterion.WRENCH_FEASIBLE
-        criterion.wrench = [0.0, 0.0, -9.81, 0.0, 0.0, 0.0]
-        criterion.force_min = 1
-        criterion.force_max = 10
-
-        # method we want to use to calculate the workspace
-        method = cdpyr.analysis.workspace.Method.HULL
-        # place center of hull at the world origin
-        method.center = [0.0, 0.0, 0.0]
-
-        # a workspace calculator object
-        workspace_calculator = cdpyr.analysis.workspace.Calculator(
-            archetype,
-            method,
-            criterion,
-            kinematics=ik_standard)
-
-        # evaluate the workspace over the grid
-        workspace, faces = workspace_calculator.evaluate(robot_3r3t)
-
-        # get corners of workspace
-        corners = np.asarray([p[0] for p in workspace])
-
-        plot_workspace(corners, faces)
+        plot_workspace(ws, sys._getframe().f_code.co_name)
 
         assert False
 
     def test_3r3t_ik_standard_translation_wrench_closure(self,
-                                                          robot_3r3t:
-                                                          'cdpyr.robot.Robot',
-                                                          ik_standard:
-                                                          'cdpyr.analysis.kinematics.Calculator'):
+                                                         robot_3r3t: Robot,
+                                                         ik_standard:
+                                                         Kinematics):
         # workspace archetype we want to calculate
-        archetype = cdpyr.analysis.workspace.Archetype.TRANSLATION
-        archetype.dcm = np.eye(3)
+        archetype = workspace.archetype.TRANSLATION(
+            dcm=np.eye(3)
+        )
 
         # criterion and their parameters we want to evaluate
-        criterion = cdpyr.analysis.workspace.Criterion.WRENCH_CLOSURE
-        criterion.wrench = [0.0, 0.0, -9.81, 0.0, 0.0, 0.0]
+        criterion = workspace.criterion.WRENCH_CLOSURE(
+            force_distribution=force_distribution.CLOSED_FORM(
+                ik_standard,
+                force_minimum=[1],
+                force_maximum=[10]
+            ),
+            wrench=[0.0, 0.0, -9.81, 0.0, 0.0, 0.0]
+        )
 
         # method we want to use to calculate the workspace
-        method = cdpyr.analysis.workspace.Method.HULL
-        # place center of hull at the world origin
-        method.center = [0.0, 0.0, 0.0]
-
-        # a workspace calculator object
-        workspace_calculator = cdpyr.analysis.workspace.Calculator(
+        method = workspace.HULL(
+            ik_standard,
             archetype,
-            method,
             criterion,
-            kinematics=ik_standard)
+            # place center of hull at the world origin
+            center=[0.0, 0.0, 0.0]
+        )
 
         # evaluate the workspace over the grid
-        workspace, faces = workspace_calculator.evaluate(robot_3r3t)
+        ws = method.evaluate(robot_3r3t)
 
-        # get corners of workspace
-        corners = np.asarray([p[0] for p in workspace])
+        test_coordinate_1 = [0.0, 0.0, 0.0] in ws
+        test_coordinate_2 = [0.5, 0.5, 0.5] in ws
+        test_coordinate_3 = [1.0, 1.0, 1.0] in ws
 
-        plot_workspace(corners, faces)
+        plot_workspace(ws, sys._getframe().f_code.co_name)
+
+        assert False
+
+    def test_3r3t_ik_standard_translation_wrench_feasible(self,
+                                                          robot_3r3t: Robot,
+                                                          ik_standard:
+                                                          Kinematics):
+        # workspace archetype we want to calculate
+        archetype = workspace.archetype.TRANSLATION(
+            dcm=np.eye(3)
+        )
+
+        # criterion and their parameters we want to evaluate
+        criterion = workspace.criterion.WRENCH_FEASIBLE(
+            force_distribution=force_distribution.CLOSED_FORM(
+                ik_standard,
+                force_minimum=[0],
+                force_maximum=[np.inf]
+            ),
+            wrench=[0.0, 0.0, -9.81, 0.0, 0.0, 0.0]
+        )
+
+        # method we want to use to calculate the workspace
+        method = workspace.HULL(
+            ik_standard,
+            archetype,
+            criterion,
+            # place center of hull at the world origin
+            center=[0.0, 0.0, 0.0]
+        )
+
+        # evaluate the workspace over the grid
+        ws = method.evaluate(robot_3r3t)
+
+        test_coordinate_1 = [0.0, 0.0, 0.0] in ws
+        test_coordinate_2 = [0.5, 0.5, 0.5] in ws
+        test_coordinate_3 = [1.0, 1.0, 1.0] in ws
+
+        plot_workspace(ws, sys._getframe().f_code.co_name)
+
+        assert False
+
+    def test_3r3t_ik_standard_translation_singularities(self,
+                                                        robot_3r3t: Robot,
+                                                        ik_standard:
+                                                        Kinematics):
+        # workspace archetype we want to calculate
+        archetype = workspace.archetype.TRANSLATION(
+            dcm=np.eye(3)
+        )
+
+        # criteria and their parameters we want to evaluate
+        criterion = workspace.criterion.SINGULARITIES(
+            kinematics=ik_standard
+        )
+
+        # method we want to use to calculate the workspace
+        method = workspace.HULL(
+            ik_standard,
+            archetype,
+            criterion,
+            # place center of hull at the world origin
+            center=[0.0, 0.0, 0.0]
+        )
+
+        # evaluate the workspace over the grid
+        ws = method.evaluate(robot_3r3t)
+
+        test_coordinate_1 = [0.0, 0.0, 0.0] in ws
+        test_coordinate_2 = [0.5, 0.5, 0.5] in ws
+        test_coordinate_3 = [1.0, 1.0, 1.0] in ws
+
+        plot_workspace(ws, sys._getframe().f_code.co_name)
 
         assert False
 

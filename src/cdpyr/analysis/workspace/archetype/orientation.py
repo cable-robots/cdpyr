@@ -1,30 +1,40 @@
-import numpy as np_
-from scipy.spatial import transform as _transform
+import numpy as _np
 
+from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.motion.pose import generator as _generator, pose as _pose
+from cdpyr.typing import Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-comparator = all
 
 
-def poses(archetype, coordinate):
-    # start pose contains the minimum rotation
-    start = _pose.Pose((
-        archetype.position,
-        _transform.Rotation.from_euler(
-            'xyz',
-            np_.pi * np_.asarray((-1.0, -1.0, -1.0))
-        ).as_dcm()
-    ))
-    # end pose contains the maximum rotation
-    end = _pose.Pose((
-        archetype.position,
-        _transform.Rotation.from_euler(
-            'xyz',
-            np_.pi * np_.asarray((1.0, 1.0, 1.0))
-        ).as_dcm()
-    ))
+class Orientation(_archetype.Archetype):
 
-    # and return the generator
-    return _generator.steps(start, end, archetype.step)
+    def __init__(self, position: Vector, step: int = 10):
+        self.position = position
+        self.step = step
+        self.sequence = 'xyz'
+        self.euler_min = _np.pi * _np.asarray([-1.0, -1.0, -1.0])
+        self.euler_max = _np.pi * _np.asarray([+1.0, +1.0, +1.0])
+
+    @property
+    def comparator(self):
+        return all
+
+    def _poses(self, coordinate: Vector):
+        return _generator.steps(
+            _pose.Pose((
+                self.position,
+                _generator.from_euler(self.sequence, self.euler_min)
+            )),
+            _pose.Pose((
+                self.position,
+                _generator.from_euler(self.sequence, self.euler_max)
+            )),
+            self.step
+        )
+
+
+__all__ = [
+    'Orientation',
+]

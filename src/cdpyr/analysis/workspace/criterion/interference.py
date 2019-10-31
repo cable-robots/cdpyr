@@ -1,57 +1,42 @@
-from typing import  Sequence
-
-import  itertools
-
-from cdpyr.analysis.workspace import workspace as _calculator
+from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
-from cdpyr.motion.pose import pose as _pose
-from cdpyr.robot import robot as _robot, platform as _platform
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-__vars__ = [
+
+
+class Interference(_criterion.Criterion):
+    _kinematics: '_kinematics.Algorithm'
+
+    def __init__(self, kinematics: '_kinematics.Algorithm'):
+        self.kinematics = kinematics
+
+    @property
+    def kinematics(self):
+        return self._kinematics
+
+    @kinematics.setter
+    def kinematics(self, kinematics: '_kinematics.Algorithm'):
+        self._kinematics = kinematics
+
+    @kinematics.deleter
+    def kinematics(self):
+        del self._kinematics
+
+    def _evaluate(self,
+                  robot: '_robot.Robot',
+                  pose: '_pose.Pose',
+                  **kwargs):
+        raise NotImplementedError
+
+    def _validate(self, robot: '_robot.Robot'):
+        if not isinstance(self.kinematics, _kinematics.Algorithm):
+            raise AttributeError(
+                f'Missing value for `kinematics` property. Please set a '
+                f'kinematics algorithm on the `Interference` object, '
+                f'then calculate the workspace again')
+
+
+__all__ = [
+    'Interference',
 ]
-
-
-def setup(criterion: '_criterion.Criterion',
-          robot: '_robot.Robot'):
-    pass
-
-
-def teardown(criterion: '_criterion.Criterion',
-             robot: '_robot.Robot'):
-    pass
-
-
-def evaluate(criterion: '_criterion.Criterion',
-             robot: '_robot.Robot',
-             calculator: '_calculator.Calculator',
-             pose: '_pose.Pose'):
-    # sequence of poses for each platform
-    pose = pose if isinstance(pose, Sequence) else [pose]
-
-    # interference of all platforms' cables with one another
-    for platforms in robot.platforms.all_combinations:
-        # multi-platform case where
-        if len(platforms) > 1:
-            pass
-        # single platform case, so check only collision of its cables with each other
-        else:
-            pass
-
-    # # first, solve the inverse kinematics to obtain cable directions
-    # _, ui = criterion.kinematics.backward(robot, pose)
-    #
-    # # now, determine the start position of
-    #
-    # # # first, calculate tuples for each cable of (start, direction, end)
-    # # for kc in robot.kinematic_chains:
-    # #
-    # #
-    # # # # loop over all combinations of platforms
-    # # platform: '_platform.Platform'
-    # # for platform in robot.platforms.all_combinations:
-    # #     # get platform index
-    # #     idx_a =
-
-    raise NotImplementedError

@@ -1,20 +1,17 @@
-from scipy.spatial import transform as _transform
-
-from cdpyr.motion.pose import generator as _generator, pose as _pose
+from cdpyr.analysis.workspace.archetype import archetype_orientation as \
+    _archetype_orientation
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-comparator = all
 
 
-def poses(archetype, coordinate):
-    # and return the generator
-    return _generator.steps(_pose.Pose((coordinate,
-                                        _transform.Rotation.from_euler(
-                                            archetype.sequence,
-                                            archetype.euler_min).as_dcm())),
-                            _pose.Pose((coordinate,
-                                        _transform.Rotation.from_euler(
-                                            archetype.sequence,
-                                            archetype.euler_max).as_dcm())),
-                            1)
+class TotalOrientation(_archetype_orientation.ArchetypeOrientation):
+
+    @property
+    def comparator(self):
+        return all
+
+
+__all__ = [
+    'TotalOrientation',
+]

@@ -1,43 +1,77 @@
-import numpy as np_
+import numpy as _np
 
-from cdpyr.analysis.workspace import workspace as _calculator
+from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
-from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
+from cdpyr.typing import Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-__vars__ = [
-    ('limits', np_.asarray((0, np_.inf))),
+
+
+class CableLength(_criterion.Criterion):
+    _kinematics: '_kinematics.Algorithm'
+    _limits: Vector
+
+    def __init__(self,
+                 kinematics: '_kinematics.Algorithm',
+                 limits: Vector = None):
+        self.kinematics = kinematics
+        self.limits = limits if limits is not None else [0, _np.inf]
+
+    @property
+    def kinematics(self):
+        return self._kinematics
+
+    @kinematics.setter
+    def kinematics(self, kinematics: '_kinematics.Algorithm'):
+        self._kinematics = kinematics
+
+    @kinematics.deleter
+    def kinematics(self):
+        del self._kinematics
+
+    @property
+    def limits(self):
+        return self._limits
+
+    @limits.setter
+    def limits(self, limits: Vector):
+        limits = _np.asarray(limits)
+
+        # ensure `limits` is a 2xK matrix
+        if limits.ndim == 1:
+            limits = limits[:, _np.newaxis]
+
+        # sort `limits` such that the first row is minimum and second row is
+        # maximum
+        self._limits = _np.sort(limits, axis=0)
+
+    @limits.deleter
+    def limits(self):
+        del self._limits
+
+    def _evaluate(self,
+                  robot: '_robot.Robot',
+                  pose: '_pose.Pose',
+                  **kwargs):
+        try:
+            kinematics = self.kinematics.backward(robot, pose)
+        except BaseException:
+            return False
+        else:
+            return (_np.logical_and(self._limits[0, :] <= kinematics.lengths,
+                                    kinematics.lengths <= self._limits[1,
+                                                          :])).all()
+
+    def _validate(self, robot: '_robot.Robot'):
+        if not isinstance(self.kinematics, _kinematics.Algorithm):
+            raise AttributeError(
+                f'Missing value for `kinematics` property. Please set a '
+                f'kinematics algorithm in the `CableLength` object, '
+                f'then calculate the workspace again')
+
+
+__all__ = [
+    'CableLength',
 ]
-
-
-def setup(criterion: '_criterion.Criterion',
-          robot: '_robot.Robot'):
-    # adjust limits to be of the right type and shape
-    limits = np_.asarray(criterion.limits)
-
-    # get limits stacked so that the first row is minimum, and the second row
-    # is maximum
-    if limits.ndim == 1:
-        limits = np_.repeat(limits[:, np_.newaxis], robot.num_cables, axis=1)
-    # and push back in the right shape and sorted so that first row is
-    # minimum and second row is maximum
-    criterion.limits = np_.sort(limits, axis=0)
-
-
-def teardown(criterion: '_criterion.Criterion',
-             robot: '_robot.Robot'):
-    pass
-
-
-def evaluate(criterion: '_criterion.Criterion',
-             robot: '_robot.Robot',
-             calculator: '_calculator.Calculator',
-             pose: '_pose.Pose'):
-    # evaluate inverse kinematics at the current pose
-    lengths, _ = calculator.kinematics.backward(robot, pose)
-
-    # now it's just logical comparison of the cable lengths
-    return np_.logical_and(criterion.limits[0, :] <= lengths,
-                           lengths <= criterion.limits[1, :]).all()

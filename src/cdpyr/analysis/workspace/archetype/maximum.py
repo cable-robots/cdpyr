@@ -1,20 +1,23 @@
-import numpy as np_
-from scipy.spatial import transform as _transform
+import numpy as _np
 
-from cdpyr.motion.pose import generator as _generator, pose as _pose
+from cdpyr.analysis.workspace.archetype import archetype_orientation as \
+    _archetype_orientation
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-comparator = any
 
 
-def poses(archetype, coordinate):
-    # extrinsic rotation of 180° about [x, y, z]
-    euler = np_.pi * np_.asarray([1, 1, 1])
-    # and return the generator
-    return _generator.steps(_pose.Pose(
-        (coordinate, _transform.Rotation.from_euler('xyz', -euler).as_dcm())),
-        _pose.Pose((coordinate,
-                    _transform.Rotation.from_euler('xyz',
-                                                   +euler).as_dcm())),
-        1)
+class Maximum(_archetype_orientation.ArchetypeOrientation):
+
+    def __init__(self, step: int = 10):
+        euler = _np.pi * _np.asarray([1.0, 1.0, 1.0])
+        super().__init__(-euler, +euler, 'xyz', step)
+
+    @property
+    def comparator(self):
+        return any
+
+
+__all__ = [
+    'Maximum',
+]
