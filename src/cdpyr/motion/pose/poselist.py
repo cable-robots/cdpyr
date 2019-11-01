@@ -33,8 +33,8 @@ class PoseList(UserList):
         return (pose.angular for pose in self.data)
 
     @property
-    def transformationmatrix(self):
-        return (pose.transformationmatrix for pose in self.data)
+    def transformation(self):
+        return (pose.transformation for pose in self.data)
 
     @property
     def state(self):

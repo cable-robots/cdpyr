@@ -76,7 +76,7 @@ class Pose(object):
         return np_.hstack((self.linear.position, self.angular.quaternion))
 
     @property
-    def transformationmatrix(self):
+    def transformation(self):
         return _homogenous.Homogenous(
             self.linear.position,
             self.angular.dcm
