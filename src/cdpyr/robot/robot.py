@@ -195,6 +195,22 @@ class Robot(object):
     def num_kinematic_chains(self):
         return len(self.kinematic_chains)
 
+    @property
+    def moves_linear(self):
+        return any(platform.moves_linear for platform in self.platforms)
+
+    @property
+    def moves_planar(self):
+        return any(platform.moves_planar for platform in self.platforms)
+
+    @property
+    def moves_spatial(self):
+        return any(platform.moves_spatial for platform in self.platforms)
+
+    @property
+    def can_rotate(self):
+        return any(platform.can_rotate for platform in self.platforms)
+
 
 Robot.__repr__ = make_repr(
     'name',
