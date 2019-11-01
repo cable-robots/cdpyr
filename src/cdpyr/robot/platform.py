@@ -26,7 +26,7 @@ class Platform(object):
     _pose: '_pose.Pose'
 
     def __init__(self,
-                 motionpattern: '_motion_pattern.MotionPattern',
+                 motion_pattern: '_motion_pattern.MotionPattern',
                  anchors: Optional[Union[
                      '_platform_anchor.PlatformAnchorList',
                      Sequence['_platform_anchor.PlatformAnchor']
@@ -39,7 +39,7 @@ class Platform(object):
         self.anchors = anchors or []
         self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]
         self.center_of_linkage = center_of_linkage or [0.0, 0.0, 0.0]
-        self.motionpattern = motionpattern
+        self.motion_pattern = motion_pattern
         self.inertia = inertia if inertia is not None else _inertia.Inertia()
         self.pose = _pose.Pose()
         self.name = name or 'default'
@@ -109,15 +109,15 @@ class Platform(object):
 
     @property
     def dof(self):
-        return self.motionpattern.dof
+        return self.motion_pattern.dof
 
     @property
     def dof_rotation(self):
-        return self.motionpattern.dof_rotation
+        return self.motion_pattern.dof_rotation
 
     @property
     def dof_translation(self):
-        return self.motionpattern.dof_translation
+        return self.motion_pattern.dof_translation
 
     @property
     def inertia(self):
@@ -147,15 +147,15 @@ class Platform(object):
         self.inertia.linear = inertia
 
     @property
-    def motionpattern(self):
+    def motion_pattern(self):
         return self._motion_pattern
 
-    @motionpattern.setter
-    def motionpattern(self, motionpattern: '_motion_pattern.MotionPattern'):
-        self._motion_pattern = motionpattern
+    @motion_pattern.setter
+    def motion_pattern(self, motion_pattern: '_motion_pattern.MotionPattern'):
+        self._motion_pattern = motion_pattern
 
-    @motionpattern.deleter
-    def motionpattern(self):
+    @motion_pattern.deleter
+    def motion_pattern(self):
         del self._motion_pattern
 
     @property
@@ -193,10 +193,10 @@ class Platform(object):
         dcm = (pose if pose is not None else self.pose).angular.dcm
 
         # pass down to the motion pattern for handling
-        return self.motionpattern.wrench(self.inertia.linear,
-                                         self.motionpattern.gravity(gravity),
-                                         dcm,
-                                         self.center_of_gravity)
+        return self.motion_pattern.wrench(self.inertia.linear,
+                                          self.motion_pattern.gravity(gravity),
+                                          dcm,
+                                          self.center_of_gravity)
 
 
 Platform.__repr__ = make_repr(
@@ -204,7 +204,7 @@ Platform.__repr__ = make_repr(
     'center_of_gravity',
     'center_of_linkage',
     'inertia',
-    'motionpattern',
+    'motion_pattern',
     'pose',
 )
 
@@ -240,8 +240,8 @@ class PlatformList(UserList):
         return (platform.linear_inertia for platform in self.data)
 
     @property
-    def motionpattern(self):
-        return (platform.motionpattern for platform in self.data)
+    def motion_pattern(self):
+        return (platform.motion_pattern for platform in self.data)
 
 
 PlatformList.__repr__ = make_repr(

@@ -68,7 +68,7 @@ class Calculator(object):
         # get first platform
         platform = robot.platforms[0]
 
-        return _result.Result(**self.resolver[platform.motionpattern]
+        return _result.Result(**self.resolver[platform.motion_pattern]
                               .evaluate(platform,
                                         pose,
                                         kinematics.directions

@@ -41,7 +41,7 @@ class Standard(_algorithm.Algorithm):
                                        platform_anchors)
 
         # strip additional spatial dimensions
-        directions = directions[0:platform.motionpattern.dof_translation, :]
+        directions = directions[0:platform.motion_pattern.dof_translation, :]
 
         # cable lengths
         lengths = _np.linalg.norm(directions, axis=0)

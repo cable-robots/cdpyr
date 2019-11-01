@@ -12,7 +12,7 @@ __email__ = "p.tempel@tudelft.nl"
 class PlatformSchema(Schema):
     anchors = fields.List(fields.Nested(_platform_anchor.PlatformAnchorSchema))
     pose = fields.Nested(_pose.PoseSchema)
-    motionpattern = fields.Nested(_motion_pattern.MotionPatternSchema)
+    motion_pattern = fields.Nested(_motion_pattern.MotionPatternSchema)
 
     __model__ = _platform.Platform
 

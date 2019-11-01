@@ -21,7 +21,7 @@ def robot_1t():
         ),
         platforms=[
             cdpyr.robot.Platform(
-                motionpattern=cdpyr.motion.MotionPattern.MP_1T,
+                motion_pattern=cdpyr.motion.MotionPattern.MP_1T,
                 anchors=[
                     cdpyr.robot.PlatformAnchor(
                         position=[0., 0., 0.],
@@ -82,7 +82,7 @@ def robot_2t():
         ),
         platforms=[
             cdpyr.robot.Platform(
-                motionpattern=cdpyr.motion.MotionPattern.MP_2T,
+                motion_pattern=cdpyr.motion.MotionPattern.MP_2T,
                 anchors=[
                     cdpyr.robot.PlatformAnchor(
                         position=[0., 0., 0.],
@@ -158,7 +158,7 @@ def robot_3t():
         ),
         platforms=[
             cdpyr.robot.Platform(
-                motionpattern=cdpyr.motion.MotionPattern.MP_3T,
+                motion_pattern=cdpyr.motion.MotionPattern.MP_3T,
                 anchors=[
                     cdpyr.robot.PlatformAnchor(
                         position=[0., 0., 0.],
@@ -237,7 +237,7 @@ def robot_1r2t():
         ),
         platforms=[
             cdpyr.robot.Platform(
-                motionpattern=cdpyr.motion.MotionPattern.MP_1R2T,
+                motion_pattern=cdpyr.motion.MotionPattern.MP_1R2T,
                 anchors=[
                     cdpyr.robot.PlatformAnchor(
                         position=[-0.1, 0.1, 0.],
@@ -251,7 +251,7 @@ def robot_1r2t():
                     cdpyr.robot.PlatformAnchor(
                         position=[-0.1, -0.1, 0.],
                     ),
-                ]
+                ],
             ),
         ],
         cables=[
@@ -343,7 +343,7 @@ def robot_2r3t():
         ),
         platforms=[
             cdpyr.robot.Platform(
-                motionpattern=cdpyr.motion.MotionPattern.MP_2R3T,
+                motion_pattern=cdpyr.motion.MotionPattern.MP_2R3T,
                 anchors=[
                     cdpyr.robot.PlatformAnchor(
                         position=[-0.01, 0.01, 0.1],
@@ -509,7 +509,7 @@ def robot_3r3t():
         ),
         platforms=[
             cdpyr.robot.Platform(
-                motionpattern=cdpyr.motion.MotionPattern.MP_3R3T,
+                motion_pattern=cdpyr.motion.MotionPattern.MP_3R3T,
                 anchors=[
                     cdpyr.robot.PlatformAnchor(
                         position=[-0.1, 0.1, 0.1]

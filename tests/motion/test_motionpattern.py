@@ -5,7 +5,7 @@ import cdpyr
 
 class MotionpatternTestSuite(object):
 
-    def test_motionpattern_1t(self):
+    def test_motion_pattern_1t(self):
         mp = cdpyr.motion.MotionPattern.MP_1T
 
         assert mp.dof_translation == 1
@@ -19,7 +19,7 @@ class MotionpatternTestSuite(object):
         assert not mp.is_beam
         assert not mp.is_cuboid
 
-    def test_motionpattern_2t(self):
+    def test_motion_pattern_2t(self):
         mp = cdpyr.motion.MotionPattern.MP_2T
 
         assert mp.dof_translation == 2
@@ -33,7 +33,7 @@ class MotionpatternTestSuite(object):
         assert not mp.is_beam
         assert not mp.is_cuboid
 
-    def test_motionpattern_3t(self):
+    def test_motion_pattern_3t(self):
         mp = cdpyr.motion.MotionPattern.MP_3T
 
         assert mp.dof_translation == 3
@@ -47,7 +47,7 @@ class MotionpatternTestSuite(object):
         assert not mp.is_beam
         assert not mp.is_cuboid
 
-    def test_motionpattern_1r2t(self):
+    def test_motion_pattern_1r2t(self):
         mp = cdpyr.motion.MotionPattern.MP_1R2T
 
         assert mp.dof_translation == 2
@@ -61,7 +61,7 @@ class MotionpatternTestSuite(object):
         assert mp.is_beam
         assert not mp.is_cuboid
 
-    def test_motionpattern_2r3t(self):
+    def test_motion_pattern_2r3t(self):
         mp = cdpyr.motion.MotionPattern.MP_2R3T
 
         assert mp.dof_translation == 3
@@ -75,7 +75,7 @@ class MotionpatternTestSuite(object):
         assert mp.is_beam
         assert not mp.is_cuboid
 
-    def test_motionpattern_3r3t(self):
+    def test_motion_pattern_3r3t(self):
         mp = cdpyr.motion.MotionPattern.MP_3R3T
 
         assert mp.dof_translation == 3
