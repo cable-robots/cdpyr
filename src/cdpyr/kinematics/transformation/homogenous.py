@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -71,6 +71,19 @@ class Homogenous(object):
                 )
             ),
         )
+
+    def apply(self, coordinates: Union[Vector, Matrix]):
+        coordinates = np_.asarray(coordinates)
+        # ensure coordinates is a 3xM array
+        if coordinates.ndim == 1:
+            coordinates = coordinates[:, np_.newaxis]
+
+        # stack coordinates above a row of `1`
+        coordinates = np_.vstack(
+            (coordinates, np_.ones((coordinates.shape[1]))))
+
+        # and return the transformed coordinates (only the actual coordinates)
+        return self.matrix.dot(coordinates)[0:3]
 
 
 Homogenous.__repr__ = make_repr(
