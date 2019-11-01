@@ -76,6 +76,10 @@ class Platform(object):
         return np_.vstack([anchor.position for anchor in self.anchors]).T
 
     @property
+    def can_rotate(self):
+        return self.motion_pattern.can_rotate
+
+    @property
     def center_of_gravity(self):
         return self._center_of_gravity
 
@@ -139,6 +143,18 @@ class Platform(object):
         del self._inertia
 
     @property
+    def is_point(self):
+        return self.motion_pattern.is_point
+
+    @property
+    def is_beam(self):
+        return self.motion_pattern.is_beam
+
+    @property
+    def is_cuboid(self):
+        return self.motion_pattern.is_cuboid
+
+    @property
     def linear_inertia(self):
         return self.inertia.linear
 
@@ -157,6 +173,18 @@ class Platform(object):
     @motion_pattern.deleter
     def motion_pattern(self):
         del self._motion_pattern
+
+    @property
+    def moves_linear(self):
+        return self.motion_pattern.moves_linear
+
+    @property
+    def moves_planar(self):
+        return self.motion_pattern.moves_planar
+
+    @property
+    def moves_spatial(self):
+        return self.motion_pattern.moves_spatial
 
     @property
     def name(self):
