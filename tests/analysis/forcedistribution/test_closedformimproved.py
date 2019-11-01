@@ -18,7 +18,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
             )
 
         # create a gravitational wrench
-        wrench = np.zeros(robot_1t.platforms[0].motion_pattern.dof)
+        wrench = np.zeros(robot_1t.platforms[0].dof)
         # add gravity at last translational degree of freedom
         wrench[0] = -9.81 * 0.1
 
@@ -49,7 +49,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
             )
 
         # create a gravitational wrench
-        wrench = np.zeros(robot_2t.platforms[0].motion_pattern.dof)
+        wrench = np.zeros(robot_2t.platforms[0].dof)
         # add gravity at last translational degree of freedom
         wrench[1] = -9.81 * 1
 
@@ -80,7 +80,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
             )
 
         # create a gravitational wrench
-        wrench = np.zeros(robot_3t.platforms[0].motion_pattern.dof)
+        wrench = np.zeros(robot_3t.platforms[0].dof)
         # add gravity at last translational degree of freedom
         wrench[2] = -9.81 * 1
 
@@ -111,7 +111,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
             )
 
         # create a gravitational wrench
-        wrench = np.zeros(robot_1r2t.platforms[0].motion_pattern.dof)
+        wrench = np.zeros(robot_1r2t.platforms[0].dof)
         # add gravity at last translational degree of freedom
         wrench[1] = -9.81 * 1
 
@@ -142,7 +142,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
             )
 
         # create a gravitational wrench
-        wrench = np.zeros(robot_2r3t.platforms[0].motion_pattern.dof)
+        wrench = np.zeros(robot_2r3t.platforms[0].dof)
         # add gravity at last translational degree of freedom
         wrench[2] = -9.81 * 1
 
@@ -173,7 +173,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
             )
 
         # create a gravitational wrench
-        wrench = np.zeros(robot_3r3t.platforms[0].motion_pattern.dof)
+        wrench = np.zeros(robot_3r3t.platforms[0].dof)
         # add gravity at last translational degree of freedom
         wrench[2] = -9.81 * 1
 
