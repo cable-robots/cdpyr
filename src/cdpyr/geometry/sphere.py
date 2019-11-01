@@ -3,6 +3,7 @@ from typing import Optional
 import numpy as np_
 from magic_repr import make_repr
 
+from cdpyr import validator as _validator
 from cdpyr.geometry.geometry import Geometry
 from cdpyr.typing import Num
 
@@ -24,8 +25,7 @@ class Sphere(Geometry):
 
     @diameter.setter
     def diameter(self, diameter: Num):
-        if diameter < 0:
-            raise ValueError('diameter must be nonnegative')
+        _validator.numeric.nonnegative(diameter, 'diameter')
 
         self._diameter = diameter
 
@@ -39,8 +39,7 @@ class Sphere(Geometry):
 
     @radius.setter
     def radius(self, radius: Num):
-        if radius < 0:
-            raise ValueError('radius must be nonnegative')
+        _validator.numeric.nonnegative(radius, 'radius')
 
         self.diameter = 2.0 * radius
 
@@ -60,7 +59,8 @@ class Sphere(Geometry):
 
 
 Sphere.__repr__ = make_repr(
-    'diameter'
+    'mass',
+    'diameter',
 )
 
 __all__ = [

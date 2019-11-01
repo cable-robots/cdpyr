@@ -12,5 +12,5 @@ __all__ = [
     'Cuboid',
     'Cylinder',
     'Sphere',
-    'Tube'
+    'Tube',
 ]

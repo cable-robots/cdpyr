@@ -30,7 +30,9 @@ class Geometry(ABC):
         del self._mass
 
 
-Geometry.__repr__ = make_repr()
+Geometry.__repr__ = make_repr(
+    'mass',
+)
 
 __all__ = [
     'Geometry',

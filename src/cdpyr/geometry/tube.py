@@ -3,6 +3,7 @@ from typing import Optional, Tuple
 import numpy as np_
 from magic_repr import make_repr
 
+from cdpyr import validator as _validator
 from cdpyr.geometry.geometry import Geometry
 from cdpyr.typing import Num
 
@@ -44,12 +45,13 @@ class Tube(Geometry):
 
     @inner_diameter.setter
     def inner_diameter(self, inner_diameter: Num):
-        if inner_diameter < 0:
-            raise ValueError('inner_diameter must be nonnegative')
+        _validator.numeric.nonnegative(inner_diameter, 'inner_diameter')
 
-        if self.outer_diameter < inner_diameter:
-            raise ValueError('inner_diameter must be smaller than outer '
-                             'diameter')
+        if self.outer_diameter:
+            _validator.numeric.less_than(inner_diameter,
+                                         self.outer_diameter,
+                                         'inner_diameter')
+
         self._inner_diameter = inner_diameter
 
     @inner_diameter.deleter
@@ -62,12 +64,13 @@ class Tube(Geometry):
 
     @outer_diameter.setter
     def outer_diameter(self, outer_diameter: Num):
-        if outer_diameter < 0:
-            raise ValueError('outer_diameter must be nonnegative')
+        _validator.numeric.nonnegative(outer_diameter, 'outer_diameter')
 
-        if outer_diameter < self.inner_diameter:
-            raise ValueError('outer_diameter must be larger than '
-                             'inner_diameter')
+        if self.inner_diameter:
+            _validator.numeric.greater_than(outer_diameter,
+                                            self.inner_diameter,
+                                            'outer_diameter')
+
         self._outer_diameter = outer_diameter
 
     @outer_diameter.deleter
@@ -80,8 +83,8 @@ class Tube(Geometry):
 
     @height.setter
     def height(self, height: Num):
-        if height < 0:
-            raise ValueError('height must be nonnegative')
+        _validator.numeric.nonnegative(height, 'height')
+
         self._height = height
 
     @height.deleter
@@ -94,8 +97,8 @@ class Tube(Geometry):
 
     @inner_radius.setter
     def inner_radius(self, inner_radius: Num):
-        if inner_radius < 0:
-            raise ValueError('inner_radius must be nonnegative')
+        _validator.numeric.nonnegative(inner_radius, 'inner_radius')
+
         self.inner_diameter = 2.0 * inner_radius
 
     @inner_radius.deleter
@@ -108,8 +111,8 @@ class Tube(Geometry):
 
     @outer_radius.setter
     def outer_radius(self, outer_radius: Num):
-        if outer_radius < 0:
-            raise ValueError('outer_radius must be nonnegative')
+        _validator.numeric.nonnegative(outer_radius, 'outer_radius')
+
         self.outer_diameter = 2.0 * outer_radius
 
     @outer_radius.deleter
@@ -132,9 +135,10 @@ class Tube(Geometry):
 
 
 Tube.__repr__ = make_repr(
+    'mass',
     'inner_diameter',
     'outer_diameter',
-    'height'
+    'height',
 )
 
 __all__ = [

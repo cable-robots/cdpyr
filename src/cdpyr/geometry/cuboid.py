@@ -3,6 +3,7 @@ from typing import Optional
 import numpy as np_
 from magic_repr import make_repr
 
+from cdpyr import validator as _validator
 from cdpyr.geometry.geometry import Geometry
 from cdpyr.typing import Num
 
@@ -30,8 +31,8 @@ class Cuboid(Geometry):
 
     @width.setter
     def width(self, width: Num):
-        if width < 0:
-            raise ValueError('width must be nonnegative')
+        _validator.numeric.nonnegative(width, 'width')
+
         self._width = width
 
     @width.deleter
@@ -44,8 +45,8 @@ class Cuboid(Geometry):
 
     @height.setter
     def height(self, height: Num):
-        if height < 0:
-            raise ValueError('height must be nonnegative')
+        _validator.numeric.nonnegative(height, 'height')
+
         self._height = height
 
     @height.deleter
@@ -58,8 +59,8 @@ class Cuboid(Geometry):
 
     @depth.setter
     def depth(self, depth: Num):
-        if depth < 0:
-            raise ValueError('depth must be nonnegative')
+        _validator.numeric.nonnegative(depth, 'depth')
+
         self._depth = depth
 
     @depth.deleter
@@ -80,9 +81,10 @@ class Cuboid(Geometry):
 
 
 Cuboid.__repr__ = make_repr(
+    'mass',
     'width',
     'depth',
-    'height'
+    'height',
 )
 
 __all__ = [
