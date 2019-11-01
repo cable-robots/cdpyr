@@ -20,6 +20,7 @@ from cdpyr import analysis
 # and I/O imports
 from cdpyr import stream
 from cdpyr import schema
+from cdpyr import visualization
 
 
 __author__ = 'Philipp Tempel'
@@ -39,4 +40,5 @@ __all__ = [
     'stream',
     'typing',
     'validator',
+    'visualization',
 ]
