@@ -229,7 +229,7 @@ class Matplotlib(Visualizer, ABC):
             delau = _Delaunay(anchors.T)
 
             # get faces and simplices
-            hull_faces = delau.simplices
+            hull_faces = delau.convex_hull
             hull_points = delau.points
 
             # also rotate and translate the platform anchors
