@@ -82,7 +82,6 @@ class Result(_result.Result, abc.Collection):
         try:
             # if any vertex is unequal to zero, we have a length
             return bool(self._vertices.any())
-            # return self._faces.shape[0]
         except AttributeError as AttributeException:
             return 0
 

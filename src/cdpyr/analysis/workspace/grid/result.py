@@ -2,9 +2,7 @@ from collections import abc
 
 import numpy as _np
 
-from cdpyr.analysis.workspace import (
-    result as _result,
-)
+from cdpyr.analysis.workspace import result as _result
 from cdpyr.analysis.workspace.grid import calculator as _calculator
 from cdpyr.typing import Matrix, Vector
 
