@@ -1,6 +1,5 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
-from cdpyr.analysis import evaluator as _evaluator
 from cdpyr.robot import robot as _robot
 
 __author__ = "Philipp Tempel"
@@ -9,7 +8,7 @@ __copyright__ = "Copyright 2019, Philipp Tempel"
 __license__ = "EUPL v1.2"
 
 
-class Evaluator(_evaluator.Evaluator):
+class Evaluator(ABC):
 
     @abstractmethod
     def evaluate(self, robot: '_robot.Robot', *args, **kwargs):

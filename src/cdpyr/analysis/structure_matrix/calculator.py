@@ -1,4 +1,3 @@
-
 from cdpyr.analysis import evaluator as _evaluator
 from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.structure_matrix import (
