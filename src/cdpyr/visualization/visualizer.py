@@ -97,7 +97,7 @@ class Visualizer(ABC):
             try:
                 # return the specific plot handling method
                 return self._MAPPING[type](obj, *args, **kwargs)
-            except KeyError as KeyException:
+            except KeyError as KeyE:
                 raise RuntimeWarning(
                     f'No render method for object of type `{type}` found.') \
                     from KeyException

@@ -50,7 +50,7 @@ def square(value: Union[Num, Vector, Matrix, Sequence[Num]],
         dimensions(value, 2, name)
         n = value.shape[0]
         shape(value, (n, n), name)
-    except ValueError as ValueException:
+    except ValueError as ValueE:
         raise ValueError(
             'Expected `{}` to be square.'.format(
                 name if name is not None else 'value'
@@ -71,7 +71,7 @@ def symmetric(value: Union[Num, Vector, Matrix, Sequence[Num]],
                     name if name is not None else 'value',
                 )
             )
-    except ValueError as ValueException:
+    except ValueError as ValueE:
         raise ValueError(
             'Expected `{}` to be symmetric.'.format(
                 name if name is not None else 'value'
@@ -88,7 +88,7 @@ def inertia_tensor(value: Union[Sequence[Sequence[Num]], Matrix],
         shape(value, (3, 3), name)
         greater_than_or_equal_to(value.diagonal(), 0, 'diag({})'.format(
             name if name is not None else 'value'))
-    except ValueError as ValueException:
+    except ValueError as ValueE:
         raise ValueError(
             'Expected `{}` to be a valid inertia tensor, but was not'.format(
                 name if name is not None else 'value',
@@ -107,7 +107,7 @@ def rotation_matrix(value: Union[Sequence[Sequence[Num]], Matrix],
         less_than_or_equal_to(value, 1, name)
         equal_to(np_.abs(np_.linalg.det(value)), 1,
                  'det({})'.format(name if name is not None else 'value'))
-    except ValueError as ValueException:
+    except ValueError as ValueE:
         raise ValueError(
             'Expected `{}` to be a valid rotation matrix, but was not.'.format(
                 name if name is not None else 'value',
@@ -122,7 +122,7 @@ def space_coordinate(value: Union[Sequence[Sequence[Num]], Matrix],
     try:
         dimensions(value, 1, name)
         shape(value, (3,), name)
-    except ValueError as ValueException:
+    except ValueError as ValueE:
         raise ValueError(
             'Expected `{}` to be a valid space coordinate, but was not.'.format(
                 name if name is not None else 'value',
@@ -138,7 +138,7 @@ def unit_vector(value: Union[Sequence[Num], Vector],
         dimensions(value, 1, name)
         equal_to(np_.linalg.norm(value), 1,
                  'norm({})'.format(name if name is not None else 'value'))
-    except ValueError as ValueException:
+    except ValueError as ValueE:
         raise ValueError(
             'Expected `{}` to be a valid unit vector, but was not.'.format(
                 name if name is not None else 'value',

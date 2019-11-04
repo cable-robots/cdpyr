@@ -72,7 +72,7 @@ class Algorithm(_evaluator.Evaluator):
         self._kinematics = kinematics
         try:
             self._structure_matrix.kinematics = self.kinematics
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             pass
 
     @kinematics.deleter

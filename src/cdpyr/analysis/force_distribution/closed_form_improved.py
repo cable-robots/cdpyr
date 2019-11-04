@@ -47,7 +47,7 @@ class ClosedFormImproved(_algorithm.Algorithm):
                     raise ArithmeticError(
                         'Calculation yielded NaN values in the force '
                         'distribution.')
-            except ArithmeticError as ArithmeticException:
+            except ArithmeticError as ArithmeticE:
                 raise ValueError(
                     'Could not find a valid force distribution using the '
                     'current algorithm_old. Please check your arguments or '

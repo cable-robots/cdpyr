@@ -34,7 +34,7 @@ class WrenchClosure(_criterion.Criterion):
         try:
             self._force_distribution.force_minimum = [0]
             self._force_distribution.force_maximum = [_np.inf]
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             pass
 
     @force_distribution.deleter

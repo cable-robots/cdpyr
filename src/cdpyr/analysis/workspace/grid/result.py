@@ -124,7 +124,7 @@ class Result(_result.Result, abc.Collection):
     def __len__(self) -> int:
         try:
             return self._coordinates.shape[0]
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             return 0
 
     def __contains__(self, coordinate: object):
@@ -145,7 +145,7 @@ class Result(_result.Result, abc.Collection):
 
         try:
             return self._flags[idx]
-        except KeyError as KeyException:
+        except KeyError as KeyE:
             return False
 
 

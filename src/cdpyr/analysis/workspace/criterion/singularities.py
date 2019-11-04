@@ -24,7 +24,7 @@ class Singularities(_criterion.Criterion):
         self._kinematics = kinematics
         try:
             self._structure_matrix.kinematics = self._kinematics
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             self._structure_matrix = _structure_matrix.Calculator(
                 self._kinematics)
 

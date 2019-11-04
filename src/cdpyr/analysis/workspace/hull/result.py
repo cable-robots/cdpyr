@@ -82,7 +82,7 @@ class Result(_result.Result, abc.Collection):
         try:
             # if any vertex is unequal to zero, we have a length
             return bool(self._vertices.any())
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             return 0
 
     def __contains__(self, coordinate: object):
@@ -121,7 +121,7 @@ class Result(_result.Result, abc.Collection):
             # scales = sol[0]
             #
             # flag = _np.logical_and(0 <= scales, 1 <= scales)
-        except BaseException as BaseError:
+        except BaseException as BaseE:
             flag = False
         else:
             # all differences are pointing in the same direction as the

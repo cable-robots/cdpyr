@@ -43,7 +43,7 @@ class Algorithm(ABC):
     def criterion(self, criterion: '_criterion.Criterion'):
         try:
             criterion.kinematics = self._kinematics
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             pass
         self._criterion = criterion
 
@@ -60,7 +60,7 @@ class Algorithm(ABC):
         self._kinematics = kinematics
         try:
             self.criterion.kinematics = kinematics
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             pass
 
     @kinematics.deleter
@@ -88,7 +88,7 @@ class Algorithm(ABC):
 
             # now finally, evaluate the workspace
             return self._evaluate(robot)
-        except (AttributeError, ValueError) as EvaluationException:
+        except (AttributeError, ValueError) as EvaluationE:
             raise RuntimeError(
                 'Could not determine workspace due to assertion failed in '
                 'setting up the workspace calculator. Please review your '

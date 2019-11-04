@@ -164,13 +164,13 @@ class Pose(object):
         try:
             return np_.allclose(self.state, other.state) \
                    and np_.allclose(self.time, other.time, equal_nan=True)
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             try:
                 return np_.allclose(self.state, np_.asarray(other))
-            except ValueError as ValueException:
+            except ValueError as ValueE:
                 return np_.allclose(np_.hstack((self.time, self.state)),
                                     np_.asarray(other), equal_nan=True)
-            except TypeError as TypeException:
+            except TypeError as TypeE:
                 raise TypeException from None
 
     def __ne__(self, other: Union['Pose', object]):
@@ -179,49 +179,49 @@ class Pose(object):
         try:
             return not (np_.allclose(self.state, other.state)
                         and np_.allclose(self.time, other.time, equal_nan=True))
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             try:
                 return not np_.allclose(self.state, np_.asarray(other))
-            except ValueError as ValueException:
+            except ValueError as ValueE:
                 return not np_.allclose(np_.hstack((self.time, self.state)),
                                         np_.asarray(other), equal_nan=True)
-            except TypeError as TypeException:
+            except TypeError as TypeE:
                 raise TypeException from None
 
     def __lt__(self, other: Union['Pose', object]):
         try:
             return self.time < other.time
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             try:
                 return self.time < other
-            except TypeError as TypeException:
+            except TypeError as TypeE:
                 raise TypeException from None
 
     def __le__(self, other: Union['Pose', object]):
         try:
             return self.time <= other.time
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             try:
                 return self.time <= other
-            except TypeError as TypeException:
+            except TypeError as TypeE:
                 raise TypeException from None
 
     def __gt__(self, other: Union['Pose', object]):
         try:
             return self.time > other.time
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             try:
                 return self.time > other
-            except TypeError as TypeException:
+            except TypeError as TypeE:
                 raise TypeException from None
 
     def __ge__(self, other: Union['Pose', object]):
         try:
             return self.time >= other.time
-        except AttributeError as AttributeException:
+        except AttributeError as AttributeE:
             try:
                 return self.time >= other
-            except TypeError as TypeException:
+            except TypeError as TypeE:
                 raise TypeException from None
 
 

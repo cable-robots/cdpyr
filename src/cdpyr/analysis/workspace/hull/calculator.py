@@ -252,13 +252,13 @@ class Calculator(_algorithm.Algorithm):
                 or v > vTmp and edge_vertices[vTmp][v][1] != -1:
                 try:
                     adjacent_vertices[v].append(vTmp)
-                except IndexError as IndexException:
+                except IndexError as IndexE:
                     adjacent_vertices.insert(v, [vTmp])
 
         for v in range(num_vertices):
             try:
                 k = len(adjacent_vertices[v])
-            except IndexError as IndexException:
+            except IndexError as IndexE:
                 continue
 
             adjacent_boundary_vertices = []
