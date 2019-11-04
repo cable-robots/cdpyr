@@ -1,4 +1,5 @@
 from typing import AnyStr, Callable, Dict
+import itertools
 
 from abc import ABC, abstractmethod
 
@@ -25,12 +26,24 @@ from cdpyr.robot.anchor import (
     frame_anchor as _frame_anchor,
     platform_anchor as _platform_anchor,
 )
+from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class Visualizer(ABC):
+    COORDINATE_DIRECTIONS = [
+        [1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0],
+    ]
+    COORDINATE_COLORS = [
+        [1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0],
+    ]
+
     _MAPPING: Dict[AnyStr, Callable]
 
     def __init__(self):
@@ -95,6 +108,13 @@ class Visualizer(ABC):
     #                  *args,
     #                  **kwargs):
     #     raise NotImplementedError()
+
+    @abstractmethod
+    def render_coordinate_system(self,
+                                 position: Vector = None,
+                                 dcm: Matrix = None,
+                                 **kwargs):
+        raise NotImplementedError
 
     @abstractmethod
     def render_cuboid(self,
@@ -208,3 +228,21 @@ class Visualizer(ABC):
                     *args,
                     **kwargs):
         raise NotImplementedError
+
+    def _render_component_list(self,
+                               obj: object,
+                               name: str,
+                               *args,
+                               **kwargs):
+        styles = kwargs.pop(name, {})
+        if styles is not False:
+            if isinstance(styles, Dict):
+                styles = [styles]
+
+            components = getattr(obj, name)
+
+            if len(styles) < len(components):
+                styles = itertools.cycle(styles)
+
+            for component, style in zip(components, styles):
+                self.render(component, *args, **style)
