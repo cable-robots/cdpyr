@@ -1,3 +1,5 @@
+
+from cdpyr.analysis import evaluator as _evaluator
 from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.structure_matrix import (
     motion_pattern_1r2t as _structure_matrix_1r2t,
@@ -16,7 +18,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Calculator(object):
+class Calculator(_evaluator.Evaluator):
     _kinematics: '_kinematics.Algorithm'
 
     def __init__(self,

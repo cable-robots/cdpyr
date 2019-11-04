@@ -1,9 +1,10 @@
 from typing import Union
 
 import numpy as _np
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from cdpyr import validator as _validator
+from cdpyr.analysis import evaluator as _evaluator
 from cdpyr.analysis.force_distribution import result as _result
 from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.structure_matrix import calculator as _structure_matrix
@@ -15,7 +16,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Algorithm(ABC):
+class Algorithm(_evaluator.Evaluator):
     _force_minimum: Vector
     _force_maximum: Vector
     _kinematics: '_kinematics.Algorithm'

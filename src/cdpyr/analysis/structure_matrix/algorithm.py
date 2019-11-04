@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from cdpyr.analysis import evaluator as _evaluator
 
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import platform as _platform
@@ -8,7 +9,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Algorithm(ABC):
+class Algorithm(_evaluator.Evaluator):
 
     @abstractmethod
     def evaluate(self,
