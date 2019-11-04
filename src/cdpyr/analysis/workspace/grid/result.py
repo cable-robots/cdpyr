@@ -1,6 +1,7 @@
 from collections import abc
 
 import numpy as _np
+from scipy.spatial import Delaunay as _Delaunay
 
 from cdpyr.analysis.workspace import result as _result
 from cdpyr.analysis.workspace.grid import calculator as _calculator
@@ -62,11 +63,56 @@ class Result(_result.Result, abc.Collection):
 
     @property
     def surface(self):
-        return 0
+        if self._surface is None:
+            try:
+                # triangulate all points that are inside the workspace
+                delau = _Delaunay(self.inside)
+                # convex null of this area will be used to determine the
+                # workspace volume and surface area
+                hull_faces = delau.convex_hull
+                # get each vertex
+                f0 = self.inside[hull_faces[:, 0], :]
+                f1 = self.inside[hull_faces[:, 1], :]
+                f2 = self.inside[hull_faces[:, 2], :]
+
+                # length of each side
+                a = _np.linalg.norm(f0 - f1, axis=1)
+                b = _np.linalg.norm(f1 - f2, axis=1)
+                c = _np.linalg.norm(f2 - f0, axis=1)
+
+                # heron's formula
+                self._surface = _np.sum(1.0 / 4.0 * _np.sqrt(
+                    (a ** 2 + b ** 2 + c ** 2) ** 2 - 2 * (
+                        a ** 4 + b ** 4 + c ** 4)), axis=0)
+            except (IndexError, ValueError) as Error:
+                self._surface = 0
+
+        return self._surface
 
     @property
     def volume(self):
-        return 0
+        if self._volume is None:
+            try:
+                delau = _Delaunay(self.inside)
+                # convex null of this area will be used to determine the
+                # workspace volume and surface area
+                hull_faces = delau.convex_hull
+                # get each vertex
+                a = self.inside[hull_faces[:, 0], :]
+                b = self.inside[hull_faces[:, 1], :]
+                c = self.inside[hull_faces[:, 2], :]
+                d = _np.zeros((3,))
+
+                # | (a - d) . ( (b - d) x (c - d) ) |
+                # -----------------------------------
+                #                  6
+                self._volume = _np.sum(_np.abs(
+                    _np.sum((a - d) * _np.cross(b - d, c - d, axis=1),
+                            axis=1))) / 6
+            except (IndexError, ValueError) as Error:
+                self._volume = 0
+
+        return self._volume
 
     def __iter__(self):
         return ((self._coordinates[idx, :], self._flags[idx]) for idx in
