@@ -1,9 +1,7 @@
 from abc import ABC, abstractmethod
 
-from cdpyr.analysis.kinematics import (
-    algorithm as _kinematics,
-    result as _result,
-)
+from cdpyr.analysis.kinematics import algorithm as _kinematics
+from cdpyr.analysis.workspace import result as _result
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.robot import robot as _robot
