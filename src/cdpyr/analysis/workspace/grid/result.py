@@ -62,6 +62,14 @@ class Result(_result.Result, abc.Collection):
 
         return self._outside
 
+    @property
+    def surface(self):
+        return 0
+
+    @property
+    def volume(self):
+        return 0
+
     def __iter__(self):
         return ((self._coordinates[idx, :], self._flags[idx]) for idx in
                 range(len(self)))

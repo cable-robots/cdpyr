@@ -23,16 +23,53 @@ class Result(_result.Result, abc.Collection):
                  vertices: Matrix,
                  faces: Matrix):
         super().__init__(algorithm, archetype, criterion)
-        self._vertices = _np.asarray(vertices)
         self._faces = _np.asarray(faces)
+        self._vertices = _np.asarray(vertices)
 
     @property
     def faces(self):
         return self._faces
 
     @property
+    def surface(self):
+        if self._surface is None:
+            # get each vertex
+            f0 = self._vertices[self._faces[:, 0], :]
+            f1 = self._vertices[self._faces[:, 1], :]
+            f2 = self._vertices[self._faces[:, 2], :]
+
+            # length of each side
+            a = _np.linalg.norm(f0 - f1, axis=1)
+            b = _np.linalg.norm(f1 - f2, axis=1)
+            c = _np.linalg.norm(f2 - f0, axis=1)
+
+            # heron's formula
+            self._surface = _np.sum(1.0 / 4.0 * _np.sqrt(
+                (a ** 2 + b ** 2 + c ** 2) ** 2 - 2 * (
+                    a ** 4 + b ** 4 + c ** 4)), axis=0)
+
+        return self._surface
+
+    @property
     def vertices(self):
         return self._vertices
+
+    @property
+    def volume(self):
+        if self._volume is None:
+            # get each vertex
+            a = self._vertices[self._faces[:, 0], :]
+            b = self._vertices[self._faces[:, 1], :]
+            c = self._vertices[self._faces[:, 2], :]
+            d = _np.zeros((3,))
+
+            # | (a - d) . ( (b - d) x (c - d) ) |
+            # -----------------------------------
+            #                  6
+            self._volume = _np.sum(_np.abs(
+                _np.sum((a - d) * _np.cross(b - d, c - d, axis=1), axis=1))) / 6
+
+        return self._volume
 
     def __iter__(self):
         return ((self._faces[idx, :], self._vertices[idx, :]) for idx in
