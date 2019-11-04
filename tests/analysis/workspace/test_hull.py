@@ -214,13 +214,14 @@ class HullWorkspaceTestSuite(object):
         # evaluate the workspace over the grid
         ws = method.evaluate(robot_3r3t)
 
-        test_coordinate_1 = [0.0, 0.0, 0.0] in ws
-        test_coordinate_2 = [0.5, 0.5, 0.5] in ws
-        test_coordinate_3 = [1.0, 1.0, 1.0] in ws
-
         plot_workspace(ws, sys._getframe().f_code.co_name)
 
-        assert False
+        assert ws.surface > 0
+        assert ws.volume > 0
+        assert [0.0, 0.0, 0.0] in ws
+        assert [0.5, 0.5, 0.5] not in ws
+        assert [1.0, 1.0, 1.0] not in ws
+
 
     def test_3r3t_ik_standard_translation_wrench_closure(self,
                                                          robot_3r3t: Robot,
@@ -253,13 +254,14 @@ class HullWorkspaceTestSuite(object):
         # evaluate the workspace over the grid
         ws = method.evaluate(robot_3r3t)
 
-        test_coordinate_1 = [0.0, 0.0, 0.0] in ws
-        test_coordinate_2 = [0.5, 0.5, 0.5] in ws
-        test_coordinate_3 = [1.0, 1.0, 1.0] in ws
-
         plot_workspace(ws, sys._getframe().f_code.co_name)
 
-        assert False
+        assert ws.surface > 0
+        assert ws.volume > 0
+        assert [0.0, 0.0, 0.0] in ws
+        assert [0.5, 0.5, 0.5] in ws
+        assert [1.0, 1.0, 1.0] in ws
+
 
     def test_3r3t_ik_standard_translation_wrench_feasible(self,
                                                           robot_3r3t: Robot,
@@ -292,13 +294,14 @@ class HullWorkspaceTestSuite(object):
         # evaluate the workspace over the grid
         ws = method.evaluate(robot_3r3t)
 
-        test_coordinate_1 = [0.0, 0.0, 0.0] in ws
-        test_coordinate_2 = [0.5, 0.5, 0.5] in ws
-        test_coordinate_3 = [1.0, 1.0, 1.0] in ws
-
         plot_workspace(ws, sys._getframe().f_code.co_name)
 
-        assert False
+        assert ws.surface > 0
+        assert ws.volume > 0
+        assert [0.0, 0.0, 0.0] in ws
+        assert [0.5, 0.5, 0.5] in ws
+        assert [1.0, 1.0, 1.0] in ws
+
 
     def test_3r3t_ik_standard_translation_singularities(self,
                                                         robot_3r3t: Robot,
@@ -326,13 +329,13 @@ class HullWorkspaceTestSuite(object):
         # evaluate the workspace over the grid
         ws = method.evaluate(robot_3r3t)
 
-        test_coordinate_1 = [0.0, 0.0, 0.0] in ws
-        test_coordinate_2 = [0.5, 0.5, 0.5] in ws
-        test_coordinate_3 = [1.0, 1.0, 1.0] in ws
-
         plot_workspace(ws, sys._getframe().f_code.co_name)
 
-        assert False
+        assert ws.surface == 0
+        assert ws.volume == 0
+        assert [0.0, 0.0, 0.0] not in ws
+        assert [0.5, 0.5, 0.5] not in ws
+        assert [1.0, 1.0, 1.0] not in ws
 
 
 if __name__ == "__main__":
