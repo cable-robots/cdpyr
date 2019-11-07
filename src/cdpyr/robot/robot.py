@@ -188,6 +188,14 @@ class Robot(object):
         return sum(platform.dof for platform in self.platforms)
 
     @property
+    def num_dof_translation(self):
+        return sum(platform.dof_translation for platform in self.platforms)
+
+    @property
+    def num_dof_rotation(self):
+        return sum(platform.dof_rotation for platform in self.platforms)
+
+    @property
     def num_platforms(self):
         return len(self.platforms)
 
