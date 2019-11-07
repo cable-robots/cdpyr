@@ -100,7 +100,7 @@ class Visualizer(ABC):
             except KeyError as KeyE:
                 raise RuntimeWarning(
                     f'No render method for object of type `{type}` found.') \
-                    from KeyException
+                    from KeyE
 
     # @abstractmethod
     # def render_cable(self,

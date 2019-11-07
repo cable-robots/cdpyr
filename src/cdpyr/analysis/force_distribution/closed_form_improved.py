@@ -53,7 +53,7 @@ class ClosedFormImproved(_algorithm.Algorithm):
                     'current algorithm_old. Please check your arguments or '
                     'try another algorithm_old if you are sure there must be '
                     'a valid force distribution.') \
-                    from ArithmeticException
+                    from ArithmeticE
 
         return {
             'pose':         pose,

@@ -171,7 +171,7 @@ class Pose(object):
                 return np_.allclose(np_.hstack((self.time, self.state)),
                                     np_.asarray(other), equal_nan=True)
             except TypeError as TypeE:
-                raise TypeException from None
+                raise TypeError from None
 
     def __ne__(self, other: Union['Pose', object]):
         # if times differ => different poses
@@ -186,7 +186,7 @@ class Pose(object):
                 return not np_.allclose(np_.hstack((self.time, self.state)),
                                         np_.asarray(other), equal_nan=True)
             except TypeError as TypeE:
-                raise TypeException from None
+                raise TypeError from None
 
     def __lt__(self, other: Union['Pose', object]):
         try:
@@ -195,7 +195,7 @@ class Pose(object):
             try:
                 return self.time < other
             except TypeError as TypeE:
-                raise TypeException from None
+                raise TypeError from None
 
     def __le__(self, other: Union['Pose', object]):
         try:
@@ -204,7 +204,7 @@ class Pose(object):
             try:
                 return self.time <= other
             except TypeError as TypeE:
-                raise TypeException from None
+                raise TypeError from None
 
     def __gt__(self, other: Union['Pose', object]):
         try:
@@ -213,7 +213,7 @@ class Pose(object):
             try:
                 return self.time > other
             except TypeError as TypeE:
-                raise TypeException from None
+                raise TypeError from None
 
     def __ge__(self, other: Union['Pose', object]):
         try:
@@ -222,7 +222,7 @@ class Pose(object):
             try:
                 return self.time >= other
             except TypeError as TypeE:
-                raise TypeException from None
+                raise TypeError from None
 
 
 Pose.__repr__ = make_repr(

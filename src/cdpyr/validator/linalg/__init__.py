@@ -55,7 +55,7 @@ def square(value: Union[Num, Vector, Matrix, Sequence[Num]],
             'Expected `{}` to be square.'.format(
                 name if name is not None else 'value'
             )
-        ) from ValueException
+        ) from ValueE
 
 
 def symmetric(value: Union[Num, Vector, Matrix, Sequence[Num]],
@@ -76,7 +76,7 @@ def symmetric(value: Union[Num, Vector, Matrix, Sequence[Num]],
             'Expected `{}` to be symmetric.'.format(
                 name if name is not None else 'value'
             )
-        ) from ValueException
+        ) from ValueE
 
 
 def inertia_tensor(value: Union[Sequence[Sequence[Num]], Matrix],
@@ -93,7 +93,7 @@ def inertia_tensor(value: Union[Sequence[Sequence[Num]], Matrix],
             'Expected `{}` to be a valid inertia tensor, but was not'.format(
                 name if name is not None else 'value',
             )
-        ) from ValueException
+        ) from ValueE
 
 
 def rotation_matrix(value: Union[Sequence[Sequence[Num]], Matrix],
@@ -112,7 +112,7 @@ def rotation_matrix(value: Union[Sequence[Sequence[Num]], Matrix],
             'Expected `{}` to be a valid rotation matrix, but was not.'.format(
                 name if name is not None else 'value',
             )
-        ) from ValueException
+        ) from ValueE
 
 
 def space_coordinate(value: Union[Sequence[Sequence[Num]], Matrix],
@@ -127,7 +127,7 @@ def space_coordinate(value: Union[Sequence[Sequence[Num]], Matrix],
             'Expected `{}` to be a valid space coordinate, but was not.'.format(
                 name if name is not None else 'value',
             )
-        ) from ValueException
+        ) from ValueE
 
 
 def unit_vector(value: Union[Sequence[Num], Vector],
@@ -143,7 +143,7 @@ def unit_vector(value: Union[Sequence[Num], Vector],
             'Expected `{}` to be a valid unit vector, but was not.'.format(
                 name if name is not None else 'value',
             )
-        ) from ValueException
+        ) from ValueE
 
 
 def landspace(value: Union[Sequence[Num], Vector, Matrix],
