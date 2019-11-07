@@ -16,59 +16,6 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-def steps(start: '_pose.Pose',
-          end: '_pose.Pose',
-          step: Union[Num, Vector]):
-    # get an array
-    step = np_.asarray(step)
-
-    # convert scalar arrays into vectorial arrays
-    if step.ndim == 0:
-        step = np_.asarray([step])
-
-    # [pos, rot] to [pos, pos, pos, rot, rot, rot]
-    if step.size == 2:
-        step = np_.hstack((
-            np_.repeat(step[0], 3, axis=0),
-            np_.repeat(step[1], 3, axis=0),
-        ))
-
-    # make sure the number of steps is 6 i.e., one per spatial degree of freedom
-    if step.size != 6:
-        step = np_.repeat(step, np_.ceil(6 / step.size))[0:6]
-
-    # differences in position
-    diff_pos = end.linear.position - start.linear.position
-
-    # difference in orientation parametrization: note that we have to make
-    # sure both poses are using the same sequence when getting their Euler
-    # angles, which is why we have that `old_sequence` thing in there
-    old_sequence = end.angular.sequence
-    end.angular.sequence = start.angular.sequence
-    diff_rot = end.angular.euler - start.angular.euler
-    end.angular.sequence = old_sequence
-
-    # delta in position to perform per step
-    deltas = np_.hstack((diff_pos, diff_rot)) / step
-    # set deltas to zero where no step is needed
-    deltas[np_.isclose(step, 0)] = 0
-
-    # how many iterations to perform per axis
-    iterations = step * np_.logical_not(
-        np_.hstack((np_.isclose(diff_pos, 0), np_.isclose(diff_rot, 0))))
-
-    # TODO make creation of rotation matrix faster as `from_euler` seems to
-    #  be a major bottleneck here
-    # return the generator object
-    return (_pose.Pose((
-        start.linear.position + deltas[0:3] * a[0:3],
-        from_euler(start.angular.sequence,
-                   start.angular.euler + deltas[3:6] * a[3:6])
-    )) for a in itertools.product(
-        *(range(0, iterations[k] + 1) for k in range(0, 6))
-    ))
-
-
 def rotation_x(angle):
     return np_.asarray((
         (1.0, 0.0, 0.0),
@@ -125,6 +72,101 @@ def from_euler(seq, angles, degrees=False):
             result = rot_mapping[axis](angles[idx]).dot(result)
 
     return result
+
+
+def from_quaternion(quat: Vector, normalized: bool = False):
+    # consistent arguments
+    quat = np_.asarray(quat)
+
+    # normalize if needed
+    if not normalized:
+        quat = quat / np_.linalg.norm(quat)
+
+    x = quat[0]
+    y = quat[1]
+    z = quat[2]
+    w = quat[3]
+
+    x2 = x * x
+    y2 = y * y
+    z2 = z * z
+    w2 = w * w
+
+    xy = x * y
+    zw = z * w
+    xz = x * z
+    yw = y * w
+    yz = y * z
+    xw = x * w
+
+    dcm = np_.empty((3, 3))
+
+    dcm[0, 0] = x2 - y2 - z2 + w2
+    dcm[1, 0] = 2 * (xy + zw)
+    dcm[2, 0] = 2 * (xz - yw)
+
+    dcm[0, 1] = 2 * (xy - zw)
+    dcm[1, 1] = - x2 + y2 - z2 + w2
+    dcm[2, 1] = 2 * (yz + xw)
+
+    dcm[0, 2] = 2 * (xz + yw)
+    dcm[1, 2] = 2 * (yz - xw)
+    dcm[2, 2] = - x2 - y2 + z2 + w2
+
+    return dcm
+
+
+def steps(start: '_pose.Pose',
+          end: '_pose.Pose',
+          step: Union[Num, Vector]):
+    # get an array
+    step = np_.asarray(step)
+
+    # convert scalar arrays into vectorial arrays
+    if step.ndim == 0:
+        step = np_.asarray([step])
+
+    # [pos, rot] to [pos, pos, pos, rot, rot, rot]
+    if step.size == 2:
+        step = np_.hstack((
+            np_.repeat(step[0], 3, axis=0),
+            np_.repeat(step[1], 3, axis=0),
+        ))
+
+    # make sure the number of steps is 6 i.e., one per spatial degree of freedom
+    if step.size != 6:
+        step = np_.repeat(step, np_.ceil(6 / step.size))[0:6]
+
+    # differences in position
+    diff_pos = end.linear.position - start.linear.position
+
+    # difference in orientation parametrization: note that we have to make
+    # sure both poses are using the same sequence when getting their Euler
+    # angles, which is why we have that `old_sequence` thing in there
+    old_sequence = end.angular.sequence
+    end.angular.sequence = start.angular.sequence
+    diff_rot = end.angular.euler - start.angular.euler
+    end.angular.sequence = old_sequence
+
+    # delta in position to perform per step
+    deltas = np_.hstack((diff_pos, diff_rot)) / step
+    # set deltas to zero where no step is needed
+    deltas[np_.isclose(step, 0)] = 0
+
+    # how many iterations to perform per axis
+    iterations = step * np_.logical_not(
+        np_.hstack((np_.isclose(diff_pos, 0), np_.isclose(diff_rot, 0))))
+
+    # TODO make creation of rotation matrix faster as `from_euler` seems to
+    #  be a major bottleneck here
+    # return the generator object
+    return (_pose.Pose((
+        start.linear.position + deltas[0:3] * a[0:3],
+        from_euler(start.angular.sequence,
+                   start.angular.euler + deltas[3:6] * a[3:6])
+    )) for a in itertools.product(
+        *(range(0, iterations[k] + 1) for k in range(0, 6))
+    ))
 
 
 def interval(pose: '_pose.Pose',
