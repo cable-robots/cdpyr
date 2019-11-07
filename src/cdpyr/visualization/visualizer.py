@@ -1,6 +1,7 @@
-from typing import AnyStr, Callable, Dict
 import itertools
+from typing import AnyStr, Callable, Dict
 
+import numpy as _np
 from abc import ABC, abstractmethod
 
 from cdpyr.geometry import (
@@ -246,3 +247,8 @@ class Visualizer(ABC):
 
             for component, style in zip(components, styles):
                 self.render(component, *args, **style)
+
+    def _rgb2RGB(self, rgb: Vector):
+        rgb = _np.asarray(rgb)
+
+        return rgb * 255
