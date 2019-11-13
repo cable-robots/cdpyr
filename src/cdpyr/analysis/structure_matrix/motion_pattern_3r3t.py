@@ -10,12 +10,11 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class MotionPattern3R3T(_algorithm.Algorithm):
-    def evaluate(self,
-                 platform: '_platform.Platform',
-                 pose: '_pose.Pose',
-                 directions: Matrix):
+    def _evaluate(self,
+                  platform: '_platform.Platform',
+                  pose: '_pose.Pose',
+                  directions: Matrix):
         return {
-            'pose':   pose,
             'matrix': _np.vstack(
                 (
                     directions,

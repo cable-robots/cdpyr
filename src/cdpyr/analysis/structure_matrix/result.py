@@ -1,3 +1,5 @@
+from typing import Union
+
 import numpy as _np
 from magic_repr import make_repr
 from scipy.linalg import null_space
@@ -14,9 +16,9 @@ class Result(_result.Result):
     _matrix: Matrix
     _kernel: Matrix
 
-    def __init__(self, pose: '_pose.Pose', matrix: Matrix):
+    def __init__(self, pose: '_pose.Pose', matrix: Union[Matrix, 'Result']):
         super().__init__(pose)
-        self._matrix = matrix
+        self._matrix = matrix.matrix if isinstance(matrix, Result) else matrix
         self._kernel = None
 
     @property
