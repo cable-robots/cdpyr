@@ -4,6 +4,9 @@ from scipy.spatial.transform import Rotation
 
 import cdpyr
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 @pytest.fixture
 def robot_1t():

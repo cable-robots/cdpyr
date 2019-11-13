@@ -101,7 +101,7 @@ class PoseTestSuite(object):
         assert acc.shape == (3,)
         assert acc == pytest.approx(rand_vector_3d)
 
-        # access through the "position" property and assert
+        # access through the "acceleration" property and assert
         acc, _ = rand_pose_3d.acceleration
         assert isinstance(acc, np.ndarray)
         assert acc.ndim == 1
@@ -110,7 +110,7 @@ class PoseTestSuite(object):
 
     def test_getset_angular_position(self, rand_pose_3d: cdpyr.motion.Pose,
                                      rand_rot):
-        # access through the "velocity" property and assert
+        # access through the "angular" property and assert
         dcm = rand_pose_3d.angular.dcm
         assert isinstance(dcm, np.ndarray)
         assert dcm.ndim == 2
@@ -122,9 +122,9 @@ class PoseTestSuite(object):
         assert dcm.ndim == 2
         assert dcm.shape == (3, 3)
 
-        # set property through the "velocity" property
+        # set property through the "angular" property
         rand_pose_3d.angular.dcm = rand_rot
-        # access through the "velocity" property and assert
+        # access through the "angular" property and assert
         dcm = rand_pose_3d.angular.dcm
         assert isinstance(dcm, np.ndarray)
         assert dcm.ndim == 2
@@ -140,7 +140,7 @@ class PoseTestSuite(object):
 
     def test_getset_angular_velocity(self, rand_pose_3d: cdpyr.motion.Pose,
                                      rand_vector_3d):
-        # access through the "velocity" property and assert
+        # access through the "angular_velocity" property and assert
         vel = rand_pose_3d.angular.angular_velocity
         assert isinstance(vel, np.ndarray)
         assert vel.ndim == 1
