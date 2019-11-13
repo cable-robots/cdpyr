@@ -54,6 +54,15 @@ class RotationMatrixTestSuite(object):
             (0, 0, 1)
         )))
 
+    def test_rand_rot_1r(self, rand_rot_1r):
+        rotation_matrix(rand_rot_1r, 'rand_rot_1r')
+
+    def test_rand_rot_2r(self, rand_rot_2r):
+        rotation_matrix(rand_rot_2r, 'rand_rot_2r')
+
+    def test_rand_rot_3r(self, rand_rot_3r):
+        rotation_matrix(rand_rot_3r, 'rand_rot_3r')
+
 
 if __name__ == "__main__":
     pytest.main()
