@@ -33,7 +33,8 @@ class Frame(object):
 
     @anchors.setter
     def anchors(self, anchors: Union[
-        '_frame_anchor.FrameAnchorList', Sequence['_frame_anchor.FrameAnchor']]):
+        '_frame_anchor.FrameAnchorList', Sequence[
+            '_frame_anchor.FrameAnchor']]):
         if not isinstance(anchors, _frame_anchor.FrameAnchorList):
             anchors = _frame_anchor.FrameAnchorList(anchors)
 

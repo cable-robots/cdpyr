@@ -241,7 +241,7 @@ class Standard(_algorithm.Algorithm):
 
         # use center of bounding box as initial estimate
         estimate[0:robot.platforms[0].dof_translation] = 0.5 * (
-                radius_high + radius_low)
+            radius_high + radius_low)
 
         return estimate
 

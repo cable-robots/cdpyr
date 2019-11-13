@@ -45,7 +45,8 @@ class Anchor(object):
         # initialize and set linear property if not given by the user
         if linear is None:
             self.linear = _linear.Linear()
-            self.position = position if position is not None else [0.0, 0.0, 0.0]
+            self.position = position if position is not None else [0.0, 0.0,
+                                                                   0.0]
         # set linear transformation to user-defined value
         else:
             self.linear = linear
