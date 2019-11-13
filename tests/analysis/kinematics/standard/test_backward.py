@@ -6,7 +6,7 @@ from cdpyr.motion import Pose
 from cdpyr.robot import Robot
 
 
-class StandardKinematicsTestSuite(object):
+class StandardKinematicsBackwardTestSuite(object):
 
     def test_motion_pattern_1t(self,
                                robot_1t: Robot,
@@ -35,21 +35,6 @@ class StandardKinematicsTestSuite(object):
                pytest.approx(
                    frame_anchor[0:1, :])
 
-        res_forward = ik_standard.forward(robot_1t, res_backward.joints)
-        # print(rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        # print(rand_pose.angular.quaternion)
-
-        assert res_forward.pose.linear.position == pytest.approx(
-            rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        assert res_forward.pose.angular.quaternion == pytest.approx(rand_pose.angular.quaternion, rel=1e-4, abs=1e-4)
-        # assert res_forward.pose.angular.dcm == pytest.approx(
-        #     rand_pose.angular.dcm, rel=1e-4, abs=1e-6)
-        assert res_forward.lengths.ndim == 1
-        assert res_forward.lengths.shape == (robot_1t.num_kinematic_chains,)
-        assert (0 <= res_forward.lengths).all()
-        assert res_forward.directions.shape == (
-            1, robot_1t.num_kinematic_chains)
-
     def test_motion_pattern_2t(self,
                                robot_2t: Robot,
                                rand_pose_2t: Pose,
@@ -76,21 +61,6 @@ class StandardKinematicsTestSuite(object):
                pytest.approx(
                    frame_anchor[0:2, :])
 
-        res_forward = ik_standard.forward(robot_2t, res_backward.joints)
-        # print(rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        # print(rand_pose.angular.quaternion)
-
-        assert res_forward.pose.linear.position == pytest.approx(
-            rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        # assert res_forward.pose.angular.quaternion == pytest.approx(rand_pose.angular.quaternion, rel=1e-4, abs=1e-4)
-        # assert res_forward.pose.angular.dcm == pytest.approx(
-        #     rand_pose.angular.dcm, rel=1e-4, abs=1e-6)
-        assert res_forward.lengths.ndim == 1
-        assert res_forward.lengths.shape == (robot_2t.num_kinematic_chains,)
-        assert (0 <= res_forward.lengths).all()
-        assert res_forward.directions.shape == (
-            2, robot_2t.num_kinematic_chains)
-
     def test_motion_pattern_3t(self,
                                robot_3t: Robot,
                                rand_pose_3t: Pose,
@@ -115,21 +85,6 @@ class StandardKinematicsTestSuite(object):
         assert rand_pose.linear.position[0:3,
                np.newaxis] + res_backward.lengths * res_backward.directions == \
                pytest.approx(frame_anchor[0:3, :])
-
-        res_forward = ik_standard.forward(robot_3t, res_backward.joints)
-        # print(rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        # print(rand_pose.angular.quaternion)
-
-        assert res_forward.pose.linear.position == pytest.approx(
-            rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        assert res_forward.pose.angular.quaternion == pytest.approx(rand_pose.angular.quaternion, rel=1e-4, abs=1e-4)
-        # assert res_forward.pose.angular.dcm == pytest.approx(
-        #     rand_pose.angular.dcm, rel=1e-4, abs=1e-6)
-        assert res_forward.lengths.ndim == 1
-        assert res_forward.lengths.shape == (robot_3t.num_kinematic_chains,)
-        assert (0 <= res_forward.lengths).all()
-        assert res_forward.directions.shape == (
-            3, robot_3t.num_kinematic_chains)
 
     def test_motion_pattern_1r2t(self,
                                  robot_1r2t: Robot,
@@ -163,21 +118,6 @@ class StandardKinematicsTestSuite(object):
                pytest.approx(
                    frame_anchor[0:2, :])
 
-        res_forward = ik_standard.forward(robot_1r2t, res_backward.joints)
-        # print(rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        # print(rand_pose.angular.quaternion)
-
-        assert res_forward.pose.linear.position == pytest.approx(
-            rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        assert res_forward.pose.angular.quaternion == pytest.approx(rand_pose.angular.quaternion, rel=1e-4, abs=1e-4)
-        # assert res_forward.pose.angular.dcm == pytest.approx(
-        #     rand_pose.angular.dcm, rel=1e-4, abs=1e-6)
-        assert res_forward.lengths.ndim == 1
-        assert res_forward.lengths.shape == (robot_1r2t.num_kinematic_chains,)
-        assert (0 <= res_forward.lengths).all()
-        assert res_forward.directions.shape == (
-            2, robot_1r2t.num_kinematic_chains)
-
     def test_motion_pattern_2r3t(self,
                                  robot_2r3t: Robot,
                                  rand_pose_2r3t: Pose,
@@ -209,21 +149,6 @@ class StandardKinematicsTestSuite(object):
                pytest.approx(
                    frame_anchor)
 
-        res_forward = ik_standard.forward(robot_2r3t, res_backward.joints)
-        # print(rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        # print(rand_pose.angular.quaternion)
-
-        assert res_forward.pose.linear.position == pytest.approx(
-            rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        assert res_forward.pose.angular.quaternion == pytest.approx(rand_pose.angular.quaternion, rel=1e-4, abs=1e-4)
-        # assert res_forward.pose.angular.dcm == pytest.approx(
-        #     rand_pose.angular.dcm, rel=1e-4, abs=1e-6)
-        assert res_forward.lengths.ndim == 1
-        assert res_forward.lengths.shape == (robot_2r3t.num_kinematic_chains,)
-        assert (0 <= res_forward.lengths).all()
-        assert res_forward.directions.shape == (
-            3, robot_2r3t.num_kinematic_chains)
-
     def test_motion_pattern_3r3t(self,
                                  robot_3r3t: Robot,
                                  rand_pose_3r3t: Pose,
@@ -254,21 +179,6 @@ class StandardKinematicsTestSuite(object):
                + res_backward.lengths * res_backward.directions == \
                pytest.approx(
                    frame_anchor)
-
-        res_forward = ik_standard.forward(robot_3r3t, res_backward.joints)
-        # print(rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        # print(rand_pose.angular.quaternion)
-
-        assert res_forward.pose.linear.position == pytest.approx(
-            rand_pose.linear.position, rel=1e-4, abs=1e-4)
-        assert res_forward.pose.angular.quaternion == pytest.approx(rand_pose.angular.quaternion, rel=1e-4, abs=1e-4)
-        # assert res_forward.pose.angular.dcm == pytest.approx(
-        #     rand_pose.angular.dcm, rel=1e-4, abs=1e-6)
-        assert res_forward.lengths.ndim == 1
-        assert res_forward.lengths.shape == (robot_3r3t.num_kinematic_chains,)
-        assert (0 <= res_forward.lengths).all()
-        assert res_forward.directions.shape == (
-            3, robot_3r3t.num_kinematic_chains)
 
 
 if __name__ == "__main__":
