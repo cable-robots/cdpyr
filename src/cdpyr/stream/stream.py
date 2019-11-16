@@ -33,19 +33,22 @@ class Stream(object):
         # first, we will encode the object into a string
         s = self.encodes(o, *args, **kwargs)
 
+        # then we will try to write it to the file
         try:
             bytes_written = f.write(s)
         except AttributeError:
             with open(f, 'w') as f_:
                 bytes_written = f_.write(s)
         finally:
-            return bytes_written > 0
+            return bytes_written != 0
 
     def decode(self, f: Union[AnyStr, IO], *args, **kwargs):
         """
 
         :type f: IO File-like object to read and decode data from
         """
+
+        # let's write to the given file object
         try:
             s = f.readlines()
         except AttributeError:

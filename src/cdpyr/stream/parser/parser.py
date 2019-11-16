@@ -9,7 +9,7 @@ __email__ = "p.tempel@tudelft.nl"
 class Parser(ABC):
 
     @abstractmethod
-    def encode(self, obj: object, *args, **kwargs) -> Sequence[AnyStr]:
+    def encode(self, obj: object, *args, **kwargs) -> AnyStr:
         raise NotImplementedError()
 
     @abstractmethod
