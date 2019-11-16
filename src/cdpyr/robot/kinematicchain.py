@@ -73,7 +73,8 @@ class KinematicChain(BaseObject):
         return self._platform_anchor
 
     @platform_anchor.setter
-    def platform_anchor(self, anchor: Union['_platform.Platform', Num]):
+    def platform_anchor(self,
+                        anchor: Union['_platform_anchor.PlatformAnchor', Num]):
         self._platform_anchor = anchor
 
     @platform_anchor.deleter
