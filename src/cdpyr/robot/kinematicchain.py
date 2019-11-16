@@ -112,7 +112,7 @@ class KinematicChain(BaseObject):
 
 class KinematicChainList(UserList, BaseObject):
 
-    def __init__(self, data=None):
+    def __init__(self, initlist=None):
         super().__init__()
         # We only support unique kinematic chains i.e., one cable may only be
         # attached to one winch and one platform anchor at a time. That's why
