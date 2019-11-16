@@ -35,14 +35,15 @@ class Platform(BaseObject):
                  inertia: Optional['_inertia.Inertia'] = None,
                  center_of_gravity: Optional[Vector] = None,
                  center_of_linkage: Optional[Vector] = None,
-                 name: str = None
+                 name: str = None,
+                 pose: '_pose.Pose' = None
                  ):
         self.anchors = anchors or []
         self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]
         self.center_of_linkage = center_of_linkage or [0.0, 0.0, 0.0]
         self.motion_pattern = motion_pattern
         self.inertia = inertia if inertia is not None else _inertia.Inertia()
-        self.pose = _pose.Pose()
+        self.pose = pose if pose is not None else _pose.Pose()
         self.name = name or 'default'
 
     @property
