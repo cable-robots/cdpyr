@@ -2,11 +2,13 @@ from collections import UserList
 
 from magic_repr import make_repr
 
+from cdpyr.mixin.base_object import BaseObject
+
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class PoseList(UserList):
+class PoseList(UserList, BaseObject):
 
     @property
     def time(self):

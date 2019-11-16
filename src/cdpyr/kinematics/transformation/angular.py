@@ -5,13 +5,14 @@ from magic_repr import make_repr
 from scipy.spatial.transform import Rotation
 
 from cdpyr import validator as _validator
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Angular(object):
+class Angular(BaseObject):
     _angular_rotation: Rotation = Rotation.from_quat([0., 0., 0., 1.])
     _angular_velocity: np_.ndarray = np_.asarray((0., 0., 0.))
     _angular_acceleration: np_.ndarray = np_.asarray((0., 0., 0.))

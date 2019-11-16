@@ -3,13 +3,14 @@ from typing import Optional, Sequence, Union
 import numpy as np_
 from magic_repr import make_repr
 
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot.anchor import frame_anchor as _frame_anchor
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Frame(object):
+class Frame(BaseObject):
     _anchors: '_frame_anchor.FrameAnchorList'
 
     def __init__(self,

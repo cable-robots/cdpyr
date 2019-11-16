@@ -6,16 +6,17 @@ from magic_repr import make_repr
 from cdpyr.geometry import geometry as _geometry
 from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.mechanics import inertia as _inertia
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Pulley(object):
+class Pulley(BaseObject):
+    _angular: '_angular.Angular'
     _geometry: '_geometry.Geometry'
     _inertia: '_inertia.Inertia'
-    _angular: '_angular.Angular'
 
     def __init__(self,
                  geometry: Optional['_geometry.Geometry'] = None,

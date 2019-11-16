@@ -7,6 +7,7 @@ from magic_repr import make_repr
 
 from cdpyr import validator as _validator
 from cdpyr.mechanics import inertia as _inertia
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import motion_pattern as _motion_pattern
 from cdpyr.robot.anchor import platform_anchor as _platform_anchor
@@ -16,7 +17,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Platform(object):
+class Platform(BaseObject):
     _anchors: '_platform_anchor.PlatformAnchorList'
     _center_of_gravity: 'np_.ndarray'
     _center_of_linkage: 'np_.ndarray'

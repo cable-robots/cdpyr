@@ -6,13 +6,14 @@ from colour import Color
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Cable(object):
+class Cable(BaseObject):
     _breaking_load: Num
     _color: Color
     _diameter: Num

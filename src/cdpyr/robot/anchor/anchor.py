@@ -9,13 +9,14 @@ from cdpyr.kinematics.transformation import (
     angular as _angular,
     linear as _linear,
 )
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Anchor(object):
+class Anchor(BaseObject):
     _linear: '_linear.Linear'
     _angular: '_angular.Angular'
 
@@ -152,7 +153,7 @@ class Anchor(object):
     )
 
 
-class AnchorList(UserList, ABC):
+class AnchorList(UserList, ABC, BaseObject):
     data: Sequence[Anchor]
 
     @property

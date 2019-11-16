@@ -8,13 +8,14 @@ from cdpyr.kinematics.transformation import (
     homogenous as _homogenous,
     linear as _linear,
 )
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Pose(object):
+class Pose(BaseObject):
     _linear: '_linear.Linear'
     _angular: '_angular.Angular'
     _time: Num

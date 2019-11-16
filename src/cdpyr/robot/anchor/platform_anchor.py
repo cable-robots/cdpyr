@@ -2,13 +2,14 @@ from typing import Sequence
 
 from magic_repr import make_repr
 
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot.anchor import anchor as _anchor
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class PlatformAnchor(_anchor.Anchor):
+class PlatformAnchor(_anchor.Anchor, BaseObject):
 
     def __init__(self,
                  *args,
@@ -22,7 +23,7 @@ class PlatformAnchor(_anchor.Anchor):
     )
 
 
-class PlatformAnchorList(_anchor.AnchorList):
+class PlatformAnchorList(_anchor.AnchorList, BaseObject):
     data: Sequence[PlatformAnchor]
 
     pass

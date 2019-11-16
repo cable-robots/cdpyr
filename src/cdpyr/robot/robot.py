@@ -2,6 +2,7 @@ from typing import AnyStr, Dict, List, Optional, Sequence, Tuple, Union
 
 from magic_repr import make_repr
 
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot import (
     cable as _cable,
     frame as _frame,
@@ -17,7 +18,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Robot(object):
+class Robot(BaseObject):
     _name: AnyStr
     _frame: '_frame.Frame'
     _platforms: '_platform.PlatformList'

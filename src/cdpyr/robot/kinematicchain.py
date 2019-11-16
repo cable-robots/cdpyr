@@ -3,6 +3,7 @@ from typing import Sequence, Union
 
 from magic_repr import make_repr
 
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot import (cable as _cable, platform as _platform)
 from cdpyr.robot.anchor import (
     frame_anchor as _frame_anchor,
@@ -14,7 +15,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class KinematicChain(object):
+class KinematicChain(BaseObject):
     _cable: '_cable.Cable'
     _platform: '_platform.Platform'
     _frame_anchor: '_frame_anchor.FrameAnchor'

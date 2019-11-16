@@ -4,15 +4,16 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
-from cdpyr.typing import Num, Vector
+from cdpyr.mixin.base_object import BaseObject
+from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Gearbox(object):
-    _ratio: Vector
-    _moment_of_inertia: Num
+class Gearbox(BaseObject):
+    _inertia: Num
+    _ratio: Num
 
     def __init__(self,
                  ratio: Optional[Num] = None,

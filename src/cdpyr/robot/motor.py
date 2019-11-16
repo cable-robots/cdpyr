@@ -4,17 +4,18 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Motor(object):
-    _torques: dict
-    _moment_of_inertia: Num
-    _rated_speed: Num
+class Motor(BaseObject):
+    _inertia: Num
     _rated_power: Num
+    _rated_speed: Num
+    _torques: dict
 
     def __init__(self,
                  torques: Optional[dict] = None,

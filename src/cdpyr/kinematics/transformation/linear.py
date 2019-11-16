@@ -4,13 +4,14 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Linear(object):
+class Linear(BaseObject):
     _position: np_.ndarray = np_.asarray((0., 0., 0.))
     _velocity: np_.ndarray = np_.asarray((0., 0., 0.))
     _acceleration: np_.ndarray = np_.asarray((0., 0., 0.))

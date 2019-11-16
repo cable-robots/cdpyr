@@ -4,13 +4,14 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Inertia(object):
+class Inertia(BaseObject):
     _linear: np_.ndarray
     _angular: np_.ndarray
 

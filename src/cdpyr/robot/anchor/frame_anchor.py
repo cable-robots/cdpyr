@@ -2,6 +2,7 @@ from typing import Optional, Sequence
 
 from magic_repr import make_repr
 
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot import drivetrain as _drivetrain, pulley as _pulley
 from cdpyr.robot.anchor import anchor as _anchor
 
@@ -9,7 +10,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class FrameAnchor(_anchor.Anchor):
+class FrameAnchor(_anchor.Anchor, BaseObject):
     _pulley: '_pulley.Pulley'
     _drivetrain: '_drivetrain.DriveTrain'
 

@@ -4,13 +4,14 @@ from magic_repr import make_repr
 
 from cdpyr.geometry import geometry as _geometry
 from cdpyr.mechanics import inertia as _inertia
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Drum(object):
+class Drum(BaseObject):
     _geometry: '_geometry.Geometry'
     _inertia: '_inertia.Inertia'
 
