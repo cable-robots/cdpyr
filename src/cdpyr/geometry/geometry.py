@@ -2,17 +2,21 @@ from abc import ABC, abstractmethod
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Geometry(ABC):
+class Geometry(ABC, BaseObject):
     _mass: float
 
+    def __init__(self, mass: Num):
+        self.mass = mass
+
     @abstractmethod
-    def moment_of_inertia(self):
+    def inertia(self):
         raise NotImplementedError('method not implemented by child class.')
 
     @property

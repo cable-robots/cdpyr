@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np_
 from magic_repr import make_repr
 
@@ -15,9 +13,11 @@ class Sphere(Geometry):
     _diameter: float
 
     def __init__(self,
-                 diameter: Optional[Num] = None,
+                 mass: Num,
+                 diameter: Num
                  ):
-        self.diameter = diameter or 0
+        super().__init__(mass)
+        self.diameter = diameter
 
     @property
     def diameter(self):
@@ -47,7 +47,7 @@ class Sphere(Geometry):
     def radius(self):
         del self.diameter
 
-    def moment_of_inertia(self):
+    def inertia(self):
         mass = self.mass
         rs = self.radius ** 2.0
 

@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Tuple
 
 import numpy as np_
 from magic_repr import make_repr
@@ -17,13 +17,15 @@ class Tube(Geometry):
     _height: float
 
     def __init__(self,
-                 inner_diameter: Optional[Num] = None,
-                 outer_diameter: Optional[Num] = None,
-                 height: Optional[Num] = None
+                 mass: Num,
+                 inner_diameter: Num,
+                 outer_diameter: Num,
+                 height: Num
                  ):
-        self.inner_diameter = inner_diameter or 0
-        self.outer_diameter = outer_diameter or 0
-        self.height = height or 0
+        super().__init__(mass)
+        self.inner_diameter = inner_diameter
+        self.outer_diameter = outer_diameter
+        self.height = height
 
     @property
     def diameter(self):
@@ -119,7 +121,7 @@ class Tube(Geometry):
     def outer_radius(self):
         del self.outer_diameter
 
-    def moment_of_inertia(self):
+    def inertia(self):
         mass = self.mass
         ri = self.inner_radius
         ro = self.outer_radius

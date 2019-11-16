@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np_
 from magic_repr import make_repr
 
@@ -17,13 +15,15 @@ class Cuboid(Geometry):
     _depth: float
 
     def __init__(self,
-                 width: Optional[Num] = None,
-                 height: Optional[Num] = None,
-                 depth: Optional[Num] = None
+                 mass: Num,
+                 width: Num,
+                 height: Num,
+                 depth: Num
                  ):
-        self.width = width or 0
-        self.height = height or 0
-        self.depth = depth or 0
+        super().__init__(mass)
+        self.width = width
+        self.height = height
+        self.depth = depth
 
     @property
     def width(self):
@@ -67,7 +67,7 @@ class Cuboid(Geometry):
     def depth(self):
         del self._depth
 
-    def moment_of_inertia(self):
+    def inertia(self):
         mass = self.mass
         w = self.width
         d = self.depth
