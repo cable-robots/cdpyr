@@ -50,11 +50,27 @@ class Gearbox(BaseObject):
     def moment_of_inertia(self):
         del self._moment_of_inertia
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
 
-Gearbox.__repr__ = make_repr(
-    'ratio',
-    'moment_of_inertia'
-)
+        if self is other:
+            return True
+
+        return self.inertia == other.inertia and \
+               self.ratio == other.ratio
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.inertia, self.ratio))
+
+    __repr__ = make_repr(
+        'ratio',
+        'inertia'
+    )
+
 
 __all__ = [
     'Gearbox',

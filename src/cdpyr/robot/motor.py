@@ -161,6 +161,27 @@ class Motor(BaseObject):
     def max_torque(self):
         del self.peak_torque
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.inertia == other.inertia and \
+               self.rated_power == other.rated_power and \
+               self.rated_speed == other.rated_power and \
+               self.torques == other.torques
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.inertia,
+                     self.rated_power,
+                     self.rated_speed,
+                     self.torques))
+
     __repr__ = make_repr(
         'torques',
         'rated_power',

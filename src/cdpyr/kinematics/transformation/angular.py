@@ -238,6 +238,26 @@ class Angular(BaseObject):
     def angular_acceleration(self):
         del self._angular_acceleration
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return np_.allclose(self.quaternion, other.quaternion) and \
+               np_.allclose(self.angular_velocity, other.angular_velocity) and \
+               np_.allclose(self.angular_acceleration,
+                            other.angular_acceleration)
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.angular_acceleration.tostring(),
+                     self.angular_velocity.tostring(),
+                     self.quaternion.tostring()))
+
     __repr__ = make_repr(
         'dcm',
         'angular_velocity',

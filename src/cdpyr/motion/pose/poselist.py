@@ -42,6 +42,21 @@ class PoseList(UserList, BaseObject):
     def state(self):
         return (pose.state for pose in self.data)
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+
+        if self is other:
+            return True
+
+        return all(this == that for this, that in zip(self, other))
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(tuple(self.data))
+
     __repr__ = make_repr(
         'data'
     )

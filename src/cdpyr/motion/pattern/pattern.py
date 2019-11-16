@@ -128,14 +128,27 @@ class Pattern(BaseObject):
         else:  # no rotation, just linear motion
             return linear_inertia.dot(gravity)
 
+    def __hash__(self):
+        return hash((self.dof_rotation, self.dof_translation))
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.dof_translation == other.dof_translation and \
+               self.dof_rotation == other.dof_rotation
+
+    def __ne__(self, other):
+        return not self == other
+
     __repr__ = make_repr(
         'human',
         'dof_translation',
         'dof_rotation',
     )
-
-    def __hash__(self):
-        return hash(self.human)
 
 
 __all__ = [

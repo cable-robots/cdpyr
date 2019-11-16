@@ -144,6 +144,21 @@ class Anchor(BaseObject):
     def euler(self):
         del self.angular
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.linear == other.linear and \
+               self.angular == other.angular
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.angular, self.linear))
 
     __repr__ = make_repr(
         'position',
@@ -183,6 +198,21 @@ class AnchorList(UserList, ABC, BaseObject):
     @property
     def rotvec(self):
         return (anchor.rotvec for anchor in self.data)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return all(this == that for this, that in zip(self, other))
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(tuple(self.data))
 
 
 __all__ = [

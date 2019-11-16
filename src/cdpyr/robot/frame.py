@@ -53,6 +53,22 @@ class Frame(BaseObject):
     def ai(self):
         return np_.vstack([anchor.position for anchor in self.anchors]).T
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return all(
+            this == that for this, that in zip(self.anchors, other.anchors))
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self.anchors)
+
     __repr__ = make_repr(
         'anchors'
     )

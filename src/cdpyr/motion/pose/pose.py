@@ -161,33 +161,22 @@ class Pose(BaseObject):
         del self.linear.acceleration
         del self.angular.angular_acceleration
 
-    def __eq__(self, other: Union['Pose', object]):
-        try:
-            return np_.allclose(self.state, other.state) \
-                   and np_.allclose(self.time, other.time, equal_nan=True)
-        except AttributeError as AttributeE:
-            try:
-                return np_.allclose(self.state, np_.asarray(other))
-            except ValueError as ValueE:
-                return np_.allclose(np_.hstack((self.time, self.state)),
-                                    np_.asarray(other), equal_nan=True)
-            except TypeError as TypeE:
-                raise TypeError from None
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
 
-    def __ne__(self, other: Union['Pose', object]):
-        # if times differ => different poses
-        # if times are equal and states differ => different poses
-        try:
-            return not (np_.allclose(self.state, other.state)
-                        and np_.allclose(self.time, other.time, equal_nan=True))
-        except AttributeError as AttributeE:
-            try:
-                return not np_.allclose(self.state, np_.asarray(other))
-            except ValueError as ValueE:
-                return not np_.allclose(np_.hstack((self.time, self.state)),
-                                        np_.asarray(other), equal_nan=True)
-            except TypeError as TypeE:
-                raise TypeError from None
+        if self is other:
+            return True
+
+        return (self.time == other.time or self.time is other.time) and \
+               self.linear == other.linear and \
+               self.angular == other.angular
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.angular, self.linear, self.time))
 
     def __lt__(self, other: Union['Pose', object]):
         try:

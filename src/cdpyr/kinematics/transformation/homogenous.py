@@ -86,6 +86,22 @@ class Homogenous(BaseObject):
         # and return the transformed coordinates (only the actual coordinates)
         return self.matrix.dot(coordinates)[0:3]
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return np_.allclose(self.translation, other.translation) and \
+               np_.allclose(self.dcm, other.dcm)
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.dcm.tostring(), self.translation.tostring()))
+
     __repr__ = make_repr(
         'translation',
         'dcm',

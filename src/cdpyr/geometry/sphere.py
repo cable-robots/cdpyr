@@ -57,6 +57,13 @@ class Sphere(Geometry):
             rs
         ))
 
+    def __eq__(self, other):
+        return super().__eq__(other) and \
+               self.diameter == other.diameter
+
+    def __hash__(self):
+        return hash((self.diameter, self.mass))
+
     __repr__ = make_repr(
         'mass',
         'diameter',

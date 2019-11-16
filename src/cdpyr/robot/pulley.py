@@ -81,6 +81,23 @@ class Pulley(BaseObject):
     def dcm(self, dcm: Matrix):
         self.angular.dcm = dcm
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.angular == other.angular and \
+               self.geometry == other.geometry and \
+               self.inertia == other.inertia
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.angular, self.geometry, self.inertia))
+
     __repr__ = make_repr(
         'geometry',
         'inertia',

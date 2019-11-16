@@ -80,8 +80,26 @@ class KinematicChain(BaseObject):
     def platform_anchor(self):
         del self._platform_anchor
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
 
+        if self is other:
+            return True
 
+        return self.frame_anchor == other.frame_anchor and \
+               self.platform == other.platform and \
+               self.platform_anchor == other.platform_anchor and \
+               self.cable == other.cable
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.cable,
+                     self.frame_anchor,
+                     self.platform,
+                     self.platform_anchor))
 
     __repr__ = make_repr(
         'frame_anchor',
@@ -141,6 +159,18 @@ class KinematicChainList(UserList, BaseObject):
         cable = cable if isinstance(cable, Sequence) else [cable]
 
         return self.__class__(d for d in self.data if d.cable in cable)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return all(this == that for this, that in zip(self, other))
+
+    def __ne__(self, other):
+        return not self == other
 
     __repr__ = make_repr(
         'data'

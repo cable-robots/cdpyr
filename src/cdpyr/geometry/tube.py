@@ -135,6 +135,21 @@ class Tube(Geometry):
             6.0 * (r ** 2.0)
         ))
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return super().__eq__(other) and \
+               self.inner_diameter == other.inner_diameter and \
+               self.outer_diameter == other.outer_diameter and \
+               self.height == other.height
+
+    def __hash__(self):
+        return hash((self.height, self.inertia, self.outer_diameter, self.mass))
+
     __repr__ = make_repr(
         'mass',
         'inner_diameter',

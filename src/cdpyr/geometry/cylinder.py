@@ -76,6 +76,14 @@ class Cylinder(Geometry):
             6.0 * (r ** 2.0)
         ))
 
+    def __eq__(self, other):
+        return super().__eq__(other) and \
+               self.diameter == other.diameter and \
+               self.height == other.height
+
+    def __hash__(self):
+        return hash((self.diameter, self.height, self.mass))
+
     __repr__ = make_repr(
         'mass',
         'diameter',

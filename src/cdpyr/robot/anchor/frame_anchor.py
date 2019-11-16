@@ -48,7 +48,13 @@ class FrameAnchor(_anchor.Anchor, BaseObject):
     def drivetrain(self):
         del self._drivetrain
 
+    def __eq__(self, other):
+        return super().__eq__(other) and \
+               self.pulley == other.pulley and \
+               self.drivetrain == other.drivetrain
 
+    def __hash__(self):
+        return hash((self.angular, self.drivetrain, self.linear, self.pulley))
 
     __repr__ = make_repr(
         'position',
@@ -67,6 +73,18 @@ class FrameAnchorList(_anchor.AnchorList):
     @property
     def pulley(self):
         return (anchor.pulley for anchor in self.data)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return all(this == that for this, that in zip(self, other))
+
+    def __hash__(self):
+        return hash(tuple(self.data))
 
 
 __all__ = [

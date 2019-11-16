@@ -52,6 +52,22 @@ class Inertia(BaseObject):
 
         self._angular = inertia
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return np_.allclose(self.linear, other.linear) and \
+               np_.allclose(self.angular, other.angular)
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.angular.tostring(), self.linear.tostring()))
+
     __repr__ = make_repr(
         'linear',
         'angular'

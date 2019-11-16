@@ -163,8 +163,30 @@ class Cable(BaseObject):
     def viscosities(self):
         del self.modulus['viscosities']
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
 
+        if self is other:
+            return True
 
+        return self.breaking_load == other.breaking_load and \
+               self.color == other.color and \
+               self.diameter == other.diameter and \
+               self.material == other.material and \
+               self.modulus == other.modulus and \
+               self.name == other.name
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.breaking_load,
+                     self.color.get_hex(),
+                     self.diameter,
+                     self.material,
+                     frozenset(self.modulus.items()),
+                     self.name))
 
     __repr__ = make_repr(
         'name',
@@ -209,6 +231,21 @@ class CableList(UserList, BaseObject):
     @property
     def viscosities(self):
         return (cable.viscosities for cable in self.data)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return all(this == that for this, that in zip(self, other))
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(tuple(self.data))
 
     __repr__ = make_repr(
         'data'

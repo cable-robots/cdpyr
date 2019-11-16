@@ -79,6 +79,15 @@ class Cuboid(Geometry):
             w ** 2.0 + d ** 2.0,
         ))
 
+    def __eq__(self, other):
+        return super().__eq__(other) and \
+               self.width == other.width and \
+               self.height == other.height and \
+               self.depth == other.depth
+
+    def __hash__(self):
+        return hash((self.depth, self.height, self.mass, self.width))
+
     __repr__ = make_repr(
         'mass',
         'width',

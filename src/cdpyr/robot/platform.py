@@ -227,6 +227,33 @@ class Platform(BaseObject):
                                           dcm,
                                           self.center_of_gravity)
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.anchors == other.anchors and \
+               np_.allclose(self.center_of_gravity, other.center_of_gravity) and \
+               np_.allclose(self.center_of_linkage, other.center_of_linkage) and \
+               self.inertia == other.inertia and \
+               self.motion_pattern == other.motion_pattern and \
+               self.name == other.name and \
+               self.pose == other.pose
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.anchors,
+                     self.center_of_gravity.tostring(),
+                     self.center_of_linkage.tostring(),
+                     self.inertia,
+                     self.motion_pattern,
+                     self.name,
+                     self.pose))
+
     __repr__ = make_repr(
         'anchors',
         'center_of_gravity',
@@ -270,6 +297,18 @@ class PlatformList(UserList, BaseObject):
     @property
     def motion_pattern(self):
         return (platform.motion_pattern for platform in self.data)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return all(this == that for this, that in zip(self, other))
+
+    def __ne__(self, other):
+        return not self == other
 
     __repr__ = make_repr(
         'data'

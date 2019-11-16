@@ -51,6 +51,22 @@ class Drum(BaseObject):
     def inertia(self):
         del self.inertia
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.geometry == other.geometry and \
+               self.inertia == other.inertia
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.geometry, self.inertia))
+
     __repr__ = make_repr(
         'geometry',
         'inertia'

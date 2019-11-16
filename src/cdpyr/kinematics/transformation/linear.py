@@ -79,6 +79,25 @@ class Linear(BaseObject):
     def acceleration(self):
         del self._acceleration
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return np_.allclose(self.position, other.position) and \
+               np_.allclose(self.velocity, other.velocity) and \
+               np_.allclose(self.acceleration, other.acceleration)
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.acceleration.tostring(),
+                     self.position.tostring(),
+                     self.velocity.tostring()))
+
     __repr__ = make_repr(
         'position',
         'velocity',

@@ -220,6 +220,29 @@ class Robot(BaseObject):
     def can_rotate(self):
         return any(platform.can_rotate for platform in self.platforms)
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.cables == other.cables and \
+               self.frame == other.frame and \
+               self.kinematic_chains == other.kinematic_chains and \
+               self.name == other.name and \
+               self.platforms == other.platforms
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.cables,
+                     self.frame,
+                     self.kinematic_chains,
+                     self.name,
+                     self.platforms))
+
     __repr__ = make_repr(
         'name',
         'frame',

@@ -33,6 +33,21 @@ class Geometry(ABC, BaseObject):
     def mass(self):
         del self._mass
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.mass == other.mass
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self.mass)
+
     __repr__ = make_repr(
         'mass',
     )
