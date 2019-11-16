@@ -141,7 +141,10 @@ class Cable(BaseObject):
 
     @property
     def elasticities(self):
-        return self._modulus['elasticities']
+        try:
+            return self._modulus['elasticities']
+        except KeyError:
+            return None
 
     @elasticities.setter
     def elasticities(self, elasticities: Sequence[Num]):
@@ -153,7 +156,10 @@ class Cable(BaseObject):
 
     @property
     def viscosities(self):
-        return self._modulus['viscosities']
+        try:
+            return self._modulus['viscosities']
+        except KeyError:
+            return None
 
     @viscosities.setter
     def viscosities(self, viscosities: Sequence[Num]):
