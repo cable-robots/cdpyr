@@ -78,12 +78,12 @@ class Linear(object):
     def acceleration(self):
         del self._acceleration
 
+    __repr__ = make_repr(
+        'position',
+        'velocity',
+        'acceleration'
+    )
 
-Linear.__repr__ = make_repr(
-    'position',
-    'velocity',
-    'acceleration'
-)
 
 __all__ = [
     'Linear',

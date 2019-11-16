@@ -60,14 +60,14 @@ class Result(_result.Result):
     def wrap(self):
         return self._wrap
 
+    __repr__ = make_repr(
+        'algorithm',
+        'pose',
+        'joints',
+        'swivel',
+        'wrap',
+    )
 
-Result.__repr__ = make_repr(
-    'algorithm',
-    'pose',
-    'joints',
-    'swivel',
-    'wrap',
-)
 
 __all__ = [
     'Result',

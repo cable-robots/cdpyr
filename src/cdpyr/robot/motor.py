@@ -160,13 +160,13 @@ class Motor(object):
     def max_torque(self):
         del self.peak_torque
 
+    __repr__ = make_repr(
+        'torques',
+        'rated_power',
+        'rated_speed',
+        'inertia'
+    )
 
-Motor.__repr__ = make_repr(
-    'torques',
-    'rated_power',
-    'rated_speed',
-    'moment_of_inertia'
-)
 
 __all__ = [
     'Motor',

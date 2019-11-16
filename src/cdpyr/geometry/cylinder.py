@@ -76,12 +76,12 @@ class Cylinder(Geometry):
             6.0 * (r ** 2.0)
         ))
 
+    __repr__ = make_repr(
+        'mass',
+        'diameter',
+        'height',
+    )
 
-Cylinder.__repr__ = make_repr(
-    'mass',
-    'diameter',
-    'height',
-)
 
 __all__ = [
     'Cylinder',

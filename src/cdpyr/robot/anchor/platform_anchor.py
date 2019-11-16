@@ -16,17 +16,16 @@ class PlatformAnchor(_anchor.Anchor):
         _anchor.Anchor.__init__(self, *args, **kwargs)
 
 
-PlatformAnchor.__repr__ = make_repr(
-    'position',
-    'dcm'
-)
+    __repr__ = make_repr(
+        'position',
+        'dcm'
+    )
 
 
 class PlatformAnchorList(_anchor.AnchorList):
     data: Sequence[PlatformAnchor]
 
     pass
-
 
 __all__ = [
     'PlatformAnchor',

@@ -48,13 +48,13 @@ class FrameAnchor(_anchor.Anchor):
         del self._drivetrain
 
 
-FrameAnchor.__repr__ = make_repr(
-    'position',
-    'dcm',
-    'pulley',
-    'drivetrain',
-)
 
+    __repr__ = make_repr(
+        'position',
+        'dcm',
+        'pulley',
+        'drivetrain',
+    )
 
 class FrameAnchorList(_anchor.AnchorList):
     data: Sequence[FrameAnchor]

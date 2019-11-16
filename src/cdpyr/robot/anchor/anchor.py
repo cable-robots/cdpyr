@@ -144,12 +144,12 @@ class Anchor(object):
         del self.angular
 
 
-Anchor.__repr__ = make_repr(
-    'position',
-    'dcm',
-    'quaternion',
-    'rotvec'
-)
+    __repr__ = make_repr(
+        'position',
+        'dcm',
+        'quaternion',
+        'rotvec'
+    )
 
 
 class AnchorList(UserList, ABC):

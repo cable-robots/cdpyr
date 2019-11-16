@@ -237,12 +237,12 @@ class Angular(object):
     def angular_acceleration(self):
         del self._angular_acceleration
 
+    __repr__ = make_repr(
+        'dcm',
+        'angular_velocity',
+        'angular_acceleration'
+    )
 
-Angular.__repr__ = make_repr(
-    'dcm',
-    'angular_velocity',
-    'angular_acceleration'
-)
 
 __all__ = [
     'Angular',

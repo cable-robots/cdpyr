@@ -29,10 +29,10 @@ class Geometry(ABC):
     def mass(self):
         del self._mass
 
+    __repr__ = make_repr(
+        'mass',
+    )
 
-Geometry.__repr__ = make_repr(
-    'mass',
-)
 
 __all__ = [
     'Geometry',

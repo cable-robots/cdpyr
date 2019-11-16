@@ -85,11 +85,11 @@ class Homogenous(object):
         # and return the transformed coordinates (only the actual coordinates)
         return self.matrix.dot(coordinates)[0:3]
 
+    __repr__ = make_repr(
+        'translation',
+        'dcm',
+    )
 
-Homogenous.__repr__ = make_repr(
-    'translation',
-    'dcm',
-)
 
 __all__ = [
     'Homogenous',

@@ -57,11 +57,11 @@ class Sphere(Geometry):
             rs
         ))
 
+    __repr__ = make_repr(
+        'mass',
+        'diameter',
+    )
 
-Sphere.__repr__ = make_repr(
-    'mass',
-    'diameter',
-)
 
 __all__ = [
     'Sphere',

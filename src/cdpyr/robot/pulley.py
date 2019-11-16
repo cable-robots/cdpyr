@@ -80,12 +80,12 @@ class Pulley(object):
     def dcm(self, dcm: Matrix):
         self.angular.dcm = dcm
 
+    __repr__ = make_repr(
+        'geometry',
+        'inertia',
+        'angular'
+    )
 
-Pulley.__repr__ = make_repr(
-    'geometry',
-    'inertia',
-    'angular'
-)
 
 __all__ = [
     'Pulley',

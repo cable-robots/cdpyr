@@ -79,13 +79,13 @@ class Cuboid(Geometry):
             w ** 2.0 + d ** 2.0,
         ))
 
+    __repr__ = make_repr(
+        'mass',
+        'width',
+        'depth',
+        'height',
+    )
 
-Cuboid.__repr__ = make_repr(
-    'mass',
-    'width',
-    'depth',
-    'height',
-)
 
 __all__ = [
     'Cuboid',

@@ -133,13 +133,13 @@ class Tube(Geometry):
             6.0 * (r ** 2.0)
         ))
 
+    __repr__ = make_repr(
+        'mass',
+        'inner_diameter',
+        'outer_diameter',
+        'height',
+    )
 
-Tube.__repr__ = make_repr(
-    'mass',
-    'inner_diameter',
-    'outer_diameter',
-    'height',
-)
 
 __all__ = [
     'Tube',

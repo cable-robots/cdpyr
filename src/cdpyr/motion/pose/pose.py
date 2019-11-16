@@ -224,13 +224,13 @@ class Pose(object):
             except TypeError as TypeE:
                 raise TypeError from None
 
+    __repr__ = make_repr(
+        'time',
+        'position',
+        'velocity',
+        'acceleration'
+    )
 
-Pose.__repr__ = make_repr(
-    'time',
-    'position',
-    'velocity',
-    'acceleration'
-)
 
 __all__ = [
     'Pose',

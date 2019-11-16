@@ -40,10 +40,10 @@ class PoseList(UserList):
     def state(self):
         return (pose.state for pose in self.data)
 
+    __repr__ = make_repr(
+        'data'
+    )
 
-PoseList.__repr__ = make_repr(
-    'data'
-)
 
 __all__ = [
     'PoseList',

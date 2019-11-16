@@ -56,7 +56,7 @@ class Result(_result.Result):
         return _np.linalg.pinv(self._matrix)
 
 
-Result.__repr__ = make_repr(
+    __repr__ = make_repr(
     'pose',
     'matrix',
     'kernel',

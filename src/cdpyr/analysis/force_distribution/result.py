@@ -39,12 +39,11 @@ class Result(_result.Result):
     def wrench(self):
         return self._wrench
 
-
-Result.__repr__ = make_repr(
-    'algorithm',
-    'pose',
-    'distribution',
-)
+    __repr__ = make_repr(
+        'algorithm',
+        'pose',
+        'distribution',
+    )
 
 __all__ = [
     'Result',

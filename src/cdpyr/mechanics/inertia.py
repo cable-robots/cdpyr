@@ -51,11 +51,11 @@ class Inertia(object):
 
         self._angular = inertia
 
+    __repr__ = make_repr(
+        'linear',
+        'angular'
+    )
 
-Inertia.__repr__ = make_repr(
-    'linear',
-    'angular'
-)
 
 __all__ = [
     'Inertia',

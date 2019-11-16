@@ -62,12 +62,12 @@ class DriveTrain(object):
     def motor(self):
         del self._motor
 
+    __repr__ = make_repr(
+        'motor',
+        'gearbox',
+        'drum'
+    )
 
-DriveTrain.__repr__ = make_repr(
-    'motor',
-    'gearbox',
-    'drum'
-)
 
 __all__ = [
     'DriveTrain',

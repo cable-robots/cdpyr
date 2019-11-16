@@ -16,10 +16,9 @@ class Result(ABC):
     def pose(self):
         return self._pose
 
-
-Result.__repr__ = make_repr(
-    'pose'
-)
+    __repr__ = make_repr(
+        'pose'
+    )
 
 __all__ = [
     'Result',

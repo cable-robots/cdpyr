@@ -50,11 +50,11 @@ class Drum(object):
     def inertia(self):
         del self.inertia
 
+    __repr__ = make_repr(
+        'geometry',
+        'inertia'
+    )
 
-Drum.__repr__ = make_repr(
-    'geometry',
-    'inertia'
-)
 
 __all__ = [
     'Drum',

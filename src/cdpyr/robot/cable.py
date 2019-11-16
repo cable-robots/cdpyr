@@ -163,17 +163,19 @@ class Cable(object):
         del self.modulus['viscosities']
 
 
-Cable.__repr__ = make_repr(
-    'name',
-    'material',
-    'diameter',
-    'modulus',
-    'color',
-    'breaking_load',
-)
 
 
-class CableList(UserList):
+    __repr__ = make_repr(
+        'name',
+        'material',
+        'diameter',
+        'modulus',
+        'color',
+        'breaking_load',
+    )
+
+
+class CableList(UserList, BaseObject):
 
     @property
     def name(self):
@@ -207,10 +209,10 @@ class CableList(UserList):
     def viscosities(self):
         return (cable.viscosities for cable in self.data)
 
+    __repr__ = make_repr(
+        'data'
+    )
 
-CableList.__repr__ = make_repr(
-    'data'
-)
 
 __all__ = [
     'Cable',

@@ -1,7 +1,6 @@
 from typing import AnyStr, Optional, Union
 
 import numpy as np_
-from enum import Enum
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
@@ -11,25 +10,16 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class MotionPattern(Enum):
-    MP_1T = (1, 0, '1T')
-    MP_2T = (2, 0, '2T')
-    MP_3T = (3, 0, '3T')
-    MP_1R2T = (2, 1, '1R2T')
-    MP_2R3T = (3, 2, '2R3T')
-    MP_3R3T = (3, 3, '3R3T')
-
+class Pattern(object):
     _dof_translation: int
     _dof_rotation: int
     _human: AnyStr
 
     def __init__(self,
                  translation: Num,
-                 rotation: Num,
-                 name: AnyStr):
+                 rotation: Num):
         self._dof_translation = translation
         self._dof_rotation = rotation
-        self._human = name
 
     @property
     def dof_translation(self):
@@ -45,7 +35,9 @@ class MotionPattern(Enum):
 
     @property
     def human(self):
-        return self._human
+        return f'{self.dof_rotation if self.dof_rotation else ""}' \
+               f'{"R" if self.dof_rotation else ""}' \
+               f'{self.dof_translation}T'
 
     @property
     def moves_linear(self):
@@ -135,13 +127,16 @@ class MotionPattern(Enum):
         else:  # no rotation, just linear motion
             return linear_inertia.dot(gravity)
 
+    __repr__ = make_repr(
+        'human',
+        'dof_translation',
+        'dof_rotation',
+    )
 
-MotionPattern.__repr__ = make_repr(
-    'human',
-    'dof_translation',
-    'dof_rotation',
-)
+    def __hash__(self):
+        return hash(self.human)
+
 
 __all__ = [
-    'MotionPattern',
+    'Pattern',
 ]

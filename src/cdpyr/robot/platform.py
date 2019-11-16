@@ -226,18 +226,17 @@ class Platform(object):
                                           dcm,
                                           self.center_of_gravity)
 
+    __repr__ = make_repr(
+        'anchors',
+        'center_of_gravity',
+        'center_of_linkage',
+        'inertia',
+        'motion_pattern',
+        'pose',
+    )
 
-Platform.__repr__ = make_repr(
-    'anchors',
-    'center_of_gravity',
-    'center_of_linkage',
-    'inertia',
-    'motion_pattern',
-    'pose',
-)
 
-
-class PlatformList(UserList):
+class PlatformList(UserList, BaseObject):
 
     @property
     def all_combinations(self):
@@ -271,10 +270,10 @@ class PlatformList(UserList):
     def motion_pattern(self):
         return (platform.motion_pattern for platform in self.data)
 
+    __repr__ = make_repr(
+        'data'
+    )
 
-PlatformList.__repr__ = make_repr(
-    'data'
-)
 
 __all__ = [
     'Platform',

@@ -80,17 +80,19 @@ class KinematicChain(object):
         del self._platform_anchor
 
 
-KinematicChain.__repr__ = make_repr(
-    'frame_anchor',
-    'platform',
-    'platform_anchor',
-    'cable'
-)
 
 
-class KinematicChainList(UserList):
+    __repr__ = make_repr(
+        'frame_anchor',
+        'platform',
+        'platform_anchor',
+        'cable'
+    )
 
-    def __init__(self, initlist=None):
+
+class KinematicChainList(UserList, BaseObject):
+
+    def __init__(self, data=None):
         super().__init__()
         # We only support unique kinematic chains i.e., one cable may only be
         # attached to one winch and one platform anchor at a time. That's why
@@ -139,10 +141,10 @@ class KinematicChainList(UserList):
 
         return self.__class__(d for d in self.data if d.cable in cable)
 
+    __repr__ = make_repr(
+        'data'
+    )
 
-KinematicChainList.__repr__ = make_repr(
-    'data'
-)
 
 __all__ = [
     'KinematicChain',

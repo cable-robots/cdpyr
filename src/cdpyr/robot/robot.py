@@ -219,14 +219,14 @@ class Robot(object):
     def can_rotate(self):
         return any(platform.can_rotate for platform in self.platforms)
 
+    __repr__ = make_repr(
+        'name',
+        'frame',
+        'platforms',
+        'cables',
+        'kinematic_chains'
+    )
 
-Robot.__repr__ = make_repr(
-    'name',
-    'frame',
-    'platforms',
-    'cables',
-    'kinematic_chains'
-)
 
 __all__ = [
     'Robot',

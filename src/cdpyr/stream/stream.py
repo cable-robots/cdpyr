@@ -1,15 +1,15 @@
 from typing import AnyStr, IO, Union
 
-from cdpyr.stream.parser.parser import Parser
+from cdpyr.stream.parser import parser as _parser
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class Stream(object):
-    _parser: Parser
+    _parser: '_parser.Parser'
 
-    def __init__(self, parser: Union[AnyStr, Parser]):
+    def __init__(self, parser: '_parser.Parser'):
         self.parser = parser
 
     @property
@@ -17,14 +17,14 @@ class Stream(object):
         return self._parser
 
     @parser.setter
-    def parser(self, parser: Parser):
+    def parser(self, parser: '_parser.Parser'):
         self._parser = parser
 
     @parser.deleter
     def parser(self):
         del self._parser
 
-    def encode(self, o: object, f: IO, *args, **kwargs):
+    def encode(self, o: object, f: Union[AnyStr, IO], *args, **kwargs):
         """
 
         :type o: object Any object that is supposed to be encoded
@@ -33,21 +33,26 @@ class Stream(object):
         # first, we will encode the object into a string
         s = self.encodes(o, *args, **kwargs)
 
-        # then we can write this to a file
-        f.write(s)
+        try:
+            bytes_written = f.write(s)
+        except AttributeError:
+            with open(f, 'w') as f_:
+                bytes_written = f_.write(s)
+        finally:
+            return bytes_written > 0
 
-    def decode(self, f: IO, *args, **kwargs):
+    def decode(self, f: Union[AnyStr, IO], *args, **kwargs):
         """
 
         :type f: IO File-like object to read and decode data from
         """
-        # first, read the file and get its content
-        s = f.readlines()
-        # and convert the array of lines into a single string
-        s = '\n'.join(s)
-
-        # now we can simply decode the string and return the result
-        return self.decodes(s, *args, **kwargs)
+        try:
+            s = f.readlines()
+        except AttributeError:
+            with open(f, 'r') as f_:
+                s = f_.readlines()
+        finally:
+            return self.decodes('\n'.join(s), *args, **kwargs)
 
     def encodes(self, o: object, *args, **kwargs):
         """

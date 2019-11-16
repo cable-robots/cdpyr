@@ -52,10 +52,10 @@ class Frame(object):
     def ai(self):
         return np_.vstack([anchor.position for anchor in self.anchors]).T
 
+    __repr__ = make_repr(
+        'anchors'
+    )
 
-Frame.__repr__ = make_repr(
-    'anchors'
-)
 
 __all__ = [
     'Frame',
