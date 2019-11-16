@@ -1,9 +1,10 @@
-from cdpyr.schema.motion.pose.pose import PoseListSchema, PoseSchema
+from cdpyr.schema.motion.pose.pose import PoseSchema
+# from cdpyr.schema.motion.pose.pose import PoseListSchema, PoseSchema
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 __all__ = [
-    'PoseListSchema',
+    # 'PoseListSchema',
     'PoseSchema',
 ]

@@ -7,14 +7,23 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class PatternSchema(Schema):
-    dof_translation = fields.Int(data_key='translation')
-    dof_rotation = fields.Int(data_key='rotation')
+    dof_translation = fields.Int(
+        required=True,
+        data_key='translation',
+        default=0
+    )
+    dof_rotation = fields.Int(
+        required=True,
+        data_key='rotation',
+        default=0
+    )
 
     __model__ = _motion_pattern.Pattern
 
     @post_load
     def make_object(self, data, **kwargs):
-        return self.__model__(**data)
+        return self.__model__(translation=data['dof_translation'],
+                              rotation=data['dof_rotation'])
 
 
 __all__ = [

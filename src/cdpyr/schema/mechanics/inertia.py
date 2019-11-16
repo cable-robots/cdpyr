@@ -7,8 +7,34 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class InertiaSchema(Schema):
-    angular = fields.List(fields.Float())
-    linear = fields.List(fields.Float())
+    angular = fields.Tuple(
+        (
+            fields.Tuple(
+                (fields.Float(), fields.Float(), fields.Float())
+            ),
+            fields.Tuple(
+                (fields.Float(), fields.Float(), fields.Float())
+            ),
+            fields.Tuple(
+                (fields.Float(), fields.Float(), fields.Float())
+            )
+        ),
+        missing=None
+    )
+    linear = fields.Tuple(
+        (
+            fields.Tuple(
+                (fields.Float(), fields.Float(), fields.Float())
+            ),
+            fields.Tuple(
+                (fields.Float(), fields.Float(), fields.Float())
+            ),
+            fields.Tuple(
+                (fields.Float(), fields.Float(), fields.Float())
+            )
+        ),
+        missing=None
+    )
 
     __model__ = _inertia.Inertia
 

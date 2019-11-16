@@ -7,9 +7,18 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class LinearSchema(Schema):
-    position = fields.List(fields.Float())
-    velocity = fields.List(fields.Float())
-    acceleration = fields.List(fields.Float())
+    position = fields.Tuple(
+        (fields.Float(), fields.Float(), fields.Float()),
+        missing=None
+    )
+    velocity = fields.Tuple(
+        (fields.Float(), fields.Float(), fields.Float()),
+        missing=None
+    )
+    acceleration = fields.Tuple(
+        (fields.Float(), fields.Float(), fields.Float()),
+        missing=None
+    )
 
     __model__ = _linear.Linear
 

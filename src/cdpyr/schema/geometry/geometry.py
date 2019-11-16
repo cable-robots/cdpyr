@@ -1,15 +1,19 @@
+from abc import ABC, abstractmethod
 from marshmallow import Schema, fields, post_load
-
-from cdpyr.geometry import geometry as _geometry
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class GeometrySchema(Schema):
-    mass = fields.Float()
+    mass = fields.Float(
+        required=True
+    )
 
-    __model__ = _geometry.Geometry
+    @property
+    @abstractmethod
+    def __model__(self):
+        raise NotImplementedError()
 
     @post_load
     def make_object(self, data, **kwargs):

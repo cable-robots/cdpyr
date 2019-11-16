@@ -1,20 +1,21 @@
-from marshmallow import Schema, fields, post_load
+from marshmallow import fields
 
 from cdpyr.geometry import cylinder as _cylinder
+from cdpyr.schema.geometry import geometry as _geometry
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class CylinderSchema(Schema):
-    diameter = fields.Float()
-    height = fields.Float()
+class CylinderSchema(_geometry.GeometrySchema):
+    diameter = fields.Float(
+        required=True
+    )
+    height = fields.Float(
+        required=True
+    )
 
     __model__ = _cylinder.Cylinder
-
-    @post_load
-    def make_object(self, data, **kwargs):
-        return self.__model__(**data)
 
 
 __all__ = [

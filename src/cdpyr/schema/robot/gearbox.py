@@ -7,8 +7,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class GearboxSchema(Schema):
-    ratio = fields.Float()
-    moment_of_inertia = fields.Float()
+    ratio = fields.Float(
+        missing=None
+    )
+    inertia = fields.Float(
+        missing=None
+    )
 
     __model__ = _gearbox.Gearbox
 

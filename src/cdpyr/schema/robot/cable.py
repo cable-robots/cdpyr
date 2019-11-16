@@ -7,31 +7,42 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class CableSchema(Schema):
-    name = fields.String()
-    material = fields.String()
-    diameter = fields.Float(required=True)
-    modulus = fields.Dict(required=True)
-    color = fields.String()
-    breaking_load = fields.Float(required=True)
+    name = fields.String(
+        missing=None
+    )
+    material = fields.String(
+        missing=None
+    )
+    diameter = fields.Float(
+        required=True
+    )
+    modulus = fields.Dict(
+        keys=fields.String(),
+        values=fields.List(
+            fields.Float(),
+            allow_none=True
+        ),
+        missing=None
+    )
+    color = fields.String(
+        missing=None
+    )
+    breaking_load = fields.Float(
+        missing=None,
+        allow_nan=True
+    )
 
     __model__ = _cable.Cable
 
-    @post_load
-    def make_object(self, data, **kwargs):
-        return self.__model__(**data)
-
-
-class CableListSchema(Schema):
-    data = fields.List(fields.Nested(CableSchema))
-
-    __model__ = _cable.CableList
-
-    @post_load
-    def make_object(self, data, **kwargs):
-        return self.__model__(**data)
+    @post_load(pass_many=True)
+    def make_object(self, data, many, **kwargs):
+        if many:
+            return _cable.CableList(
+                (self.make_object(each, False) for each in data))
+        else:
+            return self.__model__(**data)
 
 
 __all__ = [
     'CableSchema',
-    'CableListSchema',
 ]

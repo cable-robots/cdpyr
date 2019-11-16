@@ -9,8 +9,14 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class DrumSchema(Schema):
-    geometry = fields.Nested(_geometry.GeometrySchema)
-    inertia = fields.Nested(_inertia.InertiaSchema)
+    geometry = fields.Nested(
+        _geometry.GeometrySchema,
+        missing=None
+    )
+    inertia = fields.Nested(
+        _inertia.InertiaSchema,
+        missing=None
+    )
 
     __model__ = _drum.Drum
 

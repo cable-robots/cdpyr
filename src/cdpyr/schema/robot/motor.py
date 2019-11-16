@@ -7,10 +7,20 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class MotorSchema(Schema):
-    torques = fields.Dict()
-    rated_power = fields.Float()
-    rated_speed = fields.Float()
-    moment_of_inertia = fields.Float()
+    inertia = fields.Float(
+        missing=None
+    )
+    rated_power = fields.Float(
+        missing=None
+    )
+    rated_speed = fields.Float(
+        missing=None
+    )
+    torques = fields.Dict(
+        missing=None,
+        keys=fields.String(),
+        values=fields.Float(),
+    )
 
     __model__ = _motor.Motor
 

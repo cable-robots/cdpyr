@@ -7,9 +7,30 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class AngularSchema(Schema):
-    dcm = fields.List(fields.List(fields.Float()))
-    angular_velocity = fields.List(fields.Float())
-    angular_acceleration = fields.List(fields.Float())
+    dcm = fields.Tuple(
+        (
+            fields.Tuple(
+                (fields.Float(), fields.Float(), fields.Float())
+            ),
+            fields.Tuple(
+                (fields.Float(), fields.Float(), fields.Float())
+            ),
+            fields.Tuple(
+                (fields.Float(), fields.Float(), fields.Float())
+            )
+        ),
+        missing=None
+    )
+    angular_velocity = fields.Tuple(
+        (fields.Float(), fields.Float(), fields.Float()),
+        missing=None,
+        data_key='velocity'
+    )
+    angular_acceleration = fields.Tuple(
+        (fields.Float(), fields.Float(), fields.Float()),
+        missing=None,
+        data_key='acceleration'
+    )
 
     __model__ = _angular.Angular
 
