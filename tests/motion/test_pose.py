@@ -217,11 +217,6 @@ class PoseTestSuite(object):
 
         assert pose_nan == pose_nan
         assert pose_0 == pose_1
-        assert pose_0 == [0.0,  # time
-                          0.0, 0.0, 0.0,  # position
-                          0.0, 0.0, 0.0, 1.0]  # orientation as quaternion
-        assert pose_0 == [0.0, 0.0, 0.0,  # position
-                          0.0, 0.0, 0.0, 1.0]  # orientation as quaternion
 
     def test_compare_two_poses_ne(self):
         pose_none = cdpyr.motion.Pose()
@@ -230,14 +225,6 @@ class PoseTestSuite(object):
 
         assert pose_none != pose_0
         assert pose_0 != pose_1
-        assert pose_0 != [1.0,  # time
-                          0.0, 0.0, 1.0,  # position
-                          0.0, 0.0, 0.0, 1.0]  # orientation as quaternion
-        assert pose_0 != [np.NaN,  # time
-                          0.0, 0.0, 1.0,  # position
-                          0.0, 0.0, 0.0, 1.0]  # orientation as quaternion
-        assert pose_0 != [0.0, 0.0, 1.0,  # position
-                          0.0, 0.0, 0.0, 1.0]  # orientation as quaternion
 
     def test_compare_two_poses_lt(self):
         pose_0 = cdpyr.motion.Pose(time=0)
