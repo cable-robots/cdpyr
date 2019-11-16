@@ -9,7 +9,7 @@ from cdpyr import validator as _validator
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.motion import pose as _pose
-from cdpyr.motion.pattern import motion_pattern as _motion_pattern
+from cdpyr.motion.pattern import pattern as _motion_pattern
 from cdpyr.robot.anchor import platform_anchor as _platform_anchor
 from cdpyr.typing import Matrix, Num, Vector
 
@@ -27,7 +27,7 @@ class Platform(BaseObject):
     _pose: '_pose.Pose'
 
     def __init__(self,
-                 motion_pattern: '_motion_pattern.MotionPattern',
+                 motion_pattern: '_motion_pattern.Pattern',
                  anchors: Optional[Union[
                      '_platform_anchor.PlatformAnchorList',
                      Sequence['_platform_anchor.PlatformAnchor']
