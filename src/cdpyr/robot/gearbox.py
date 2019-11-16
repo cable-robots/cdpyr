@@ -37,18 +37,18 @@ class Gearbox(BaseObject):
         del self._ratio
 
     @property
-    def moment_of_inertia(self):
-        return self._moment_of_inertia
+    def inertia(self):
+        return self._inertia
 
-    @moment_of_inertia.setter
-    def moment_of_inertia(self, inertia: Num):
+    @inertia.setter
+    def inertia(self, inertia: Num):
         _validator.numeric.positive(inertia, 'inertia')
 
-        self._moment_of_inertia = inertia
+        self._inertia = inertia
 
-    @moment_of_inertia.deleter
-    def moment_of_inertia(self):
-        del self._moment_of_inertia
+    @inertia.deleter
+    def inertia(self):
+        del self._inertia
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

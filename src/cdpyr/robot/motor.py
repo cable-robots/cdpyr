@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import AnyStr, Dict, Optional
 
 import numpy as np_
 from magic_repr import make_repr
@@ -18,7 +18,7 @@ class Motor(BaseObject):
     _torques: dict
 
     def __init__(self,
-                 torques: Optional[dict] = None,
+                 torques: Optional[Dict[AnyStr, float]] = None,
                  inertia: Optional[Num] = None,
                  rated_speed: Optional[Num] = None,
                  rated_power: Optional[Num] = None):
@@ -30,7 +30,7 @@ class Motor(BaseObject):
         }
 
         self.torques = torques or {}
-        self.moment_of_inertia = inertia or np_.inf
+        self.inertia = inertia or np_.inf
         self.rated_speed = rated_speed or np_.inf
         self.rated_power = rated_power or np_.inf
 
@@ -120,18 +120,18 @@ class Motor(BaseObject):
         del self.torques['rated']
 
     @property
-    def moment_of_inertia(self):
-        return self._moment_of_inertia
+    def inertia(self):
+        return self._inertia
 
-    @moment_of_inertia.setter
-    def moment_of_inertia(self, moment_of_inertia: Num):
-        _validator.numeric.positive(moment_of_inertia, 'moment_of_inertia')
+    @inertia.setter
+    def inertia(self, inertia: Num):
+        _validator.numeric.positive(inertia, 'inertia')
 
-        self._moment_of_inertia = moment_of_inertia
+        self._inertia = inertia
 
-    @moment_of_inertia.deleter
-    def moment_of_inertia(self):
-        del self._moment_of_inertia
+    @inertia.deleter
+    def inertia(self):
+        del self._inertia
 
     @property
     def rms_torque(self):
