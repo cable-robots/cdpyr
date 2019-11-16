@@ -7,15 +7,22 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Numpy(fields.Field):
 
-    def _serialize(self, value, attr, obj):
+    def _serialize(self, value, attr, obj, **kwargs):
         if value is None:
             return ''
+        elif value is np_.nan:
+            return 'nan'
 
-        return list(value)
+        try:
+            return value.tolist()
+        except AttributeError:
+            return value
 
-    def _deserialize(self, value, attr, data):
+    def _deserialize(self, value, attr, data, **kwargs):
         if value == '':
             return None
+        elif value == 'nan':
+            return np_.nan
 
         if isinstance(value, list):
             return np_.asarray(value)

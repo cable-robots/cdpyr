@@ -1,5 +1,5 @@
 from cdpyr.stream import marshmallow, parser
-from cdpyr.stream.streams import Stream
+from cdpyr.stream.stream import Stream
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
