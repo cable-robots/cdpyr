@@ -6,7 +6,7 @@ import cdpyr
 class MotionpatternTestSuite(object):
 
     def test_motion_pattern_1t(self):
-        mp = cdpyr.motion.MotionPattern.MP_1T
+        mp = cdpyr.motion.pattern.MP_1T
 
         assert mp.dof_translation == 1
         assert mp.dof_rotation == 0
@@ -20,7 +20,7 @@ class MotionpatternTestSuite(object):
         assert not mp.is_cuboid
 
     def test_motion_pattern_2t(self):
-        mp = cdpyr.motion.MotionPattern.MP_2T
+        mp = cdpyr.motion.pattern.MP_2T
 
         assert mp.dof_translation == 2
         assert mp.dof_rotation == 0
@@ -34,7 +34,7 @@ class MotionpatternTestSuite(object):
         assert not mp.is_cuboid
 
     def test_motion_pattern_3t(self):
-        mp = cdpyr.motion.MotionPattern.MP_3T
+        mp = cdpyr.motion.pattern.MP_3T
 
         assert mp.dof_translation == 3
         assert mp.dof_rotation == 0
@@ -48,7 +48,7 @@ class MotionpatternTestSuite(object):
         assert not mp.is_cuboid
 
     def test_motion_pattern_1r2t(self):
-        mp = cdpyr.motion.MotionPattern.MP_1R2T
+        mp = cdpyr.motion.pattern.MP_1R2T
 
         assert mp.dof_translation == 2
         assert mp.dof_rotation == 1
@@ -62,7 +62,7 @@ class MotionpatternTestSuite(object):
         assert not mp.is_cuboid
 
     def test_motion_pattern_2r3t(self):
-        mp = cdpyr.motion.MotionPattern.MP_2R3T
+        mp = cdpyr.motion.pattern.MP_2R3T
 
         assert mp.dof_translation == 3
         assert mp.dof_rotation == 2
@@ -76,7 +76,7 @@ class MotionpatternTestSuite(object):
         assert not mp.is_cuboid
 
     def test_motion_pattern_3r3t(self):
-        mp = cdpyr.motion.MotionPattern.MP_3R3T
+        mp = cdpyr.motion.pattern.MP_3R3T
 
         assert mp.dof_translation == 3
         assert mp.dof_rotation == 3

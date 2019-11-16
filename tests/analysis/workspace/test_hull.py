@@ -222,7 +222,6 @@ class HullWorkspaceTestSuite(object):
         assert [0.5, 0.5, 0.5] not in ws
         assert [1.0, 1.0, 1.0] not in ws
 
-
     def test_3r3t_ik_standard_translation_wrench_closure(self,
                                                          robot_3r3t: Robot,
                                                          ik_standard:
@@ -262,7 +261,6 @@ class HullWorkspaceTestSuite(object):
         assert [0.5, 0.5, 0.5] in ws
         assert [1.0, 1.0, 1.0] in ws
 
-
     def test_3r3t_ik_standard_translation_wrench_feasible(self,
                                                           robot_3r3t: Robot,
                                                           ik_standard:
@@ -301,7 +299,6 @@ class HullWorkspaceTestSuite(object):
         assert [0.0, 0.0, 0.0] in ws
         assert [0.5, 0.5, 0.5] in ws
         assert [1.0, 1.0, 1.0] in ws
-
 
     def test_3r3t_ik_standard_translation_singularities(self,
                                                         robot_3r3t: Robot,

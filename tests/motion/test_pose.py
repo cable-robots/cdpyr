@@ -11,7 +11,7 @@ class PoseTestSuite(object):
                           cdpyr.kinematics.transformation.Linear)
         assert isinstance(empty_pose.angular,
                           cdpyr.kinematics.transformation.Angular)
-        assert empty_pose.time is np.NaN
+        assert empty_pose.time is np.nan
 
     def test_getset_linear_position(self, rand_pose_3d: cdpyr.motion.Pose,
                                     rand_vector_3d):
