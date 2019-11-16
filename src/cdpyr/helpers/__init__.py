@@ -26,7 +26,29 @@ def format_time(dt,
                         unit)
 
 
+def full_classname(o: object):
+    """
+
+    See Also
+    --------
+    https://stackoverflow.com/questions/2020014/get-fully-qualified-class-name-of-an-object-in-python
+
+    Parameters
+    ----------
+    o
+
+    Returns
+    -------
+
+    """
+    if isinstance(o, type):
+        return ".".join([o.__module__, o.__name__])
+    else:
+        return ".".join([o.__class__.__module__, o.__class__.__name__])
+
+
 __all__ = [
     'format_time',
     'filesize',
+    'full_classname',
 ]
