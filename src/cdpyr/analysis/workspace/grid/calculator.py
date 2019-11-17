@@ -2,10 +2,14 @@ import itertools
 from typing import Union
 
 import numpy as _np
+from joblib import Parallel, delayed
 
+from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.workspace import (
     algorithm as _algorithm,
 )
+from cdpyr.analysis.workspace.archetype import archetype as _archetype
+from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.analysis.workspace.grid import result as _result
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Num, Vector
@@ -93,39 +97,46 @@ class Calculator(_algorithm.Algorithm):
         ))
 
     def _evaluate(self, robot: '_robot.Robot') -> '_result.Result':
-        # a coordinate generator to get the grid of coordinates to evaluate
-        grid = self.coordinates()
-
-        # list of coordinates checked and of flags checked
-        coordinates = []
-        flags = []
+        # temporarily store the robot as local property so it won't be passed
+        # as method argument on every coordinate evaluation
+        self.__robot = robot
 
         # we will start off of the pose generator we have created given the
         # arguments
-        for coordinate in grid:  # THIS IS PART OF THE WORKSPACE ALGORITHM
-            # local values
-            coordinage_flags = []
+        coordinates, flags = self.__check_grid(self.coordinates())
 
-            # loop over each pose the archetype provides at this coordinate
-            for pose in self.archetype.poses(coordinate):
-                coordinage_flags.append(self.criterion.evaluate(robot, pose))
-
-            coordinates.append(coordinate)
-            flags.append(self.archetype.comparator(coordinage_flags))
-            # workspace.append((coordinate, self.archetype.comparator(
-            # coordinage_flags)))
+        # remove the temporary object
+        del self.__robot
 
         # return the tuple of poses that were evaluated
         return _result.Result(
             self,
             self.archetype,
             self.criterion,
-            coordinates,
-            flags
+            list(coordinates),
+            list(flags)
         )
 
     def _validate(self, robot: '_robot.Robot'):
         pass
+
+    def __check_grid(self, grid):
+        coordinates_flagged = Parallel()(
+            delayed(self.__check__coordinate)(coordinate) for coordinate in
+            grid)
+
+        return (each[0] for each in coordinates_flagged), \
+               (each[1] for each in coordinates_flagged)
+
+    def __check__coordinate(self, coordinate: _np.ndarray):
+        # local values
+        coordinate_flags = []
+
+        # loop over each pose the archetype provides at this coordinate
+        for pose in self.archetype.poses(coordinate):
+            coordinate_flags.append(self.criterion.evaluate(self.__robot, pose))
+
+        return coordinate, self.archetype.comparator(coordinate_flags)
 
 
 __all__ = [

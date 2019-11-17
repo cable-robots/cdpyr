@@ -85,14 +85,17 @@ class Algorithm(ABC):
 
             # further validation as required by the concrete workspace evaluator
             self._validate(robot)
-
-            # now finally, evaluate the workspace
-            return self._evaluate(robot)
         except (AttributeError, ValueError) as EvaluationE:
             raise RuntimeError(
                 'Could not determine workspace due to assertion failed in '
                 'setting up the workspace calculator. Please review your '
-                'code.') from EvaluationException
+                'code.') from EvaluationE
+
+        try:
+            # now finally, evaluate the workspace
+            return self._evaluate(robot)
+        except BaseException as BaseE:
+            raise RuntimeError('Could not determine workspace.') from BaseE
 
     @abstractmethod
     def _evaluate(self, robot: '_robot.Robot') -> '_result.Result':
@@ -100,7 +103,12 @@ class Algorithm(ABC):
 
     @abstractmethod
     def _validate(self, robot):
-        raise NotImplementedError
+        # for now, I do not know how to handle cases where the robot has less
+        # than 3 DOF i.e., where the hull cannot be applied to 3 coordinates
+        if robot.num_dof < 3:
+            raise ValueError(
+                f'Expected robot to have at least 3 degrees of freedom but '
+                f'was given a robot with `{robot.num_dof}` degrees of freedom.')
 
 
 __all__ = [
