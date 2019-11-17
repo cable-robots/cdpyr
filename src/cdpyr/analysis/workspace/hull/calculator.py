@@ -4,7 +4,10 @@ from typing import Sequence, Union
 import numpy as _np
 
 from cdpyr import validator as _validator
+from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.workspace import algorithm as _algorithm
+from cdpyr.analysis.workspace.archetype import archetype as _archetype
+from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.analysis.workspace.hull import result as _result
 from cdpyr.typing import Matrix, Num, Vector
 
@@ -57,7 +60,7 @@ class Calculator(_algorithm.Algorithm):
 
     @depth.setter
     def depth(self, depth: int):
-        _validator.numeric.greater_than(depth, 1, 'depth')
+        _validator.numeric.greater_than_or_equal_to(depth, 0, 'depth')
 
         self._depth = depth
 
@@ -95,69 +98,67 @@ class Calculator(_algorithm.Algorithm):
 
     def _evaluate(self, robot: '_robot.Robot') -> '_result.Result':
         # a coordinate generator to get the grid of coordinates to evaluate
-        search_directions, faces = self.split_octahedron()
+        search_directions, faces = self.__split_octahedron()
 
-        # termination conditions for each direction
-        min_step = 0.5 ** self.maximum_halvings  # maximum halvings allowed
-        max_iters = self.maximum_halvings
+        # # termination conditions for each direction
+        min_step = 0.5 ** self.maximum_halvings
+        max_iters = self.maximum_iterations
 
-        # stores vertices of workspace boundary
-        vertices = []
+        # calculate all vertices
+        vertices = list(
+            self.__check_direction(robot,
+                                   direction,
+                                   min_step,
+                                   max_iters)
+            for direction in search_directions)
 
-        # loop over each search direction
-        for search_direction in search_directions:
-            # step length along this coordinate
-            step_length = 1
-
-            # iteration counter for reducing the likelihood to continue along
-            # one
-            # search direction to infinity and beyond
-            kiter = 0
-
-            # init the current coordinate
-            coordinate = self.center
-
-            # as long as the step size isn't too small
-            while step_length >= min_step and kiter <= max_iters:
-                # calculate a trial coordinate along the search direction with
-                # the current step length
-                coordinate_trial = coordinate + step_length * search_direction
-
-                # flags of each criterion evaluated at the current coordinate
-                flags = []
-
-                # loop over each pose the archetype provides at this coordinate
-                for pose in self.archetype.poses(coordinate_trial):
-                    flags.append(self.criterion.evaluate(robot, pose))
-
-                # check if any pose is invalid at this coordinate, then we will
-                # reduce the step size
-                if not all(flags):
-                    # halven step size
-                    step_length /= 2
-                # all poses are valid, so store the trial coordinate as
-                # successful coordinate for the next loop
-                else:
-                    # advance the pose
-                    coordinate = coordinate_trial
-
-                # increase iteration counter so that we don't continue along a
-                # search direction too far
-                kiter += 1
-
-            # append the last coordinate as the vertice
-            vertices.append(coordinate)
-
-            # # append the current coordinate and the
-            # workspace.append((coordinate, self.archetype.comparator(flags)))
-
+        # return the hull result object
         return _result.Result(self,
                               self.archetype,
                               self.criterion,
                               vertices,
                               faces)
 
-    def split_octahedron(self):
+    def _validate(self, robot: '_robot.Robot'):
+        pass
+
+    def __check_direction(self, robot, direction: Vector, min_step, max_iters):
+        # step length along this coordinate
+        step_length = 1
+
+        # iteration counter for reducing the likelihood to continue along
+        # one search direction to infinity and beyond
+        kiter = 0
+
+        # init the current coordinate
+        coordinate = self.center
+
+        # as long as the step size isn't too small
+        while step_length >= min_step and kiter <= max_iters:
+            # calculate a trial coordinate along the search direction with
+            # the current step length
+            coordinate_trial = coordinate + step_length * direction
+
+            # all poses are valid, so store the trial coordinate as
+            # successful coordinate for the next loop
+            if all((self.criterion.evaluate(robot, pose)
+                    for pose in self.archetype.poses(coordinate_trial))):
+                # advance the pose
+                coordinate = coordinate_trial
+            # any pose is invalid at this coordinate, then we will reduce the
+            # step size
+            else:
+                # halven step size
+                step_length /= 2
+
+            # increase iteration counter so that we don't continue along a
+            # search direction too far
+            kiter += 1
+
+        # append the last coordinate as the vertex
+        return coordinate
+
+    def __split_octahedron(self):
         # original corners of an octahedron
         corners = [
             [1.0, 0.0, 0.0],
@@ -182,7 +183,7 @@ class Calculator(_algorithm.Algorithm):
         # subdivide triangles into smaller ones using LOOP-SUBDIVISION
         # algorithm_old
         for level in range(self.depth):
-            corners, faces = self.subdivide(corners, faces)
+            corners, faces = self.__subdivide(corners, faces)
 
         # convert into numpy arrays
         corners = _np.asarray(corners)
@@ -194,7 +195,7 @@ class Calculator(_algorithm.Algorithm):
         # and return the search directions as well as the faces
         return corners, faces
 
-    def subdivide(self, vertices: Sequence, faces: Sequence):
+    def __subdivide(self, vertices: Sequence, faces: Sequence):
         new_faces = []
         num_vertices = len(vertices)
         dim_vertices = len(vertices[0])
@@ -216,9 +217,9 @@ class Calculator(_algorithm.Algorithm):
         # create matrix of edge-vertices and new vertices
         for face in faces:
             a, b, c = face
-            ab = self.add_edge_vertex(a, b, c, edge_vertices)
-            bc = self.add_edge_vertex(b, c, a, edge_vertices)
-            ac = self.add_edge_vertex(a, c, b, edge_vertices)
+            ab = self.__add_edge_vertex(a, b, c, edge_vertices)
+            bc = self.__add_edge_vertex(b, c, a, edge_vertices)
+            ac = self.__add_edge_vertex(a, c, b, edge_vertices)
 
             new_faces.extend([
                 [a, ab, ac],
@@ -287,7 +288,7 @@ class Calculator(_algorithm.Algorithm):
             new_vertices))]), \
                new_faces
 
-    def add_edge_vertex(self, a, b, c, edge_vertices):
+    def __add_edge_vertex(self, a, b, c, edge_vertices):
         # ensure right order of first two components
         if a > b:
             a, b = b, a
@@ -304,14 +305,6 @@ class Calculator(_algorithm.Algorithm):
 
         # return values
         return edge_vertices[a][b][0]
-
-    def _validate(self, robot: '_robot.Robot'):
-        # for now, I do not know how to handle cases where the robot has less
-        # than 3 DOF i.e., where the hull cannot be applied to 3 coordinates
-        if robot.num_dof < 3:
-            raise ValueError(
-                f'Expected robot to have at least 3 degrees of freedom but '
-                f'was given a robot with `{robot.num_dof}` degrees of freedom.')
 
 
 __all__ = [
