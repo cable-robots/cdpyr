@@ -38,53 +38,54 @@ Development
 To set up `cdpyr` for local development:
 
 1. Fork `cdpyr <https://github.com/cable-robots/cdpyr>`_ (look for the "Fork" button).
-2. Clone your fork locally:
+#. Clone your fork locally:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    $ git clone git@github.com:cable-robots/cdpyr.git
+      $ git clone git@github.com:cable-robots/cdpyr.git
 
-3. Set up your local development environment by installing tox and creating the dev environment:
+#. Set up your local development environment by installing tox and creating the dev environment:
 
-    .. code-block:: bash
+   .. code-block:: bash
 
-        $ pip install tox
-        $ tox -e dev
+      $ pip install tox
+      $ tox -e dev
 
-4. Activate the environment:
-    1. Windows:
+#. Activate the environment:
 
-    .. code-block:: powershell
+   1. Windows:
 
-        > .tox\dev\Scripts\activate
+   .. code-block:: powershell
 
-    2. Unix:
+      > .tox\dev\Scripts\activate
 
-    .. code-block:: shell
+   2. Unix:
 
-          $ source .tox/dev/bin/activate
+   .. code-block:: shell
 
-5. Create a branch for local development to make your changes locally:
+      $ source .tox/dev/bin/activate
 
-.. code-block:: shell
+#. Create a branch for local development to make your changes locally:
 
-    $ git checkout -b name-of-your-bugfix-or-feature
+   .. code-block:: shell
 
-6. When you're done making changes, run all the checks, doc builder and spell checker with `tox <https://tox.readthedocs.io/en/latest/install.html>`_ one command:
+      $ git checkout -b name-of-your-bugfix-or-feature
 
-.. code-block:: shell
+#. When you're done making changes, run all the checks, doc builder and spell checker with `tox <https://tox.readthedocs.io/en/latest/install.html>`_ one command:
 
-    $ tox
+   .. code-block:: shell
 
-7. Commit your changes and push your branch to GitHub:
+      $ tox
 
-.. code-block:: shell
+#. Commit your changes and push your branch to GitHub:
 
-    $ git add .
-    $ git commit -m "Your detailed description of your changes."
-    $ git push origin name-of-your-bugfix-or-feature
+   .. code-block:: shell
 
-8. Submit a pull request through the GitHub website.
+      $ git add .
+      $ git commit -m "Your detailed description of your changes."
+      $ git push origin name-of-your-bugfix-or-feature
+
+#. Submit a pull request through the GitHub website.
 
 If your change requires changes to the dependencies of ``cdpyr``, then add these in ``setup.py`` under ``install_requires``.
 However, if you make changes to the dependencies of tests or the development environment, then add these dependencies in ``tox.ini`` in either ``deps`` of either the ``[testenv]`` or ``[testenv:dev]`` section.
@@ -97,9 +98,9 @@ If you need some code review or feedback while you're developing the code just m
 For merging, you should:
 
 1. Include passing tests (run ``tox``) [1]_.
-2. Update documentation when there's new API, functionality etc.
-3. Add a note to ``CHANGELOG.rst`` about the changes.
-4. Add yourself to ``AUTHORS.rst``.
+#. Update documentation when there's new API, functionality etc.
+#. Add a note to ``CHANGELOG.rst`` about the changes.
+#. Add yourself to ``AUTHORS.rst``.
 
 .. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will
        `run the tests <https://travis-ci.org/cable-robots/cdpyr/pull_requests>`_ for each change you add in the pull request.
@@ -113,16 +114,16 @@ To run a subset of tests:
 
 .. code-block:: shell
 
-    tox -e envname -- pytest -k test_myfeature
+   tox -e envname -- pytest -k test_myfeature
 
 To run all the test environments in *parallel* (you need to ``pip install detox``):
 
 .. code-block:: shell
 
-    detox
+   detox
 
 To build the docs locally to ``dist/docs``:
 
 .. code-block:: shell
 
-    tox -e docs
+   tox -e docs
