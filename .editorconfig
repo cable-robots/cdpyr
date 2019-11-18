@@ -12,6 +12,9 @@ end_of_line = lf
 
 [*.py]
 
+[*.rst]
+indent_size = 3
+
 [*.bat]
 indent_style = tab
 
