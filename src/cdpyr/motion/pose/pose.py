@@ -178,41 +178,49 @@ class Pose(BaseObject):
     def __hash__(self):
         return hash((self.angular, self.linear, self.time))
 
-    def __lt__(self, other: Union['Pose', object]):
-        try:
-            return self.time < other.time
-        except AttributeError as AttributeE:
-            try:
-                return self.time < other
-            except TypeError as TypeE:
-                raise TypeError from None
+    def __lt__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return False
+
+        return self.time < other.time or \
+               self.linear < other.linear or \
+               self.angular < other.angular
 
     def __le__(self, other: Union['Pose', object]):
-        try:
-            return self.time <= other.time
-        except AttributeError as AttributeE:
-            try:
-                return self.time <= other
-            except TypeError as TypeE:
-                raise TypeError from None
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.time <= other.time or \
+               self.linear <= other.linear or \
+               self.angular <= other.angular
 
     def __gt__(self, other: Union['Pose', object]):
-        try:
-            return self.time > other.time
-        except AttributeError as AttributeE:
-            try:
-                return self.time > other
-            except TypeError as TypeE:
-                raise TypeError from None
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return False
+
+        return self.time > other.time or \
+               self.linear > other.linear or \
+               self.angular > other.angular
 
     def __ge__(self, other: Union['Pose', object]):
-        try:
-            return self.time >= other.time
-        except AttributeError as AttributeE:
-            try:
-                return self.time >= other
-            except TypeError as TypeE:
-                raise TypeError from None
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return self.time >= other.time or \
+               self.linear >= other.linear or \
+               self.angular >= other.angular
 
     __repr__ = make_repr(
         'time',
