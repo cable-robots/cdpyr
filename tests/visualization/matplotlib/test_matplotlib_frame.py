@@ -6,7 +6,8 @@ from matplotlib import use
 from cdpyr import visualization
 from cdpyr.robot import Robot
 
-use('MacOSX')
+if sys.platform == 'darwin':
+    use('MacOSX')
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
