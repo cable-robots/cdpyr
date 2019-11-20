@@ -26,12 +26,8 @@ def robot_1t():
             cdpyr.robot.Platform(
                 motion_pattern=cdpyr.motion.pattern.MP_1T,
                 anchors=[
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.],
-                    )
+                    cdpyr.robot.PlatformAnchor(),
+                    cdpyr.robot.PlatformAnchor()
                 ]
             ),
         ],
@@ -87,15 +83,9 @@ def robot_2t():
             cdpyr.robot.Platform(
                 motion_pattern=cdpyr.motion.pattern.MP_2T,
                 anchors=[
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.],
-                    ),
+                    cdpyr.robot.PlatformAnchor(),
+                    cdpyr.robot.PlatformAnchor(),
+                    cdpyr.robot.PlatformAnchor(),
                 ]
             ),
         ],
@@ -163,15 +153,9 @@ def robot_3t():
             cdpyr.robot.Platform(
                 motion_pattern=cdpyr.motion.pattern.MP_3T,
                 anchors=[
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0., 0., 0.],
-                    ),
+                    cdpyr.robot.PlatformAnchor(),
+                    cdpyr.robot.PlatformAnchor(),
+                    cdpyr.robot.PlatformAnchor(),
                 ]
             ),
         ],
