@@ -231,36 +231,28 @@ class PoseTestSuite(object):
         pose_1 = cdpyr.motion.Pose(time=1)
 
         assert pose_0 < pose_1
-        assert pose_0 < 1
-        with pytest.raises(TypeError):
-            assert pose_0 < 'int'
+        assert not pose_1 < pose_0
 
     def test_compare_two_poses_gt(self):
         pose_0 = cdpyr.motion.Pose(time=0)
         pose_1 = cdpyr.motion.Pose(time=1)
 
         assert pose_1 > pose_0
-        assert pose_1 > 0
-        with pytest.raises(TypeError):
-            assert pose_1 > 'int'
+        assert not pose_0 > pose_1
 
     def test_compare_two_poses_le(self):
         pose_0 = cdpyr.motion.Pose(time=0)
         pose_1 = cdpyr.motion.Pose(time=1)
 
         assert pose_0 <= pose_1
-        assert pose_0 <= 1
-        with pytest.raises(TypeError):
-            assert pose_0 <= 'int'
+        assert pose_1 <= pose_0
 
     def test_compare_two_poses_ge(self):
         pose_0 = cdpyr.motion.Pose(time=0)
         pose_1 = cdpyr.motion.Pose(time=1)
 
         assert pose_1 >= pose_0
-        assert pose_1 >= 0
-        with pytest.raises(TypeError):
-            assert pose_1 >= 'int'
+        assert pose_0 >= pose_1
 
 
 if __name__ == "__main__":
