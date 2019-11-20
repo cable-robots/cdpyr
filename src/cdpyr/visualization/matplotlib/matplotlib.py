@@ -155,19 +155,15 @@ class Matplotlib(Visualizer, ABC):
         position = self._parse_coordinate(anchor.linear.position)
         dcm = self._parse_dcm(anchor.angular.dcm)
 
-        # # weird bug/behavior? of `plot3D` requires a numpy value for the
-        # # `z`-coordinate, so this is a fix
-        # position = _np.asarray([position]).T
-
-        # # plot anchor
-        # self._axes().plot(*position,
-        #                   marker='o', markersize=2,
-        #                   color=[0.0, 0.0, 1.0],
-        #                   linestyle='none',
-        #                   )
-
         # plot coordinate system
         self.render_coordinate_system(position, dcm)
+
+        # plot anchor
+        self._axes().plot(*position,
+                          marker='o', markersize=2,
+                          color=[0.0, 0.0, 1.0],
+                          linestyle='none',
+                          )
 
     def render_gearbox(self,
                        gearbox: '_gearbox.Gearbox',
@@ -337,7 +333,12 @@ class Matplotlib(Visualizer, ABC):
         if coordinate is None:
             coordinate = [0.0] * self._NUMBER_OF_AXES
 
+        # anything into a numpy array
         coordinate = _np.asarray(coordinate)
+
+        # scalars into vectors
+        if coordinate.ndim == 0:
+            coordinate = _np.asarray([coordinate])
 
         # turrn vectors into matrices
         if coordinate.ndim == 1:
@@ -347,26 +348,17 @@ class Matplotlib(Visualizer, ABC):
         # coordinate = _np.vstack((coordinate, _np.zeros((self._NUMBER_OF_AXES -
         # self._NUMBER_OF_COORDINATES[0:self._NUMBER_OF_COORDINATES,:],
         # coordinate.shape[1]))))
-        coordinate = _np.vstack((coordinate[0:self._NUMBER_OF_COORDINATES, :],
+        return _np.vstack((coordinate[0:self._NUMBER_OF_COORDINATES, :],
                                  _np.zeros((
                                      self._NUMBER_OF_AXES -
                                      self._NUMBER_OF_COORDINATES,
                                      coordinate.shape[1]))))
 
-        # # pad with zeros at the
-        # coordinate = _np.pad(
-        #     coordinate[0:self._NUMBER_OF_COORDINATES,:],
-        #     (0, self._NUMBER_OF_AXES - self._NUMBER_OF_COORDINATES))
-
-        return coordinate
-
     def _parse_dcm(self, dcm: Matrix = None):
         if dcm is None:
             dcm = _np.eye(self._NUMBER_OF_AXES)
 
-        dcm = _np.asarray(dcm)
-
-        return dcm[0:self._NUMBER_OF_AXES, 0:self._NUMBER_OF_AXES]
+        return _np.asarray(dcm)[0:self._NUMBER_OF_AXES, 0:self._NUMBER_OF_AXES]
 
 
 __all__ = [
