@@ -93,6 +93,50 @@ class Linear(BaseObject):
     def __ne__(self, other):
         return not self == other
 
+    def __lt__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return False
+
+        return (self.position < other.position).any() or \
+               (self.velocity < other.velocity).any() or \
+               (self.acceleration < other.acceleration).any()
+
+    def __le__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return (self.position <= other.position).any() or \
+               (self.velocity <= other.velocity).any() or \
+               (self.acceleration <= other.acceleration).any()
+
+    def __gt__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return False
+
+        return (self.position > other.position).any() or \
+               (self.velocity > other.velocity).any() or \
+               (self.acceleration > other.acceleration).any()
+
+    def __ge__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return (self.position >= other.position).any() or \
+               (self.velocity >= other.velocity).any() or \
+               (self.acceleration >= other.acceleration).any()
+
     def __hash__(self):
         return hash((self.acceleration.tostring(),
                      self.position.tostring(),

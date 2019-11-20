@@ -253,6 +253,50 @@ class Angular(BaseObject):
     def __ne__(self, other):
         return not self == other
 
+    def __lt__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return False
+
+        return (self.euler < other.euler).any() or \
+               (self.angular_velocity < other.angular_velocity).any() or \
+               (self.angular_acceleration < other.angular_acceleration).any()
+
+    def __le__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return (self.euler <= other.euler).any() or \
+               (self.angular_velocity <= other.angular_velocity).any() or \
+               (self.angular_acceleration <= other.angular_acceleration).any()
+
+    def __gt__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return False
+
+        return (self.euler > other.euler).any() or \
+               (self.angular_velocity > other.angular_velocity).any() or \
+               (self.angular_acceleration > other.angular_acceleration).any()
+
+    def __ge__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        if self is other:
+            return True
+
+        return (self.euler >= other.euler).any() or \
+               (self.angular_velocity >= other.angular_velocity).any() or \
+               (self.angular_acceleration >= other.angular_acceleration).any()
+
     def __hash__(self):
         return hash((self.angular_acceleration.tostring(),
                      self.angular_velocity.tostring(),
