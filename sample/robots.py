@@ -1,7 +1,7 @@
 import cdpyr
 
 
-def robot_1t():
+def mp_1t():
     return cdpyr.robot.Robot(
         name="Sample 1T robot",
         frame=cdpyr.robot.Frame(
@@ -58,7 +58,7 @@ def robot_1t():
     )
 
 
-def robot_2t():
+def mp_2t():
     return cdpyr.robot.Robot(
         name="Sample 2T robot",
         frame=cdpyr.robot.Frame(
@@ -133,7 +133,7 @@ def robot_2t():
     )
 
 
-def robot_3t():
+def mp_3t():
     return cdpyr.robot.Robot(
         name="Sample 3T robot",
         frame=cdpyr.robot.Frame(
@@ -226,7 +226,7 @@ def robot_3t():
     )
 
 
-def robot_1r2t():
+def mp_1r2t():
     return cdpyr.robot.Robot(
         name="Sample 1R2T robot",
         frame=cdpyr.robot.Frame(
@@ -319,7 +319,7 @@ def robot_1r2t():
     )
 
 
-def robot_2r3t():
+def mp_2r3t():
     return cdpyr.robot.Robot(
         name="Sample 2R3T robot",
         frame=cdpyr.robot.Frame(
@@ -484,7 +484,7 @@ def robot_2r3t():
     )
 
 
-def robot_3r3t():
+def mp_3r3t():
     return cdpyr.robot.Robot(
         name="Sample 3R3T robot",
         frame=cdpyr.robot.Frame(
@@ -649,7 +649,7 @@ def robot_3r3t():
     )
 
 
-def robot_3r3t_2platform():
+def mp_3r3t_2platform():
     return cdpyr.robot.Robot(
         name="Sample 3R3T robot with 2 platforms",
         frame=cdpyr.robot.Frame(
