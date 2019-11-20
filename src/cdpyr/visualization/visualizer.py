@@ -235,18 +235,25 @@ class Visualizer(ABC):
                                name: str,
                                *args,
                                **kwargs):
+        # get user-defined plot styles for the component
         styles = kwargs.pop(name, {})
+        # if the styles are not False, then plot the component
         if styles is not False:
+            # turn dictionary of styles into list of styles to that it can be
+            # repeated for each component
             if isinstance(styles, Dict):
                 styles = [styles]
 
+            # get the components to plot from the object
             components = getattr(obj, name)
 
+            # cyclic repetition of styles for each component
             if len(styles) < len(components):
                 styles = itertools.cycle(styles)
 
-            for component, style in zip(components, styles):
-                self.render(component, *args, **style)
+            # loop over each component with its style
+            for idx, component, style in zip(range(len(components)), components, styles):
+                self.render(component, *args, **style, **kwargs, loop_index=idx)
 
     def _rgb2RGB(self, rgb: Vector):
         rgb = _np.asarray(rgb)
