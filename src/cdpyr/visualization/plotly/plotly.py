@@ -240,96 +240,118 @@ class Plotly(_visualizer.Visualizer, ABC):
         position = platform.pose.linear.position
         dcm = platform.pose.angular.dcm
 
-        # TODO remove temporary loop variables
         # temporary platform loop index
         pidx = kwargs.pop('loop_index', -1)
 
-        # render bounding box of platform
-        if not platform.is_point:
-            # get anchors in platform coordinates
-            anchors = self._parse_coordinate(platform.bi)
+        # if the platform has a geometry assigned, we will plot the geometry
+        # and only add the anchor points to it
+        if platform.geometry is not None:
+            self.render(platform.geometry,
+                        transformation=platform.pose.transformation,
+                        name=f'platform {pidx}',
+                        hoverinfo='text',
+                        hovertext=f'platform {pidx}', )
+        # otherwise, without a platform geometry, we will triangulate the
+        # anchor points and plot the platform shape via that
+        else:
+            # render bounding box of platform
+            if not platform.is_point:
+                # get anchors in platform coordinates
+                anchors = self._parse_coordinate(platform.bi)
 
-            # in 3D, we perform delaunay triangulation of the corners and retrieve the convex hull from there
-            if self._NUMBER_OF_AXES == 3:
-                delau = _Delaunay(anchors.T)
+                # in 3D, we perform delaunay triangulation of the corners and
+                # retrieve the convex hull from there
+                if self._NUMBER_OF_AXES == 3:
+                    delau = _Delaunay(anchors.T)
 
-                vertices = delau.convex_hull
-                points = delau.points
-            # in any other case, we simply calculate the convex hull of the anchors
-            else:
-                # calculate convex hull of the platform shape
-                cv = _ConvexHull(anchors.T)
-                # and get all vertices and points in the correct sorted order
-                vertices = cv.vertices
-                points = cv.points
-                # to close the loop of vertices, we will append the first one to the list
-                vertices = _np.append(vertices, vertices[0])
+                    vertices = delau.convex_hull
+                    points = delau.points
+                # in any other case, we simply calculate the convex hull of
+                # the anchors
+                else:
+                    # calculate convex hull of the platform shape
+                    cv = _ConvexHull(anchors.T)
+                    # and get all vertices and points in the correct sorted
+                    # order
+                    vertices = cv.vertices
+                    points = cv.points
+                    # to close the loop of vertices, we will append the first
+                    # one to the list
+                    vertices = _np.append(vertices, vertices[0])
 
-            # also rotate and translate the platform anchors
-            anchors_rotated = self._parse_coordinate(position) \
-                              + self._parse_dcm(dcm).dot(points.T)
+                # also rotate and translate the platform anchors
+                anchors_rotated = self._parse_coordinate(position) \
+                                  + self._parse_dcm(dcm).dot(points.T)
 
-            # 3D plot
-            if self._NUMBER_OF_AXES == 3:
-                # first, plot the mesh of the platform i.e., its volume
-                self.figure.add_trace(
-                    go.Mesh3d(
-                        **self._build_plotdata_kwargs(anchors_rotated),
-                        **self._build_plotdata_kwargs(vertices.T,
-                                                      ['i', 'j', 'k']),
-                        color='rgb(0, 0, 0)',
-                        facecolor=['rgb(178, 178, 178)'] * vertices.shape[0],
-                        flatshading=True,
-                        name='',
-                        hoverinfo='skip',
-                        hovertext='',
-                    )
-                )
-                vertices = _np.hstack((vertices, vertices[:,0,_np.newaxis]))
-                for vertex in vertices:
-                    # # close the vertex
-                    # vertex = _np.append(vertex, vertex[0])
-                    # then, we will plot the edges so that they are visible
+                # 3D plot
+                if self._NUMBER_OF_AXES == 3:
+                    # first, plot the mesh of the platform i.e., its volume
                     self.figure.add_trace(
-                        go.Scatter3d(
-                            **self._build_plotdata_kwargs([anchors_rotated[0,vertex], anchors_rotated[1,vertex], anchors_rotated[2,vertex]]),
+                        go.Mesh3d(
+                            **self._build_plotdata_kwargs(anchors_rotated),
+                            **self._build_plotdata_kwargs(vertices.T,
+                                                          ['i', 'j', 'k']),
+                            color='rgb(0, 0, 0)',
+                            facecolor=['rgb(178, 178, 178)'] * vertices.shape[
+                                0],
+                            flatshading=True,
+                            name='',
+                            hoverinfo='skip',
+                            hovertext='',
+                        )
+                    )
+                    # then plot each edge/vertex of the platform
+                    vertices = _np.hstack(
+                        (vertices, vertices[:, 0, _np.newaxis]))
+                    for vertex in vertices:
+                        self.figure.add_trace(
+                            go.Scatter3d(
+                                **self._build_plotdata_kwargs([
+                                    anchors_rotated[0, vertex],
+                                    anchors_rotated[1, vertex],
+                                    anchors_rotated[2, vertex]
+                                ]),
+                                mode='lines',
+                                line=dict(
+                                    color='rgb(13, 13, 13)',
+                                ),
+                                name='',
+                                hoverinfo='skip',
+                                hovertext='',
+                                showlegend=False
+                            )
+                        )
+                # 2D plot
+                else:
+                    self.figure.add_trace(
+                        self._scatter(
+                            **self._build_plotdata_kwargs(
+                                anchors_rotated[:, vertices]
+                            ),
                             mode='lines',
+                            fill='toself',
                             line_color='rgb(13, 13, 13)',
+                            fillcolor='rgb(178, 178, 178)',
                             name='',
                             hoverinfo='skip',
                             hovertext='',
                             showlegend=False
                         )
                     )
-            # 2D plot
-            else:
-                self.figure.add_trace(
-                    self._scatter(
-                        **self._build_plotdata_kwargs(anchors_rotated[:,vertices]),
-                        mode='lines',
-                        fill='toself',
-                        line_color='rgb(13, 13, 13)',
-                        fillcolor='rgb(178, 178, 178)',
-                        name='',
-                        hoverinfo='skip',
-                        hovertext='',
-                        showlegend=False
-                    )
-                )
 
         # render all anchors
         self._render_component_list(platform,
                                     'anchors',
-                                    transform=platform.pose.transformation,
+                                    transformation=platform.pose.transformation,
                                     platform_index=pidx,
                                     **kwargs
                                     )
 
         # render reference coordinate system of platform
         self.render_coordinate_system(position,
-                                      name=f'platform {pidx}',
-                                      hovertext=f'platform {pidx}',
+                                      name=f'platform {pidx}: center',
                                       hoverinfo='text',
+                                      hovertext=f'platform {pidx}: center',
                                       line=dict(
                                           dash='dash' if platform.can_rotate
                                           else 'solid'
@@ -352,21 +374,21 @@ class Plotly(_visualizer.Visualizer, ABC):
                                anchor:
                                '_platform_anchor.PlatformAnchor',
                                *args,
-                               transform: _HomogenousTransformation = None,
+                               transformation: _HomogenousTransformation = None,
                                **kwargs):
         # prepare position and orientation of the anchor
         position = anchor.linear.position
         dcm = anchor.angular.dcm
 
         # default value for transformation, if the platform has no pose
-        if transform is None:
-            transform = _HomogenousTransformation()
+        if transformation is None:
+            transformation = _HomogenousTransformation()
 
         aidx = kwargs.pop('loop_index', -1)
         pidx = kwargs.pop('platform_index', -1)
 
         # transform the position
-        position = self._parse_coordinate(transform.apply(position))
+        position = self._parse_coordinate(transformation.apply(position))
 
         self.figure.add_trace(
             self._scatter(
