@@ -243,7 +243,7 @@ class Matplotlib(Visualizer, ABC):
         # and orientation
         self._render_component_list(platform,
                                     'anchors',
-                                    transform=platform.pose.transformation,
+                                    transformation=platform.pose.transformation,
                                     **kwargs)
 
         # # weird bug/behavior? of `plot3D` requires a numpy value for the
@@ -269,18 +269,18 @@ class Matplotlib(Visualizer, ABC):
                                anchor:
                                '_platform_anchor.PlatformAnchor',
                                *args,
-                               transform: _HomogenousTransformation = None,
+                               transformation: _HomogenousTransformation = None,
                                **kwargs):
         # get the anchor's original position and orientation
         position = anchor.linear.position
         dcm = anchor.angular.dcm
 
         # default value for transformation, if the platform has no pose
-        if transform is None:
-            transform = _HomogenousTransformation()
+        if transformation is None:
+            transformation = _HomogenousTransformation()
 
         # transform the position
-        position = self._parse_coordinate(transform.apply(position))
+        position = self._parse_coordinate(transformation.apply(position))
 
         # plot the anchor at its final coordinate
         self._axes().plot(*position,
@@ -314,9 +314,9 @@ class Matplotlib(Visualizer, ABC):
                                **kwargs):
         styles = kwargs.pop(name, {})
         try:
-            transform = {'transform': kwargs.pop('transform')}
+            transformation = {'transformation': kwargs.pop('transformation')}
         except KeyError:
-            transform = {}
+            transformation = {}
         if styles is not False:
             if isinstance(styles, Dict):
                 styles = [styles]
@@ -327,7 +327,7 @@ class Matplotlib(Visualizer, ABC):
                 styles = itertools.cycle(styles)
 
             for component, style in zip(components, styles):
-                self.render(component, *args, **transform, **style)
+                self.render(component, *args, **transformation, **style)
 
     def _parse_coordinate(self, coordinate: Vector = None):
         if coordinate is None:
