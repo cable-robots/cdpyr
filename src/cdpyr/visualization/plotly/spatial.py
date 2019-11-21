@@ -229,7 +229,7 @@ class Spatial(_plotly.Plotly):
                     ]
                     for el in elevation
                     for az in azimuth
-                ),
+                ).T,
                 transform)
         ).transpose())
 
