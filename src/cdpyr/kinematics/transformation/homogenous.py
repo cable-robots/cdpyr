@@ -81,10 +81,13 @@ class Homogenous(BaseObject):
 
         # stack coordinates above a row of `1`
         coordinates = np_.vstack(
-            (coordinates, np_.ones((coordinates.shape[1]))))
+            (coordinates, np_.ones(tuple([1]) + coordinates.shape[1:])))
 
-        # and return the transformed coordinates (only the actual coordinates)
-        return self.matrix.dot(coordinates)[0:3]
+        try:
+            return np_.stack([self.matrix.dot(page)[0:3, :] for page in
+                          np_.rollaxis(coordinates, axis=2)], axis=2)
+        except ValueError:
+            return self.matrix.dot(coordinates)[0:3,:]
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
