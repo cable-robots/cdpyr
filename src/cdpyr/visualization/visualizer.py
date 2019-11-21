@@ -1,12 +1,13 @@
 import itertools
+from abc import ABC, abstractmethod
 from typing import AnyStr, Callable, Dict
 
 import numpy as _np
-from abc import ABC, abstractmethod
 
 from cdpyr.geometry import (
     cuboid as _cuboid,
     cylinder as _cylinder,
+    elliptic_cylinder as _elliptic_cylinder,
     geometry as _geometry,
     sphere as _sphere,
     tube as _tube,
@@ -50,24 +51,28 @@ class Visualizer(ABC):
     def __init__(self):
         self._MAPPING = {
             # _cable.Cable.__name__:           self.render_cable,
-            _cuboid.Cuboid.__name__:            self.render_cuboid,
-            _cylinder.Cylinder.__name__:        self.render_cylinder,
-            _drivetrain.DriveTrain.__name__:    self.render_drivetrain,
-            _drum.Drum.__name__:                self.render_drum,
-            _frame.Frame.__name__:              self.render_frame,
-            _frame_anchor.FrameAnchor.__name__: self.render_frame_anchor,
-            _gearbox.Gearbox.__name__:          self.render_gearbox,
-            _geometry.Geometry.__name__:        self.render_geometry,
+            _cuboid.Cuboid.__name__:                      self.render_cuboid,
+            _cylinder.Cylinder.__name__:                  self.render_cylinder,
+            _drivetrain.DriveTrain.__name__:
+                self.render_drivetrain,
+            _drum.Drum.__name__:                          self.render_drum,
+            _elliptic_cylinder.EllipticCylinder.__name__:
+                self.render_elliptic_cylinder,
+            _frame.Frame.__name__:                        self.render_frame,
+            _frame_anchor.FrameAnchor.__name__:
+                self.render_frame_anchor,
+            _gearbox.Gearbox.__name__:                    self.render_gearbox,
+            _geometry.Geometry.__name__:                  self.render_geometry,
             _kinematic_chain.KinematicChain.__name__:
-                                                self.render_kinematic_chain,
-            _motor.Motor.__name__:              self.render_motor,
-            _platform.Platform.__name__:        self.render_platform,
+                                                          self.render_kinematic_chain,
+            _motor.Motor.__name__:                        self.render_motor,
+            _platform.Platform.__name__:                  self.render_platform,
             _platform_anchor.PlatformAnchor.__name__:
-                                                self.render_platform_anchor,
-            _pulley.Pulley.__name__:            self.render_pulley,
-            _robot.Robot.__name__:              self.render_robot,
-            _sphere.Sphere.__name__:            self.render_sphere,
-            _tube.Tube.__name__:                self.render_tube,
+                                                          self.render_platform_anchor,
+            _pulley.Pulley.__name__:                      self.render_pulley,
+            _robot.Robot.__name__:                        self.render_robot,
+            _sphere.Sphere.__name__:                      self.render_sphere,
+            _tube.Tube.__name__:                          self.render_tube,
         }
 
     @abstractmethod
@@ -129,6 +134,14 @@ class Visualizer(ABC):
                         cylinder: '_cylinder.Cylinder',
                         *args,
                         **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
+    def render_elliptic_cylinder(self,
+                                 cylinder:
+                                 '_elliptic_cylinder.EllipticCylinder',
+                                 *args,
+                                 **kwargs):
         raise NotImplementedError
 
     @abstractmethod
@@ -252,7 +265,8 @@ class Visualizer(ABC):
                 styles = itertools.cycle(styles)
 
             # loop over each component with its style
-            for idx, component, style in zip(range(len(components)), components, styles):
+            for idx, component, style in zip(range(len(components)), components,
+                                             styles):
                 self.render(component, *args, **style, **kwargs, loop_index=idx)
 
     def _rgb2RGB(self, rgb: Vector):
