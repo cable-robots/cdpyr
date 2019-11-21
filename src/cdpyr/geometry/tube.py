@@ -1,6 +1,5 @@
 from typing import Tuple
 
-import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
@@ -17,12 +16,10 @@ class Tube(Geometry):
     _height: float
 
     def __init__(self,
-                 mass: Num,
                  inner_diameter: Num,
                  outer_diameter: Num,
                  height: Num
                  ):
-        super().__init__(mass)
         self.inner_diameter = inner_diameter
         self.outer_diameter = outer_diameter
         self.height = height
@@ -49,10 +46,14 @@ class Tube(Geometry):
     def inner_diameter(self, inner_diameter: Num):
         _validator.numeric.nonnegative(inner_diameter, 'inner_diameter')
 
-        if self.outer_diameter:
+        try:
             _validator.numeric.less_than(inner_diameter,
                                          self.outer_diameter,
                                          'inner_diameter')
+        except AttributeError:
+            pass
+        except ValueError as ValueE:
+            raise ValueE
 
         self._inner_diameter = inner_diameter
 
@@ -68,10 +69,15 @@ class Tube(Geometry):
     def outer_diameter(self, outer_diameter: Num):
         _validator.numeric.nonnegative(outer_diameter, 'outer_diameter')
 
-        if self.inner_diameter:
-            _validator.numeric.greater_than(outer_diameter,
-                                            self.inner_diameter,
-                                            'outer_diameter')
+        try:
+            if self.inner_diameter:
+                _validator.numeric.greater_than(outer_diameter,
+                                                self.inner_diameter,
+                                                'outer_diameter')
+        except AttributeError:
+            pass
+        except ValueError as ValueE:
+            raise ValueE
 
         self._outer_diameter = outer_diameter
 
@@ -121,20 +127,6 @@ class Tube(Geometry):
     def outer_radius(self):
         del self.outer_diameter
 
-    def inertia(self):
-        mass = self.mass
-        ri = self.inner_radius
-        ro = self.outer_radius
-        r = (ri ** 2.0) + (ro ** 2.0)
-        h = self.height
-        rh = 3.0 * (r ** 2.0) + h ** 2.0
-
-        return 1.0 / 12.0 * mass * np_.asarray((
-            rh,
-            rh,
-            6.0 * (r ** 2.0)
-        ))
-
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             raise TypeError()
@@ -148,10 +140,9 @@ class Tube(Geometry):
                self.height == other.height
 
     def __hash__(self):
-        return hash((self.height, self.inertia, self.outer_diameter, self.mass))
+        return hash((self.height, self.inner_diameter, self.outer_diameter))
 
     __repr__ = make_repr(
-        'mass',
         'inner_diameter',
         'outer_diameter',
         'height',

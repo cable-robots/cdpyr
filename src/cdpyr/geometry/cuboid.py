@@ -1,4 +1,3 @@
-import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
@@ -15,12 +14,10 @@ class Cuboid(Geometry):
     _depth: float
 
     def __init__(self,
-                 mass: Num,
                  width: Num,
-                 height: Num,
-                 depth: Num
+                 depth: Num,
+                 height: Num
                  ):
-        super().__init__(mass)
         self.width = width
         self.height = height
         self.depth = depth
@@ -67,18 +64,6 @@ class Cuboid(Geometry):
     def depth(self):
         del self._depth
 
-    def inertia(self):
-        mass = self.mass
-        w = self.width
-        d = self.depth
-        h = self.height
-
-        return 1.0 / 12.0 * mass * np_.asarray((
-            d ** 2.0 + h ** 2.0,
-            w ** 2.0 + h ** 2.0,
-            w ** 2.0 + d ** 2.0,
-        ))
-
     def __eq__(self, other):
         return super().__eq__(other) and \
                self.width == other.width and \
@@ -86,10 +71,9 @@ class Cuboid(Geometry):
                self.depth == other.depth
 
     def __hash__(self):
-        return hash((self.depth, self.height, self.mass, self.width))
+        return hash((self.depth, self.height, self.width))
 
     __repr__ = make_repr(
-        'mass',
         'width',
         'depth',
         'height',
