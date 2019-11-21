@@ -5,6 +5,7 @@ from typing import Optional, Sequence, Tuple, Union
 import numpy as np_
 from magic_repr import make_repr
 
+from cdpyr.geometry import geometry as _geometry
 from cdpyr import validator as _validator
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.mixin.base_object import BaseObject
@@ -21,6 +22,7 @@ class Platform(BaseObject):
     _anchors: '_platform_anchor.PlatformAnchorList'
     _center_of_gravity: 'np_.ndarray'
     _center_of_linkage: 'np_.ndarray'
+    _geometry: '_geometry.Geometry'
     _inertia: '_inertia.Inertia'
     _motion_pattern: '_motion_pattern.MotionPattern'
     _name: str
@@ -36,7 +38,8 @@ class Platform(BaseObject):
                  center_of_gravity: Optional[Vector] = None,
                  center_of_linkage: Optional[Vector] = None,
                  name: str = None,
-                 pose: '_pose.Pose' = None
+                 pose: '_pose.Pose' = None,
+                 geometry: '_geometry.Geometry' = None
                  ):
         self.anchors = anchors or []
         self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]
@@ -45,6 +48,7 @@ class Platform(BaseObject):
         self.inertia = inertia if inertia is not None else _inertia.Inertia()
         self.pose = pose if pose is not None else _pose.Pose()
         self.name = name or 'default'
+        self.geometry = geometry
 
     @property
     def anchors(self):
@@ -124,6 +128,18 @@ class Platform(BaseObject):
     @property
     def dof_translation(self):
         return self.motion_pattern.dof_translation
+
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry: '_geometry.Geometry'):
+        self._geometry = geometry
+
+    @geometry.deleter
+    def geometry(self):
+        del self._geometry
 
     @property
     def inertia(self):
