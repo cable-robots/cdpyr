@@ -8,14 +8,14 @@ import cdpyr
 class IntervalPoseGeneratorTestSuite(object):
 
     def test_interval_with_two_steps_on_one_change_in_position(self):
-        pose = cdpyr.motion.Pose((
+        pose = cdpyr.motion.Pose(
             (0.0, 0.0, 0.0),
             (
                 (1.0, 0.0, 0.0),
                 (0.0, 1.0, 0.0),
                 (0.0, 0.0, 1.0),
             )
-        ))
+        )
 
         # create a generator object
         pose_generator = cdpyr.motion.generator.interval(
@@ -44,14 +44,14 @@ class IntervalPoseGeneratorTestSuite(object):
             np.asarray((+0.0, +0.0, +0.5)))
 
     def test_interval_with_two_steps_on_two_changes_in_position(self):
-        pose = cdpyr.motion.Pose((
+        pose = cdpyr.motion.Pose(
             (0.0, 0.0, 0.0),
             (
                 (1.0, 0.0, 0.0),
                 (0.0, 1.0, 0.0),
                 (0.0, 0.0, 1.0),
             )
-        ))
+        )
 
         # create a generator object
         pose_generator = cdpyr.motion.generator.interval(
@@ -92,14 +92,14 @@ class IntervalPoseGeneratorTestSuite(object):
             np.asarray((+0.0, +0.5, +0.5)))
 
     def test_interval_with_two_steps_on_three_changes_in_position(self):
-        pose = cdpyr.motion.Pose((
+        pose = cdpyr.motion.Pose(
             (0.0, 0.0, 0.0),
             (
                 (1.0, 0.0, 0.0),
                 (0.0, 1.0, 0.0),
                 (0.0, 0.0, 1.0),
             )
-        ))
+        )
 
         # create a generator object
         pose_generator = cdpyr.motion.generator.interval(
@@ -176,14 +176,14 @@ class IntervalPoseGeneratorTestSuite(object):
             np.asarray((+0.5, 0.5, +0.5)))
 
     def test_interval_with_two_steps_on_one_change_in_orientation(self):
-        pose = cdpyr.motion.Pose((
+        pose = cdpyr.motion.Pose(
             (0.0, 0.0, 0.0),
             (
                 (1.0, 0.0, 0.0),
                 (0.0, 1.0, 0.0),
                 (0.0, 0.0, 1.0),
             )
-        ))
+        )
 
         # create a generator object
         pose_generator = cdpyr.motion.generator.interval(
@@ -212,14 +212,14 @@ class IntervalPoseGeneratorTestSuite(object):
             Rotation.from_euler('z', +45, degrees=True).as_dcm())
 
     def test_interval_with_two_steps_on_two_changes_in_orientation(self):
-        pose = cdpyr.motion.Pose((
+        pose = cdpyr.motion.Pose(
             (0.0, 0.0, 0.0),
             (
                 (1.0, 0.0, 0.0),
                 (0.0, 1.0, 0.0),
                 (0.0, 0.0, 1.0),
             )
-        ))
+        )
 
         # create a generator object
         pose_generator = cdpyr.motion.generator.interval(
@@ -260,14 +260,14 @@ class IntervalPoseGeneratorTestSuite(object):
             Rotation.from_euler('xy', [+45, +45], degrees=True).as_dcm())
 
     def test_interval_with_two_steps_on_three_changes_in_orientation(self):
-        pose = cdpyr.motion.Pose((
+        pose = cdpyr.motion.Pose(
             (0.0, 0.0, 0.0),
             (
                 (1.0, 0.0, 0.0),
                 (0.0, 1.0, 0.0),
                 (0.0, 0.0, 1.0),
             )
-        ))
+        )
 
         # create a generator object
         pose_generator = cdpyr.motion.generator.interval(
