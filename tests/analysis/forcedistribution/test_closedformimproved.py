@@ -11,7 +11,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
                 empty_pose: cdpyr.motion.Pose,
                 ik_standard: cdpyr.analysis.kinematics.algorithm.Algorithm):
         closed_form_improved = \
-            cdpyr.analysis.force_distribution.CLOSED_FORM_IMPROVED(
+            cdpyr.analysis.force_distribution.ClosedFormImproved(
                 ik_standard,
                 force_minimum=1,
                 force_maximum=10
@@ -42,7 +42,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
                 ik_standard):
         # force distribution solver
         closed_form_improved = \
-            cdpyr.analysis.force_distribution.CLOSED_FORM_IMPROVED(
+            cdpyr.analysis.force_distribution.ClosedFormImproved(
                 ik_standard,
                 force_minimum=1,
                 force_maximum=10
@@ -73,7 +73,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
                 ik_standard):
         # force distribution solver
         closed_form_improved = \
-            cdpyr.analysis.force_distribution.CLOSED_FORM_IMPROVED(
+            cdpyr.analysis.force_distribution.ClosedFormImproved(
                 ik_standard,
                 force_minimum=1,
                 force_maximum=10
@@ -104,7 +104,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
                   ik_standard):
         # force distribution solver
         closed_form_improved = \
-            cdpyr.analysis.force_distribution.CLOSED_FORM_IMPROVED(
+            cdpyr.analysis.force_distribution.ClosedFormImproved(
                 ik_standard,
                 force_minimum=1,
                 force_maximum=10
@@ -135,7 +135,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
                   ik_standard):
         # force distribution solver
         closed_form_improved = \
-            cdpyr.analysis.force_distribution.CLOSED_FORM_IMPROVED(
+            cdpyr.analysis.force_distribution.ClosedFormImproved(
                 ik_standard,
                 force_minimum=1,
                 force_maximum=10
@@ -166,7 +166,7 @@ class ClosedFormImprovedorceDistributionTestSuite(object):
                   ik_standard):
         # force distribution solver
         closed_form_improved = \
-            cdpyr.analysis.force_distribution.CLOSED_FORM_IMPROVED(
+            cdpyr.analysis.force_distribution.ClosedFormImproved(
                 ik_standard,
                 force_minimum=1,
                 force_maximum=10

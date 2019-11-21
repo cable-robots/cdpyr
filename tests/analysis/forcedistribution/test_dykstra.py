@@ -10,7 +10,7 @@ class DykstraForceDistributionTestSuite(object):
                 robot_1t: cdpyr.robot.Robot,
                 empty_pose: cdpyr.motion.Pose,
                 ik_standard: cdpyr.analysis.kinematics.algorithm.Algorithm):
-        dykstra = cdpyr.analysis.force_distribution.DYKSTRA(
+        dykstra = cdpyr.analysis.force_distribution.Dykstra(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -40,7 +40,7 @@ class DykstraForceDistributionTestSuite(object):
                 empty_pose: cdpyr.motion.Pose,
                 ik_standard: cdpyr.analysis.kinematics.algorithm.Algorithm):
         # force distribution solver
-        dykstra = cdpyr.analysis.force_distribution.DYKSTRA(
+        dykstra = cdpyr.analysis.force_distribution.Dykstra(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -70,7 +70,7 @@ class DykstraForceDistributionTestSuite(object):
                 empty_pose: cdpyr.motion.Pose,
                 ik_standard: cdpyr.analysis.kinematics.algorithm.Algorithm):
         # force distribution solver
-        dykstra = cdpyr.analysis.force_distribution.DYKSTRA(
+        dykstra = cdpyr.analysis.force_distribution.Dykstra(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -101,7 +101,7 @@ class DykstraForceDistributionTestSuite(object):
                   ik_standard:
                   cdpyr.analysis.kinematics.algorithm.Algorithm):
         # force distribution solver
-        dykstra = cdpyr.analysis.force_distribution.DYKSTRA(
+        dykstra = cdpyr.analysis.force_distribution.Dykstra(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -132,7 +132,7 @@ class DykstraForceDistributionTestSuite(object):
                   ik_standard:
                   cdpyr.analysis.kinematics.algorithm.Algorithm):
         # force distribution solver
-        dykstra = cdpyr.analysis.force_distribution.DYKSTRA(
+        dykstra = cdpyr.analysis.force_distribution.Dykstra(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -163,7 +163,7 @@ class DykstraForceDistributionTestSuite(object):
                   ik_standard:
                   cdpyr.analysis.kinematics.algorithm.Algorithm):
         # force distribution solver
-        dykstra = cdpyr.analysis.force_distribution.DYKSTRA(
+        dykstra = cdpyr.analysis.force_distribution.Dykstra(
             ik_standard,
             force_minimum=1,
             force_maximum=10

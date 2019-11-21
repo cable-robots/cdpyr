@@ -10,7 +10,7 @@ class ClosedFormForceDistributionTestSuite(object):
                 robot_1t: cdpyr.robot.Robot,
                 empty_pose: cdpyr.motion.Pose,
                 ik_standard: cdpyr.analysis.kinematics.algorithm.Algorithm):
-        closed_form = cdpyr.analysis.force_distribution.CLOSED_FORM(
+        closed_form = cdpyr.analysis.force_distribution.ClosedForm(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -40,7 +40,7 @@ class ClosedFormForceDistributionTestSuite(object):
                 empty_pose: cdpyr.motion.Pose,
                 ik_standard):
         # force distribution solver
-        closed_form = cdpyr.analysis.force_distribution.CLOSED_FORM(
+        closed_form = cdpyr.analysis.force_distribution.ClosedForm(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -70,7 +70,7 @@ class ClosedFormForceDistributionTestSuite(object):
                 empty_pose: cdpyr.motion.Pose,
                 ik_standard):
         # force distribution solver
-        closed_form = cdpyr.analysis.force_distribution.CLOSED_FORM(
+        closed_form = cdpyr.analysis.force_distribution.ClosedForm(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -100,7 +100,7 @@ class ClosedFormForceDistributionTestSuite(object):
                   empty_pose: cdpyr.motion.Pose,
                   ik_standard):
         # force distribution solver
-        closed_form = cdpyr.analysis.force_distribution.CLOSED_FORM(
+        closed_form = cdpyr.analysis.force_distribution.ClosedForm(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -130,7 +130,7 @@ class ClosedFormForceDistributionTestSuite(object):
                   empty_pose: cdpyr.motion.Pose,
                   ik_standard):
         # force distribution solver
-        closed_form = cdpyr.analysis.force_distribution.CLOSED_FORM(
+        closed_form = cdpyr.analysis.force_distribution.ClosedForm(
             ik_standard,
             force_minimum=1,
             force_maximum=10
@@ -160,7 +160,7 @@ class ClosedFormForceDistributionTestSuite(object):
                   empty_pose: cdpyr.motion.Pose,
                   ik_standard):
         # force distribution solver
-        closed_form = cdpyr.analysis.force_distribution.CLOSED_FORM(
+        closed_form = cdpyr.analysis.force_distribution.ClosedForm(
             ik_standard,
             force_minimum=1,
             force_maximum=10

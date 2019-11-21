@@ -9,7 +9,7 @@ from cdpyr.analysis.kinematics.algorithm import Algorithm as Kinematics
 from cdpyr.robot import Robot
 
 
-def plot_workspace(ws: workspace.HULL_RESULT, title):
+def plot_workspace(ws: workspace.HullResult, title):
     return
 
     colors = vtk.vtkNamedColors()
@@ -61,7 +61,7 @@ class HullWorkspaceTestSuite(object):
     #                                                  robot_1t: Robot,
     #                                                  ik_standard: Kinematics):
     #     # workspace archetype we want to calculate
-    #     archetype = workspace.archetype.TRANSLATION(
+    #     archetype = workspace.archetype.Translation(
     #         dcm=np.eye(3)
     #     )
     #
@@ -72,7 +72,7 @@ class HullWorkspaceTestSuite(object):
     #     )
     #
     #     # method we want to use to calculate the workspace
-    #     method = workspace.HULL(
+    #     method = workspace.HullCalculator(
     #         ik_standard,
     #         archetype,
     #         criterion,
@@ -92,17 +92,17 @@ class HullWorkspaceTestSuite(object):
     #                                                   ik_standard:
     #                                                   Kinematics):
     #     # workspace archetype we want to calculate
-    #     archetype = workspace.archetype.TRANSLATION(
+    #     archetype = workspace.archetype.Translation(
     #         dcm=np.eye(3)
     #     )
     #
     #     # criteria and their parameters we want to evaluate
-    #     criterion = workspace.criterion.SINGULARITIES(
+    #     criterion = workspace.criterion.Singularities(
     #         kinematics=ik_standard
     #     )
     #
     #     # method we want to use to calculate the workspace
-    #     method = workspace.HULL(
+    #     method = workspace.HullCalculator(
     #         ik_standard,
     #         archetype,
     #         criterion,
@@ -122,13 +122,13 @@ class HullWorkspaceTestSuite(object):
     #                                                    ik_standard:
     #                                                    Kinematics):
     #     # workspace archetype we want to calculate
-    #     archetype = workspace.archetype.TRANSLATION(
+    #     archetype = workspace.archetype.Translation(
     #         dcm=np.eye(3)
     #     )
     #
     #     # criterion and their parameters we want to evaluate
-    #     criterion = workspace.criterion.WRENCH_CLOSURE(
-    #         force_distribution=force_distribution.CLOSED_FORM(
+    #     criterion = workspace.criterion.WrenchClosure(
+    #         force_distribution=force_distribution.ClosedForm(
     #             ik_standard,
     #             force_minimum=[1],
     #             force_maximum=[10],
@@ -137,7 +137,7 @@ class HullWorkspaceTestSuite(object):
     #     )
     #
     #     # method we want to use to calculate the workspace
-    #     method = workspace.HULL(
+    #     method = workspace.HullCalculator(
     #         ik_standard,
     #         archetype,
     #         criterion,
@@ -157,13 +157,13 @@ class HullWorkspaceTestSuite(object):
     #                                                     ik_standard:
     #                                                     Kinematics):
     #     # workspace archetype we want to calculate
-    #     archetype = workspace.archetype.TRANSLATION(
+    #     archetype = workspace.archetype.Translation(
     #         dcm=np.eye(3)
     #     )
     #
     #     # criterion and their parameters we want to evaluate
-    #     criterion = workspace.criterion.WRENCH_FEASIBLE(
-    #         force_distribution=force_distribution.CLOSED_FORM(
+    #     criterion = workspace.criterion.WrenchFeasible(
+    #         force_distribution=force_distribution.ClosedForm(
     #             ik_standard,
     #             force_minimum=[0],
     #             force_maximum=[np.inf]
@@ -172,7 +172,7 @@ class HullWorkspaceTestSuite(object):
     #     )
     #
     #     # method we want to use to calculate the workspace
-    #     method = workspace.HULL(
+    #     method = workspace.HullCalculator(
     #         ik_standard,
     #         archetype,
     #         criterion,
@@ -192,18 +192,18 @@ class HullWorkspaceTestSuite(object):
                                                        ik_standard:
                                                        Kinematics):
         # workspace archetype we want to calculate
-        archetype = workspace.archetype.TRANSLATION(
+        archetype = workspace.archetype.Translation(
             dcm=np.eye(3)
         )
 
         # criterion and its parameters we want to evaluate
-        criterion = workspace.criterion.CABLE_LENGTH(
+        criterion = workspace.criterion.CableLength(
             kinematics=ik_standard,
             limits=[0.866025404, 2.598076211]
         )
 
         # method we want to use to calculate the workspace
-        method = workspace.HULL(
+        method = workspace.HullCalculator(
             ik_standard,
             archetype,
             criterion,
@@ -227,13 +227,13 @@ class HullWorkspaceTestSuite(object):
                                                          ik_standard:
                                                          Kinematics):
         # workspace archetype we want to calculate
-        archetype = workspace.archetype.TRANSLATION(
+        archetype = workspace.archetype.Translation(
             dcm=np.eye(3)
         )
 
         # criterion and their parameters we want to evaluate
-        criterion = workspace.criterion.WRENCH_CLOSURE(
-            force_distribution=force_distribution.CLOSED_FORM(
+        criterion = workspace.criterion.WrenchClosure(
+            force_distribution=force_distribution.ClosedForm(
                 ik_standard,
                 force_minimum=[1],
                 force_maximum=[10]
@@ -242,7 +242,7 @@ class HullWorkspaceTestSuite(object):
         )
 
         # method we want to use to calculate the workspace
-        method = workspace.HULL(
+        method = workspace.HullCalculator(
             ik_standard,
             archetype,
             criterion,
@@ -266,13 +266,13 @@ class HullWorkspaceTestSuite(object):
                                                           ik_standard:
                                                           Kinematics):
         # workspace archetype we want to calculate
-        archetype = workspace.archetype.TRANSLATION(
+        archetype = workspace.archetype.Translation(
             dcm=np.eye(3)
         )
 
         # criterion and their parameters we want to evaluate
-        criterion = workspace.criterion.WRENCH_FEASIBLE(
-            force_distribution=force_distribution.CLOSED_FORM(
+        criterion = workspace.criterion.WrenchFeasible(
+            force_distribution=force_distribution.ClosedForm(
                 ik_standard,
                 force_minimum=[0],
                 force_maximum=[np.inf]
@@ -281,7 +281,7 @@ class HullWorkspaceTestSuite(object):
         )
 
         # method we want to use to calculate the workspace
-        method = workspace.HULL(
+        method = workspace.HullCalculator(
             ik_standard,
             archetype,
             criterion,
@@ -305,17 +305,17 @@ class HullWorkspaceTestSuite(object):
                                                         ik_standard:
                                                         Kinematics):
         # workspace archetype we want to calculate
-        archetype = workspace.archetype.TRANSLATION(
+        archetype = workspace.archetype.Translation(
             dcm=np.eye(3)
         )
 
         # criteria and their parameters we want to evaluate
-        criterion = workspace.criterion.SINGULARITIES(
+        criterion = workspace.criterion.Singularities(
             kinematics=ik_standard
         )
 
         # method we want to use to calculate the workspace
-        method = workspace.HULL(
+        method = workspace.HullCalculator(
             ik_standard,
             archetype,
             criterion,

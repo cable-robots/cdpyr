@@ -733,4 +733,4 @@ def rand_pose_3d(rand_pos_3t, rand_rot_3r):
 
 @pytest.fixture
 def ik_standard():
-    return cdpyr.analysis.kinematics.STANDARD()
+    return cdpyr.analysis.kinematics.Standard()
