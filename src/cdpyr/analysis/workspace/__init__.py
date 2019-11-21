@@ -1,24 +1,22 @@
-from cdpyr.analysis.workspace import (
-    archetype,
-    criterion,
-    grid as _grid,
-    hull as _hull,
+from cdpyr.analysis.workspace import archetype, criterion
+
+from cdpyr.analysis.workspace.grid import (
+    Calculator as GridCalculator,
+    Result as GridResult,
+)
+from cdpyr.analysis.workspace.hull import (
+    Calculator as HullCalculator,
+    Result as HullResult,
 )
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
-GRID = _grid.Calculator
-HULL = _hull.Calculator
-
-GRID_RESULT = _grid.Result
-HULL_RESULT = _hull.Result
-
 __all__ = [
     'archetype',
     'criterion',
-    'GRID',
-    'HULL',
-    'GRID_RESULT',
-    'HULL_RESULT',
+    'GridCalculator',
+    'GridResult',
+    'HullResult',
+    'HullCalculator'
 ]

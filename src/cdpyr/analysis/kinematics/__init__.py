@@ -1,15 +1,10 @@
-from cdpyr.analysis.kinematics import (
-    pulley as _pulley,
-    standard as _standard,
-)
+from cdpyr.analysis.kinematics.pulley import Pulley
+from cdpyr.analysis.kinematics.standard import Standard
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
-STANDARD = _standard.Standard
-PULLEY = _pulley.Pulley
-
 __all__ = [
-    'STANDARD',
-    'PULLEY',
+    'Standard',
+    'Pulley',
 ]
