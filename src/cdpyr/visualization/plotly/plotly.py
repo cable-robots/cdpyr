@@ -45,7 +45,7 @@ def update_recursive(defaults, update):
     return defaults
 
 
-class Plotly(_visualizer.Visualizer):
+class Plotly(_visualizer.Visualizer, ABC):
     _figure: go.Figure
 
     COORDINATE_NAMES = ['x', 'y', 'z']
@@ -105,10 +105,11 @@ class Plotly(_visualizer.Visualizer):
         )
         self._figure.show()
 
+    @abstractmethod
     def render_cuboid(self,
                       cuboid: '_cuboid.Cuboid',
                       *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     def render_coordinate_system(self,
                                  position: Vector = None,
@@ -163,10 +164,11 @@ class Plotly(_visualizer.Visualizer):
                 )
             )
 
+    @abstractmethod
     def render_cylinder(self,
                         cylinder: '_cylinder.Cylinder',
                         *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     def render_drivetrain(self,
                           drivetrain: '_drivetrain.DriveTrain',
@@ -402,17 +404,19 @@ class Plotly(_visualizer.Visualizer):
         for list_name in ('platforms', 'kinematic_chains'):
             self._render_component_list(robot, list_name, **kwargs)
 
+    @abstractmethod
     def render_sphere(self,
                       sphere: '_sphere.Sphere',
                       *args,
                       **kwargs):
-        pass
+        raise NotImplementedError()
 
+    @abstractmethod
     def render_tube(self,
                     tube: '_tube.Tube',
                     *args,
                     **kwargs):
-        pass
+        raise NotImplementedError()
 
     def _parse_coordinate(self, coordinate: Vector = None) -> _np.ndarray:
         if coordinate is None:
