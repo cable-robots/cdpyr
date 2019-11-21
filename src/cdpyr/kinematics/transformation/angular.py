@@ -46,12 +46,12 @@ class Angular(BaseObject):
     """
 
     def __init__(self,
-                 euler: Optional[Vector] = None,
-                 quaternion: Optional[Vector] = None,
                  dcm: Optional[Matrix] = None,
-                 rotvec: Optional[Vector] = None,
                  angular_velocity: Optional[Vector] = None,
                  angular_acceleration: Optional[Vector] = None,
+                 quaternion: Optional[Vector] = None,
+                 rotvec: Optional[Vector] = None,
+                 euler: Optional[Vector] = None,
                  rotation_sequence: Optional[AnyStr] = None
                  ):
         """

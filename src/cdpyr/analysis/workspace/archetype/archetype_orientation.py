@@ -82,14 +82,14 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
 
     def _poses(self, coordinate: Vector):
         return _generator.steps(
-            _pose.Pose((
+            _pose.Pose(
                 coordinate,
                 _generator.from_euler(self._sequence, self._euler_min)
-            )),
-            _pose.Pose((
+            ),
+            _pose.Pose(
                 coordinate,
                 _generator.from_euler(self._sequence, self._euler_max)
-            )),
+            ),
             self._step
         )
 

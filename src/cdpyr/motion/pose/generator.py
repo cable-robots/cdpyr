@@ -160,11 +160,11 @@ def steps(start: '_pose.Pose',
     # TODO make creation of rotation matrix faster as `from_euler` seems to
     #  be a major bottleneck here
     # return the generator object
-    return (_pose.Pose((
+    return (_pose.Pose(
         start.linear.position + deltas[0:3] * a[0:3],
         from_euler(start.angular.sequence,
                    start.angular.euler + deltas[3:6] * a[3:6])
-    )) for a in itertools.product(
+    ) for a in itertools.product(
         *(range(0, iterations[k] + 1) for k in range(0, 6))
     ))
 
@@ -213,18 +213,15 @@ def interval(pose: '_pose.Pose',
 
     # calculate start and end pose
     start = _pose.Pose(
-        (
-            pose.linear.position + boundaries[0, 0:3],
-            from_euler(pose.angular.sequence,
-                       pose.angular.euler + boundaries[0, 3:6])
-        )
+        pose.linear.position + boundaries[0, 0:3],
+        from_euler(pose.angular.sequence,
+                   pose.angular.euler + boundaries[0, 3:6])
+
     )
     end = _pose.Pose(
-        (
             pose.linear.position + boundaries[1, 0:3],
             from_euler(pose.angular.sequence,
                        pose.angular.euler + boundaries[1, 3:6])
-        )
     )
 
     # now that we have a start and end pose, we will just pass down to the
@@ -282,7 +279,7 @@ def translation(start: '_linear.Linear',
 
 def orientation(start: '_angular.Angular',
                 end: '_angular.Angular',
-                position: Optional['_linear.Linear'] = None,
+                linear: Optional['_linear.Linear'] = None,
                 step: Optional[Union[Num, Vector]] = None):
     """
     Create a generator of poses where only the orientation changes throughout
@@ -294,7 +291,7 @@ def orientation(start: '_angular.Angular',
         Initial rotation matrix given as
     end : Matrix
         Final rotation matrix.
-    position : Pose
+    linear : Pose
         Position at which to perform the rotation. If not given, defaults to
         [0.0, 0.0, 0.0]
     step : Num | Vector | 3-tuple
@@ -316,17 +313,17 @@ def orientation(start: '_angular.Angular',
         step = np_.repeat(step, 4 - step.size)[0:3]
 
     # default position value
-    if position is None:
-        position = _linear.Linear()
+    if linear is None:
+        linear = _linear.Linear()
 
     # validate step has the right shape
     _validator.linalg.rotation_matrix(step, (3,), 'step')
 
     # create start pose from the position pose given
-    start = _pose.Pose(linear=position, angular=start)
+    start = _pose.Pose(linear=linear, angular=start)
 
     # create end pose from the position pose given
-    end = _pose.Pose(linear=position, angular=end)
+    end = _pose.Pose(linear=linear, angular=end)
 
     # return the steps iterator
     return steps(start, end, np_.pad(step, (3, 0)))

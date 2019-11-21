@@ -155,10 +155,10 @@ class Standard(_algorithm.Algorithm):
             x = result.x / scaling
 
             return {
-                'pose':       _pose.Pose((
+                'pose':       _pose.Pose(
                     x[0:3],
                     _pose_generator.from_quaternion(x[3:7])
-                )),
+                ),
                 'joints':     joints,
                 'directions': last_direction[0]
             }

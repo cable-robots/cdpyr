@@ -35,8 +35,8 @@ class Translation(_archetype.Archetype):
 
     def _poses(self, coordinate: Vector):
         return _generator.steps(
-            _pose.Pose((coordinate, self._dcm)),
-            _pose.Pose((coordinate, self._dcm)),
+            _pose.Pose(coordinate, self._dcm),
+            _pose.Pose(coordinate, self._dcm),
             1
         )
 

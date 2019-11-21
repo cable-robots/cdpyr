@@ -1,4 +1,4 @@
-from typing import Optional, Sequence, Tuple, Union
+from typing import Optional, Tuple, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -21,55 +21,36 @@ class Pose(BaseObject):
     _time: Num
 
     def __init__(self,
-                 position: Optional[Tuple[Vector, Matrix]] = None,
-                 velocity: Optional[Tuple[Vector, Vector]] = None,
-                 acceleration: Optional[Tuple[Vector, Vector]] = None,
+                 position: Optional[Vector] = None,
+                 dcm: Optional[Matrix] = None,
+                 velocity: Optional[Vector] = None,
+                 angular_velocity: Optional[Vector] = None,
+                 acceleration: Optional[Vector] = None,
+                 angular_acceleration: Optional[Vector] = None,
+                 time: Optional[Num] = np_.NaN,
                  linear: Optional['_linear.Linear'] = None,
                  angular: Optional['_angular.Angular'] = None,
-                 time: Optional[Num] = np_.NaN,
                  ):
+        # no linear object given, then build it from the arguments and their
+        # defaults
         if linear is None:
-            self.linear = _linear.Linear(
-                position[0]
-                if isinstance(position, Sequence)
-                   and 0 < len(position)
-                   and position is not None
-                else np_.zeros((3,)),
-                velocity[0]
-                if isinstance(velocity, Sequence)
-                   and 0 < len(velocity)
-                   and velocity is not None
-                else np_.zeros((3,)),
-                acceleration[0]
-                if isinstance(acceleration, Sequence)
-                   and 0 < len(acceleration)
-                   and acceleration is not None
-                else np_.zeros((3,)),
+            linear = _linear.Linear(
+                position,
+                velocity,
+                acceleration
             )
-        else:
-            self.linear = linear
-
+        # no angular object given, then build it from the arguments and their
+        # defaults
         if angular is None:
-            self.angular = _angular.Angular(
-                dcm=position[1]
-                if isinstance(position, Sequence)
-                   and 1 < len(position)
-                   and position[1] is not None
-                else np_.eye(3),
-                angular_velocity=velocity[1]
-                if isinstance(velocity, Sequence)
-                   and 1 < len(velocity)
-                   and velocity is not None
-                else np_.zeros((3,)),
-                angular_acceleration=acceleration[1]
-                if isinstance(acceleration, Sequence)
-                   and 1 < len(acceleration)
-                   and acceleration is not None
-                else np_.zeros((3,)),
+            angular = _angular.Angular(
+                dcm,
+                angular_velocity,
+                angular_acceleration
             )
-        else:
-            self.angular = angular
 
+        # assign processed properties
+        self.linear = linear
+        self.angular = angular
         self.time = time
 
     @property

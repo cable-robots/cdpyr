@@ -23,14 +23,14 @@ class Orientation(_archetype.Archetype):
 
     def _poses(self, coordinate: Vector):
         return _generator.steps(
-            _pose.Pose((
+            _pose.Pose(
                 self.position,
                 _generator.from_euler(self.sequence, self.euler_min)
-            )),
-            _pose.Pose((
+            ),
+            _pose.Pose(
                 self.position,
                 _generator.from_euler(self.sequence, self.euler_max)
-            )),
+            ),
             self.step
         )
 
