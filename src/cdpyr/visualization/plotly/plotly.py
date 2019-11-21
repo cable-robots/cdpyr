@@ -1,9 +1,10 @@
+from abc import ABC, abstractmethod
 from collections import Mapping
 from typing import AnyStr, Sequence
 
 import numpy as _np
 from plotly import graph_objects as go
-from scipy.spatial import Delaunay as _Delaunay, ConvexHull as _ConvexHull
+from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
 
 from cdpyr.geometry import (
     cuboid as _cuboid,
@@ -92,6 +93,14 @@ class Plotly(_visualizer.Visualizer):
             yaxis=dict(
                 scaleanchor="x",
                 scaleratio=1,
+            ),
+            scene=dict(
+                aspectmode='data',
+                aspectratio=dict(
+                    x=1.00,
+                    y=1.00,
+                    z=1.00
+                )
             )
         )
         self._figure.show()
