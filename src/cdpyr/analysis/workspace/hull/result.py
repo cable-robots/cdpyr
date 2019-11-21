@@ -80,8 +80,9 @@ class Result(_result.Result, abc.Collection):
 
     def __len__(self) -> int:
         try:
+            # TODO fix this since it can be that all vertices are the same
             # if any vertex is unequal to zero, we have a length
-            return bool(self._vertices.any())
+            return bool(self._vertices.any()) and _np.unique(self._vertices).size > 1
         except AttributeError as AttributeE:
             return 0
 
