@@ -30,9 +30,9 @@ class ClosedForm(_algorithm.Algorithm):
                 wrench + structure_matrix.dot(force_mean))
 
         return {
-            'pose':         pose,
-            'wrench':       wrench,
-            'distribution': distribution,
+            'pose':   pose,
+            'wrench': wrench,
+            'forces': distribution,
         }
 
 

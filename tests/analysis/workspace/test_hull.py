@@ -235,8 +235,8 @@ class HullWorkspaceTestSuite(object):
         criterion = workspace.criterion.WrenchClosure(
             force_distribution=force_distribution.ClosedForm(
                 ik_standard,
-                force_minimum=[1],
-                force_maximum=[10]
+                force_minimum=1,
+                force_maximum=10
             ),
             wrench=[0.0, 0.0, -9.81, 0.0, 0.0, 0.0]
         )

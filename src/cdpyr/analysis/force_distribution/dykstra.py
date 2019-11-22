@@ -164,9 +164,9 @@ class Dykstra(_algorithm.Algorithm):
                 distribution = projection_a
 
         return {
-            'pose':         pose,
-            'wrench':       wrench,
-            'distribution': distribution,
+            'pose':   pose,
+            'wrench': wrench,
+            'forces': distribution,
         }
 
 

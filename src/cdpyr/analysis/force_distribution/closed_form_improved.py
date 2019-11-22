@@ -85,9 +85,9 @@ class ClosedFormImproved(_algorithm.Algorithm):
                                             wrench)
 
         return {
-            'pose':         pose,
-            'wrench':       wrench,
-            'distribution': distribution,
+            'pose':   pose,
+            'wrench': wrench,
+            'forces': distribution,
         }
 
     def _closed_form(self,

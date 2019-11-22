@@ -30,10 +30,10 @@ class DykstraForceDistributionTestSuite(object):
 
         # assertion
         assert distribution.pose == empty_pose
-        assert distribution.distribution.ndim == 1
-        assert distribution.distribution.shape == (
+        assert distribution.forces.ndim == 1
+        assert distribution.forces.shape == (
             robot_1t.num_kinematic_chains,)
-        assert (distribution.distribution > 0).all()
+        assert (distribution.forces > 0).all()
 
     def test_2t(self,
                 robot_2t: cdpyr.robot.Robot,
@@ -60,10 +60,10 @@ class DykstraForceDistributionTestSuite(object):
 
         # assertion
         assert distribution.pose == empty_pose
-        assert distribution.distribution.ndim == 1
-        assert distribution.distribution.shape == (
+        assert distribution.forces.ndim == 1
+        assert distribution.forces.shape == (
             robot_2t.num_kinematic_chains,)
-        assert (distribution.distribution > 0).all()
+        assert (distribution.forces > 0).all()
 
     def test_3t(self,
                 robot_3t: cdpyr.robot.Robot,
@@ -90,10 +90,10 @@ class DykstraForceDistributionTestSuite(object):
 
         # assertion
         assert distribution.pose == empty_pose
-        assert distribution.distribution.ndim == 1
-        assert distribution.distribution.shape == (
+        assert distribution.forces.ndim == 1
+        assert distribution.forces.shape == (
             robot_3t.num_kinematic_chains,)
-        assert (distribution.distribution > 0).all()
+        assert (distribution.forces > 0).all()
 
     def test_1r2t(self,
                   robot_1r2t: cdpyr.robot.Robot,
@@ -121,10 +121,10 @@ class DykstraForceDistributionTestSuite(object):
 
         # assertion
         assert distribution.pose == empty_pose
-        assert distribution.distribution.ndim == 1
-        assert distribution.distribution.shape == (
+        assert distribution.forces.ndim == 1
+        assert distribution.forces.shape == (
             robot_1r2t.num_kinematic_chains,)
-        assert (distribution.distribution > 0).all()
+        assert (distribution.forces > 0).all()
 
     def test_2r3t(self,
                   robot_2r3t: cdpyr.robot.Robot,
@@ -152,10 +152,10 @@ class DykstraForceDistributionTestSuite(object):
 
         # assertion
         assert distribution.pose == empty_pose
-        assert distribution.distribution.ndim == 1
-        assert distribution.distribution.shape == (
+        assert distribution.forces.ndim == 1
+        assert distribution.forces.shape == (
             robot_2r3t.num_kinematic_chains,)
-        assert (distribution.distribution > 0).all()
+        assert (distribution.forces > 0).all()
 
     def test_3r3t(self,
                   robot_3r3t: cdpyr.robot.Robot,
@@ -183,10 +183,10 @@ class DykstraForceDistributionTestSuite(object):
 
         # assertion
         assert distribution.pose == empty_pose
-        assert distribution.distribution.ndim == 1
-        assert distribution.distribution.shape == (
+        assert distribution.forces.ndim == 1
+        assert distribution.forces.shape == (
             robot_3r3t.num_kinematic_chains,)
-        assert (distribution.distribution > 0).all()
+        assert (distribution.forces > 0).all()
 
 
 if __name__ == "__main__":
