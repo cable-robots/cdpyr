@@ -296,6 +296,10 @@ class PlatformList(UserList, BaseObject):
         return (platform.angular_inertia for platform in self.data)
 
     @property
+    def bi(self):
+        return (platform.bi for platform in self.data)
+
+    @property
     def center_of_gravity(self):
         return (platform.center_of_gravity for platform in self.data)
 
