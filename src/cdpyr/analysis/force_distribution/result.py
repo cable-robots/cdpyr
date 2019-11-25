@@ -1,4 +1,5 @@
 import copy
+
 from magic_repr import make_repr
 
 from cdpyr.analysis import result as _result
@@ -13,18 +14,18 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Result(_result.Result):
     _algorithm: '_force_distribution.Algorithm'
-    _distribution: Vector
+    _forces: Vector
     _wrench: Vector
 
     def __init__(self,
                  algorithm: '_force_distribution.Algorithm',
                  pose: '_pose.Pose',
-                 distribution: Vector,
+                 forces: Vector,
                  wrench: Vector,
                  **kwargs):
         super().__init__(pose)
         self._algorithm = copy.deepcopy(algorithm)
-        self._distribution = distribution
+        self._forces = forces
         self._wrench = wrench
 
     @property
@@ -32,8 +33,8 @@ class Result(_result.Result):
         return self._algorithm
 
     @property
-    def distribution(self):
-        return self._distribution
+    def forces(self):
+        return self._forces
 
     @property
     def wrench(self):
@@ -44,6 +45,7 @@ class Result(_result.Result):
         'pose',
         'distribution',
     )
+
 
 __all__ = [
     'Result',

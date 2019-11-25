@@ -1,4 +1,5 @@
 from typing import AnyStr, Dict, List, Optional, Sequence, Tuple, Union
+import  numpy as _np
 
 from magic_repr import make_repr
 
@@ -98,7 +99,7 @@ class Robot(BaseObject):
 
     @property
     def bi(self):
-        return list(self.platforms.bi)
+        return _np.hstack(list(self.platforms.bi))
 
     @property
     def cables(self):

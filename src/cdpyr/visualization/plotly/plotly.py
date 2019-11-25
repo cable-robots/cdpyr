@@ -264,8 +264,8 @@ class Plotly(_visualizer.Visualizer, ABC):
                 if self._NUMBER_OF_AXES == 3:
                     delau = _Delaunay(anchors.T)
 
-                    vertices = delau.convex_hull
-                    points = delau.points
+                    faces = delau.convex_hull
+                    vertices = delau.points
                 # in any other case, we simply calculate the convex hull of
                 # the anchors
                 else:
@@ -273,26 +273,26 @@ class Plotly(_visualizer.Visualizer, ABC):
                     cv = _ConvexHull(anchors.T)
                     # and get all vertices and points in the correct sorted
                     # order
-                    vertices = cv.vertices
-                    points = cv.points
+                    faces = cv.vertices
+                    vertices = cv.points
                     # to close the loop of vertices, we will append the first
                     # one to the list
-                    vertices = _np.append(vertices, vertices[0])
+                    faces = _np.append(faces, faces[0])
 
                 # also rotate and translate the platform anchors
-                anchors_rotated = self._parse_coordinate(position) \
-                                  + self._parse_dcm(dcm).dot(points.T)
+                vertices = self._parse_coordinate(position) \
+                                  + self._parse_dcm(dcm).dot(vertices.T)
 
                 # 3D plot
                 if self._NUMBER_OF_AXES == 3:
                     # first, plot the mesh of the platform i.e., its volume
                     self.figure.add_trace(
                         go.Mesh3d(
-                            **self._build_plotdata_kwargs(anchors_rotated),
-                            **self._build_plotdata_kwargs(vertices.T,
+                            **self._build_plotdata_kwargs(vertices),
+                            **self._build_plotdata_kwargs(faces.T,
                                                           ['i', 'j', 'k']),
                             color='rgb(0, 0, 0)',
-                            facecolor=['rgb(178, 178, 178)'] * vertices.shape[
+                            facecolor=['rgb(178, 178, 178)'] * faces.shape[
                                 0],
                             flatshading=True,
                             name='',
@@ -301,15 +301,15 @@ class Plotly(_visualizer.Visualizer, ABC):
                         )
                     )
                     # then plot each edge/vertex of the platform
-                    vertices = _np.hstack(
-                        (vertices, vertices[:, 0, _np.newaxis]))
-                    for vertex in vertices:
+                    faces = _np.hstack(
+                        (faces, faces[:, 0, _np.newaxis]))
+                    for face in faces:
                         self.figure.add_trace(
                             go.Scatter3d(
                                 **self._build_plotdata_kwargs([
-                                    anchors_rotated[0, vertex],
-                                    anchors_rotated[1, vertex],
-                                    anchors_rotated[2, vertex]
+                                    vertices[0, face],
+                                    vertices[1, face],
+                                    vertices[2, face]
                                 ]),
                                 mode='lines',
                                 line=dict(
@@ -326,7 +326,7 @@ class Plotly(_visualizer.Visualizer, ABC):
                     self.figure.add_trace(
                         self._scatter(
                             **self._build_plotdata_kwargs(
-                                anchors_rotated[:, vertices]
+                                vertices[:, faces]
                             ),
                             mode='lines',
                             fill='toself',

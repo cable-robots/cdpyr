@@ -221,7 +221,7 @@ class Spatial(_plotly.Plotly):
         # perform triangulation on transformed coordinates of the cylinder shape
         delau = _Delaunay(_np.asarray(
             self._apply_transformation(
-                *_np.vstack(
+                *_np.vstack([
                     [
                         major_radius * _np.cos(az),
                         minor_radius * _np.sin(az),
@@ -229,7 +229,7 @@ class Spatial(_plotly.Plotly):
                     ]
                     for el in elevation
                     for az in azimuth
-                ).T,
+                ]).T,
                 transform)
         ).transpose())
 
