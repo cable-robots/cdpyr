@@ -17,6 +17,7 @@ class Translation(_archetype.Archetype):
         the rotation is fixed to R0
     and the observed criterion is valid
     """
+
     _dcm: Matrix
 
     def __init__(self, dcm: Matrix = None):
