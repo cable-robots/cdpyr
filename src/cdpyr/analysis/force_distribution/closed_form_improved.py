@@ -51,13 +51,13 @@ class ClosedFormImproved(_algorithm.Algorithm):
 
                 # check if we can continue projecting the cable force onto
                 # the wrench or not
-                if _structure_matrix.shape[0] >= _structure_matrix.shape[1]:
+                if _structure_matrix.shape[0] == _structure_matrix.shape[1]:
                     raise ArithmeticError('Cannot reduce forces any more')
 
                 # linear index of force to reduce
                 reduce = _np.argmax(_np.isclose(distribution, _np.max(
                     _np.abs(distribution[violated]))))
-                # linear indices of forces to keep
+                # logical indices of forces to keep
                 keep = _np.ones_like(valid, dtype=_np.bool)
                 keep[reduce] = not keep[reduce]
 
