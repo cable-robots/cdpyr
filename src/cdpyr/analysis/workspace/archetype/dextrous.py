@@ -8,6 +8,13 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Dextrous(_archetype_orientation.ArchetypeOrientation):
+    """
+    The `Dextrous` workspace is given through the poses with
+        the positions in R3
+    for which
+        all rotations in SO3
+    and the observed criterion is valid
+    """
 
     def __init__(self, step: int = 10):
         euler = _np.pi * _np.asarray([1.0, 1.0, 1.0])

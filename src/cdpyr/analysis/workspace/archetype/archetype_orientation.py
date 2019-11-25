@@ -1,5 +1,6 @@
-import numpy as _np
 from abc import ABC
+
+import numpy as _np
 
 from cdpyr import validator as _validator
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
@@ -11,6 +12,10 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class ArchetypeOrientation(_archetype.Archetype, ABC):
+    """
+    A base class for all workspace archetypes that vary the position and
+    create a valid rotation matrix set at every position
+    """
     _sequence: str
     _step: int
     _euler_min: Vector
