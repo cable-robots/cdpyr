@@ -5,8 +5,8 @@ from typing import Optional, Sequence, Tuple, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.geometry import geometry as _geometry
 from cdpyr import validator as _validator
+from cdpyr.geometry import geometry as _geometry
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.motion import pose as _pose
