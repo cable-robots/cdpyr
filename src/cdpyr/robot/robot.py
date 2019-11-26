@@ -1,6 +1,6 @@
 from typing import AnyStr, Dict, List, Optional, Sequence, Tuple, Union
-import  numpy as _np
 
+import numpy as _np
 from magic_repr import make_repr
 
 from cdpyr.mixin.base_object import BaseObject
@@ -174,6 +174,15 @@ class Robot(BaseObject):
                     cable=cable
                 )
 
+        # We only support unique kinematic chains i.e., one cable may only be
+        # attached to one winch and one platform anchor at a time. That's why
+        # we will remove duplicate kinematic chains from the list but in a
+        # way that the original order is preserved (FIFO-style).
+        # @SEE https://stackoverflow.com/questions/44628186
+        seen = set()
+        seen_add = seen.add
+        chains = [x for x in chains if not (x in seen or seen_add(x))]
+
         # and set the correct object type
         self._chains = _kinematicchain.KinematicChainList(chains)
 
@@ -228,11 +237,11 @@ class Robot(BaseObject):
         if self is other:
             return True
 
-        return self.cables == other.cables and \
-               self.frame == other.frame and \
-               self.kinematic_chains == other.kinematic_chains and \
-               self.name == other.name and \
-               self.platforms == other.platforms
+        return self.cables == other.cables \
+               and self.frame == other.frame \
+               and self.kinematic_chains == other.kinematic_chains \
+               and self.name == other.name \
+               and self.platforms == other.platforms
 
     def __ne__(self, other):
         return not self == other

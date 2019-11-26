@@ -70,9 +70,9 @@ class DriveTrain(BaseObject):
         if self is other:
             return True
 
-        return self.drum == other.drum and \
-               self.gearbox == other.gearbox and \
-               self.motor == other.motor
+        return self.drum == other.drum \
+               and self.gearbox == other.gearbox \
+               and self.motor == other.motor
 
     def __ne__(self, other):
         return not self == other

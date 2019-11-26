@@ -151,8 +151,8 @@ class Anchor(BaseObject):
         if self is other:
             return True
 
-        return self.linear == other.linear and \
-               self.angular == other.angular
+        return self.linear == other.linear \
+               and self.angular == other.angular
 
     def __ne__(self, other):
         return not self == other

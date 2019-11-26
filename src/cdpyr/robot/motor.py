@@ -168,10 +168,10 @@ class Motor(BaseObject):
         if self is other:
             return True
 
-        return self.inertia == other.inertia and \
-               self.rated_power == other.rated_power and \
-               self.rated_speed == other.rated_power and \
-               self.torques == other.torques
+        return self.inertia == other.inertia \
+               and self.rated_power == other.rated_power \
+               and self.rated_speed == other.rated_power \
+               and self.torques == other.torques
 
     def __ne__(self, other):
         return not self == other

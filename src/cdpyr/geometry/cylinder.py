@@ -62,9 +62,9 @@ class Cylinder(Geometry):
         del self.diameter
 
     def __eq__(self, other):
-        return super().__eq__(other) and \
-               self.diameter == other.diameter and \
-               self.height == other.height
+        return super().__eq__(other) \
+               and self.diameter == other.diameter \
+               and self.height == other.height
 
     def __hash__(self):
         return hash((self.diameter, self.height))

@@ -86,9 +86,9 @@ class Linear(BaseObject):
         if self is other:
             return True
 
-        return np_.allclose(self.position, other.position) and \
-               np_.allclose(self.velocity, other.velocity) and \
-               np_.allclose(self.acceleration, other.acceleration)
+        return np_.allclose(self.position, other.position) \
+               and np_.allclose(self.velocity, other.velocity) \
+               and np_.allclose(self.acceleration, other.acceleration)
 
     def __ne__(self, other):
         return not self == other
@@ -100,9 +100,9 @@ class Linear(BaseObject):
         if self is other:
             return False
 
-        return (self.position < other.position).any() or \
-               (self.velocity < other.velocity).any() or \
-               (self.acceleration < other.acceleration).any()
+        return (self.position < other.position).any() \
+               or (self.velocity < other.velocity).any() \
+               or (self.acceleration < other.acceleration).any()
 
     def __le__(self, other):
         if not isinstance(other, self.__class__):
@@ -111,9 +111,9 @@ class Linear(BaseObject):
         if self is other:
             return True
 
-        return (self.position <= other.position).any() or \
-               (self.velocity <= other.velocity).any() or \
-               (self.acceleration <= other.acceleration).any()
+        return (self.position <= other.position).any() \
+               or (self.velocity <= other.velocity).any() \
+               or (self.acceleration <= other.acceleration).any()
 
     def __gt__(self, other):
         if not isinstance(other, self.__class__):
@@ -122,9 +122,9 @@ class Linear(BaseObject):
         if self is other:
             return False
 
-        return (self.position > other.position).any() or \
-               (self.velocity > other.velocity).any() or \
-               (self.acceleration > other.acceleration).any()
+        return (self.position > other.position).any() \
+               or (self.velocity > other.velocity).any() \
+               or (self.acceleration > other.acceleration).any()
 
     def __ge__(self, other):
         if not isinstance(other, self.__class__):
@@ -133,14 +133,14 @@ class Linear(BaseObject):
         if self is other:
             return True
 
-        return (self.position >= other.position).any() or \
-               (self.velocity >= other.velocity).any() or \
-               (self.acceleration >= other.acceleration).any()
+        return (self.position >= other.position).any() \
+               or (self.velocity >= other.velocity).any() \
+               or (self.acceleration >= other.acceleration).any()
 
     def __hash__(self):
-        return hash((self.acceleration.tostring(),
-                     self.position.tostring(),
-                     self.velocity.tostring()))
+        return hash((id(self.acceleration),
+                     id(self.position),
+                     id(self.velocity)))
 
     __repr__ = make_repr(
         'position',

@@ -45,8 +45,8 @@ class Sphere(Geometry):
         del self.diameter
 
     def __eq__(self, other):
-        return super().__eq__(other) and \
-               self.diameter == other.diameter
+        return super().__eq__(other) \
+               and self.diameter == other.diameter
 
     def __hash__(self):
         return hash((self.diameter))

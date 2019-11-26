@@ -134,10 +134,10 @@ class Tube(Geometry):
         if self is other:
             return True
 
-        return super().__eq__(other) and \
-               self.inner_diameter == other.inner_diameter and \
-               self.outer_diameter == other.outer_diameter and \
-               self.height == other.height
+        return super().__eq__(other) \
+               and self.inner_diameter == other.inner_diameter \
+               and self.outer_diameter == other.outer_diameter \
+               and self.height == other.height
 
     def __hash__(self):
         return hash((self.height, self.inner_diameter, self.outer_diameter))

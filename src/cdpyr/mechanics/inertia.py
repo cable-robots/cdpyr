@@ -110,14 +110,14 @@ class Inertia(BaseObject):
         if self is other:
             return True
 
-        return np_.allclose(self.linear, other.linear) and \
-               np_.allclose(self.angular, other.angular)
+        return np_.allclose(self.linear, other.linear) \
+               and np_.allclose(self.angular, other.angular)
 
     def __ne__(self, other):
         return not self == other
 
     def __hash__(self):
-        return hash((self.angular.tostring(), self.linear.tostring()))
+        return hash((id(self.angular), id(self.linear)))
 
     __repr__ = make_repr(
         'linear',

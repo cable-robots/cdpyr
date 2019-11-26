@@ -141,8 +141,9 @@ class Calculator(_algorithm.Algorithm):
 
             # all poses are valid, so store the trial coordinate as
             # successful coordinate for the next loop
-            if all((self.criterion.evaluate(robot, pose)
-                    for pose in self.archetype.poses(coordinate_trial))):
+            if self.archetype.comparator(
+                self.criterion.evaluate(robot, pose) for pose in
+                self.archetype.poses(coordinate_trial)):
                 # advance the pose
                 coordinate = coordinate_trial
             # any pose is invalid at this coordinate, then we will reduce the

@@ -85,9 +85,9 @@ class Homogenous(BaseObject):
 
         try:
             return np_.stack([self.matrix.dot(page)[0:3, :] for page in
-                          np_.rollaxis(coordinates, axis=2)], axis=2)
+                              np_.rollaxis(coordinates, axis=2)], axis=2)
         except ValueError:
-            return self.matrix.dot(coordinates)[0:3,:]
+            return self.matrix.dot(coordinates)[0:3, :]
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -96,14 +96,14 @@ class Homogenous(BaseObject):
         if self is other:
             return True
 
-        return np_.allclose(self.translation, other.translation) and \
-               np_.allclose(self.dcm, other.dcm)
+        return np_.allclose(self.translation, other.translation) \
+               and np_.allclose(self.dcm, other.dcm)
 
     def __ne__(self, other):
         return not self == other
 
     def __hash__(self):
-        return hash((self.dcm.tostring(), self.translation.tostring()))
+        return hash((id(self.dcm), id(self.translation)))
 
     __repr__ = make_repr(
         'translation',

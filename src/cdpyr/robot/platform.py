@@ -5,8 +5,8 @@ from typing import Optional, Sequence, Tuple, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.geometry import geometry as _geometry
 from cdpyr import validator as _validator
+from cdpyr.geometry import geometry as _geometry
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.motion import pose as _pose
@@ -251,21 +251,23 @@ class Platform(BaseObject):
         if self is other:
             return True
 
-        return self.anchors == other.anchors and \
-               np_.allclose(self.center_of_gravity, other.center_of_gravity) and \
-               np_.allclose(self.center_of_linkage, other.center_of_linkage) and \
-               self.inertia == other.inertia and \
-               self.motion_pattern == other.motion_pattern and \
-               self.name == other.name and \
-               self.pose == other.pose
+        return self.anchors == other.anchors \
+               and np_.allclose(self.center_of_gravity,
+                                other.center_of_gravity) \
+               and np_.allclose(self.center_of_linkage,
+                                other.center_of_linkage) \
+               and self.inertia == other.inertia \
+               and self.motion_pattern == other.motion_pattern \
+               and self.name == other.name \
+               and self.pose == other.pose
 
     def __ne__(self, other):
         return not self == other
 
     def __hash__(self):
         return hash((self.anchors,
-                     self.center_of_gravity.tostring(),
-                     self.center_of_linkage.tostring(),
+                     id(self.center_of_gravity),
+                     id(self.center_of_linkage),
                      self.inertia,
                      self.motion_pattern,
                      self.name,

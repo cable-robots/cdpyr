@@ -317,7 +317,7 @@ def orientation(start: '_angular.Angular',
         linear = _linear.Linear()
 
     # validate step has the right shape
-    _validator.linalg.rotation_matrix(step, (3,), 'step')
+    _validator.linalg.shape(step, (3,), 'step')
 
     # create start pose from the position pose given
     start = _pose.Pose(linear=linear, angular=start)

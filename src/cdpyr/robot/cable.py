@@ -176,12 +176,12 @@ class Cable(BaseObject):
         if self is other:
             return True
 
-        return self.breaking_load == other.breaking_load and \
-               self.color == other.color and \
-               self.diameter == other.diameter and \
-               self.material == other.material and \
-               self.modulus == other.modulus and \
-               self.name == other.name
+        return self.breaking_load == other.breaking_load \
+               and self.color == other.color \
+               and self.diameter == other.diameter \
+               and self.material == other.material \
+               and self.modulus == other.modulus \
+               and self.name == other.name
 
     def __ne__(self, other):
         return not self == other

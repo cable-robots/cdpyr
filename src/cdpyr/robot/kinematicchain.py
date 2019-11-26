@@ -88,10 +88,10 @@ class KinematicChain(BaseObject):
         if self is other:
             return True
 
-        return self.frame_anchor == other.frame_anchor and \
-               self.platform == other.platform and \
-               self.platform_anchor == other.platform_anchor and \
-               self.cable == other.cable
+        return self.frame_anchor == other.frame_anchor \
+               and self.platform == other.platform \
+               and self.platform_anchor == other.platform_anchor \
+               and self.cable == other.cable
 
     def __ne__(self, other):
         return not self == other
@@ -111,18 +111,6 @@ class KinematicChain(BaseObject):
 
 
 class KinematicChainList(UserList, BaseObject):
-
-    def __init__(self, initlist=None):
-        super().__init__()
-        # We only support unique kinematic chains i.e., one cable may only be
-        # attached to one winch and one platform anchor at a time. That's why
-        # we will remove duplicate kinematic chains from the list but in a
-        # way that the original order is preserved (FIFO-style).
-        # @SEE https://stackoverflow.com/questions/44628186
-        seen = set()
-        seen_add = seen.add
-        self.data = [x for x in initlist if
-                     not (x in seen or seen_add(x))] if initlist else []
 
     @property
     def frame_anchor(self):

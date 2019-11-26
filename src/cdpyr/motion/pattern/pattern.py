@@ -138,8 +138,8 @@ class Pattern(BaseObject):
         if self is other:
             return True
 
-        return self.dof_translation == other.dof_translation and \
-               self.dof_rotation == other.dof_rotation
+        return self.dof_translation == other.dof_translation \
+               and self.dof_rotation == other.dof_rotation
 
     def __ne__(self, other):
         return not self == other
