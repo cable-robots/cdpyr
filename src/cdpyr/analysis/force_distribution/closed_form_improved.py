@@ -52,11 +52,17 @@ class ClosedFormImproved(_algorithm.Algorithm):
                 # check if we can continue projecting the cable force onto
                 # the wrench or not
                 if _structure_matrix.shape[0] == _structure_matrix.shape[1]:
-                    raise ArithmeticError('Cannot reduce forces any more')
+                    raise ArithmeticError('Cannot reduce forces any more.')
+
+                # calculate the amount of violation
+                violated_amount = _np.zeros_like(distribution)
+                if violated_below.any():
+                    violated_amount[violated_below] = _force_min[violated_below] - distribution[violated_below]
+                if violated_above.any():
+                    violated_amount[violated_above] = distribution[violated_above] - _force_max[violated_above]
 
                 # linear index of force to reduce
-                reduce = _np.argmax(_np.isclose(distribution, _np.max(
-                    _np.abs(distribution[violated]))))
+                reduce = _np.argmax(_np.abs(violated_amount))
                 # logical indices of forces to keep
                 keep = _np.ones_like(valid, dtype=_np.bool)
                 keep[reduce] = not keep[reduce]
@@ -97,57 +103,6 @@ class ClosedFormImproved(_algorithm.Algorithm):
         # return a quick form of the closed form
         return force_mean - _np.linalg.pinv(structure_matrix).dot(
             wrench + structure_matrix.dot(force_mean))
-
-    def _reduced_iteration(self,
-                           current_force_distribution: Vector,
-                           current_structure_matrix: Matrix,
-                           current_wrench: Vector,
-                           force_min: Vector,
-                           force_max: Vector
-                           ):
-        # find where force limits are violated
-        violated_below: Vector = current_force_distribution < force_min
-        violated_above: Vector = force_max < current_force_distribution
-        violated: Vector = _np.logical_xor(violated_below, violated_above)
-
-        # no violations?
-        if not violated.any():
-            # return that force distribution
-            return current_force_distribution
-
-        # get logical value where the biggest violation is
-        invalid = _np.abs(current_force_distribution) == _np.max(
-            _np.abs(current_force_distribution[violated]))
-        # and also where the biggest violation is not
-        valid = _np.logical_not(invalid)
-
-        # also get the linear index of the invalid force
-        idx_invalid = _np.argmax(invalid)
-
-        # determine the invalid force's value i.e., either minimum or maximum
-        # force
-        if violated_below[idx_invalid]:
-            invalid_force = force_min[idx_invalid]
-        else:
-            invalid_force = force_min[idx_invalid]
-
-        # calculate force distribution for the reduced system
-        reduced_force_distribution = self._reduced_iteration(
-            current_force_distribution[valid],
-            current_structure_matrix[:, valid],
-            current_wrench
-            + current_structure_matrix[:, idx_invalid] * invalid_force,
-            force_min[valid],
-            force_max[valid]
-        )
-
-        # build new force distribution
-        new_force_distribution = _np.zeros_like(current_force_distribution)
-        new_force_distribution[valid] = reduced_force_distribution
-        new_force_distribution[invalid] = invalid_force
-
-        # and return result
-        return new_force_distribution
 
 
 __all__ = [
