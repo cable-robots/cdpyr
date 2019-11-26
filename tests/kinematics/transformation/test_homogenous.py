@@ -1,19 +1,21 @@
-from typing import Sequence
-
 import numpy as np
 import pytest
 from scipy.spatial.transform import Rotation
 
-import cdpyr
+from cdpyr.kinematics.transformation.homogenous import Homogenous
+from cdpyr.typing import (
+    Matrix,
+    Vector
+)
 
 
 class HomogenousTransformationTestSuite(object):
 
     def test_empty_object(self):
-        homogenous = cdpyr.kinematics.transformation.Homogenous()
+        homogenous = Homogenous()
 
         assert isinstance(homogenous,
-                          cdpyr.kinematics.transformation.Homogenous)
+                          Homogenous)
 
         assert homogenous.translation.shape == (3,)
         assert homogenous.translation == pytest.approx([0., 0., 0.])
@@ -30,8 +32,8 @@ class HomogenousTransformationTestSuite(object):
             (np.random.random(3).tolist())
         ]
     )
-    def test_with_translation_from_list(self, translation: Sequence):
-        homogenous = cdpyr.kinematics.transformation.Homogenous(
+    def test_with_translation_from_list(self, translation: Vector):
+        homogenous = Homogenous(
             translation=translation
         )
 
@@ -50,8 +52,8 @@ class HomogenousTransformationTestSuite(object):
             (np.random.random(3))
         ]
     )
-    def test_with_translation_from_numpyarray(self, translation: np.ndarray):
-        homogenous = cdpyr.kinematics.transformation.Homogenous(
+    def test_with_translation_from_numpyarray(self, translation: Vector):
+        homogenous = Homogenous(
             translation=translation
         )
 
@@ -70,8 +72,8 @@ class HomogenousTransformationTestSuite(object):
             (Rotation.random().as_dcm().tolist())
         ]
     )
-    def test_with_dcm_from_list(self, dcm: Sequence[Sequence]):
-        homogenous = cdpyr.kinematics.transformation.Homogenous(
+    def test_with_dcm_from_list(self, dcm: Matrix):
+        homogenous = Homogenous(
             dcm=dcm
         )
 
@@ -90,8 +92,8 @@ class HomogenousTransformationTestSuite(object):
             (Rotation.random().as_dcm())
         ]
     )
-    def test_with_dcm_from_numpyarray(self, dcm: np.ndarray):
-        homogenous = cdpyr.kinematics.transformation.Homogenous(
+    def test_with_dcm_from_numpyarray(self, dcm: Matrix):
+        homogenous = Homogenous(
             dcm=dcm
         )
 
@@ -103,6 +105,108 @@ class HomogenousTransformationTestSuite(object):
         assert homogenous.matrix[0:3, 0:3] == pytest.approx(dcm)
         assert homogenous.matrix[0:3, -1] == pytest.approx([0., 0., 0.])
         assert homogenous.matrix[-1, -1] == pytest.approx(1)
+
+    @pytest.mark.parametrize(
+        ["translation", "coordinate"],
+        [
+            (np.random.random(3), np.random.random(3)),
+        ]
+    )
+    def test_apply_translation_to_single_coordinate(self,
+                                                    translation: Vector,
+                                                    coordinate: Vector):
+        homogenous = Homogenous(
+            translation
+        )
+
+        assert homogenous.apply(coordinate) == pytest.approx(
+            coordinate + translation)
+
+    @pytest.mark.parametrize(
+        ["translation", "coordinate"],
+        [
+            (np.random.random(3), np.random.random((3, 12))),
+        ]
+    )
+    def test_apply_translation_to_multiple_coordinates(self,
+                                                       translation: Vector,
+                                                       coordinate: Vector):
+        homogenous = Homogenous(
+            translation
+        )
+
+        assert homogenous.apply(coordinate) == pytest.approx(
+            coordinate + translation[:, np.newaxis])
+
+    @pytest.mark.parametrize(
+        ["rotation", "coordinate"],
+        [
+            ((Rotation.random().as_dcm()), np.random.random(3)),
+        ]
+    )
+    def test_apply_rotation_to_single_coordinate(self,
+                                                 rotation: Matrix,
+                                                 coordinate: Vector):
+        homogenous = Homogenous(
+            dcm=rotation
+        )
+
+        assert homogenous.apply(coordinate) == pytest.approx(
+            rotation.dot(coordinate))
+
+    @pytest.mark.parametrize(
+        ["rotation", "coordinate"],
+        [
+            ((Rotation.random().as_dcm()), np.random.random((3, 12))),
+        ]
+    )
+    def test_apply_rotation_to_multiple_coordinates(self,
+                                                    rotation: Matrix,
+                                                    coordinate: Vector):
+        homogenous = Homogenous(
+            dcm=rotation
+        )
+
+        assert homogenous.apply(coordinate) == pytest.approx(
+            rotation.dot(coordinate))
+
+    @pytest.mark.parametrize(
+        ["translation", "rotation", "coordinate"],
+        [
+            (np.random.random(3), Rotation.random().as_dcm(),
+             np.random.random(3)),
+        ]
+    )
+    def test_apply_full_to_single_coordinate(self,
+                                             translation: Vector,
+                                             rotation: Matrix,
+                                             coordinate: Vector):
+        homogenous = Homogenous(
+            translation,
+            rotation
+        )
+
+        assert homogenous.apply(coordinate) == pytest.approx(
+            rotation.dot(coordinate) + translation)
+
+    @pytest.mark.parametrize(
+        ["translation", "rotation", "coordinate"],
+        [
+            (np.random.random(3), Rotation.random().as_dcm(),
+             np.random.random((3, 12))),
+        ]
+    )
+    def test_apply_full_to_multiple_coordinates(self,
+                                                translation: Vector,
+                                                rotation: Matrix,
+                                                coordinate: Vector):
+        homogenous = Homogenous(
+            translation,
+            rotation
+        )
+
+        assert homogenous.apply(coordinate) == pytest.approx(
+            rotation.dot(coordinate) + translation[:, np.newaxis])
 
 
 if __name__ == "__main__":

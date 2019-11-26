@@ -6,25 +6,30 @@ from magic_repr import make_repr
 from cdpyr import validator as _validator
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Vector
+from cdpyr.kinematics.transformation import angular as _angular, linear as _linear
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class Homogenous(BaseObject):
-    _translation: np_.ndarray
-    _dcm: np_.ndarray
+    _linear: '_linear.Linear'
+    _angular: '_angular.Angular'
 
     def __init__(self,
                  translation: Optional[Vector] = None,
                  dcm: Optional[Matrix] = None
                  ):
+        # init internal variables
+        self._linear = _linear.Linear()
+        self._angular = _angular.Angular()
+        # and set values
         self.translation = translation if translation is not None else [0, 0, 0]
         self.dcm = dcm if dcm is not None else np_.eye(3)
 
     @property
     def translation(self):
-        return self._translation
+        return self._linear.position
 
     @translation.setter
     def translation(self, translation: Vector):
@@ -32,15 +37,15 @@ class Homogenous(BaseObject):
 
         _validator.linalg.space_coordinate(translation, 'translation')
 
-        self._translation = translation
+        self._linear.position = translation
 
     @translation.deleter
     def translation(self):
-        del self._translation
+        del self._linear
 
     @property
     def dcm(self):
-        return self._dcm
+        return self._angular.dcm
 
     @dcm.setter
     def dcm(self, dcm: Matrix):
@@ -48,11 +53,11 @@ class Homogenous(BaseObject):
 
         _validator.linalg.rotation_matrix(dcm, 'dcm')
 
-        self._dcm = dcm
+        self._angular.dcm = dcm
 
     @dcm.deleter
     def dcm(self):
-        del self._dcm
+        del self._angular
 
     @property
     def matrix(self):
@@ -74,20 +79,25 @@ class Homogenous(BaseObject):
         )
 
     def apply(self, coordinates: Union[Vector, Matrix]):
+        # deal only with numpy arrays
         coordinates = np_.asarray(coordinates)
+
+        # check if we have a single coordinate
+        single = coordinates.ndim == 1
+
         # ensure coordinates is a 3xM array
-        if coordinates.ndim == 1:
+        if single:
             coordinates = coordinates[:, np_.newaxis]
 
         # stack coordinates above a row of `1`
         coordinates = np_.vstack(
             (coordinates, np_.ones(tuple([1]) + coordinates.shape[1:])))
 
-        try:
-            return np_.stack([self.matrix.dot(page)[0:3, :] for page in
-                              np_.rollaxis(coordinates, axis=2)], axis=2)
-        except ValueError:
-            return self.matrix.dot(coordinates)[0:3, :]
+        # First, apply the transformation
+        transformed = self.matrix.dot(coordinates)
+
+        # Return whatever we have
+        return transformed[0:3,0] if single else transformed[0:3,:]
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
