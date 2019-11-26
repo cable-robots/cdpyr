@@ -15,7 +15,7 @@ class PlotGeometryCylinderTestSuite(object):
         cylinder = Cylinder(1.00, 0.0)
 
         # and visualize
-        visualizer = visualization.plotly.PLANAR()
+        visualizer = visualization.plotly.Planar()
         visualizer.render(cylinder)
         visualizer.draw()
         visualizer.show()
@@ -29,7 +29,7 @@ class PlotGeometryCylinderTestSuite(object):
         cylinder = Cylinder(1.00, 1.00)
 
         # and visualize
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(cylinder)
         visualizer.draw()
         visualizer.show()

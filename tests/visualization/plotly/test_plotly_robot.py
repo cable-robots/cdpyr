@@ -14,7 +14,7 @@ class PlotRobotTestSuite(object):
                            tmpdir,
                            robot_1t: Robot,
                            rand_pose_1t: Pose):
-        visualizer = visualization.plotly.LINEAR()
+        visualizer = visualization.plotly.Linear()
         visualizer.render(robot_1t)
         visualizer.draw()
         visualizer.show()
@@ -24,7 +24,7 @@ class PlotRobotTestSuite(object):
 
         robot_1t.platforms[0].pose = rand_pose_1t
 
-        visualizer = visualization.plotly.LINEAR()
+        visualizer = visualization.plotly.Linear()
         visualizer.render(robot_1t)
         visualizer.draw()
         visualizer.show()
@@ -36,7 +36,7 @@ class PlotRobotTestSuite(object):
                            tmpdir,
                            robot_2t: Robot,
                            rand_pose_2t: Pose):
-        visualizer = visualization.plotly.PLANAR()
+        visualizer = visualization.plotly.Planar()
         visualizer.render(robot_2t)
         visualizer.draw()
         visualizer.show()
@@ -46,7 +46,7 @@ class PlotRobotTestSuite(object):
 
         robot_2t.platforms[0].pose = rand_pose_2t
 
-        visualizer = visualization.plotly.PLANAR()
+        visualizer = visualization.plotly.Planar()
         visualizer.render(robot_2t)
         visualizer.draw()
         visualizer.show()
@@ -58,7 +58,7 @@ class PlotRobotTestSuite(object):
                            tmpdir,
                            robot_3t: Robot,
                            rand_pose_3t: Pose):
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(robot_3t)
         visualizer.draw()
         visualizer.show()
@@ -68,7 +68,7 @@ class PlotRobotTestSuite(object):
 
         robot_3t.platforms[0].pose = rand_pose_3t
 
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(robot_3t)
         visualizer.draw()
         visualizer.show()
@@ -80,7 +80,7 @@ class PlotRobotTestSuite(object):
                              tmpdir,
                              robot_1r2t: Robot,
                              rand_pose_1r2t: Pose):
-        visualizer = visualization.plotly.PLANAR()
+        visualizer = visualization.plotly.Planar()
         visualizer.render(robot_1r2t)
         visualizer.draw()
         visualizer.show()
@@ -90,7 +90,7 @@ class PlotRobotTestSuite(object):
 
         robot_1r2t.platforms[0].pose = rand_pose_1r2t
 
-        visualizer = visualization.plotly.PLANAR()
+        visualizer = visualization.plotly.Planar()
         visualizer.render(robot_1r2t)
         visualizer.draw()
         visualizer.show()
@@ -102,7 +102,7 @@ class PlotRobotTestSuite(object):
                              tmpdir,
                              robot_2r3t: Robot,
                              rand_pose_2r3t: Pose):
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(robot_2r3t)
         visualizer.draw()
         visualizer.show()
@@ -112,7 +112,7 @@ class PlotRobotTestSuite(object):
 
         robot_2r3t.platforms[0].pose = rand_pose_2r3t
 
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(robot_2r3t)
         visualizer.draw()
         visualizer.show()
@@ -124,7 +124,7 @@ class PlotRobotTestSuite(object):
                              tmpdir,
                              robot_3r3t: Robot,
                              rand_pose_3r3t: Pose):
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(robot_3r3t)
         visualizer.draw()
         visualizer.show()
@@ -134,7 +134,7 @@ class PlotRobotTestSuite(object):
 
         robot_3r3t.platforms[0].pose = rand_pose_3r3t
 
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(robot_3r3t)
         visualizer.draw()
         visualizer.show()

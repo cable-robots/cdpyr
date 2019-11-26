@@ -15,7 +15,7 @@ class PlotGeometryCuboidTestSuite(object):
         cuboid = Cuboid(1.0, 0.5, 0.25)
 
         # and visualize
-        visualizer = visualization.plotly.PLANAR()
+        visualizer = visualization.plotly.Planar()
         visualizer.render(cuboid)
         visualizer.draw()
         visualizer.show()
@@ -29,7 +29,7 @@ class PlotGeometryCuboidTestSuite(object):
         cuboid = Cuboid(1.0, 0.5, 0.25)
 
         # and visualize
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(cuboid)
         visualizer.draw()
         visualizer.show()

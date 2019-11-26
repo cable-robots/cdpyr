@@ -21,7 +21,7 @@ class PlotPlatformTestSuite(object):
                               tmp_path,
                               robot_1t: Robot,
                               rand_pose_1t: Pose):
-        visualizer = visualization.matplotlib.LINEAR()
+        visualizer = visualization.matplotlib.Linear()
         visualizer.render(robot_1t.platforms[0])
         visualizer.figure.axes[0].set_xlim(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim(-1.1, 1.1)
@@ -33,7 +33,7 @@ class PlotPlatformTestSuite(object):
 
         robot_1t.platforms[0].pose = rand_pose_1t
 
-        visualizer = visualization.matplotlib.LINEAR()
+        visualizer = visualization.matplotlib.Linear()
         visualizer.render(robot_1t.platforms[0])
         visualizer.figure.axes[0].set_xlim(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim(-1.1, 1.1)
@@ -47,7 +47,7 @@ class PlotPlatformTestSuite(object):
                               tmpdir,
                               robot_2t: Robot,
                               rand_pose_2t: Pose):
-        visualizer = visualization.matplotlib.PLANAR()
+        visualizer = visualization.matplotlib.Planar()
         visualizer.render(robot_2t.platforms[0])
         visualizer.figure.axes[0].set_xlim(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim(-1.1, 1.1)
@@ -59,7 +59,7 @@ class PlotPlatformTestSuite(object):
 
         robot_2t.platforms[0].pose = rand_pose_2t
 
-        visualizer = visualization.matplotlib.PLANAR()
+        visualizer = visualization.matplotlib.Planar()
         visualizer.render(robot_2t.platforms[0])
         visualizer.figure.axes[0].set_xlim(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim(-1.1, 1.1)
@@ -73,7 +73,7 @@ class PlotPlatformTestSuite(object):
                               tmpdir,
                               robot_3t: Robot,
                               rand_pose_3t: Pose):
-        visualizer = visualization.matplotlib.SPATIAL()
+        visualizer = visualization.matplotlib.Spatial()
         visualizer.render(robot_3t.platforms[0])
         visualizer.figure.axes[0].set_xlim3d(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim3d(-1.1, 1.1)
@@ -86,7 +86,7 @@ class PlotPlatformTestSuite(object):
 
         robot_3t.platforms[0].pose = rand_pose_3t
 
-        visualizer = visualization.matplotlib.SPATIAL()
+        visualizer = visualization.matplotlib.Spatial()
         visualizer.render(robot_3t.platforms[0])
         visualizer.figure.axes[0].set_xlim3d(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim3d(-1.1, 1.1)
@@ -101,7 +101,7 @@ class PlotPlatformTestSuite(object):
                                 tmpdir,
                                 robot_1r2t: Robot,
                                 rand_pose_1r2t: Pose):
-        visualizer = visualization.matplotlib.PLANAR()
+        visualizer = visualization.matplotlib.Planar()
         visualizer.render(robot_1r2t.platforms[0])
         visualizer.figure.axes[0].set_xlim(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim(-1.1, 1.1)
@@ -113,7 +113,7 @@ class PlotPlatformTestSuite(object):
 
         robot_1r2t.platforms[0].pose = rand_pose_1r2t
 
-        visualizer = visualization.matplotlib.PLANAR()
+        visualizer = visualization.matplotlib.Planar()
         visualizer.render(robot_1r2t.platforms[0])
         visualizer.figure.axes[0].set_xlim(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim(-1.1, 1.1)
@@ -127,7 +127,7 @@ class PlotPlatformTestSuite(object):
                                 tmpdir,
                                 robot_2r3t: Robot,
                                 rand_pose_2r3t: Pose):
-        visualizer = visualization.matplotlib.SPATIAL()
+        visualizer = visualization.matplotlib.Spatial()
         visualizer.render(robot_2r3t.platforms[0])
         visualizer.figure.axes[0].set_xlim3d(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim3d(-1.1, 1.1)
@@ -140,7 +140,7 @@ class PlotPlatformTestSuite(object):
 
         robot_2r3t.platforms[0].pose = rand_pose_2r3t
 
-        visualizer = visualization.matplotlib.SPATIAL()
+        visualizer = visualization.matplotlib.Spatial()
         visualizer.render(robot_2r3t.platforms[0])
         visualizer.figure.axes[0].set_xlim3d(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim3d(-1.1, 1.1)
@@ -155,7 +155,7 @@ class PlotPlatformTestSuite(object):
                                 tmpdir,
                                 robot_3r3t: Robot,
                                 rand_pose_3r3t: Pose):
-        visualizer = visualization.matplotlib.SPATIAL()
+        visualizer = visualization.matplotlib.Spatial()
         visualizer.render(robot_3r3t.platforms[0])
         visualizer.figure.axes[0].set_xlim3d(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim3d(-1.1, 1.1)
@@ -168,7 +168,7 @@ class PlotPlatformTestSuite(object):
 
         robot_3r3t.platforms[0].pose = rand_pose_3r3t
 
-        visualizer = visualization.matplotlib.SPATIAL()
+        visualizer = visualization.matplotlib.Spatial()
         visualizer.render(robot_3r3t.platforms[0])
         visualizer.figure.axes[0].set_xlim3d(-1.1, 1.1)
         visualizer.figure.axes[0].set_ylim3d(-1.1, 1.1)

@@ -15,7 +15,7 @@ class PlotGeometryTubeTestSuite(object):
         sphere = Sphere(1.00)
 
         # and visualize
-        visualizer = visualization.plotly.PLANAR()
+        visualizer = visualization.plotly.Planar()
         visualizer.render(sphere)
         visualizer.draw()
         visualizer.show()
@@ -29,7 +29,7 @@ class PlotGeometryTubeTestSuite(object):
         sphere = Sphere(1.00)
 
         # and visualize
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(sphere)
         visualizer.draw()
         visualizer.show()

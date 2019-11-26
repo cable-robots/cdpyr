@@ -15,7 +15,7 @@ class PlotGeometryEllipticCylinderTestSuite(object):
         elliptic_cylinder = EllipticCylinder(1.00, 0.25, 0.50)
 
         # and visualize
-        visualizer = visualization.plotly.PLANAR()
+        visualizer = visualization.plotly.Planar()
         visualizer.render(elliptic_cylinder)
         visualizer.draw()
         visualizer.show()
@@ -29,7 +29,7 @@ class PlotGeometryEllipticCylinderTestSuite(object):
         elliptic_cylinder = EllipticCylinder(1.00, 0.25, 0.50)
 
         # and visualize
-        visualizer = visualization.plotly.SPATIAL()
+        visualizer = visualization.plotly.Spatial()
         visualizer.render(elliptic_cylinder)
         visualizer.draw()
         visualizer.show()
