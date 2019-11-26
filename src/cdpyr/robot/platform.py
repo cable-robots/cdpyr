@@ -264,8 +264,8 @@ class Platform(BaseObject):
 
     def __hash__(self):
         return hash((self.anchors,
-                     self.center_of_gravity.tostring(),
-                     self.center_of_linkage.tostring(),
+                     id(self.center_of_gravity),
+                     id(self.center_of_linkage),
                      self.inertia,
                      self.motion_pattern,
                      self.name,

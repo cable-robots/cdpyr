@@ -138,9 +138,9 @@ class Linear(BaseObject):
                (self.acceleration >= other.acceleration).any()
 
     def __hash__(self):
-        return hash((self.acceleration.tostring(),
-                     self.position.tostring(),
-                     self.velocity.tostring()))
+        return hash((id(self.acceleration),
+                     id(self.position),
+                     id(self.velocity)))
 
     __repr__ = make_repr(
         'position',

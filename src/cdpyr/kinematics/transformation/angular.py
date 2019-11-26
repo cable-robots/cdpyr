@@ -298,9 +298,9 @@ class Angular(BaseObject):
                (self.angular_acceleration >= other.angular_acceleration).any()
 
     def __hash__(self):
-        return hash((self.angular_acceleration.tostring(),
-                     self.angular_velocity.tostring(),
-                     self.quaternion.tostring()))
+        return hash((id(self.angular_acceleration),
+                     id(self.angular_velocity),
+                     id(self.quaternion)))
 
     __repr__ = make_repr(
         'dcm',

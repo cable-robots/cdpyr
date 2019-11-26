@@ -103,7 +103,7 @@ class Homogenous(BaseObject):
         return not self == other
 
     def __hash__(self):
-        return hash((self.dcm.tostring(), self.translation.tostring()))
+        return hash((id(self.dcm), id(self.translation)))
 
     __repr__ = make_repr(
         'translation',

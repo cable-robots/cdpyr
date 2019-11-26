@@ -117,7 +117,7 @@ class Inertia(BaseObject):
         return not self == other
 
     def __hash__(self):
-        return hash((self.angular.tostring(), self.linear.tostring()))
+        return hash((id(self.angular), id(self.linear)))
 
     __repr__ = make_repr(
         'linear',
