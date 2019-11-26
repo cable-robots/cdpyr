@@ -25,7 +25,8 @@ class ClosedForm(_algorithm.Algorithm):
             distribution = _np.linalg.solve(structure_matrix, -wrench)
         else:
             # mean force values
-            force_mean = 0.5 * (force_max - force_min)
+            force_mean = 0.5 * (force_max + force_min)
+            # and distribution
             distribution = force_mean - _np.linalg.pinv(structure_matrix).dot(
                 wrench + structure_matrix.dot(force_mean))
 
