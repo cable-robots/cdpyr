@@ -1,19 +1,23 @@
-from typing import AnyStr, Sequence
+from typing import (
+    AnyStr,
+    Sequence
+)
+import itertools
 
 import numpy as np
 import pytest
 import scipy.linalg
 from scipy.spatial.transform import Rotation
 
-import cdpyr
+from cdpyr.kinematics.transformation import Angular
 
 
 class AngularTransformationTestSuite(object):
 
     def test_empty_object(self):
-        angular = cdpyr.kinematics.transformation.Angular()
+        angular = Angular()
 
-        assert isinstance(angular, cdpyr.kinematics.transformation.Angular)
+        assert isinstance(angular, Angular)
 
         assert angular.euler.shape == (3,)
         assert angular.euler == pytest.approx([0., 0., 0.])
@@ -25,37 +29,16 @@ class AngularTransformationTestSuite(object):
     @pytest.mark.parametrize(
         ("eul", "seq"),
         [
-            (np.random.random((3,)).tolist(), 'xyz'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'zyx'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'yzx'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'xzy'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'zxy'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'yxz'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'xyx'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'yxy'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'xzx'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'zxz'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'yzy'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'zyz'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'XYZ'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'ZYX'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'YZX'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'XZY'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'ZXY'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'YXZ'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'XYX'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'YXY'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'XZX'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'ZXZ'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'YZY'),  # 3-tuple
-            (np.random.random((3,)).tolist(), 'ZYZ'),  # 3-tuple
+            (np.pi * (np.random.random((3,)) - 0.5), ''.join(seq)) for seq in
+            itertools.chain(itertools.permutations(('x', 'y', 'z'), 3),
+                            itertools.permutations(('X', 'Y', 'Z'), 3))
         ]
     )
     def test_with_euler_from_list_as_keyword_argument(self, eul: Sequence,
                                                       seq: AnyStr):
-        angular = cdpyr.kinematics.transformation.Angular(
-            euler=eul,
-            rotation_sequence=seq
+        angular = Angular(
+            sequence=seq,
+            euler=eul
         )
 
         rot: Rotation = Rotation.from_euler(seq, eul)
@@ -71,26 +54,17 @@ class AngularTransformationTestSuite(object):
     @pytest.mark.parametrize(
         ("eul", "seq"),
         [
-            (np.pi * (np.random.random((3,)) - 0.5), 'xyz'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'zyx'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'yzx'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'xzy'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'zxy'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'yxz'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'XYZ'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'ZYX'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'YZX'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'XZY'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'ZXY'),  # 3x1 vector
-            (np.pi * (np.random.random((3,)) - 0.5), 'YXZ'),  # 3x1 vector
+            (np.pi * (np.random.random((3,)) - 0.5), ''.join(seq)) for seq in
+            itertools.chain(itertools.permutations(('x', 'y', 'z'), 3),
+                            itertools.permutations(('X', 'Y', 'Z'), 3))
         ]
     )
     def test_with_euler_from_numpyarray_as_keyword_argument(self,
                                                             eul: np.ndarray,
                                                             seq: AnyStr):
-        angular = cdpyr.kinematics.transformation.Angular(
-            euler=eul,
-            rotation_sequence=seq
+        angular = Angular(
+            sequence=seq,
+            euler=eul
         )
 
         rot: Rotation = Rotation.from_euler(seq, eul)
@@ -105,24 +79,11 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "quat",
-        [
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((4,)) - 0.5).tolist()),  # 4-tuple
-        ]
+        [quat.tolist() for quat in Rotation.random(25).as_quat()]
     )
     def test_with_quaternion_from_list_as_keyword_argument(self,
                                                            quat: Sequence):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             quaternion=quat
         )
 
@@ -140,25 +101,12 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "quat",
-        [
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-            (np.random.random((4,)) - 0.5),  # 4x1 vector
-        ]
+        [quat for quat in Rotation.random(25).as_quat()]
     )
     def test_with_quaternion_from_numpyarray_as_keyword_argument(self,
                                                                  quat:
                                                                  np.ndarray):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             quaternion=quat
         )
 
@@ -175,25 +123,12 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "rotvec",
-        [
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-            ((np.random.random((3,)) - 0.5).tolist()),  # 4-tuple
-        ]
+        [rotvec.tolist() for rotvec in Rotation.random(25).as_rotvec()]
     )
     def test_with_rotationvector_from_list_as_keyword_argument(self,
                                                                rotvec:
                                                                Sequence):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             rotvec=rotvec
         )
 
@@ -211,25 +146,12 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "rotvec",
-        [
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-            (np.random.random((3,)) - 0.5),  # 4x1 vector
-        ]
+        [rotvec for rotvec in Rotation.random(25).as_rotvec()]
     )
     def test_with_rotationvector_from_numpyarray_as_keyword_argument(self,
                                                                      rotvec:
                                                                      np.ndarray):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             rotvec=rotvec
         )
 
@@ -245,14 +167,12 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "dcm",
-        [
-            (Rotation.random().as_dcm().tolist()),
-        ]
+        [dcm for dcm in Rotation.random(25).as_dcm()]
     )
     def test_with_dcm_from_list_as_keyword_argument(self,
                                                     dcm:
                                                     Sequence[Sequence]):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             dcm=dcm
         )
 
@@ -267,14 +187,12 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "dcm",
-        [
-            (Rotation.random().as_dcm()),
-        ]
+        [dcm for dcm in Rotation.random(25).as_dcm()]
     )
     def test_with_dcm_from_numpyarray_as_keyword_argument(self,
                                                           dcm:
                                                           np.ndarray):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             dcm=dcm
         )
 
@@ -287,12 +205,10 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "vel",
-        [
-            (np.random.random((3,)).tolist()),  # 3x1 vector
-        ]
+        [vel.tolist() for vel in np.random.random((25, 3))]
     )
     def test_with_velocity_from_list_as_keyword_argument(self, vel: Sequence):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             angular_velocity=vel
         )
 
@@ -305,13 +221,11 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "vel",
-        [
-            (np.random.random((3,))),  # 3x1 vector
-        ]
+        [vel for vel in np.random.random((25, 3))]
     )
     def test_with_velocity_from_numpyarray_as_keyword_argument(self,
                                                                vel: np.ndarray):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             angular_velocity=vel
         )
 
@@ -324,13 +238,11 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "acc",
-        [
-            (np.random.random((3,)).tolist()),  # 3x1 vector
-        ]
+        [acc.tolist() for acc in np.random.random((25, 3))]
     )
     def test_with_acceleration_from_list_as_keyword_argument(self,
                                                              acc: Sequence):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             angular_acceleration=acc
         )
 
@@ -343,14 +255,12 @@ class AngularTransformationTestSuite(object):
 
     @pytest.mark.parametrize(
         "acc",
-        [
-            (np.random.random((3,))),  # 3x1 vector
-        ]
+        [acc for acc in np.random.random((25, 3))]
     )
     def test_with_acceleration_from_numpyarray_as_keyword_argument(self,
                                                                    acc:
                                                                    np.ndarray):
-        angular = cdpyr.kinematics.transformation.Angular(
+        angular = Angular(
             angular_acceleration=acc
         )
 
