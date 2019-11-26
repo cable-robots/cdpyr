@@ -3,7 +3,12 @@ import numpy as _np
 from cdpyr.analysis.force_distribution import (
     algorithm as _algorithm,
 )
-from cdpyr.typing import Matrix, Vector
+from cdpyr.motion.pose import pose as _pose
+from cdpyr.robot import robot as _robot
+from cdpyr.typing import (
+    Matrix,
+    Vector
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -57,9 +62,14 @@ class ClosedFormImproved(_algorithm.Algorithm):
                 # calculate the amount of violation
                 violated_amount = _np.zeros_like(distribution)
                 if violated_below.any():
-                    violated_amount[violated_below] = _force_min[violated_below] - distribution[violated_below]
+                    violated_amount[violated_below] = _force_min[
+                                                          violated_below] - \
+                                                      distribution[
+                                                          violated_below]
                 if violated_above.any():
-                    violated_amount[violated_above] = distribution[violated_above] - _force_max[violated_above]
+                    violated_amount[violated_above] = distribution[
+                                                          violated_above] - \
+                                                      _force_max[violated_above]
 
                 # linear index of force to reduce
                 reduce = _np.argmax(_np.abs(violated_amount))

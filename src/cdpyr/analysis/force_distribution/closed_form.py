@@ -3,7 +3,12 @@ import numpy as _np
 from cdpyr.analysis.force_distribution import (
     algorithm as _algorithm,
 )
-from cdpyr.typing import Matrix, Vector
+from cdpyr.motion.pose import pose as _pose
+from cdpyr.robot import robot as _robot
+from cdpyr.typing import (
+    Matrix,
+    Vector
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
