@@ -43,7 +43,8 @@ class Result(_result.Result):
     __repr__ = make_repr(
         'algorithm',
         'pose',
-        'distribution',
+        'forces',
+        'wrench'
     )
 
 
