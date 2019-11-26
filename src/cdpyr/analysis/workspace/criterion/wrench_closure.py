@@ -66,13 +66,13 @@ class WrenchClosure(_criterion.Criterion):
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
                   **kwargs):
+        flag = False
+
         try:
             [self.force_distribution.evaluate(robot, pose, wrench)
              for wrench in self.wrench.T]
             flag = True
         except (ArithmeticError, ValueError):
-            flag = False
-        else:
             flag = False
         finally:
             return flag
