@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as _np
 from abc import ABC
 
@@ -48,7 +50,7 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
     def euler_max(self, euler_max: Vector):
         euler_max = _np.asarray(euler_max)
         _validator.data.length(euler_max, len(self.sequence), 'euler_max')
-        self._euler_max = euler_max
+        self._euler_max = euler_max - 10 * _np.finfo(euler_max.dtype).eps
 
     @euler_max.deleter
     def euler_max(self):
@@ -81,17 +83,26 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
         del self._step
 
     def _poses(self, coordinate: Vector):
-        return _generator.steps(
-            _pose.Pose(
-                coordinate,
-                _generator.from_euler(self._sequence, self._euler_min)
-            ),
-            _pose.Pose(
-                coordinate,
-                _generator.from_euler(self._sequence, self._euler_max)
-            ),
-            self._step
-        )
+        # difference in all rotations
+        diff_rot = (self.euler_max - self.euler_min)
+        # delta per step
+        deltas = diff_rot / self.step
+
+        # how many iterations per axis
+        iterations = self.step * _np.logical_not(_np.isclose(diff_rot, 0))
+
+        # start pose
+        start = _pose.Pose(coordinate)
+        start.angular.sequence = self.sequence
+
+        # Return a generator of poses with varying orientation
+        return (_pose.Pose(
+            start.linear.position,
+            _generator.from_euler(start.angular.sequence,
+                                  start.angular.euler + deltas * a)
+        ) for a in itertools.product(
+            *(range(0, iterations[k] + 1) for k in range(0, 3))
+        ))
 
 
 __all__ = [
