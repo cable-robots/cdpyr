@@ -228,11 +228,11 @@ class Robot(BaseObject):
         if self is other:
             return True
 
-        return self.cables == other.cables and \
-               self.frame == other.frame and \
-               self.kinematic_chains == other.kinematic_chains and \
-               self.name == other.name and \
-               self.platforms == other.platforms
+        return self.cables == other.cables \
+               and self.frame == other.frame \
+               and self.kinematic_chains == other.kinematic_chains \
+               and self.name == other.name \
+               and self.platforms == other.platforms
 
     def __ne__(self, other):
         return not self == other

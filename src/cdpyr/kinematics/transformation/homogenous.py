@@ -96,8 +96,8 @@ class Homogenous(BaseObject):
         if self is other:
             return True
 
-        return np_.allclose(self.translation, other.translation) and \
-               np_.allclose(self.dcm, other.dcm)
+        return np_.allclose(self.translation, other.translation) \
+               and np_.allclose(self.dcm, other.dcm)
 
     def __ne__(self, other):
         return not self == other

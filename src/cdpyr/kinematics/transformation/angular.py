@@ -87,24 +87,24 @@ class Angular(BaseObject):
         # by default, we will have an extrinsic rotation about [x,y,z] given
         # as [a,b,c] so that it is Rz(c) * Ry(b) * Rx(a)
         self.sequence = rotation_sequence or 'xyz'
-        if euler is not None and \
-            quaternion is None and \
-            dcm is None and \
-            rotvec is None:
+        if euler is not None \
+            and quaternion is None \
+            and dcm is None \
+            and rotvec is None:
             self.euler = euler
-        if euler is None and \
-            quaternion is not None and \
-            dcm is None and \
-            rotvec is None:
+        if euler is None \
+            and quaternion is not None \
+            and dcm is None \
+            and rotvec is None:
             self.quaternion = quaternion
-        if euler is None and \
-            quaternion is None and \
-            dcm is not None and \
-            rotvec is None:
+        if euler is None \
+            and quaternion is None \
+            and dcm is not None \
+            and rotvec is None:
             self.dcm = dcm
-        if euler is None and \
-            quaternion is None and \
-            dcm is None and rotvec is \
+        if euler is None \
+            and quaternion is None \
+            and dcm is None and rotvec is \
             not None:
             self.rotvec = rotvec
 
@@ -245,10 +245,10 @@ class Angular(BaseObject):
         if self is other:
             return True
 
-        return np_.allclose(self.quaternion, other.quaternion) and \
-               np_.allclose(self.angular_velocity, other.angular_velocity) and \
-               np_.allclose(self.angular_acceleration,
-                            other.angular_acceleration)
+        return np_.allclose(self.quaternion, other.quaternion) \
+               and np_.allclose(self.angular_velocity, other.angular_velocity) \
+               and np_.allclose(self.angular_acceleration,
+                                other.angular_acceleration)
 
     def __ne__(self, other):
         return not self == other
@@ -260,9 +260,9 @@ class Angular(BaseObject):
         if self is other:
             return False
 
-        return (self.euler < other.euler).any() or \
-               (self.angular_velocity < other.angular_velocity).any() or \
-               (self.angular_acceleration < other.angular_acceleration).any()
+        return (self.euler < other.euler).any() \
+               or (self.angular_velocity < other.angular_velocity).any() \
+               or (self.angular_acceleration < other.angular_acceleration).any()
 
     def __le__(self, other):
         if not isinstance(other, self.__class__):
@@ -271,9 +271,11 @@ class Angular(BaseObject):
         if self is other:
             return True
 
-        return (self.euler <= other.euler).any() or \
-               (self.angular_velocity <= other.angular_velocity).any() or \
-               (self.angular_acceleration <= other.angular_acceleration).any()
+        return (self.euler <= other.euler).any() \
+               or (self.angular_velocity <= other.angular_velocity).any() \
+               or (
+                   self.angular_acceleration <=
+                   other.angular_acceleration).any()
 
     def __gt__(self, other):
         if not isinstance(other, self.__class__):
@@ -282,9 +284,9 @@ class Angular(BaseObject):
         if self is other:
             return False
 
-        return (self.euler > other.euler).any() or \
-               (self.angular_velocity > other.angular_velocity).any() or \
-               (self.angular_acceleration > other.angular_acceleration).any()
+        return (self.euler > other.euler).any() \
+               or (self.angular_velocity > other.angular_velocity).any() \
+               or (self.angular_acceleration > other.angular_acceleration).any()
 
     def __ge__(self, other):
         if not isinstance(other, self.__class__):
@@ -293,9 +295,11 @@ class Angular(BaseObject):
         if self is other:
             return True
 
-        return (self.euler >= other.euler).any() or \
-               (self.angular_velocity >= other.angular_velocity).any() or \
-               (self.angular_acceleration >= other.angular_acceleration).any()
+        return (self.euler >= other.euler).any() \
+               or (self.angular_velocity >= other.angular_velocity).any() \
+               or (
+                   self.angular_acceleration >=
+                   other.angular_acceleration).any()
 
     def __hash__(self):
         return hash((id(self.angular_acceleration),

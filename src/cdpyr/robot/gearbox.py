@@ -57,8 +57,8 @@ class Gearbox(BaseObject):
         if self is other:
             return True
 
-        return self.inertia == other.inertia and \
-               self.ratio == other.ratio
+        return self.inertia == other.inertia \
+               and self.ratio == other.ratio
 
     def __ne__(self, other):
         return not self == other

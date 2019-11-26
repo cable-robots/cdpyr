@@ -65,10 +65,10 @@ class Cuboid(Geometry):
         del self._depth
 
     def __eq__(self, other):
-        return super().__eq__(other) and \
-               self.width == other.width and \
-               self.height == other.height and \
-               self.depth == other.depth
+        return super().__eq__(other) \
+               and self.width == other.width \
+               and self.height == other.height \
+               and self.depth == other.depth
 
     def __hash__(self):
         return hash((self.depth, self.height, self.width))

@@ -110,8 +110,8 @@ class Inertia(BaseObject):
         if self is other:
             return True
 
-        return np_.allclose(self.linear, other.linear) and \
-               np_.allclose(self.angular, other.angular)
+        return np_.allclose(self.linear, other.linear) \
+               and np_.allclose(self.angular, other.angular)
 
     def __ne__(self, other):
         return not self == other

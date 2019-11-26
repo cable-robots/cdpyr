@@ -93,10 +93,10 @@ class EllipticCylinder(Geometry):
         del self.minor_diameter
 
     def __eq__(self, other):
-        return super().__eq__(other) and \
-               self.major_diameter == other.major_diameter and \
-               self.minor_diameter == other.minor_diameter and \
-               self.height == other.height
+        return super().__eq__(other) \
+               and self.major_diameter == other.major_diameter \
+               and self.minor_diameter == other.minor_diameter \
+               and self.height == other.height
 
     def __hash__(self):
         return hash((self.height, self.major_diameter, self.minor_diameter))

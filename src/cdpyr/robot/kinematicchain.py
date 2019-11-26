@@ -88,10 +88,10 @@ class KinematicChain(BaseObject):
         if self is other:
             return True
 
-        return self.frame_anchor == other.frame_anchor and \
-               self.platform == other.platform and \
-               self.platform_anchor == other.platform_anchor and \
-               self.cable == other.cable
+        return self.frame_anchor == other.frame_anchor \
+               and self.platform == other.platform \
+               and self.platform_anchor == other.platform_anchor \
+               and self.cable == other.cable
 
     def __ne__(self, other):
         return not self == other

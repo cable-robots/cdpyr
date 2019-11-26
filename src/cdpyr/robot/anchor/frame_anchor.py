@@ -57,9 +57,9 @@ class FrameAnchor(_anchor.Anchor, BaseObject):
         del self._drivetrain
 
     def __eq__(self, other):
-        return super().__eq__(other) and \
-               self.pulley == other.pulley and \
-               self.drivetrain == other.drivetrain
+        return super().__eq__(other) \
+               and self.pulley == other.pulley \
+               and self.drivetrain == other.drivetrain
 
     def __hash__(self):
         return hash((self.angular, self.drivetrain, self.linear, self.pulley))

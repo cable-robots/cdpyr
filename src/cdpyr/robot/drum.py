@@ -58,8 +58,8 @@ class Drum(BaseObject):
         if self is other:
             return True
 
-        return self.geometry == other.geometry and \
-               self.inertia == other.inertia
+        return self.geometry == other.geometry \
+               and self.inertia == other.inertia
 
     def __ne__(self, other):
         return not self == other

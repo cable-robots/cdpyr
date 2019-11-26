@@ -251,13 +251,15 @@ class Platform(BaseObject):
         if self is other:
             return True
 
-        return self.anchors == other.anchors and \
-               np_.allclose(self.center_of_gravity, other.center_of_gravity) and \
-               np_.allclose(self.center_of_linkage, other.center_of_linkage) and \
-               self.inertia == other.inertia and \
-               self.motion_pattern == other.motion_pattern and \
-               self.name == other.name and \
-               self.pose == other.pose
+        return self.anchors == other.anchors \
+               and np_.allclose(self.center_of_gravity,
+                                other.center_of_gravity) \
+               and np_.allclose(self.center_of_linkage,
+                                other.center_of_linkage) \
+               and self.inertia == other.inertia \
+               and self.motion_pattern == other.motion_pattern \
+               and self.name == other.name \
+               and self.pose == other.pose
 
     def __ne__(self, other):
         return not self == other

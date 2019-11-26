@@ -149,9 +149,10 @@ class Pose(BaseObject):
         if self is other:
             return True
 
-        return (self.time == other.time or self.time is other.time) and \
-               self.linear == other.linear and \
-               self.angular == other.angular
+        return (self.time == other.time
+                or self.time is other.time) \
+               and self.linear == other.linear \
+               and self.angular == other.angular
 
     def __ne__(self, other):
         return not self == other
@@ -166,9 +167,9 @@ class Pose(BaseObject):
         if self is other:
             return False
 
-        return self.time < other.time or \
-               self.linear < other.linear or \
-               self.angular < other.angular
+        return self.time < other.time \
+               or self.linear < other.linear \
+               or self.angular < other.angular
 
     def __le__(self, other: Union['Pose', object]):
         if not isinstance(other, self.__class__):
@@ -177,9 +178,9 @@ class Pose(BaseObject):
         if self is other:
             return True
 
-        return self.time <= other.time or \
-               self.linear <= other.linear or \
-               self.angular <= other.angular
+        return self.time <= other.time \
+               or self.linear <= other.linear \
+               or self.angular <= other.angular
 
     def __gt__(self, other: Union['Pose', object]):
         if not isinstance(other, self.__class__):
@@ -188,9 +189,9 @@ class Pose(BaseObject):
         if self is other:
             return False
 
-        return self.time > other.time or \
-               self.linear > other.linear or \
-               self.angular > other.angular
+        return self.time > other.time \
+               or self.linear > other.linear \
+               or self.angular > other.angular
 
     def __ge__(self, other: Union['Pose', object]):
         if not isinstance(other, self.__class__):
@@ -199,9 +200,9 @@ class Pose(BaseObject):
         if self is other:
             return True
 
-        return self.time >= other.time or \
-               self.linear >= other.linear or \
-               self.angular >= other.angular
+        return self.time >= other.time \
+               or self.linear >= other.linear \
+               or self.angular >= other.angular
 
     __repr__ = make_repr(
         'time',

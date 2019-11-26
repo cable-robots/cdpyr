@@ -88,9 +88,9 @@ class Pulley(BaseObject):
         if self is other:
             return True
 
-        return self.angular == other.angular and \
-               self.geometry == other.geometry and \
-               self.inertia == other.inertia
+        return self.angular == other.angular \
+               and self.geometry == other.geometry \
+               and self.inertia == other.inertia
 
     def __ne__(self, other):
         return not self == other
