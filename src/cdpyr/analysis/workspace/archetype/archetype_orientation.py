@@ -13,6 +13,10 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class ArchetypeOrientation(_archetype.Archetype, ABC):
+    """
+    A base class for all workspace archetypes that vary the position and
+    create a valid rotation matrix set at every position
+    """
     _sequence: str
     _step: int
     _euler_min: Vector
