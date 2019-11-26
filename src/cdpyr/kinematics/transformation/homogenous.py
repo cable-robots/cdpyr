@@ -85,9 +85,9 @@ class Homogenous(BaseObject):
 
         try:
             return np_.stack([self.matrix.dot(page)[0:3, :] for page in
-                          np_.rollaxis(coordinates, axis=2)], axis=2)
+                              np_.rollaxis(coordinates, axis=2)], axis=2)
         except ValueError:
-            return self.matrix.dot(coordinates)[0:3,:]
+            return self.matrix.dot(coordinates)[0:3, :]
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
