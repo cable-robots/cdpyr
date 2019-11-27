@@ -124,6 +124,14 @@ class Angular(BaseObject):
             else [0.0, 0.0, 0.0]
 
     @staticmethod
+    def random(num: int = None):
+        if num is None:
+            return Angular(quaternion=np_.random.random(4))
+        else:
+            return (Angular(quaternion=quaternion) for quaternion in
+                    np_.random.random((num, 4)))
+
+    @staticmethod
     def rotation_x(angle: Union[Num, Vector], degree: bool = False):
         # always deal with numpy arrays
         angle = np_.asarray(angle)
