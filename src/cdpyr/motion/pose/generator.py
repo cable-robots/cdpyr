@@ -1,251 +1,112 @@
 import itertools
-from typing import Optional, Union
+from typing import (
+    AnyStr,
+    Iterable,
+    Optional,
+    Tuple,
+    Union
+)
 
 import numpy as np_
-import re
 
 from cdpyr import validator as _validator
-from cdpyr.kinematics.transformation import (
-    angular as _angular,
-    linear as _linear,
-)
+from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion.pose import pose as _pose
-from cdpyr.typing import Matrix, Num, Vector
+from cdpyr.typing import (
+    Matrix,
+    Num,
+    Vector
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-def rotation_x(angle):
-    return np_.asarray((
-        (1.0, 0.0, 0.0),
-        (0.0, np_.cos(angle), -np_.sin(angle)),
-        (0.0, np_.sin(angle), np_.cos(angle))
-    ))
+def full(position: Tuple[Union[Num, Vector], Union[Num, Vector]],
+         angle: Tuple[Union[Num, Vector], Union[Num, Vector]],
+         sequence: str,
+         steps: Union[
+             Num, Tuple[Union[Num, Vector], Union[Num, Vector]]] = 10):
+    # Default arguments for the steps
+    steps = 10 if steps is None else steps
 
+    # ensure both position values are numpy arrays
+    position = [np_.asarray(x if isinstance(x, Iterable) else [x]) for x in
+                position]
+    # ensure both angle values are numpy arrays
+    angle = [np_.asarray(x if isinstance(x, Iterable) else [x]) for x in angle]
 
-def rotation_y(angle):
-    return np_.asarray((
-        (np_.cos(angle), 0.0, np_.sin(angle)),
-        (0.0, 1.0, 0.0),
-        (-np_.sin(angle), 0.0, np_.cos(angle))
-    ))
+    # now make sure both start and end position have the same size
+    _validator.data.length(position[1], position[0].size, 'position[1]')
+    # and make sure both start and end angles have the size given through the
+    # sequence
+    [_validator.data.length(a, len(sequence), f'angle[{idx}]') for idx, a in
+     enumerate(angle)]
 
+    # count values
+    nums = (position[0].size, angle[0].size)
 
-def rotation_z(angle):
-    return np_.asarray((
-        (np_.cos(angle), -np_.sin(angle), 0.0),
-        (np_.sin(angle), np_.cos(angle), 0.0),
-        (0.0, 0.0, 1.0)
-    ))
+    # if steps is not an iterable object, we will make it one
+    if not isinstance(steps, Iterable):
+        steps = (steps, steps)
 
+    # at this point, steps is either a 2-tuple of (steps[pos], steps[angle])
+    # or it is a 2-tuple of ([steps[pos_0], ..., steps[pos_n]], [steps[
+    # angle_0], ..., steps[angle_n]]) so let's check for that
+    steps = [np_.asarray(
+        step if isinstance(step, Iterable) else np_.repeat(step, num)) for
+        num, step in zip(nums, steps)]
 
-rot_mapping = {
-    'x': rotation_x,
-    'y': rotation_y,
-    'z': rotation_z
-}
+    # check steps has the right dimensions now, should be count ((Np, ), (Na, ))
+    [_validator.data.length(step, nums[idx], f'steps[{idx}]') for idx, step in
+     enumerate(steps)]
 
+    # calculate the delta per step for each degree of freedom
+    deltas = [(v[1] - v[0]) / step for v, step in zip((position, angle), steps)]
+    # set deltas to zero where there is no step needed
+    for idx in range(2):
+        deltas[idx][np_.logical_or(np_.allclose(steps[idx], 0),
+                                   np_.isnan(deltas[idx]))] = 0
 
-def from_euler(seq, angles, degrees=False):
-    angles = np_.asarray(angles, dtype=float)
-    if degrees:
-        angles = np_.deg2rad(angles)
+    # at this point, we must ensure that the values for `position` are all
+    # `(3,)` arrays
+    position = [np_.pad(pos, (0, 3 - pos.size)) for pos in position]
+    # from this follows, that we must also ensure that `steps[0]` now matches
+    # the size of the positions
+    steps[0] = np_.pad(steps[0], (0, 3 - steps[0].size))
+    deltas[0] = np_.pad(deltas[0], (0, 3 - deltas[0].size))
 
-    # find out if intrinsic or extrinsic rotation
-    intrinsic = (re.match(r'^[XYZ]{1,3}$', seq) is not None)
-    extrinsic = (re.match(r'^[xyz]{1,3}$', seq) is not None)
-
-    # now we only deal with the order of orientations
-    seq = seq.lower()
-
-    # init result
-    result = np_.eye(3)
-
-    # with intrinsic orientations, we post-multiply the rotation matrices
-    if intrinsic:
-        for idx, axis in enumerate(seq):
-            result = result.dot(rot_mapping[axis](angles[idx]))
-    # with extrinsic orientations, we pre-multiply the rotation matrices
-    elif extrinsic:
-        for idx, axis in enumerate(seq):
-            result = rot_mapping[axis](angles[idx]).dot(result)
-
-    return result
-
-
-def from_quaternion(quat: Vector, normalized: bool = False):
-    # consistent arguments
-    quat = np_.asarray(quat)
-
-    # normalize if needed
-    if not normalized:
-        quat = quat / np_.linalg.norm(quat)
-
-    x = quat[0]
-    y = quat[1]
-    z = quat[2]
-    w = quat[3]
-
-    x2 = x * x
-    y2 = y * y
-    z2 = z * z
-    w2 = w * w
-
-    xy = x * y
-    zw = z * w
-    xz = x * z
-    yw = y * w
-    yz = y * z
-    xw = x * w
-
-    dcm = np_.empty((3, 3))
-
-    dcm[0, 0] = x2 - y2 - z2 + w2
-    dcm[1, 0] = 2 * (xy + zw)
-    dcm[2, 0] = 2 * (xz - yw)
-
-    dcm[0, 1] = 2 * (xy - zw)
-    dcm[1, 1] = - x2 + y2 - z2 + w2
-    dcm[2, 1] = 2 * (yz + xw)
-
-    dcm[0, 2] = 2 * (xz + yw)
-    dcm[1, 2] = 2 * (yz - xw)
-    dcm[2, 2] = - x2 - y2 + z2 + w2
-
-    return dcm
-
-
-def steps(start: '_pose.Pose',
-          end: '_pose.Pose',
-          step: Union[Num, Vector]):
-    # get an array
-    step = np_.asarray(step)
-
-    # convert scalar arrays into vectorial arrays
-    if step.ndim == 0:
-        step = np_.asarray([step])
-
-    # [pos, rot] to [pos, pos, pos, rot, rot, rot]
-    if step.size == 2:
-        step = np_.hstack((
-            np_.repeat(step[0], 3, axis=0),
-            np_.repeat(step[1], 3, axis=0),
-        ))
-
-    # make sure the number of steps is 6 i.e., one per spatial degree of freedom
-    if step.size != 6:
-        step = np_.repeat(step, np_.ceil(6 / step.size))[0:6]
-
-    # differences in position
-    diff_pos = end.linear.position - start.linear.position
-
-    # difference in orientation parametrization: note that we have to make
-    # sure both poses are using the same sequence when getting their Euler
-    # angles, which is why we have that `old_sequence` thing in there
-    old_sequence = end.angular.sequence
-    end.angular.sequence = start.angular.sequence
-    diff_rot = end.angular.euler - start.angular.euler
-    end.angular.sequence = old_sequence
-
-    # delta in position to perform per step
-    deltas = np_.hstack((diff_pos, diff_rot)) / step
-    # set deltas to zero where no step is needed
-    deltas[np_.isclose(step, 0)] = 0
-
-    # how many iterations to perform per axis
-    iterations = step * np_.logical_not(
-        np_.hstack((np_.isclose(diff_pos, 0), np_.isclose(diff_rot, 0))))
-
-    # TODO make creation of rotation matrix faster as `from_euler` seems to
-    #  be a major bottleneck here
-    # return the generator object
+    # Finally, return the iterator object
     return (_pose.Pose(
-        start.linear.position + deltas[0:3] * a[0:3],
-        from_euler(start.angular.sequence,
-                   start.angular.euler + deltas[3:6] * a[3:6])
-    ) for a in itertools.product(
-        *(range(0, iterations[k] + 1) for k in range(0, 6))
-    ))
+        position[0] + deltas[0] * step[0:3],
+        angular=_angular.Angular(
+            sequence=sequence,
+            euler=angle[0] + deltas[1] * step[3:])
+    ) for step in
+        itertools.product(*(range(k + 1) for k in itertools.chain(*steps))))
 
 
-def interval(pose: '_pose.Pose',
-             boundaries: Union[Vector, Matrix],
-             step: Union[Num, Vector] = 10):
+def translation(start: Union[Num, Vector],
+                end: Union[Num, Vector],
+                dcm: Optional[Matrix] = None,
+                steps: Union[None, Num, Vector] = None):
     """
-
+    Generator for purely translational changing poses
     Parameters
     ----------
-    pose : Pose
-    boundaries : iterable
-        Boundaries around the pose to inspect. If given as 2-tuple i.e.,
-        `[min, max]`, it is the minimum and maximum difference in all
-        coordinates of the pose. If given as a 2-tuple of 2-tuples i.e.,
-        `[[min, max], [min, max]]`, then `boundaries[0]` will be applied to all
-        coordinates of the position and `boundaries[1]` will be applied to
-        all coordinates of the orientation.
-        If given as 6-tuple of 2-tuples i.e., `[[min, max], ..., [min,
-        max]]`, then these boundaries will be applied to each coordinate
-        separately.
-
-    Returns
-    -------
-
-    """
-
-    # we love working with numpy arrays
-    boundaries = np_.asarray(boundaries)
-
-    # case of [min, max]
-    if boundaries.ndim == 1:
-        boundaries = np_.repeat(boundaries[:, np_.newaxis], 6, axis=1)
-
-    # case of [[min, max], [min, max]]
-    if boundaries.ndim == 2 and boundaries.shape == (2, 2):
-        boundaries = np_.hstack((
-            np_.repeat(boundaries[0, :, np_.newaxis], 3, axis=1),  # position
-            np_.repeat(boundaries[1, :, np_.newaxis], 3, axis=1),  # orientation
-        ))
-
-    # case of [[min, max], [min, max], ..., [min, max]]
-    if boundaries.ndim == 2 and boundaries.shape == (6, 2):
-        boundaries = boundaries.T
-
-    # calculate start and end pose
-    start = _pose.Pose(
-        pose.linear.position + boundaries[0, 0:3],
-        from_euler(pose.angular.sequence,
-                   pose.angular.euler + boundaries[0, 3:6])
-
-    )
-    end = _pose.Pose(
-            pose.linear.position + boundaries[1, 0:3],
-            from_euler(pose.angular.sequence,
-                       pose.angular.euler + boundaries[1, 3:6])
-    )
-
-    # now that we have a start and end pose, we will just pass down to the
-    # steps generator
-    return steps(start, end, step)
-
-
-def translation(start: '_linear.Linear',
-                end: '_linear.Linear',
-                angular: Optional['_angular.Angular'] = None,
-                step: Optional[Union[Num, Vector]] = None):
-    """
-    Generator for purely translational
-    Parameters
-    ----------
-    start : Pose
-        Start pose at which to start the translation-only pose generator
-    end : Pose
-        Final pose at which to end the translation-only pose generator
-    angular : Matrix
+    start : Num | Vector
+        Start position at which the translation-only pose generator should
+        start. Can be of size up to 3.
+    end : Num | Vector
+        Start position at which the translation-only pose generator should
+        end. Must be the same size as `start`.
+    dcm : Matrix | Angular
         Fixed rotation matrix which to use at every pose. If not given,
         defaults to unit rotation matrix.
-    step : Num | Vector | 3-tuple
-        Number of discretization steps for the translation generator
+    steps : Num | Vector | N-tuple
+        Number of discretization steps from `start` to `end`. If given as
+        number, will be applied to all dimensions of start, otherwise must
+        match the size of `start`.
 
     Returns
     -------
@@ -253,77 +114,143 @@ def translation(start: '_linear.Linear',
     """
 
     # by default, we will make 10 steps
-    step = step if step else 10
+    steps = steps if steps else 10
 
-    # ensure step has the right format (either (), (1,) or (3,))
-    step = np_.asarray(step)
-    if step.ndim == 0:
-        step = np_.asarray([step])
-    if step.size < 3:
-        step = np_.repeat(step, 4 - step.size)[0:3]
+    # convert all into numpy arrays
+    start = np_.asarray(start)
+    end = np_.asarray(end)
+    steps = np_.asarray(steps, dtype=np_.int)
+    if start.ndim == 0:
+        start = np_.asarray([start])
+    if end.ndim == 0:
+        end = np_.asarray([end])
+    if steps.ndim == 0:
+        steps = np_.asarray([steps], dtype=np_.int)
+
+    # count the number of dimensions
+    num_position = start.size
+
+    # ensure `end` has the right size
+    _validator.data.length(end, num_position, 'end')
+    # if `step` is given with only one dimension, pad it to match the number
+    # of dimensions
+    if steps.size < num_position:
+        steps = np_.repeat(steps, num_position - (steps.size - 1))
+    # ensure `step` now has the right size
+    _validator.data.length(steps, num_position, 'step')
 
     # no rotation matrix given, then take unity
-    if angular is None:
-        angular = _angular.Angular()
+    if dcm is None:
+        dcm = np_.eye(3)
+    _validator.linalg.rotation_matrix(dcm, 'dcm')
 
-    # validate `step` is the right shape
-    _validator.linalg.shape(step, (3,), 'step')
+    # all data is validated, so make sure that both `start` and `end` are `(
+    # 3,)`, otherwise `Pose` will complain
+    start = np_.pad(start, (0, 3 - start.size))
+    end = np_.pad(end, (0, 3 - end.size))
+    steps = np_.repeat(steps, start.size - (steps.size - 1))[0:3]
 
-    # ensure both poses have the same rotation
-    start.angular = angular
-    end.angular = angular
+    # calculate difference between `start` and `end` position
+    diff = end - start
+    # and delta per step
+    delta = diff / steps
+    # remove numeric artifacts and set to `0` where there must be no steps
+    delta[np_.isclose(steps, 0)] = 0
 
-    # return the steps iterator
-    return steps(start, end, np_.pad(step, (0, 3)))
+    # how many iterations to perform per axis
+    iterations = steps * np_.logical_not(np_.isclose(diff, 0))
+
+    # return an iterator object
+    return (_pose.Pose(start + delta * step, dcm) for step in
+            itertools.product(*(range(k + 1) for k in iterations)))
 
 
-def orientation(start: '_angular.Angular',
-                end: '_angular.Angular',
-                linear: Optional['_linear.Linear'] = None,
-                step: Optional[Union[Num, Vector]] = None):
+def orientation(start: Union[Num, Vector],
+                end: Union[Num, Vector],
+                sequence: AnyStr,
+                position: Optional[Vector] = None,
+                steps: Union[None, Num, Vector] = None):
     """
-    Create a generator of poses where only the orientation changes throughout
-    the iteration
-
+    Generator for purely orientational changing poses
     Parameters
     ----------
-    start : Matrix
-        Initial rotation matrix given as
-    end : Matrix
-        Final rotation matrix.
-    linear : Pose
-        Position at which to perform the rotation. If not given, defaults to
-        [0.0, 0.0, 0.0]
-    step : Num | Vector | 3-tuple
-        Number of discretization steps for the orientation generator
+    start : Num | Vector
+        Orientation given in Euler angles at which the orientation-only
+        pose generator should start.
+    end : Num | Vector
+        Orientation given in Euler angles at which the orientation-only
+        pose generator should end. Must be the same size as `start`.
+    sequence : AnyStr
+        Sequence of Euler orientations used to reconstruct the orientation
+        matrix. Can be any valid combination of intrinsic `(x, y, z)` or
+        extrinsic `(X, Y, Z)`. Number of rotations must match the number of
+        start Euler angles.
+    position : Num | Vector
+        Fix position vector at which the orientational poses should be
+        applied. Any non `(3,)` vector or scalar will be padded up to
+        dimension `(3,)`.
+    steps : Num | Vector | N-tuple
+        Number of discretization steps from `start` to `end`. If given as
+        number, will be applied to all dimensions of start, otherwise must
+        match the size of `start`.
 
     Returns
     -------
-    generator
-        A pose generator that loops over all poses defined in the orientation
-        set of the given start and end rotation matrices. It is discretized
-        in step steps per the three axes
+
     """
 
-    # ensure step has the right format (either (), (1,) or (3,))
-    step = np_.asarray(step)
-    if step.ndim == 0:
-        step = np_.asarray([step])
-    if step.size < 3:
-        step = np_.repeat(step, 4 - step.size)[0:3]
+    # by default, we will make 10 steps
+    steps = steps if steps else 10
 
-    # default position value
-    if linear is None:
-        linear = _linear.Linear()
+    # convert all into numpy arrays
+    start = np_.asarray(start)
+    end = np_.asarray(end)
+    steps = np_.asarray(steps, dtype=np_.int)
+    if start.ndim == 0:
+        start = np_.asarray([start])
+    if end.ndim == 0:
+        end = np_.asarray([end])
+    if steps.ndim == 0:
+        steps = np_.asarray([steps], dtype=np_.int)
 
-    # validate step has the right shape
-    _validator.linalg.shape(step, (3,), 'step')
+    # count the number of dimensions
+    num_euler = start.size
 
-    # create start pose from the position pose given
-    start = _pose.Pose(linear=linear, angular=start)
+    # ensure sequence length matches the number of start euler angles
+    _validator.data.length(sequence, num_euler, 'sequence')
+    # ensure `end` has the right size
+    _validator.data.length(end, num_euler, 'end')
+    # if `step` is given with only one dimension, pad it to match the number
+    # of dimensions
+    if steps.size < num_euler:
+        steps = np_.repeat(steps, num_euler - (steps.size - 1))
+    # ensure `step` now has the right size
+    _validator.data.length(steps, num_euler, 'step')
 
-    # create end pose from the position pose given
-    end = _pose.Pose(linear=linear, angular=end)
+    # no rotation matrix given, then take unity
+    if position is None:
+        position = np_.asarray([0.0, 0.0, 0.0])
 
-    # return the steps iterator
-    return steps(start, end, np_.pad(step, (3, 0)))
+    # right-pad position with zeros so that `Pose` won't throw an error
+    position = np_.pad(position, (0, 3 - position.size))
+
+    # repeat step to match the amount of rotations to do
+    steps = np_.repeat(steps, start.size - (steps.size - 1))[0:num_euler]
+
+    # calculate difference between `start` and `end` position
+    diff = end - start
+    # and delta per step
+    delta = diff / steps
+    # remove numeric artifacts and set to `0` where there must be no steps
+    delta[np_.isclose(steps, 0)] = 0
+
+    # how many iterations to perform per axis
+    iterations = steps * np_.logical_not(np_.isclose(diff, 0))
+
+    # return an iterator object
+    return (_pose.Pose(
+        position,
+        angular=_angular.Angular(
+            sequence=sequence,
+            euler=start + delta * step
+        )) for step in itertools.product(*(range(k + 1) for k in iterations)))
