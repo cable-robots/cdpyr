@@ -15,22 +15,21 @@ __email__ = "p.tempel@tudelft.nl"
 class Result(_result.Result):
     _matrix: Matrix
     _kernel: Matrix
+    _pinv: Matrix
 
     def __init__(self, pose: '_pose.Pose', matrix: Union[Matrix, 'Result']):
         super().__init__(pose)
         self._matrix = matrix.matrix if isinstance(matrix, Result) else matrix
         self._kernel = None
+        self._pinv = None
 
     @property
     def inv(self):
-        if self._matrix.shape[0] != self._matrix.shape[1]:
-            return self.pinv
-
-        return _np.linalg.inv(self._matrix)
+        return self.pinv
 
     @property
     def is_singular(self):
-        return _np.linalg.matrix_rank(self.matrix) >= self.matrix.shape[0]
+        return _np.linalg.matrix_rank(self._matrix) >= self._matrix.shape[0]
 
     @property
     def kernel(self):
@@ -53,14 +52,20 @@ class Result(_result.Result):
 
     @property
     def pinv(self):
-        return _np.linalg.pinv(self._matrix)
+        if self._pinv is None:
+            if self._matrix.shape[0] == self._matrix.shape[1]:
+                self._pinv = _np.linalg.inv(self._matrix)
+            else:
+                self._pinv = _np.linalg.pinv(self._matrix)
 
+        return self._pinv
 
     __repr__ = make_repr(
-    'pose',
-    'matrix',
-    'kernel',
-)
+        'pose',
+        'matrix',
+        'kernel',
+    )
+
 
 __all__ = [
     'Result',

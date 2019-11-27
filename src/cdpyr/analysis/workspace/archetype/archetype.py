@@ -1,5 +1,9 @@
+from abc import (
+    ABC,
+    abstractmethod
+)
+
 import numpy as _np
-from abc import ABC, abstractmethod
 
 from cdpyr.typing import Vector
 

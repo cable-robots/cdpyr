@@ -101,8 +101,8 @@ class Calculator(_algorithm.Algorithm):
         search_directions, faces = self.__split_octahedron()
 
         # # termination conditions for each direction
-        min_step = 0.5 ** self.maximum_halvings
-        max_iters = self.maximum_iterations
+        min_step = 0.5 ** self._maximum_halvings
+        max_iters = self._maximum_iterations
 
         # calculate all vertices
         vertices = list(
@@ -114,13 +114,10 @@ class Calculator(_algorithm.Algorithm):
 
         # return the hull result object
         return _result.Result(self,
-                              self.archetype,
-                              self.criterion,
+                              self._archetype,
+                              self._criterion,
                               vertices,
                               faces)
-
-    def _validate(self, robot: '_robot.Robot'):
-        pass
 
     def __check_direction(self, robot, direction: Vector, min_step, max_iters):
         # step length along this coordinate
@@ -131,7 +128,7 @@ class Calculator(_algorithm.Algorithm):
         kiter = 0
 
         # init the current coordinate
-        coordinate = self.center
+        coordinate = self._center
 
         # as long as the step size isn't too small
         while step_length >= min_step and kiter <= max_iters:
@@ -141,9 +138,9 @@ class Calculator(_algorithm.Algorithm):
 
             # all poses are valid, so store the trial coordinate as
             # successful coordinate for the next loop
-            if self.archetype.comparator(
-                self.criterion.evaluate(robot, pose) for pose in
-                self.archetype.poses(coordinate_trial)):
+            if self._archetype.comparator(
+                self._criterion.evaluate(robot, pose) for pose in
+                self._archetype.poses(coordinate_trial)):
                 # advance the pose
                 coordinate = coordinate_trial
             # any pose is invalid at this coordinate, then we will reduce the
@@ -183,7 +180,7 @@ class Calculator(_algorithm.Algorithm):
 
         # subdivide triangles into smaller ones using LOOP-SUBDIVISION
         # algorithm_old
-        for level in range(self.depth):
+        for level in range(self._depth):
             corners, faces = self.__subdivide(corners, faces)
 
         # convert into numpy arrays

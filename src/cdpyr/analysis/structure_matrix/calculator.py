@@ -1,6 +1,12 @@
+from typing import (
+    AnyStr,
+    Dict
+)
+
 from cdpyr.analysis import evaluator as _evaluator
 from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.structure_matrix import (
+    algorithm as _structure_matrix,
     motion_pattern_1r2t as _structure_matrix_1r2t,
     motion_pattern_1t as _structure_matrix_1t,
     motion_pattern_2r3t as _structure_matrix_2r3t,
@@ -19,6 +25,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Calculator(_evaluator.Evaluator):
     _kinematics: '_kinematics.Algorithm'
+    resolver: Dict[AnyStr, _structure_matrix.Algorithm]
 
     def __init__(self,
                  kinematics: '_kinematics.Algorithm',
@@ -64,7 +71,7 @@ class Calculator(_evaluator.Evaluator):
             )
 
         # solve inverse kinematics
-        kinematics = self.kinematics.backward(robot, pose)
+        kinematics = self._kinematics.backward(robot, pose)
 
         # get first platform
         platform = robot.platforms[0]

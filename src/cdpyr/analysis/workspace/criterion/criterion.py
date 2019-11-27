@@ -11,9 +11,6 @@ __email__ = "p.tempel@tudelft.nl"
 class Criterion(_evaluator.Evaluator):
 
     def evaluate(self, robot: '_robot.Robot', pose: '_pose.Pose', **kwargs):
-        # first, validate the criterion is fully set up
-        self._validate(robot)
-
         # TODO remove this check
         if robot.num_platforms > 1:
             raise NotImplementedError(
@@ -25,10 +22,6 @@ class Criterion(_evaluator.Evaluator):
 
     @abstractmethod
     def _evaluate(self, robot: '_robot.Robot', pose: '_pose.Pose', **kwargs):
-        raise NotImplementedError
-
-    @abstractmethod
-    def _validate(self, robot: '_robot.Robot'):
         raise NotImplementedError
 
 

@@ -76,22 +76,25 @@ class Calculator(_algorithm.Algorithm):
         if step.ndim == 0:
             step = _np.asarray([step])
 
+        if step.size != self._lower_bound.size:
+            step = _np.repeat(step, self._lower_bound.size - (step.size - 1))[0:self._lower_bound.size]
+
         self._step = step
 
     def coordinates(self):
         # differences in position
-        diff_pos = self.upper_bound - self.lower_bound
+        diff_pos = self._upper_bound - self._lower_bound
 
         # delta in position to perform per step
-        deltas = diff_pos / self.step
+        deltas = diff_pos / self._step
         # set deltas to zero where no step is needed
-        deltas[_np.isclose(self.step, 0)] = 0
+        deltas[_np.isclose(self._step, 0)] = 0
 
         # how many iterations to perform per axis
-        iterations = self.step * _np.logical_not(_np.isclose(diff_pos, 0))
+        iterations = self._step * _np.logical_not(_np.isclose(diff_pos, 0))
 
         # return a generator object of coordinates
-        return (self.lower_bound + deltas * a for a in itertools.product(
+        return (self._lower_bound + deltas * a for a in itertools.product(
             *(range(0, iterations[k] + 1) for k in range(0, len(iterations)))
         ))
 
@@ -112,19 +115,16 @@ class Calculator(_algorithm.Algorithm):
         # return the tuple of poses that were evaluated
         return _result.Result(
             self,
-            self.archetype,
-            self.criterion,
+            self._archetype,
+            self._criterion,
             coordinates,
             flags
         )
 
-    def _validate(self, robot: '_robot.Robot'):
-        pass
-
     def __check__coordinate(self, robot, coordinate: _np.ndarray):
-        return self.archetype.comparator(self.criterion.evaluate(robot, pose)
+        return self._archetype.comparator(self._criterion.evaluate(robot, pose)
                                          for pose in
-                                         self.archetype.poses(coordinate))
+                                         self._archetype.poses(coordinate))
 
 
 __all__ = [

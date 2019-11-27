@@ -1,4 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod
+)
 
 from cdpyr.robot import robot as _robot
 

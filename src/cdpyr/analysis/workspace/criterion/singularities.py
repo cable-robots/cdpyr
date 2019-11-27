@@ -12,8 +12,6 @@ class Singularities(_criterion.Criterion):
 
     def __init__(self, kinematics: '_kinematics.Algorithm'):
         self.kinematics = kinematics
-        if self.kinematics is not None:
-            self._structure_matrix = _structure_matrix.Calculator(kinematics)
 
     @property
     def kinematics(self):
@@ -40,13 +38,6 @@ class Singularities(_criterion.Criterion):
         # matrix's rank is smaller than the number of degrees of freedom
         # i.e., the structure matrix's number of rows
         return self._structure_matrix.evaluate(robot, pose).is_singular
-
-    def _validate(self, robot: '_robot.Robot'):
-        if not isinstance(self.kinematics, _kinematics.Algorithm):
-            raise AttributeError(
-                f'Missing value for `kinematics` property. Please set a '
-                f'kinematics algorithm on the `Singularities` object, '
-                f'then calculate the workspace again')
 
 
 __all__ = [

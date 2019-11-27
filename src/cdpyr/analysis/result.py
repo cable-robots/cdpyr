@@ -1,5 +1,6 @@
 import copy
 from abc import ABC
+
 from magic_repr import make_repr
 
 __author__ = "Philipp Tempel"
@@ -19,6 +20,7 @@ class Result(ABC):
     __repr__ = make_repr(
         'pose'
     )
+
 
 __all__ = [
     'Result',

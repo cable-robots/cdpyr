@@ -73,9 +73,9 @@ class Algorithm(_evaluator.Evaluator):
     def kinematics(self, kinematics: '_kinematics.Algorithm'):
         self._kinematics = kinematics
         try:
-            self._structure_matrix.kinematics = self.kinematics
+            self._structure_matrix.kinematics = self._kinematics
         except AttributeError as AttributeE:
-            pass
+            self._structure_matrix = _structure_matrix.Calculator(self._kinematics)
 
     @kinematics.deleter
     def kinematics(self):
@@ -122,8 +122,8 @@ class Algorithm(_evaluator.Evaluator):
 
     def _parse_force_limits(self, robot: '_robot.Robot'):
         # get configure force limits
-        force_min = self.force_minimum
-        force_max = self.force_maximum
+        force_min = self._force_minimum
+        force_max = self._force_maximum
 
         # fewer limits than kinematic chains passed
         if force_min.size < robot.num_kinematic_chains:

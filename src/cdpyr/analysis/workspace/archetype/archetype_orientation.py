@@ -1,4 +1,5 @@
 import itertools
+from typing import Union
 
 import numpy as _np
 from abc import ABC
@@ -6,7 +7,10 @@ from abc import ABC
 from cdpyr import validator as _validator
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.motion.pose import generator as _generator, pose as _pose
-from cdpyr.typing import Vector
+from cdpyr.typing import (
+    Vector,
+    Num
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -40,7 +44,7 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
     @euler_min.setter
     def euler_min(self, euler_min: Vector):
         euler_min = _np.asarray(euler_min)
-        _validator.data.length(euler_min, len(self.sequence), 'euler_min')
+        _validator.data.length(euler_min, len(self._sequence), 'euler_min')
         self._euler_min = euler_min
 
     @euler_min.deleter
@@ -54,7 +58,7 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
     @euler_max.setter
     def euler_max(self, euler_max: Vector):
         euler_max = _np.asarray(euler_max)
-        _validator.data.length(euler_max, len(self.sequence), 'euler_max')
+        _validator.data.length(euler_max, len(self._sequence), 'euler_max')
         self._euler_max = euler_max - 10 * _np.finfo(euler_max.dtype).eps
 
     @euler_max.deleter

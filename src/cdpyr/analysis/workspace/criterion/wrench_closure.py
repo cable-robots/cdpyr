@@ -1,4 +1,7 @@
-from typing import Union
+from typing import (
+    Union,
+    Optional
+)
 
 import numpy as _np
 
@@ -17,9 +20,9 @@ class WrenchClosure(_criterion.Criterion):
 
     def __init__(self,
                  force_distribution: '_force_distribution.Algorithm',
-                 wrench: Union[Num, Vector]):
-        self.wrench = wrench
+                 wrench: Optional[Union[Num, Vector]] = None):
         self.force_distribution = force_distribution
+        self.wrench = wrench
 
     @property
     def force_distribution(self):
@@ -66,35 +69,15 @@ class WrenchClosure(_criterion.Criterion):
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
                   **kwargs):
-        flag = False
-
         try:
-            [self.force_distribution.evaluate(robot, pose, wrench)
-             for wrench in self.wrench.T]
-            flag = True
-        except (ArithmeticError, ValueError):
+            [self._force_distribution.evaluate(robot, pose, wrench)
+             for wrench in self._wrench.T]
+        except Exception:
             flag = False
+        else:
+            flag = True
         finally:
             return flag
-
-    def _validate(self, robot: '_robot.Robot'):
-        if not isinstance(self.force_distribution,
-                          _force_distribution.Algorithm):
-            raise AttributeError(
-                f'Missing value for `force_distribution` property. Please set '
-                f'a force distribution algorithm on the `WrenchClosure` '
-                f'object, then calculate the workspace again')
-
-        if not isinstance(self.wrench, _np.ndarray):
-            raise AttributeError(
-                f'Missing value for attribute `wrench`. Please set a wrench '
-                f'on the `WrenchClosure` object, then calculate the '
-                f'workspace again')
-
-        if self.wrench.shape[0] != robot.num_dof:
-            raise AttributeError(
-                f'Invalid size of wrench. Should be a `({robot.num_dof},'
-                f'K), but received `{self.wrench.shape}`.')
 
 
 __all__ = [

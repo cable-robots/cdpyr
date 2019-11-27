@@ -96,11 +96,11 @@ class Dykstra(_algorithm.Algorithm):
         # non-square structure matrix
         else:
             # number of maximum iterations
-            max_iter = self.maximum_iterations
+            max_iter = self._maximum_iterations
             # threshold for projection
-            eps_projection = self.threshold_projection
+            eps_projection = self._threshold_projection
             # threshold for convergence
-            eps_convergence = self.threshold_convergence
+            eps_convergence = self._threshold_convergence
 
             # get number of cables/forces from the number of columns of the
             # structure matrix

@@ -56,20 +56,13 @@ class CableLength(_criterion.Criterion):
                   pose: '_pose.Pose',
                   **kwargs):
         try:
-            kinematics = self.kinematics.backward(robot, pose)
+            kinematics = self._kinematics.backward(robot, pose)
         except BaseException:
             return False
         else:
             return (_np.logical_and(self._limits[0, :] <= kinematics.lengths,
                                     kinematics.lengths <= self._limits[1,
                                                           :])).all()
-
-    def _validate(self, robot: '_robot.Robot'):
-        if not isinstance(self.kinematics, _kinematics.Algorithm):
-            raise AttributeError(
-                f'Missing value for `kinematics` property. Please set a '
-                f'kinematics algorithm in the `CableLength` object, '
-                f'then calculate the workspace again')
 
 
 __all__ = [

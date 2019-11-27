@@ -59,7 +59,7 @@ class Algorithm(ABC):
     def kinematics(self, kinematics: '_kinematics.Algorithm'):
         self._kinematics = kinematics
         try:
-            self.criterion.kinematics = kinematics
+            self._criterion.kinematics = kinematics
         except AttributeError as AttributeE:
             pass
 
@@ -69,22 +69,19 @@ class Algorithm(ABC):
 
     def evaluate(self, robot: '_robot.Robot') -> '_result.Result':
         try:
-            if not isinstance(self.archetype, _archetype.Archetype):
+            if not isinstance(self._archetype, _archetype.Archetype):
                 raise AttributeError(
                     f'Failed starting calculation of the workspace. Missing '
                     f'or invalid value for attribute `archetype`. Please set '
                     f'a valid archetype object, then re-run evaluation of the '
                     f'workspace.')
 
-            if not isinstance(self.criterion, _criterion.Criterion):
+            if not isinstance(self._criterion, _criterion.Criterion):
                 raise AttributeError(
                     f'Failed starting calculation of the workspace. Missing '
                     f'or invalid value for attribute `criterion`. Please set '
                     f'a valid criterion object, then re-run evaluation of the '
                     f'workspace.')
-
-            # further validation as required by the concrete workspace evaluator
-            self._validate(robot)
         except (AttributeError, ValueError) as EvaluationE:
             raise RuntimeError(
                 'Could not determine workspace due to assertion failed in '
@@ -100,15 +97,6 @@ class Algorithm(ABC):
     @abstractmethod
     def _evaluate(self, robot: '_robot.Robot') -> '_result.Result':
         raise NotImplementedError
-
-    @abstractmethod
-    def _validate(self, robot):
-        # for now, I do not know how to handle cases where the robot has less
-        # than 3 DOF i.e., where the hull cannot be applied to 3 coordinates
-        if robot.num_dof < 3:
-            raise ValueError(
-                f'Expected robot to have at least 3 degrees of freedom but '
-                f'was given a robot with `{robot.num_dof}` degrees of freedom.')
 
 
 __all__ = [

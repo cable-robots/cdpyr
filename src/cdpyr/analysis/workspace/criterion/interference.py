@@ -29,13 +29,6 @@ class Interference(_criterion.Criterion):
                   **kwargs):
         raise NotImplementedError
 
-    def _validate(self, robot: '_robot.Robot'):
-        if not isinstance(self.kinematics, _kinematics.Algorithm):
-            raise AttributeError(
-                f'Missing value for `kinematics` property. Please set a '
-                f'kinematics algorithm on the `Interference` object, '
-                f'then calculate the workspace again')
-
 
 __all__ = [
     'Interference',
