@@ -88,26 +88,11 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
         del self._step
 
     def _poses(self, coordinate: Vector):
-        # difference in all rotations
-        diff_rot = (self.euler_max - self.euler_min)
-        # delta per step
-        deltas = diff_rot / self.step
-
-        # how many iterations per axis
-        iterations = self.step * _np.logical_not(_np.isclose(diff_rot, 0))
-
-        # start pose
-        start = _pose.Pose(coordinate)
-        start.angular.sequence = self.sequence
-
-        # Return a generator of poses with varying orientation
-        return (_pose.Pose(
-            start.linear.position,
-            _generator.from_euler(start.angular.sequence,
-                                  start.angular.euler + deltas * a)
-        ) for a in itertools.product(
-            *(range(0, iterations[k] + 1) for k in range(0, 3))
-        ))
+        return _generator.orientation(self._euler_min,
+                                      self._euler_max,
+                                      self._sequence,
+                                      coordinate,
+                                      self._steps)
 
 
 __all__ = [

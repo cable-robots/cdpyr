@@ -2,6 +2,7 @@ import numpy as _np
 from scipy import optimize
 
 from cdpyr.analysis.kinematics import algorithm as _algorithm
+from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion.pose import generator as _pose_generator, pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
@@ -44,7 +45,7 @@ class Standard(_algorithm.Algorithm):
             # estimate position
             pos = x[0:3]
             # estimated rotation matrix from quaternions
-            dcm = _pose_generator.from_quaternion(x[3:7], False)
+            dcm = _angular.Angular(quaternion=x[3:7]).dcm
 
             # solve the inverse kinematics vector loop
             directions = self._vector_loop(pos,
@@ -152,12 +153,12 @@ class Standard(_algorithm.Algorithm):
                 'then run again. You may also pass additional arguments to '
                 'the underlying optimization method.') from ArithmeticE
         else:
-            x = result.x / scaling
+            final = result.x / scaling
 
             return {
                 'pose':       _pose.Pose(
-                    x[0:3],
-                    _pose_generator.from_quaternion(x[3:7])
+                    final[0:3],
+                    angular=_angular.Angular(quaternion=final[3:7])
                 ),
                 'joints':     joints,
                 'directions': last_direction[0]
