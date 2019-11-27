@@ -1,4 +1,4 @@
-from typing import AnyStr, Optional
+from typing import AnyStr, Optional, Iterable
 
 from hurry.filesize import size as filesize
 
@@ -10,6 +10,9 @@ units = {"nsec": 1e-9, "usec": 1e-6, "msec": 1e-3, "sec": 1.0}
 def format_time(dt,
                 time_unit: Optional[AnyStr] = None,
                 precision: Optional[int] = None):
+    if isinstance(dt, Iterable):
+        return [format_time(dt_, time_unit, precision) for dt_ in dt]
+
     unit = time_unit
 
     if unit is not None:
