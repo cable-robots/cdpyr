@@ -41,6 +41,8 @@ class Algorithm(_evaluator.Evaluator):
         if force.ndim == 0:
             force = _np.asarray([force])
 
+        _validator.numeric.finite(force, 'force_maximum')
+
         self._force_maximum = force
 
     @force_maximum.deleter
