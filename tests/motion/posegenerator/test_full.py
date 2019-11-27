@@ -8,10 +8,10 @@ from typing import (
 import numpy as np
 import pytest
 
-from cdpyr.kinematics.transformation import angular as _angular
+from cdpyr.kinematics.transformation import angular
 from cdpyr.motion.pose import (
-    generator_new as generator,
-    pose as _pose
+    generator,
+    pose
 )
 from cdpyr.typing import (
     Num,
@@ -28,13 +28,13 @@ class PoseGeneratorFullTestSuite(object):
         ['position', 'angle', 'sequence', 'steps'],
         itertools.chain(
             (((0.0, 1.0), (-np.pi, np.pi), 'x', step) for step in
-             (None, 11)),
+             (None, 3)),
             ((([0.0, 0.0], [1.0, 2.0]), ([-np.pi, np.pi], [np.pi, -np.pi]),
-              'xy', step) for step in (None, 11, [11, 9])),
+              'xy', step) for step in (None, 3, [3, 5])),
             ((([0.0, 0.0, 0.0], [1.0, 2.0, 3.0]),
               ([-np.pi, np.pi, -0.5 * np.pi], [np.pi, -np.pi, 0.5 * np.pi]),
               'xyz', step) for step in
-             (None, 11, [11, 9], [[11, 9, 7], [7, 9, 11]]))
+             (None, 3, [3, 5], [[3, 5, 7], [7, 5, 3]]))
         )
     )
     def test_works_as_expected(self,
@@ -75,7 +75,7 @@ class PoseGeneratorFullTestSuite(object):
         # set deltas to zero where there is no step needed
         for idx in range(2):
             deltas[idx][np.logical_or(np.allclose(steps[idx], 0),
-                                       np.isnan(deltas[idx]))] = 0
+                                      np.isnan(deltas[idx]))] = 0
 
         # at this point, we must ensure that the values for `position` are all
         # `(3,)` arrays
@@ -87,9 +87,9 @@ class PoseGeneratorFullTestSuite(object):
         deltas[0] = np.pad(deltas[0], (0, 3 - deltas[0].size))
 
         # Finally, return the iterator object
-        expected_poses = (_pose.Pose(
+        expected_poses = (pose.Pose(
             position[0] + deltas[0] * step[0:3],
-            angular=_angular.Angular(
+            angular=angular.Angular(
                 sequence=sequence,
                 euler=angle[0] + deltas[1] * step[3:])
         ) for step in
@@ -101,47 +101,26 @@ class PoseGeneratorFullTestSuite(object):
             assert actual_pose.angular.dcm == pytest.approx(
                 expected_pose.angular.dcm)
 
-    # @pytest.mark.parametrize(
-    #     ['start_position', 'end_position', 'start_euler', 'end_euler',
-    #      'sequence', 'steps'],
-    #     [
-    #         (
-    #             0.0,
-    #             1.0,
-    #             0.0,
-    #             np.pi,
-    #             'x',
-    #             [25, 25, 25]
-    #         ),
-    #         (
-    #             [0.0, 0.0],
-    #             [1.0, 2.0],
-    #             [0.0, 0.0],
-    #             [-np.pi, np.pi],
-    #             'xy',
-    #             [25, 25]
-    #         ),
-    #         (
-    #             [0.0, 0.0, 0.0],
-    #             [1.0, 2.0, 3.0],
-    #             [0.0, 0.0, 0.0],
-    #             [-np.pi, np.pi, 1.5 * np.pi],
-    #             'xyz',
-    #             [25, 25]
-    #         ),
-    #     ]
-    # )
-    # def test_fails_because_of_wrong_steps_count(self,
-    #                                             start_position: Vector,
-    #                                             end_position: Vector,
-    #                                             start_euler: Vector,
-    #                                             end_euler: Vector,
-    #                                             sequence: AnyStr,
-    #                                             steps: Union[Num, Vector]):
-    #     with pytest.raises(ValueError):
-    #         generator.full(start_position, end_position, start_euler,
-    #         end_euler,
-    #                        sequence, steps)
+    @pytest.mark.parametrize(
+        ['position', 'angle', 'sequence', 'steps'],
+        itertools.chain(
+            (((0.0, 1.0), (-np.pi, np.pi), 'xy', step) for step in
+             (None, 3)),
+            ((([0.0, 0.0], [1.0, 2.0]), ([-np.pi, np.pi], [np.pi, -np.pi]),
+              'xzy', step) for step in (None, 3, [3, 5])),
+            ((([0.0, 0.0, 0.0], [1.0, 2.0, 3.0]),
+              ([-np.pi, np.pi, -0.5 * np.pi], [np.pi, -np.pi, 0.5 * np.pi]),
+              'xy', step) for step in
+             (None, 3, [3, 5], [[3, 5, 7], [7, 5, 3]]))
+        )
+    )
+    def test_failes_because_of_wrong_arguments(self,
+                               position: Vector,
+                               angle: Vector,
+                               sequence: AnyStr,
+                               steps: Union[Num, Vector]):
+        with pytest.raises(ValueError):
+            generator.full(position, angle, sequence, steps)
 
 
 if __name__ == "__main__":

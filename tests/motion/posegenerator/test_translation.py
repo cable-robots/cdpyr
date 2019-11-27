@@ -1,6 +1,13 @@
+import itertools
+from typing import Union
+
 import pytest
 
 from cdpyr.motion.pose import generator
+from cdpyr.typing import (
+    Num,
+    Vector
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -8,46 +15,21 @@ __email__ = "p.tempel@tudelft.nl"
 
 class PoseGeneratorTranslationTestSuite(object):
 
-    def tests_linear_default_step(self):
-        poses = generator.translation(0.0, 1.0)
-
-    def tests_linear_custom_step(self):
-        poses = generator.translation(0.0, 1.0, steps=25)
-        with pytest.raises(Exception):
-            poses = generator.translation(0.0, 1.0, steps=[25, 25])
-
-    def tests_planar_default_step(self):
-        poses = generator.translation([0.0, 0.0], [1.0, 2.0])
-
-    def tests_planar_custom_step(self):
-        poses = generator.translation(
-            [0.0, 0.0],
-            [1.0, 2.0],
-            steps=25)
-        poses = generator.translation(
-            [0.0, 0.0],
-            [1.0, 2.0],
-            steps=[25, 25])
-        with pytest.raises(Exception):
-            poses = generator.translation(
-                [0.0, 0.0],
-                [1.0, 2.0],
-                steps=[25, 25, 25])
-
-    def tests_spatial_default_step(self):
-        poses = generator.translation(
-            [0.0, 0.0, 0.0],
-            [1.0, 2.0, 3.0],
-            steps=25)
-        poses = generator.translation(
-            [0.0, 0.0, 0.0],
-            [1.0, 2.0, 3.0],
-            steps=[25, 25, 25])
-        with pytest.raises(Exception):
-            poses = generator.translation(
-                [0.0, 0.0, 0.0],
-                [1.0, 2.0, 3.0],
-                steps=[25, 25])
+    @pytest.mark.parametrize(
+        ['start', 'end', 'steps'],
+        itertools.chain(
+            ((0.0, 1.0, step) for step in (None, 11)),
+            (([0.0, 0.0], [1.0, 2.0], step) for step in (None, 11, [11, 9])),
+            (([0.0, 0.0, 0.0], [1.0, 2.0, 3.0], step) for step in
+             (None, 11, [11, 9, 7]))
+        )
+    )
+    def test_works_as_expected(self,
+                               start: Vector,
+                               end: Vector,
+                               steps: Union[Num, Vector]):
+        # get a pose generator
+        actual_poses = generator.translation(start, end, steps=steps)
 
 
 if __name__ == "__main__":
