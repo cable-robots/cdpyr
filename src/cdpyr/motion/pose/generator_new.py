@@ -1,7 +1,9 @@
 import itertools
 from typing import (
     AnyStr,
+    Iterable,
     Optional,
+    Tuple,
     Union
 )
 
@@ -20,82 +22,68 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-def full(start_position: Union[Num, Vector],
-         end_position: Union[Num, Vector],
-         start_euler: Union[Num, Vector],
-         end_euler: Union[Num, Vector],
+def full(position: Tuple[Union[Num, Vector], Union[Num, Vector]],
+         angle: Tuple[Union[Num, Vector], Union[Num, Vector]],
          sequence: str,
-         steps: Union[None, Num, Vector] = None):
-    # by default, we will make 10 steps
-    steps = steps if steps else 10
+         steps: Union[
+             Num, Tuple[Union[Num, Vector], Union[Num, Vector]]] = 10):
+    # Default arguments for the steps
+    steps = 10 if steps is None else steps
 
-    # convert all into numpy arrays
-    start_position = np_.asarray(start_position)
-    end_position = np_.asarray(end_position)
-    start_euler = np_.asarray(start_euler)
-    end_euler = np_.asarray(end_euler)
-    steps = np_.asarray(steps, dtype=np_.int)
-    if start_position.ndim == 0:
-        start_position = np_.asarray([start_position])
-    if end_position.ndim == 0:
-        end_position = np_.asarray([end_position])
-    if start_euler.ndim == 0:
-        start_euler = np_.asarray([start_euler])
-    if end_euler.ndim == 0:
-        end_euler = np_.asarray([end_euler])
-    if steps.ndim == 0:
-        steps = np_.asarray([steps], dtype=np_.int)
+    # ensure both position values are numpy arrays
+    position = [np_.asarray(x if isinstance(x, Iterable) else [x]) for x in
+                position]
+    # ensure both angle values are numpy arrays
+    angle = [np_.asarray(x if isinstance(x, Iterable) else [x]) for x in angle]
 
-    # count coordinates of both position and orientation
-    num_position = start_position.size
-    num_euler = start_euler.size
-    num_coordinates = num_position + num_euler
+    # now make sure both start and end position have the same size
+    _validator.data.length(position[1], position[0].size, 'position[1]')
+    # and make sure both start and end angles have the size given through the
+    # sequence
+    [_validator.data.length(a, len(sequence), f'angle[{idx}]') for idx, a in
+     enumerate(angle)]
 
-    # check start and end position have same size
-    _validator.data.length(end_position, num_position,
-                           'end_position')
-    # check the sequence length matches the length of the start euler angles
-    _validator.data.length(sequence, num_euler, 'sequence')
-    # check start and end euler have same size
-    _validator.data.length(end_euler, num_euler, 'end_euler')
+    # count values
+    nums = (position[0].size, angle[0].size)
 
-    # if `step` is given with only one dimension, pad it to match the number
-    # of dimensions
-    if steps.size == 1:
-        steps = np_.repeat(steps, num_coordinates)
-    elif steps.size == 2 and 0 == (num_coordinates % 2):
-        steps = np_.hstack((np_.repeat(steps[0], num_position), np_.repeat(steps[1], num_euler)))
-    # ensure `step` now has as many values as there are coordinates to loop over
-    _validator.data.length(steps, num_coordinates, 'step')
+    # if steps is not an iterable object, we will make it one
+    if not isinstance(steps, Iterable):
+        steps = (steps, steps)
 
-    # all data is validated, so make sure that both `start` and `end` are `(
-    # 3,)`, otherwise `Pose` will complain
-    start_position = np_.pad(start_position, (0, 3 - start_position.size))
-    end_position = np_.pad(end_position, (0, 3 - end_position.size))
-    steps = np_.hstack((np_.pad(steps[0:num_position], (0, 3 - num_position)), steps[num_position:]))
-    # steps = np_.repeat(steps, 3 + num_euler - (steps.size - 1))[0:3 + num_euler]
+    # at this point, steps is either a 2-tuple of (steps[pos], steps[angle])
+    # or it is a 2-tuple of ([steps[pos_0], ..., steps[pos_n]], [steps[
+    # angle_0], ..., steps[angle_n]]) so let's check for that
+    steps = [np_.asarray(
+        step if isinstance(step, Iterable) else np_.repeat(step, num)) for
+        num, step in zip(nums, steps)]
 
-    # calculate differences in position and euler angles
-    diff_position = end_position - start_position
-    diff_euler = end_euler - start_euler
-    # and delta per step
-    delta_position = diff_position / steps[0:3]
-    delta_euler = diff_euler / steps[3:]
-    # remove numeric artifacts and set to `0` where there must be no steps
-    delta_position[np_.isclose(steps[0:3], 0)] = 0
-    delta_euler[np_.isclose(steps[3:], 0)] = 0
+    # check steps has the right dimensions now, should be count ((Np, ), (Na, ))
+    [_validator.data.length(step, nums[idx], f'steps[{idx}]') for idx, step in
+     enumerate(steps)]
 
-    # how many iterations to perform per axis
-    iterations = steps * np_.logical_not(
-        np_.hstack((np_.isclose(diff_position, 0), np_.isclose(diff_euler, 0))))
+    # calculate the delta per step for each degree of freedom
+    deltas = [(v[1] - v[0]) / step for v, step in zip((position, angle), steps)]
+    # set deltas to zero where there is no step needed
+    for idx in range(2):
+        deltas[idx][np_.logical_or(np_.allclose(steps[idx], 0),
+                                   np_.isnan(deltas[idx]))] = 0
 
-    # return an iterator object
+    # at this point, we must ensure that the values for `position` are all
+    # `(3,)` arrays
+    position = [np_.pad(pos, (0, 3 - pos.size)) for pos in position]
+    # from this follows, that we must also ensure that `steps[0]` now matches
+    # the size of the positions
+    steps[0] = np_.pad(steps[0], (0, 3 - steps[0].size))
+    deltas[0] = np_.pad(deltas[0], (0, 3 - deltas[0].size))
+
+    # Finally, return the iterator object
     return (_pose.Pose(
-        start_position + delta_position * step[0:3],
+        position[0] + deltas[0] * step[0:3],
         angular=_angular.Angular(
             sequence=sequence,
-            euler=start_euler + delta_euler * step[3:])
-    ) for step in itertools.product(*(range(k + 1) for k in iterations)))
+            euler=angle[0] + deltas[1] * step[3:])
+    ) for step in
+        itertools.product(*(range(k + 1) for k in itertools.chain(*steps))))
 
 
 def translation(start: Union[Num, Vector],
