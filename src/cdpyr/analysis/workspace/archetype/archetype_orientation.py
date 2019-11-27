@@ -23,7 +23,7 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
     """
 
     _sequence: str
-    _step: int
+    _steps: int
     _euler_min: Vector
     _euler_max: Vector
 
@@ -31,11 +31,11 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
                  euler_min: Vector,
                  euler_max: Vector,
                  sequence: str,
-                 step: int = 10):
+                 steps: Union[Num, Vector] = 10):
         self.sequence = sequence
         self.euler_min = _np.asarray(euler_min)
         self.euler_max = _np.asarray(euler_max)
-        self.step = step
+        self.steps = steps
 
     @property
     def euler_min(self):
@@ -78,18 +78,18 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
         del self._sequence
 
     @property
-    def step(self):
-        return self._step
+    def steps(self):
+        return self._steps
 
-    @step.setter
-    def step(self, step: int):
-        _validator.numeric.greater_than(step, 0, 'step')
+    @steps.setter
+    def steps(self, steps: int):
+        _validator.numeric.greater_than(steps, 0, 'steps')
 
-        self._step = step
+        self._steps = steps
 
-    @step.deleter
-    def step(self):
-        del self._step
+    @steps.deleter
+    def steps(self):
+        del self._steps
 
     def _poses(self, coordinate: Vector):
         return _generator.orientation(self._euler_min,

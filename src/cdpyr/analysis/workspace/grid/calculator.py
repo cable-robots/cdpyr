@@ -20,7 +20,7 @@ __email__ = "p.tempel@tudelft.nl"
 class Calculator(_algorithm.Algorithm):
     _lower_bound: Vector
     _upper_bound: Vector
-    _step: Vector
+    _steps: Vector
 
     def __init__(self,
                  kinematics: '_kinematics.Algorithm',
@@ -28,11 +28,11 @@ class Calculator(_algorithm.Algorithm):
                  criterion: '_criterion.Criterion',
                  lower_bound: Union[Num, Vector] = None,
                  upper_bound: Union[Num, Vector] = None,
-                 step: Union[Num, Vector] = None):
+                 steps: Union[Num, Vector] = None):
         super().__init__(kinematics, archetype, criterion)
         self.lower_bound = lower_bound if lower_bound is not None else [0]
         self.upper_bound = upper_bound if upper_bound is not None else [0]
-        self.step = step if step is not None else [1]
+        self.steps = steps if steps is not None else [1]
 
     @property
     def lower_bound(self):
@@ -67,31 +67,31 @@ class Calculator(_algorithm.Algorithm):
         del self._upper_bound
 
     @property
-    def step(self):
-        return self._step
+    def steps(self):
+        return self._steps
 
-    @step.setter
-    def step(self, step: Union[Num, Vector]):
-        step = _np.asarray(step)
-        if step.ndim == 0:
-            step = _np.asarray([step])
+    @steps.setter
+    def steps(self, steps: Union[Num, Vector]):
+        steps = _np.asarray(steps)
+        if steps.ndim == 0:
+            steps = _np.asarray([steps])
 
-        if step.size != self._lower_bound.size:
-            step = _np.repeat(step, self._lower_bound.size - (step.size - 1))[0:self._lower_bound.size]
+        if steps.size != self._lower_bound.size:
+            steps = _np.repeat(steps, self._lower_bound.size - (steps.size - 1))[0:self._lower_bound.size]
 
-        self._step = step
+        self._steps = steps
 
     def coordinates(self):
         # differences in position
         diff_pos = self._upper_bound - self._lower_bound
 
         # delta in position to perform per step
-        deltas = diff_pos / self._step
+        deltas = diff_pos / self._steps
         # set deltas to zero where no step is needed
-        deltas[_np.isclose(self._step, 0)] = 0
+        deltas[_np.isclose(self._steps, 0)] = 0
 
         # how many iterations to perform per axis
-        iterations = self._step * _np.logical_not(_np.isclose(diff_pos, 0))
+        iterations = self._steps * _np.logical_not(_np.isclose(diff_pos, 0))
 
         # return a generator object of coordinates
         return (self._lower_bound + deltas * a for a in itertools.product(
