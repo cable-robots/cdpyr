@@ -12,6 +12,8 @@ class Planar(_matplotlib.Matplotlib):
         self._NUMBER_OF_AXES = 2
 
 
+
+
 __all__ = [
-    'Planar',
+        'Planar',
 ]

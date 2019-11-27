@@ -1,18 +1,37 @@
 import itertools
-from typing import Dict, Union
+from abc import ABC
+from typing import (
+    Dict,
+    Union
+)
 
 import numpy as _np
-from abc import ABC
-from matplotlib import collections as plt_collections, pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D, art3d
+from matplotlib import (
+    collections as plt_collections,
+    pyplot as plt
+)
+from mpl_toolkits.mplot3d import (
+    Axes3D,
+    art3d
+)
 from scipy.spatial import Delaunay as _Delaunay
 
+from cdpyr.geometry import (
+    cuboid as _cuboid,
+    cylinder as _cylinder,
+    elliptic_cylinder as _elliptic_cylinder,
+    sphere as _sphere,
+    tube as _tube
+)
 from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
 from cdpyr.robot import (
     robot as _robot,
 )
-from cdpyr.typing import Matrix, Vector
+from cdpyr.typing import (
+    Matrix,
+    Vector
+)
 from cdpyr.visualization.visualizer import Visualizer
 
 __author__ = "Philipp Tempel"
@@ -97,7 +116,47 @@ class Matplotlib(Visualizer, ABC):
                       cuboid: '_cuboid.Cuboid',
                       *args,
                       **kwargs):
-        pass
+        # get all needed dimensions for the cuboid
+        dimensions = _np.asarray([cuboid.width, cuboid.depth, cuboid.height])[
+                     _np.newaxis,
+                     0:self._NUMBER_OF_COORDINATES]
+
+        # all combinations of positive and negative ones
+        pos_neg_ones = _np.asarray(list(
+                itertools.product((-1, 1), repeat=self._NUMBER_OF_COORDINATES)))
+
+        # Determine the corners depending on the amount of axes
+        if self._NUMBER_OF_COORDINATES == 1:
+            vertices = _np.hstack((0.5 * pos_neg_ones * dimensions,
+                                   _np.zeros((self._NUMBER_OF_AXES, 1))))
+            edges = _np.asarray([[0, 1]])
+        else:
+            vertices = 0.5 * pos_neg_ones * dimensions
+
+        try:
+            # get edges of the convex hull and the list sorted
+            # points/vertices as ued by Delaunay
+            delau = _Delaunay(vertices)
+
+            # get the cuboids faces and edges
+            vertices = delau.points
+            if self._NUMBER_OF_COORDINATES == 2:
+                edges = delau.simplices
+            else:
+                edges = delau.convex_hull
+        except Exception:
+            pass
+
+        # standard poly collection arguments
+        pc_args = {
+                'edgecolors': [0.0, 0.0, 0.0],
+                'facecolors': [0.9, 0.9, 0.9],
+        }
+        # first, plot all patches, then loop over each edge and plot that
+        # separately
+        self._axes().add_collection(
+                self._poly_collection(vertices[edges, :],
+                                      **pc_args))
 
     def render_cylinder(self,
                         cylinder: '_cylinder.Cylinder',
@@ -118,10 +177,11 @@ class Matplotlib(Visualizer, ABC):
         # loop over each axis
         for idx in range(self._NUMBER_OF_COORDINATES):
             self._axes().quiver(
-                *position,
-                *dcm.dot(
-                    self._parse_coordinate(self.COORDINATE_DIRECTIONS[idx])),
-                color=self.COORDINATE_COLORS[idx],
+                    *position,
+                    *dcm.dot(
+                            self._parse_coordinate(
+                                    self.COORDINATE_DIRECTIONS[idx])),
+                    color=self.COORDINATE_COLORS[idx],
             )
 
     def render_drivetrain(self,
@@ -134,6 +194,13 @@ class Matplotlib(Visualizer, ABC):
                     drum: '_drum.Drum',
                     *args,
                     **kwargs):
+        pass
+
+    def render_elliptic_cylinder(self,
+                                 cylinder:
+                                 '_elliptic_cylinder.EllipticCylinder',
+                                 *args,
+                                 **kwargs):
         pass
 
     def render_frame(self,
@@ -184,7 +251,7 @@ class Matplotlib(Visualizer, ABC):
 
         # get position of platform
         platform_position = self._parse_coordinate(
-            platform.pose.linear.position)
+                platform.pose.linear.position)
         platform_dcm = self._parse_dcm(platform.pose.angular.dcm)
 
         # get position of anchor
@@ -193,7 +260,7 @@ class Matplotlib(Visualizer, ABC):
 
         # calculate distal position of cable
         distal_position = platform_position + platform_dcm.dot(
-            self._parse_coordinate(platform_anchor.linear.position))
+                self._parse_coordinate(platform_anchor.linear.position))
         proximal_point = anchor_position
 
         # finally, plot the cable from proximal to distal point
@@ -218,26 +285,28 @@ class Matplotlib(Visualizer, ABC):
 
         # plot platform shape
         if not platform.is_point:
-            # get original anchors
+            # get original anchors as (3,M) matrix
             anchors = self._parse_coordinate(platform.bi)
 
-            # retrieve bounding box of anchors
+            # retrieve bounding box of anchors, note that Delaunay assumes
+            # number of columns as number of dimensions
             delau = _Delaunay(anchors.T)
 
-            # get faces and simplices
-            hull_faces = delau.convex_hull
-            hull_points = delau.points
+            # get edges of the convex hull and the list sorted
+            # points/vertices as ued by Delaunay
+            edges = delau.convex_hull
+            vertices = delau.points
 
             # also rotate and translate the platform anchors
-            anchors_rotated = position + dcm.dot(hull_points.T)
+            vertices = (position + dcm.dot(vertices.T)).T
 
             pc_args = {
-                'edgecolors': [0.0, 0.0, 0.0],
-                'facecolors': [0.9, 0.9, 0.9],
+                    'edgecolors': [0.0, 0.0, 0.0],
+                    'facecolors': [0.9, 0.9, 0.9],
             }
             self._axes().add_collection(
-                self._poly_collection(anchors_rotated.T[hull_faces, :],
-                                      **pc_args))
+                    self._poly_collection(vertices[edges, :],
+                                          **pc_args))
 
         # plot every platform anchor using the platform's current position
         # and orientation
@@ -330,6 +399,23 @@ class Matplotlib(Visualizer, ABC):
                 self.render(component, *args, **transformation, **style)
 
     def _parse_coordinate(self, coordinate: Vector = None):
+        """
+        Convert any given (3,) coordinate into something that the plotting
+        engine can understand for the current amount of axes
+
+        Parameters
+        ----------
+        coordinate: Vector | None
+            A `(3,X)` vector of entries or `None`. If `None`, defaults to `[
+            0.0]` times the number of axes
+
+        Returns
+        -------
+        coordinate: Vector
+            A `(NA,X)` matrix of `_NUMBER_OF_AXES` coordinates which can be
+            directly passed to the underlying matplotlib render call.
+
+        """
         if coordinate is None:
             coordinate = [0.0] * self._NUMBER_OF_AXES
 
@@ -340,19 +426,16 @@ class Matplotlib(Visualizer, ABC):
         if coordinate.ndim == 0:
             coordinate = _np.asarray([coordinate])
 
-        # turrn vectors into matrices
+        # turn vectors into matrices
         if coordinate.ndim == 1:
             coordinate = coordinate[:, _np.newaxis]
 
         # add rows of zeros below the coordinate to make it a valid matrix
-        # coordinate = _np.vstack((coordinate, _np.zeros((self._NUMBER_OF_AXES -
-        # self._NUMBER_OF_COORDINATES[0:self._NUMBER_OF_COORDINATES,:],
-        # coordinate.shape[1]))))
         return _np.vstack((coordinate[0:self._NUMBER_OF_COORDINATES, :],
-                                 _np.zeros((
-                                     self._NUMBER_OF_AXES -
-                                     self._NUMBER_OF_COORDINATES,
-                                     coordinate.shape[1]))))
+                           _np.zeros((
+                                   self._NUMBER_OF_AXES -
+                                   self._NUMBER_OF_COORDINATES,
+                                   coordinate.shape[1]))))
 
     def _parse_dcm(self, dcm: Matrix = None):
         if dcm is None:
@@ -362,5 +445,5 @@ class Matplotlib(Visualizer, ABC):
 
 
 __all__ = [
-    'Matplotlib',
+        'Matplotlib',
 ]
