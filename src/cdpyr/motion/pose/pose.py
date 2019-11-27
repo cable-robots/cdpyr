@@ -149,8 +149,7 @@ class Pose(BaseObject):
         if self is other:
             return True
 
-        return (self.time == other.time
-                or self.time is other.time) \
+        return np_.allclose(self.time, other.time, equal_nan=True) \
                and self.linear == other.linear \
                and self.angular == other.angular
 
