@@ -127,14 +127,16 @@ class Angular(BaseObject):
     def rotation_x(angle: Union[Num, Vector], degree: bool = False):
         # always deal with numpy arrays
         angle = np_.asarray(angle)
+        if angle.ndim == 0:
+            angle = np_.asarray([angle])
 
         # convert angles given in degree to radian
         if degree:
             angle = np_.deg2rad(angle)
 
         # if only one angle is given, return the angular object right away
-        if angle.ndim == 0:
-            return Angular(sequence='x', euler=angle)
+        if angle.size == 1:
+            return Angular(sequence='x', euler=angle[0])
         # more than one angle given, so let's return a generator object over
         # each angle
         else:
@@ -145,14 +147,16 @@ class Angular(BaseObject):
     def rotation_y(angle: Union[Num, Vector], degree: bool = False):
         # always deal with numpy arrays
         angle = np_.asarray(angle)
+        if angle.ndim == 0:
+            angle = np_.asarray([angle])
 
         # convert angles given in degree to radian
         if degree:
             angle = np_.deg2rad(angle)
 
         # if only one angle is given, return the angular object right away
-        if angle.ndim == 0:
-            return Angular(sequence='y', euler=angle)
+        if angle.size == 1:
+            return Angular(sequence='y', euler=angle[0])
         # more than one angle given, so let's return a generator object over
         # each angle
         else:
@@ -163,14 +167,16 @@ class Angular(BaseObject):
     def rotation_z(angle: Union[Num, Vector], degree: bool = False):
         # always deal with numpy arrays
         angle = np_.asarray(angle)
+        if angle.ndim == 0:
+            angle = np_.asarray([angle])
 
         # convert angles given in degree to radian
         if degree:
             angle = np_.deg2rad(angle)
 
         # if only one angle is given, return the angular object right away
-        if angle.ndim == 0:
-            return Angular(sequence='z', euler=angle)
+        if angle.size == 1:
+            return Angular(sequence='z', euler=angle[0])
         # more than one angle given, so let's return a generator object over
         # each angle
         else:
@@ -297,6 +303,8 @@ class Angular(BaseObject):
     @euler.setter
     def euler(self, angles: Vector):
         angles = np_.asarray(angles)
+        if angles.ndim == 0:
+            angles = np_.asarray([angles])
 
         _validator.linalg.dimensions(angles, 1, 'euler')
         _validator.linalg.shape(angles, (len(self.sequence),), 'euler')
