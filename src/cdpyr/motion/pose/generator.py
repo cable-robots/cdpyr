@@ -71,8 +71,8 @@ def full(position: Tuple[Union[Num, Vector], Union[Num, Vector]],
     # at this point, we must ensure that the values for `position` are all
     # `(3,)` arrays
     position = [np_.pad(pos, (0, 3 - pos.size)) for pos in position]
-    # from this follows, that we must also ensure that `steps[0]` now matches
-    # the size of the positions
+    # from this follows, that we must also ensure that `steps[0]` now
+    # contains 3 elements since the position now has three elements
     steps[0] = np_.pad(steps[0], (0, 3 - steps[0].size))
     deltas[0] = np_.pad(deltas[0], (0, 3 - deltas[0].size))
 
@@ -114,7 +114,7 @@ def translation(start: Union[Num, Vector],
     """
 
     # by default, we will make 10 steps
-    steps = steps if steps else 10
+    steps = 10 if steps is None else steps
 
     # convert all into numpy arrays
     start = np_.asarray(start)
@@ -200,7 +200,7 @@ def orientation(start: Union[Num, Vector],
     """
 
     # by default, we will make 10 steps
-    steps = steps if steps else 10
+    steps = 10 if steps is None else steps
 
     # convert all into numpy arrays
     start = np_.asarray(start)
