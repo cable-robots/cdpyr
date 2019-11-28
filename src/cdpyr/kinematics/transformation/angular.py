@@ -100,21 +100,23 @@ class Angular(BaseObject):
             and dcm is None \
             and rotvec is None:
             self.euler = euler
-        if euler is None \
+        elif euler is None \
             and quaternion is not None \
             and dcm is None \
             and rotvec is None:
             self.quaternion = quaternion
-        if euler is None \
+        elif euler is None \
             and quaternion is None \
             and dcm is not None \
             and rotvec is None:
             self.dcm = dcm
-        if euler is None \
+        elif euler is None \
             and quaternion is None \
             and dcm is None \
             and rotvec is not None:
             self.rotvec = rotvec
+        else:
+            self.quaternion = [0.0, 0.0, 0.0, 1.0]
 
         self.angular_velocity = angular_velocity \
             if angular_velocity is not None \
