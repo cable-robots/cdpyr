@@ -14,8 +14,13 @@ from mpl_toolkits.mplot3d import (
     Axes3D,
     art3d
 )
-from scipy.spatial import Delaunay as _Delaunay
+from scipy.spatial import (
+    ConvexHull as _ConvexHull,
+    Delaunay as _Delaunay
+)
 
+from cdpyr.analysis.workspace.grid import grid_result as _grid
+from cdpyr.analysis.workspace.hull import hull_result as _hull
 from cdpyr.geometry import (
     cuboid as _cuboid,
     cylinder as _cylinder,
@@ -40,8 +45,6 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Matplotlib(Visualizer, ABC):
     _figure: plt.Figure
-    _NUMBER_OF_AXES: int
-    _NUMBER_OF_COORDINATES: int
 
     def __init__(self, *args, figure: plt.Figure = None, **kwargs):
         super().__init__()
@@ -99,8 +102,7 @@ class Matplotlib(Visualizer, ABC):
         # first, render the frame
         frame_style = kwargs.pop('frame', {})
         if frame_style is not False:
-            self.render(robot.frame,
-                        **frame_style)
+            self.render(robot.frame, **frame_style)
 
         # loop over the components to list
         for list_name in ('kinematic_chains', 'platforms'):
@@ -123,7 +125,7 @@ class Matplotlib(Visualizer, ABC):
 
         # all combinations of positive and negative ones
         pos_neg_ones = _np.asarray(list(
-                itertools.product((-1, 1), repeat=self._NUMBER_OF_COORDINATES)))
+            itertools.product((-1, 1), repeat=self._NUMBER_OF_COORDINATES)))
 
         # Determine the corners depending on the amount of axes
         if self._NUMBER_OF_COORDINATES == 1:
@@ -149,14 +151,14 @@ class Matplotlib(Visualizer, ABC):
 
         # standard poly collection arguments
         pc_args = {
-                'edgecolors': [0.0, 0.0, 0.0],
-                'facecolors': [0.9, 0.9, 0.9],
+            'edgecolors': [0.0, 0.0, 0.0],
+            'facecolors': [0.9, 0.9, 0.9],
         }
         # first, plot all patches, then loop over each edge and plot that
         # separately
         self._axes().add_collection(
-                self._poly_collection(vertices[edges, :],
-                                      **pc_args))
+            self._poly_collection(vertices[edges, :],
+                                  **pc_args))
 
     def render_cylinder(self,
                         cylinder: '_cylinder.Cylinder',
@@ -165,23 +167,17 @@ class Matplotlib(Visualizer, ABC):
         pass
 
     def render_coordinate_system(self,
-                                 position: Vector = None,
-                                 dcm: Matrix = None,
+                                 position: Vector,
+                                 dcm: Matrix,
                                  **kwargs):
-        # default position
-        position = self._parse_coordinate(position)
-
-        # default rotation
-        dcm = self._parse_dcm(dcm)
-
         # loop over each axis
         for idx in range(self._NUMBER_OF_COORDINATES):
             self._axes().quiver(
-                    *position,
-                    *dcm.dot(
-                            self._parse_coordinate(
-                                    self.COORDINATE_DIRECTIONS[idx])),
-                    color=self.COORDINATE_COLORS[idx],
+                *self._prepare_plot_coordinates(
+                    self._extract_coordinates(position)),
+                *self._prepare_plot_coordinates(self._extract_coordinates(
+                    dcm.dot(self.COORDINATE_DIRECTIONS[idx]))),
+                color=self.COORDINATE_COLORS[idx],
             )
 
     def render_drivetrain(self,
@@ -211,23 +207,21 @@ class Matplotlib(Visualizer, ABC):
         self._render_component_list(frame, 'anchors', **kwargs)
 
         # render world coordinate system
-        self.render_coordinate_system()
+        self.render_coordinate_system(_np.zeros((3, 1)), _np.eye(3))
 
     def render_frame_anchor(self,
                             anchor: '_frame_anchor.FrameAnchor',
                             *args,
                             **kwargs):
-
-        # prepare position and orientation of the anchor
-        position = self._parse_coordinate(anchor.linear.position)
-        dcm = self._parse_dcm(anchor.angular.dcm)
-
         # plot coordinate system
-        self.render_coordinate_system(position, dcm)
+        self.render_coordinate_system(anchor.linear.position,
+                                      anchor.angular.dcm)
 
         # plot anchor
-        self._axes().plot(*position,
-                          marker='o', markersize=2,
+        self._axes().plot(*self._prepare_plot_coordinates(
+            self._extract_coordinates(anchor.linear.position)),
+                          marker='o',
+                          markersize=2,
                           color=[0.0, 0.0, 1.0],
                           linestyle='none',
                           )
@@ -250,21 +244,22 @@ class Matplotlib(Visualizer, ABC):
         cable = kinematic_chain.cable
 
         # get position of platform
-        platform_position = self._parse_coordinate(
-                platform.pose.linear.position)
-        platform_dcm = self._parse_dcm(platform.pose.angular.dcm)
+        platform_position = platform.pose.linear.position
+        platform_dcm = platform.pose.angular.dcm
 
         # get position of anchor
-        anchor_position = self._parse_coordinate(frame_anchor.linear.position)
-        anchor_dcm = self._parse_dcm(frame_anchor.angular.dcm)
+        anchor_position = frame_anchor.linear.position
+        anchor_dcm = frame_anchor.angular.dcm
 
         # calculate distal position of cable
-        distal_position = platform_position + platform_dcm.dot(
-                self._parse_coordinate(platform_anchor.linear.position))
-        proximal_point = anchor_position
+        distal_position = self._extract_coordinates(
+            platform_position + platform_dcm.dot(
+                platform_anchor.linear.position))
+        proximal_point = self._extract_coordinates(anchor_position)
 
         # finally, plot the cable from proximal to distal point
-        self._axes().plot(*_np.hstack((proximal_point, distal_position)),
+        self._axes().plot(*self._prepare_plot_coordinates(
+            _np.hstack((proximal_point, distal_position))),
                           color=cable.color.get_rgb(),
                           linestyle='solid',
                           **kwargs)
@@ -279,34 +274,54 @@ class Matplotlib(Visualizer, ABC):
                         platform: '_platform.Platform',
                         *args,
                         **kwargs):
-        # get platform position and orientation
-        position = self._parse_coordinate(platform.pose.linear.position)
-        dcm = self._parse_dcm(platform.pose.angular.dcm)
+        # # get platform position and orientation
+        position = platform.pose.linear.position
+        dcm = platform.pose.angular.dcm
 
         # plot platform shape
         if not platform.is_point:
-            # get original anchors as (3,M) matrix
-            anchors = self._parse_coordinate(platform.bi)
+            # get original anchors as (K,M) matrix
+            anchors = self._extract_coordinates(platform.bi)
 
-            # retrieve bounding box of anchors, note that Delaunay assumes
-            # number of columns as number of dimensions
-            delau = _Delaunay(anchors.T)
+            # in 3D, we perform delaunay triangulation of the corners and
+            # retrieve the convex hull from there
+            if self._NUMBER_OF_AXES == 3:
+                delau = _Delaunay(anchors.T)
 
-            # get edges of the convex hull and the list sorted
-            # points/vertices as ued by Delaunay
-            edges = delau.convex_hull
-            vertices = delau.points
+                edges = delau.convex_hull
+                vertices = delau.points
+            # in any other case, we simply calculate the convex hull of
+            # the anchors
+            else:
+                # calculate convex hull of the platform shape
+                cv = _ConvexHull(anchors.T)
+                # and get all vertices and points in the correct sorted
+                # order
+                edges = cv.vertices
+                vertices = cv.points
+                # to close the loop of vertices, we will append the first
+                # one to the list
+                edges = _np.append(edges, edges[0])
+
+            # ensure vertices are (N,3) arrays
+            vertices = _np.pad(vertices, ((0, 0), (0, 3 - vertices.shape[1])))
 
             # also rotate and translate the platform anchors
-            vertices = (position + dcm.dot(vertices.T)).T
+            vertices = (position[:, _np.newaxis] + dcm.dot(vertices.T)).T
+
+            if self._NUMBER_OF_AXES == 2:
+                vertices = vertices[_np.newaxis, edges.T,
+                           0:self._NUMBER_OF_AXES]
+            else:
+                vertices = vertices[edges, 0:self._NUMBER_OF_AXES]
 
             pc_args = {
-                    'edgecolors': [0.0, 0.0, 0.0],
-                    'facecolors': [0.9, 0.9, 0.9],
+                'edgecolors': [0.0, 0.0, 0.0],
+                'facecolors': [0.9, 0.9, 0.9],
             }
             self._axes().add_collection(
-                    self._poly_collection(vertices[edges, :],
-                                          **pc_args))
+                self._poly_collection(vertices,
+                                      **pc_args))
 
         # plot every platform anchor using the platform's current position
         # and orientation
@@ -315,47 +330,41 @@ class Matplotlib(Visualizer, ABC):
                                     transformation=platform.pose.transformation,
                                     **kwargs)
 
-        # # weird bug/behavior? of `plot3D` requires a numpy value for the
-        # # `z`-coordinate, so this is a fix
-        # position = _np.asarray([position]).T
-
         # platform center
-        self._axes().plot(*position,
-                          marker='o', markersize=2,
+        self._axes().plot(*self._prepare_plot_coordinates(
+            self._extract_coordinates(position)),
+                          marker='o',
+                          markersize=2,
                           color=[0.0, 0.0, 1.0],
                           linestyle='none',
                           )
 
         # render reference coordinate system of platform
-        self.render_coordinate_system(position)
+        self.render_coordinate_system(position, _np.eye(3))
         # render rotated coordinate system of platform
         if platform.motion_pattern.can_rotate:
             self.render_coordinate_system(position,
                                           dcm)
 
-    #
     def render_platform_anchor(self,
                                anchor:
                                '_platform_anchor.PlatformAnchor',
                                *args,
                                transformation: _HomogenousTransformation = None,
                                **kwargs):
-        # get the anchor's original position and orientation
-        position = anchor.linear.position
-        dcm = anchor.angular.dcm
-
         # default value for transformation, if the platform has no pose
         if transformation is None:
             transformation = _HomogenousTransformation()
 
-        # transform the position
-        position = self._parse_coordinate(transformation.apply(position))
-
         # plot the anchor at its final coordinate
-        self._axes().plot(*position,
-                          marker='o', markersize=2,
+        self._axes().plot(*self._prepare_plot_coordinates(
+            self._extract_coordinates(
+                transformation.apply(
+                    anchor.linear.position))),
+                          marker='o',
+                          markersize=2,
                           color=[0.0, 0.0, 1.0],
-                          linestyle='none',
+                          linestyle='none'
                           )
 
     def render_pulley(self,
@@ -375,6 +384,43 @@ class Matplotlib(Visualizer, ABC):
                     *args,
                     **kwargs):
         pass
+
+    def render_workspace_grid(self,
+                              workspace: '_grid.GridResult',
+                              *args,
+                              **kwargs):
+        only_inside = kwargs.pop('only_inside', False)
+        # plot the points inside the workspace
+        self._axes().plot(
+            *self._prepare_plot_coordinates(
+                self._extract_coordinates(workspace.inside.T)),
+            marker='o',
+            markersize=3,
+            color=[0.0, 1.0, 0.0],
+            linestyle='none',
+        )
+        if not only_inside:
+            self._axes().plot(
+                *self._prepare_plot_coordinates(
+                    self._extract_coordinates(workspace.outside.T)),
+                marker='o',
+                markersize=1.5,
+                color=[1.0, 0.0, 0.0],
+                linestyle='none',
+            )
+
+    def render_workspace_hull(self,
+                              workspace: '_hull.HullResult',
+                              *args,
+                              **kwargs):
+            pc_args = {
+                'edgecolors': [0.0, 0.0, 0.0],
+                'facecolors': [0.9, 0.9, 0.9],
+                'alpha': 0.75,
+            }
+            self._axes().add_collection(
+                self._poly_collection(workspace.vertices[workspace.faces,:],
+                                      **pc_args))
 
     def _render_component_list(self,
                                obj: object,
@@ -398,52 +444,7 @@ class Matplotlib(Visualizer, ABC):
             for component, style in zip(components, styles):
                 self.render(component, *args, **transformation, **style)
 
-    def _parse_coordinate(self, coordinate: Vector = None):
-        """
-        Convert any given (3,) coordinate into something that the plotting
-        engine can understand for the current amount of axes
-
-        Parameters
-        ----------
-        coordinate: Vector | None
-            A `(3,X)` vector of entries or `None`. If `None`, defaults to `[
-            0.0]` times the number of axes
-
-        Returns
-        -------
-        coordinate: Vector
-            A `(NA,X)` matrix of `_NUMBER_OF_AXES` coordinates which can be
-            directly passed to the underlying matplotlib render call.
-
-        """
-        if coordinate is None:
-            coordinate = [0.0] * self._NUMBER_OF_AXES
-
-        # anything into a numpy array
-        coordinate = _np.asarray(coordinate)
-
-        # scalars into vectors
-        if coordinate.ndim == 0:
-            coordinate = _np.asarray([coordinate])
-
-        # turn vectors into matrices
-        if coordinate.ndim == 1:
-            coordinate = coordinate[:, _np.newaxis]
-
-        # add rows of zeros below the coordinate to make it a valid matrix
-        return _np.vstack((coordinate[0:self._NUMBER_OF_COORDINATES, :],
-                           _np.zeros((
-                                   self._NUMBER_OF_AXES -
-                                   self._NUMBER_OF_COORDINATES,
-                                   coordinate.shape[1]))))
-
-    def _parse_dcm(self, dcm: Matrix = None):
-        if dcm is None:
-            dcm = _np.eye(self._NUMBER_OF_AXES)
-
-        return _np.asarray(dcm)[0:self._NUMBER_OF_AXES, 0:self._NUMBER_OF_AXES]
-
 
 __all__ = [
-        'Matplotlib',
+    'Matplotlib',
 ]

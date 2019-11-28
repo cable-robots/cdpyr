@@ -3,6 +3,8 @@ from typing import Optional
 import numpy as _np
 from plotly import graph_objects as go
 
+from cdpyr.analysis.workspace.grid import grid_result as _grid
+from cdpyr.analysis.workspace.hull import hull_result as _hull
 from cdpyr.geometry import (
     cuboid as _cuboid,
     cylinder as _cylinder,
@@ -56,28 +58,28 @@ class Planar(_plotly.Plotly):
 
         # calculate vertices and edges of the cuboid
         vertices = _np.vstack(self._apply_transformation(*_np.vstack([
-                [-width / 2, depth / 2],
-                [width / 2, depth / 2],
-                [width / 2, -depth / 2],
-                [-width / 2, -depth / 2],
+            [-width / 2, depth / 2],
+            [width / 2, depth / 2],
+            [width / 2, -depth / 2],
+            [-width / 2, -depth / 2],
         ]).T, transform))
         edges = [0, 1, 2, 3, 0]
 
         # off to plotting
         self.figure.add_trace(
-                go.Scatter(
-                        **self._build_plotdata_kwargs(vertices[:, edges]),
-                        mode='lines',
-                        fill='toself',
-                        line=dict(
-                                color='rgb(13, 13, 13)',
-                        ),
-                        fillcolor='rgb(178, 178, 178)',
-                        name='cuboid',
-                        hoverinfo='skip',
-                        hovertext='',
-                        showlegend=False
-                )
+            go.Scatter(
+                **self._build_plotdata_kwargs(vertices[:, edges]),
+                mode='lines',
+                fill='toself',
+                line=dict(
+                    color='rgb(13, 13, 13)',
+                ),
+                fillcolor='rgb(178, 178, 178)',
+                name='cuboid',
+                hoverinfo='skip',
+                hovertext='',
+                showlegend=False
+            )
         )
 
     def render_cylinder(self,
@@ -85,11 +87,11 @@ class Planar(_plotly.Plotly):
                         *args,
                         **kwargs):
         return self._render_generic_cylinder(
-                cylinder.radius,
-                *args,
-                minor_radius=cylinder.radius,
-                name='cylinder',
-                **kwargs)
+            cylinder.radius,
+            *args,
+            minor_radius=cylinder.radius,
+            name='cylinder',
+            **kwargs)
 
     def render_elliptic_cylinder(self,
                                  cylinder:
@@ -97,22 +99,22 @@ class Planar(_plotly.Plotly):
                                  *args,
                                  **kwargs):
         return self._render_generic_cylinder(
-                cylinder.major_radius,
-                *args,
-                minor_radius=cylinder.minor_radius,
-                name='cylinder',
-                **kwargs)
+            cylinder.major_radius,
+            *args,
+            minor_radius=cylinder.minor_radius,
+            name='cylinder',
+            **kwargs)
 
     def render_sphere(self,
                       sphere: '_sphere.Sphere',
                       *args,
                       **kwargs):
         return self._render_generic_cylinder(
-                sphere.radius,
-                *args,
-                minor_radius=sphere.radius,
-                name='sphere',
-                **kwargs)
+            sphere.radius,
+            *args,
+            minor_radius=sphere.radius,
+            name='sphere',
+            **kwargs)
 
     def render_tube(self,
                     tube: '_tube.Tube',
@@ -121,6 +123,18 @@ class Planar(_plotly.Plotly):
         # loop over the inner and outer radius
         for radius in (tube.inner_radius, tube.outer_radius):
             self._render_generic_cylinder(radius, radius, **kwargs)
+
+    def render_workspace_grid(self,
+                              workspace: '_grid.GridResult',
+                              *args,
+                              **kwargs):
+        pass
+
+    def render_workspace_hull(self,
+                              workspace: '_hull.HullResult',
+                              *args,
+                              **kwargs):
+        pass
 
     def _render_generic_cylinder(self,
                                  major_radius: Num,
@@ -140,30 +154,30 @@ class Planar(_plotly.Plotly):
 
         # perform triangulation on transformed coordinates of the cylinder shape
         surrounding = _np.vstack(self._apply_transformation(
-                *_np.vstack([
-                        [
-                                major_radius * _np.cos(az),
-                                minor_radius * _np.sin(az),
-                        ]
-                        for az in azimuth
-                ]).T,
-                transform)).T
+            *_np.vstack([
+                [
+                    major_radius * _np.cos(az),
+                    minor_radius * _np.sin(az),
+                ]
+                for az in azimuth
+            ]).T,
+            transform)).T
 
         # first, plot the mesh of the platform i.e., its volume
         self.figure.add_trace(
-                go.Scatter(
-                        **self._build_plotdata_kwargs(surrounding.T),
-                        mode='lines',
-                        fill='toself',
-                        line=dict(
-                                color='rgb(13, 13, 13)',
-                        ),
-                        fillcolor='rgb(178, 178, 178)',
-                        hoverinfo='skip',
-                        hovertext='',
-                        showlegend=False,
-                        **kwargs,
-                )
+            go.Scatter(
+                **self._build_plotdata_kwargs(surrounding.T),
+                mode='lines',
+                fill='toself',
+                line=dict(
+                    color='rgb(13, 13, 13)',
+                ),
+                fillcolor='rgb(178, 178, 178)',
+                hoverinfo='skip',
+                hovertext='',
+                showlegend=False,
+                **kwargs,
+            )
         )
 
     def _apply_transformation(self,
@@ -180,5 +194,5 @@ class Planar(_plotly.Plotly):
 
 
 __all__ = [
-        'Planar',
+    'Planar',
 ]

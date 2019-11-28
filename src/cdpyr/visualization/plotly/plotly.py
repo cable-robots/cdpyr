@@ -1,10 +1,13 @@
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod
+)
 from collections import Mapping
-from typing import AnyStr, Sequence
 
 import numpy as _np
 from plotly import graph_objects as go
-from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
+
+from scipy.spatial import Delaunay as _Delaunay, ConvexHull as _ConvexHull
 
 from cdpyr.geometry import (
     cuboid as _cuboid,
@@ -29,7 +32,10 @@ from cdpyr.robot.anchor import (
     frame_anchor as _frame_anchor,
     platform_anchor as _platform_anchor,
 )
-from cdpyr.typing import Matrix, Vector
+from cdpyr.typing import (
+    Matrix,
+    Vector
+)
 from cdpyr.visualization import visualizer as _visualizer
 
 __author__ = "Philipp Tempel"
@@ -115,16 +121,19 @@ class Plotly(_visualizer.Visualizer, ABC):
                                  position: Vector = None,
                                  dcm: Matrix = None,
                                  **kwargs):
-        # default position
-        position = self._parse_coordinate(position)
+        # default position value
+        if position is None:
+            position = _np.zeros((3,))
 
-        # default rotation
-        dcm = self._parse_dcm(dcm)
+        # default orientation of the coordinate system
+        if dcm is None:
+            dcm = _np.eye(3)
 
         # draw center of the coordinate system
         self.figure.add_trace(
             self._scatter(
-                **self._build_plotdata_kwargs(position),
+                **self._prepare_plot_coordinates(
+                    self._extract_coordinates(position), self.AXES_NAMES),
                 **update_recursive(dict(
                     mode='markers',
                     marker=dict(
@@ -138,13 +147,13 @@ class Plotly(_visualizer.Visualizer, ABC):
 
         # plot each coordinate axis i.e., x, y, z or which of them are available
         for idx in range(self._NUMBER_OF_COORDINATES):
-            plotdata = self._build_plotdata_kwargs(_np.hstack((
-                # where to place the point
-                position,
-                # and where to point it to
-                position + 0.25 * dcm.dot(
-                    self._parse_coordinate(self.COORDINATE_DIRECTIONS[idx]))
-            )))
+            # plotdata = self._build_plotdata_kwargs(_np.hstack((
+            #     # where to place the point
+            #     position,
+            #     # and where to point it to
+            #     position + 0.25 * dcm.dot(
+            #         self._parse_coordinate(self.COORDINATE_DIRECTIONS[idx]))
+            # )))
             # convert rgb in range of [0...1] to RGB in range of [0...255]
             rgb = self._rgb2RGB(self.COORDINATE_DIRECTIONS[idx])
 
@@ -152,7 +161,11 @@ class Plotly(_visualizer.Visualizer, ABC):
             # 2D... no idea why, plot.ly?!)
             self.figure.add_trace(
                 self._scatter(
-                    **plotdata,
+                    **self._prepare_plot_coordinates(
+                        self._extract_coordinates(_np.hstack((
+                            position, position + 0.25 * dcm.dot(
+                                self.COORDINATE_DIRECTIONS[idx])
+                        ))), self.AXES_NAMES),
                     **update_recursive(dict(
                         mode='lines',
                         line_color=f'rgb({rgb[0]},{rgb[1]},{rgb[2]})',
@@ -198,16 +211,12 @@ class Plotly(_visualizer.Visualizer, ABC):
                             anchor: '_frame_anchor.FrameAnchor',
                             *args,
                             **kwargs):
-        # prepare position and orientation of the anchor
-        position = self._parse_coordinate(anchor.linear.position)
-        dcm = self._parse_dcm(anchor.angular.dcm)
-
         # get loop index
         aidx = kwargs.pop('loop_index', -1)
 
         # plot coordinate system
-        self.render_coordinate_system(position,
-                                      dcm,
+        self.render_coordinate_system(anchor.linear.position,
+                                      anchor.angular.dcm,
                                       name=f'frame anchor {aidx}',
                                       hovertext=f'frame anchor {aidx}',
                                       hoverinfo='text'
@@ -256,15 +265,15 @@ class Plotly(_visualizer.Visualizer, ABC):
         else:
             # render bounding box of platform
             if not platform.is_point:
-                # get anchors in platform coordinates
-                anchors = self._parse_coordinate(platform.bi)
+                # get original anchors as (K,M) matrix
+                anchors = self._extract_coordinates(platform.bi)
 
                 # in 3D, we perform delaunay triangulation of the corners and
                 # retrieve the convex hull from there
                 if self._NUMBER_OF_AXES == 3:
                     delau = _Delaunay(anchors.T)
 
-                    faces = delau.convex_hull
+                    edges = delau.convex_hull
                     vertices = delau.points
                 # in any other case, we simply calculate the convex hull of
                 # the anchors
@@ -273,44 +282,40 @@ class Plotly(_visualizer.Visualizer, ABC):
                     cv = _ConvexHull(anchors.T)
                     # and get all vertices and points in the correct sorted
                     # order
-                    faces = cv.vertices
+                    edges = cv.vertices
                     vertices = cv.points
                     # to close the loop of vertices, we will append the first
                     # one to the list
-                    faces = _np.append(faces, faces[0])
+                    edges = _np.append(edges, edges[0])
+
+                # ensure vertices are (N,3) arrays
+                vertices = _np.pad(vertices, ((0, 0), (0, 3 - vertices.shape[1])))
 
                 # also rotate and translate the platform anchors
-                vertices = self._parse_coordinate(position) \
-                                  + self._parse_dcm(dcm).dot(vertices.T)
+                vertices = (position[:, _np.newaxis] + dcm.dot(vertices.T)).T
 
                 # 3D plot
                 if self._NUMBER_OF_AXES == 3:
                     # first, plot the mesh of the platform i.e., its volume
                     self.figure.add_trace(
                         go.Mesh3d(
-                            **self._build_plotdata_kwargs(vertices),
-                            **self._build_plotdata_kwargs(faces.T,
-                                                          ['i', 'j', 'k']),
+                            **self._prepare_plot_coordinates(self._extract_coordinates(vertices.T), self.AXES_NAMES),
+                            **self._prepare_plot_coordinates(edges.T, ('i', 'j', 'k')),
                             color='rgb(0, 0, 0)',
-                            facecolor=['rgb(178, 178, 178)'] * faces.shape[
-                                0],
+                            facecolor=['rgb(178, 178, 178)'] * edges.shape[0],
                             flatshading=True,
                             name='',
                             hoverinfo='skip',
                             hovertext='',
                         )
                     )
-                    # then plot each edge/vertex of the platform
-                    faces = _np.hstack(
-                        (faces, faces[:, 0, _np.newaxis]))
-                    for face in faces:
+                    # close all edges by appending the first column
+                    edges = _np.hstack((edges, edges[:, 0, _np.newxis]))
+                    # and loop over each edge to plot
+                    for edge in edges:
                         self.figure.add_trace(
                             go.Scatter3d(
-                                **self._build_plotdata_kwargs([
-                                    vertices[0, face],
-                                    vertices[1, face],
-                                    vertices[2, face]
-                                ]),
+                                **self._prepare_plot_coordinates(vertices[edge,:].T, self.AXES_NAMES),
                                 mode='lines',
                                 line=dict(
                                     color='rgb(13, 13, 13)',
@@ -325,9 +330,7 @@ class Plotly(_visualizer.Visualizer, ABC):
                 else:
                     self.figure.add_trace(
                         self._scatter(
-                            **self._build_plotdata_kwargs(
-                                vertices[:, faces]
-                            ),
+                            **self._prepare_plot_coordinates(self._extract_coordinates(vertices[edges,:].T), self.AXES_NAMES),
                             mode='lines',
                             fill='toself',
                             line_color='rgb(13, 13, 13)',
@@ -376,23 +379,20 @@ class Plotly(_visualizer.Visualizer, ABC):
                                *args,
                                transformation: _HomogenousTransformation = None,
                                **kwargs):
-        # prepare position and orientation of the anchor
-        position = anchor.linear.position
-        dcm = anchor.angular.dcm
-
         # default value for transformation, if the platform has no pose
         if transformation is None:
             transformation = _HomogenousTransformation()
 
+        # anchor index from outside
         aidx = kwargs.pop('loop_index', -1)
+        # platform index from outside
         pidx = kwargs.pop('platform_index', -1)
-
-        # transform the position
-        position = self._parse_coordinate(transformation.apply(position))
 
         self.figure.add_trace(
             self._scatter(
-                **self._build_plotdata_kwargs(position),
+                **self._prepare_plot_coordinates(self._extract_coordinates(
+                    transformation.apply(anchor.linear.position)),
+                    self.AXES_NAMES),
                 **update_recursive(dict(
                     mode='markers',
                     marker=dict(
@@ -439,47 +439,6 @@ class Plotly(_visualizer.Visualizer, ABC):
                     *args,
                     **kwargs):
         raise NotImplementedError()
-
-    def _parse_coordinate(self, coordinate: Vector = None) -> _np.ndarray:
-        if coordinate is None:
-            coordinate = [0.0] * self._NUMBER_OF_AXES
-
-        # anything into a numpy array
-        coordinate = _np.asarray(coordinate)
-
-        # scalars into vectors
-        if coordinate.ndim == 0:
-            coordinate = _np.asarray([coordinate])
-
-        # turrn vectors into matrices
-        if coordinate.ndim == 1:
-            coordinate = coordinate[:, _np.newaxis]
-
-        # add rows of zeros below the coordinate to make it a valid matrix
-        # coordinate = _np.vstack((coordinate, _np.zeros((self._NUMBER_OF_AXES -
-        # self._NUMBER_OF_COORDINATES[0:self._NUMBER_OF_COORDINATES,:],
-        # coordinate.shape[1]))))
-        return _np.vstack((coordinate[0:self._NUMBER_OF_COORDINATES, :],
-                           _np.zeros((
-                               self._NUMBER_OF_AXES -
-                               self._NUMBER_OF_COORDINATES,
-                               coordinate.shape[1]))))
-
-    def _parse_dcm(self, dcm: Matrix = None):
-        if dcm is None:
-            dcm = _np.eye(self._NUMBER_OF_AXES)
-
-        return _np.asarray(dcm)[0:self._NUMBER_OF_AXES, 0:self._NUMBER_OF_AXES]
-
-    def _build_plotdata_kwargs(self,
-                               coordinates: Matrix,
-                               axes: Sequence[AnyStr] = None):
-        if axes is None:
-            axes = self.COORDINATE_NAMES
-
-        return dict(zip(axes[0:self._NUMBER_OF_AXES],
-                        [[ax] if isinstance(ax, float) else ax for ax in
-                         coordinates]))
 
 
 __all__ = [

@@ -5,6 +5,10 @@ import numpy as _np
 from plotly import graph_objects as go
 from scipy.spatial import Delaunay as _Delaunay
 
+from cdpyr.analysis.workspace import (
+    grid as _grid,
+    hull as _hull
+)
 from cdpyr.geometry import (
     cuboid as _cuboid,
     cylinder as _cylinder,
@@ -44,13 +48,13 @@ class Spatial(_plotly.Plotly):
 
         # plot the tube surrounding surface
         points = _np.asarray(self._apply_transformation(*_np.hstack(
-                _np.asarray([
-                        x, y, z,
-                ])[:, _np.newaxis]
-                for x, y, z in
-                itertools.product((-width / 2, width / 2),
-                                  (-depth / 2, depth / 2),
-                                  (-height / 2, height / 2))
+            _np.asarray([
+                x, y, z,
+            ])[:, _np.newaxis]
+            for x, y, z in
+            itertools.product((-width / 2, width / 2),
+                              (-depth / 2, depth / 2),
+                              (-height / 2, height / 2))
         ), transform))
 
         # plot the top and bottom closing
@@ -62,38 +66,38 @@ class Spatial(_plotly.Plotly):
 
         # first, plot the mesh of the platform i.e., its volume
         self.figure.add_trace(
-                go.Mesh3d(
-                        **self._build_plotdata_kwargs(points.T),
-                        **self._build_plotdata_kwargs(vertices.T,
-                                                      ['i', 'j', 'k']),
-                        color='rgb(0, 0, 0)',
-                        facecolor=['rgb(178, 178, 178)'] * vertices.shape[0],
-                        flatshading=True,
-                        name='cuboid',
-                        hoverinfo='skip',
-                        hovertext='',
-                )
+            go.Mesh3d(
+                **self._build_plotdata_kwargs(points.T),
+                **self._build_plotdata_kwargs(vertices.T,
+                                              ['i', 'j', 'k']),
+                color='rgb(0, 0, 0)',
+                facecolor=['rgb(178, 178, 178)'] * vertices.shape[0],
+                flatshading=True,
+                name='cuboid',
+                hoverinfo='skip',
+                hovertext='',
+            )
         )
         # then plot each edge/vertex of the platform
         vertices = _np.hstack(
-                (vertices, vertices[:, 0, _np.newaxis]))
+            (vertices, vertices[:, 0, _np.newaxis]))
         for vertex in vertices:
             self.figure.add_trace(
-                    go.Scatter3d(
-                            **self._build_plotdata_kwargs([
-                                    points[vertex, 0],
-                                    points[vertex, 1],
-                                    points[vertex, 2]
-                            ]),
-                            mode='lines',
-                            line=dict(
-                                    color='rgb(13, 13, 13)',
-                            ),
-                            name='',
-                            hoverinfo='skip',
-                            hovertext='',
-                            showlegend=False
-                    )
+                go.Scatter3d(
+                    **self._build_plotdata_kwargs([
+                        points[vertex, 0],
+                        points[vertex, 1],
+                        points[vertex, 2]
+                    ]),
+                    mode='lines',
+                    line=dict(
+                        color='rgb(13, 13, 13)',
+                    ),
+                    name='',
+                    hoverinfo='skip',
+                    hovertext='',
+                    showlegend=False
+                )
             )
 
     def render_cylinder(self,
@@ -101,12 +105,12 @@ class Spatial(_plotly.Plotly):
                         *args,
                         **kwargs):
         return self._render_generic_cylinder(
-                *args,
-                height=cylinder.height,
-                major_radius=cylinder.radius,
-                minor_radius=cylinder.radius,
-                name='cylinder',
-                **kwargs)
+            *args,
+            height=cylinder.height,
+            major_radius=cylinder.radius,
+            minor_radius=cylinder.radius,
+            name='cylinder',
+            **kwargs)
 
     def render_elliptic_cylinder(self,
                                  cylinder:
@@ -114,12 +118,12 @@ class Spatial(_plotly.Plotly):
                                  *args,
                                  **kwargs):
         return self._render_generic_cylinder(
-                *args,
-                height=cylinder.height,
-                major_radius=cylinder.major_radius,
-                minor_radius=cylinder.minor_radius,
-                name='elliptic cylinder',
-                **kwargs)
+            *args,
+            height=cylinder.height,
+            major_radius=cylinder.major_radius,
+            minor_radius=cylinder.minor_radius,
+            name='elliptic cylinder',
+            **kwargs)
 
     def render_sphere(self,
                       sphere: '_sphere.Sphere',
@@ -135,13 +139,13 @@ class Spatial(_plotly.Plotly):
 
         # triangulate through all the coordinates on the sphere surface
         delau = _Delaunay(_np.asarray(transform.apply(_np.hstack(
-                radius * _np.asarray([
-                        _np.cos(az) * _np.cos(el),
-                        _np.sin(az) * _np.cos(el),
-                        _np.sin(el),
-                ])[:, _np.newaxis]
-                for az in azimuth
-                for el in elevation
+            radius * _np.asarray([
+                _np.cos(az) * _np.cos(el),
+                _np.sin(az) * _np.cos(el),
+                _np.sin(el),
+            ])[:, _np.newaxis]
+            for az in azimuth
+            for el in elevation
         ))).transpose())
 
         # a linspace from [0, 2*pi]
@@ -152,9 +156,9 @@ class Spatial(_plotly.Plotly):
                _np.zeros_like(pi_linspace)]
         els = [_np.zeros_like(pi_linspace), pi_linspace, pi_linspace]
         rings = [radius * _np.asarray([
-                _np.cos(az) * _np.cos(el),
-                _np.sin(az) * _np.cos(el),
-                _np.sin(el),
+            _np.cos(az) * _np.cos(el),
+            _np.sin(az) * _np.cos(el),
+            _np.sin(el),
         ]) for az, el in zip(azs, els)]
 
         # get vertices and points of the sphere's complex hull
@@ -163,34 +167,34 @@ class Spatial(_plotly.Plotly):
 
         # first, plot the mesh of the platform i.e., its volume
         self.figure.add_trace(
-                go.Mesh3d(
-                        **self._build_plotdata_kwargs(points.T),
-                        **self._build_plotdata_kwargs(vertices.T,
-                                                      ['i', 'j', 'k']),
-                        color='rgb(0, 0, 0)',
-                        facecolor=['rgb(178, 178, 178)'] * vertices.shape[0],
-                        flatshading=True,
-                        name='sphere',
-                        hoverinfo='skip',
-                        hovertext='',
-                )
+            go.Mesh3d(
+                **self._build_plotdata_kwargs(points.T),
+                **self._build_plotdata_kwargs(vertices.T,
+                                              ['i', 'j', 'k']),
+                color='rgb(0, 0, 0)',
+                facecolor=['rgb(178, 178, 178)'] * vertices.shape[0],
+                flatshading=True,
+                name='sphere',
+                hoverinfo='skip',
+                hovertext='',
+            )
         )
 
         # loop over each ring to plot
         for ring in rings:
             # plot ring
             self.figure.add_trace(
-                    go.Scatter3d(
-                            **self._build_plotdata_kwargs(ring),
-                            mode='lines',
-                            line=dict(
-                                    color='rgb(13, 13, 13)',
-                            ),
-                            name='',
-                            hoverinfo='skip',
-                            hovertext='',
-                            showlegend=False
-                    )
+                go.Scatter3d(
+                    **self._build_plotdata_kwargs(ring),
+                    mode='lines',
+                    line=dict(
+                        color='rgb(13, 13, 13)',
+                    ),
+                    name='',
+                    hoverinfo='skip',
+                    hovertext='',
+                    showlegend=False
+                )
             )
 
     def render_tube(self,
@@ -203,6 +207,70 @@ class Spatial(_plotly.Plotly):
         # loop over the inner and outer radius
         for radius in (tube.inner_radius, tube.outer_radius):
             self._render_generic_cylinder(height, radius, radius, **kwargs)
+
+    def render_workspace_grid(self,
+                              workspace: '_grid.Result',
+                              *args,
+                              **kwargs):
+        only_inside = kwargs.pop('only_inside', False)
+        # plot the points inside the workspace
+        self.figure.add_trace(
+            go.Scatter3d(
+                **self._build_plotdata_kwargs(workspace.inside.T),
+                mode='markers',
+                marker=dict(
+                    color='rgb(0, 255, 0)',
+                    size=4 if self._NUMBER_OF_AXES == 4 else 6,
+                ),
+                name='workspace',
+                hoverinfo='text',
+                hovertext='',
+                showlegend=False,
+                **kwargs,
+            )
+        )
+        if not only_inside:
+            # plot the points outside the workspace
+            self.figure.add_trace(
+                go.Scatter3d(
+                    **self._build_plotdata_kwargs(workspace.outside.T),
+                    mode='markers',
+                    marker=dict(
+                        color='rgb(255, 0, 0)',
+                        size=3 if self._NUMBER_OF_AXES == 3 else 5,
+                    ),
+                    name='workspace',
+                    hoverinfo='text',
+                    hovertext='',
+                    showlegend=False,
+                    **kwargs,
+                )
+            )
+
+    def render_workspace_hull(self,
+                              workspace: '_hull.Result',
+                              *args,
+                              **kwargs):
+        # as simple as that
+        self.figure.add_trace(
+            go.Mesh3d(
+                **self._build_plotdata_kwargs(workspace.vertices.T),
+                **self._build_plotdata_kwargs(workspace.faces.T,
+                                              ['i', 'j', 'k']),
+                facecolor=['rgb(255, 0, 0)'] * workspace.faces.shape[0],
+                vertexcolor=['rgb(0, 0, 0)'] * workspace.vertices.shape[0],
+                flatshading=True,
+                opacity=0.75,
+                contour=dict(
+                    show=True,
+                    color='rgb(0, 0, 0)',
+                ),
+                name='workspace',
+                hoverinfo='skip',
+                hovertext='',
+                **kwargs,
+            )
+        )
 
     def _render_generic_cylinder(self,
                                  height: Num,
@@ -224,24 +292,24 @@ class Spatial(_plotly.Plotly):
 
         # perform triangulation on transformed coordinates of the cylinder shape
         delau = _Delaunay(_np.asarray(
-                self._apply_transformation(
-                        *_np.vstack([
-                                [
-                                        major_radius * _np.cos(az),
-                                        minor_radius * _np.sin(az),
-                                        el,
-                                ]
-                                for el in elevation
-                                for az in azimuth
-                        ]).T,
-                        transform)
+            self._apply_transformation(
+                *_np.vstack([
+                    [
+                        major_radius * _np.cos(az),
+                        minor_radius * _np.sin(az),
+                        el,
+                    ]
+                    for el in elevation
+                    for az in azimuth
+                ]).T,
+                transform)
         ).transpose())
 
         # calculate the upper and lower ring coordinates
         rings = [_np.asarray([[
-                major_radius * _np.cos(az),
-                minor_radius * _np.sin(az),
-                el,
+            major_radius * _np.cos(az),
+            minor_radius * _np.sin(az),
+            el,
         ] for az in azimuth]) for el in [elevation[0], elevation[-1]]]
 
         # get vertices and points of the surface triangulation
@@ -250,34 +318,34 @@ class Spatial(_plotly.Plotly):
 
         # first, plot the mesh of the platform i.e., its volume
         self.figure.add_trace(
-                go.Mesh3d(
-                        **self._build_plotdata_kwargs(points.T),
-                        **self._build_plotdata_kwargs(vertices.T,
-                                                      ['i', 'j', 'k']),
-                        color='rgb(0, 0, 0)',
-                        facecolor=['rgb(178, 178, 178)'] * vertices.shape[0],
-                        flatshading=True,
-                        hoverinfo='skip',
-                        hovertext='',
-                        **kwargs,
-                )
+            go.Mesh3d(
+                **self._build_plotdata_kwargs(points.T),
+                **self._build_plotdata_kwargs(vertices.T,
+                                              ['i', 'j', 'k']),
+                color='rgb(0, 0, 0)',
+                facecolor=['rgb(178, 178, 178)'] * vertices.shape[0],
+                flatshading=True,
+                hoverinfo='skip',
+                hovertext='',
+                **kwargs,
+            )
         )
 
         # loop over each ring to plot
         for ring in rings:
             # plot ring
             self.figure.add_trace(
-                    go.Scatter3d(
-                            **self._build_plotdata_kwargs(ring.transpose()),
-                            mode='lines',
-                            line=dict(
-                                    color='rgb(13, 13, 13)',
-                            ),
-                            name='',
-                            hoverinfo='skip',
-                            hovertext='',
-                            showlegend=False
-                    )
+                go.Scatter3d(
+                    **self._build_plotdata_kwargs(ring.transpose()),
+                    mode='lines',
+                    line=dict(
+                        color='rgb(13, 13, 13)',
+                    ),
+                    name='',
+                    hoverinfo='skip',
+                    hovertext='',
+                    showlegend=False
+                )
             )
 
     def _apply_transformation(self,
@@ -294,5 +362,5 @@ class Spatial(_plotly.Plotly):
 
 
 __all__ = [
-        'Spatial',
+    'Spatial',
 ]

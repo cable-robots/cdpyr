@@ -1,3 +1,5 @@
+from cdpyr.analysis.workspace.grid import grid_result as _grid
+from cdpyr.analysis.workspace.hull import hull_result as _hull
 from cdpyr.geometry import (
     cuboid as _cuboid,
     cylinder as _cylinder,
@@ -20,11 +22,11 @@ class Linear(_plotly.Plotly):
 
     def draw(self):
         self.figure.update_layout(
-                yaxis=dict(
-                        showline=False,
-                        showticklabels=False,
-                        showgrid=False
-                )
+            yaxis=dict(
+                showline=False,
+                showticklabels=False,
+                showgrid=False
+            )
         )
         super().draw()
 
@@ -59,7 +61,19 @@ class Linear(_plotly.Plotly):
                     **kwargs):
         pass
 
+    def render_workspace_grid(self,
+                              workspace: '_grid.GridResult',
+                              *args,
+                              **kwargs):
+        pass
+
+    def render_workspace_hull(self,
+                              workspace: '_hull.HullResult',
+                              *args,
+                              **kwargs):
+        pass
+
 
 __all__ = [
-        'Linear',
+    'Linear',
 ]
