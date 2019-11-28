@@ -9,7 +9,7 @@ from cdpyr.analysis.workspace import (
 )
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
-from cdpyr.analysis.workspace.grid import result as _result
+from cdpyr.analysis.workspace.grid import grid_result as _result
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Num, Vector
 
@@ -17,7 +17,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Calculator(_algorithm.Algorithm):
+class GridCalculator(_algorithm.Algorithm):
     _lower_bound: Vector
     _upper_bound: Vector
     _steps: Vector
@@ -113,7 +113,7 @@ class Calculator(_algorithm.Algorithm):
         del self.__robot
 
         # return the tuple of poses that were evaluated
-        return _result.Result(
+        return _result.GridResult(
             self,
             self._archetype,
             self._criterion,
@@ -128,5 +128,5 @@ class Calculator(_algorithm.Algorithm):
 
 
 __all__ = [
-    'Calculator',
+    'GridCalculator',
 ]

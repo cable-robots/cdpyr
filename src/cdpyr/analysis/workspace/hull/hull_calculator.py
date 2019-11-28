@@ -8,14 +8,14 @@ from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.workspace import algorithm as _algorithm
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
-from cdpyr.analysis.workspace.hull import result as _result
+from cdpyr.analysis.workspace.hull import hull_result as _result
 from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Calculator(_algorithm.Algorithm):
+class HullCalculator(_algorithm.Algorithm):
     _center: Vector
     _depth: Num
     _faces: Matrix
@@ -113,11 +113,11 @@ class Calculator(_algorithm.Algorithm):
             for direction in search_directions)
 
         # return the hull result object
-        return _result.Result(self,
-                              self._archetype,
-                              self._criterion,
-                              vertices,
-                              faces)
+        return _result.HullResult(self,
+                                  self._archetype,
+                                  self._criterion,
+                                  vertices,
+                                  faces)
 
     def __check_direction(self, robot, direction: Vector, min_step, max_iters):
         # step length along this coordinate
@@ -306,5 +306,5 @@ class Calculator(_algorithm.Algorithm):
 
 
 __all__ = [
-    'Calculator',
+    'HullCalculator',
 ]

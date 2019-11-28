@@ -4,14 +4,14 @@ import numpy as _np
 from scipy.spatial import Delaunay as _Delaunay
 
 from cdpyr.analysis.workspace import result as _result
-from cdpyr.analysis.workspace.grid import calculator as _calculator
+from cdpyr.analysis.workspace.grid import grid_calculator as _calculator
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Result(_result.Result, abc.Collection):
+class GridResult(_result.Result, abc.Collection):
     _coordinates: Matrix
     _flags: Vector
     _inside: Matrix
@@ -150,5 +150,5 @@ class Result(_result.Result, abc.Collection):
 
 
 __all__ = [
-    'Result',
+    'GridResult',
 ]

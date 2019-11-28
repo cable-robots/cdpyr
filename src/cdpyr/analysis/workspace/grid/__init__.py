@@ -1,5 +1,5 @@
-from cdpyr.analysis.workspace.grid.calculator import Calculator
-from cdpyr.analysis.workspace.grid.result import Result
+from cdpyr.analysis.workspace.grid.grid_calculator import GridCalculator as Calculator
+from cdpyr.analysis.workspace.grid.grid_result import GridResult as Result
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"

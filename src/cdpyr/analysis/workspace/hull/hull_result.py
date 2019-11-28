@@ -5,14 +5,14 @@ import numpy as _np
 from cdpyr.analysis.workspace import (
     result as _result,
 )
-from cdpyr.analysis.workspace.grid import calculator as _calculator
+from cdpyr.analysis.workspace.grid import grid_calculator as _calculator
 from cdpyr.typing import Matrix
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Result(_result.Result, abc.Collection):
+class HullResult(_result.Result, abc.Collection):
     _faces: Matrix
     _vertices: Matrix
 
@@ -133,5 +133,5 @@ class Result(_result.Result, abc.Collection):
 
 
 __all__ = [
-    'Result',
+    'HullResult',
 ]
