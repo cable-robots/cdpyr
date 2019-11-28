@@ -415,7 +415,7 @@ class Visualizer(ABC):
 
         # return result as a dictionary of ('e0': [], 'e1': [], ..., 'en': [])
         if axes is not None:
-            return dict(zip(axes, coordinates))
+            return dict(zip(axes[0:self._NUMBER_OF_AXES], coordinates))
         # return result as simple array
         else:
             return coordinates
