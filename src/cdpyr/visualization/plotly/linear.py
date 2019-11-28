@@ -14,11 +14,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Linear(_plotly.Plotly):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._NUMBER_OF_COORDINATES = 1
-        self._NUMBER_OF_AXES = 2
+    _NUMBER_OF_COORDINATES = 1
+    _NUMBER_OF_AXES = 2
 
     def draw(self):
         self.figure.update_layout(
@@ -30,36 +27,36 @@ class Linear(_plotly.Plotly):
         )
         super().draw()
 
-    def render_cuboid(self,
-                      cuboid: '_cuboid.Cuboid',
-                      *args,
-                      **kwargs):
-        pass
+    # def render_cuboid(self,
+    #                   cuboid: '_cuboid.Cuboid',
+    #                   *args,
+    #                   **kwargs):
+    #     raise NotImplementedError()
 
     def render_cylinder(self,
                         cylinder: '_cylinder.Cylinder',
                         *args,
                         **kwargs):
-        pass
+        raise NotImplementedError()
 
     def render_elliptic_cylinder(self,
                                  cylinder:
                                  '_elliptic_cylinder.EllipticCylinder',
                                  *args,
                                  **kwargs):
-        pass
+        raise NotImplementedError()
 
     def render_sphere(self,
                       sphere: '_sphere.Sphere',
                       *args,
                       **kwargs):
-        pass
+        raise NotImplementedError()
 
     def render_tube(self,
                     tube: '_tube.Tube',
                     *args,
                     **kwargs):
-        pass
+        raise NotImplementedError()
 
     def render_workspace_grid(self,
                               workspace: '_grid.GridResult',
@@ -77,3 +74,4 @@ class Linear(_plotly.Plotly):
 __all__ = [
     'Linear',
 ]
+#

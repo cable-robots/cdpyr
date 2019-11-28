@@ -1,13 +1,15 @@
-from abc import (
-    ABC,
-    abstractmethod
-)
 from collections import Mapping
 
 import numpy as _np
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from plotly import graph_objects as go
-
-from scipy.spatial import Delaunay as _Delaunay, ConvexHull as _ConvexHull
+from scipy.spatial import (
+    ConvexHull as _ConvexHull,
+    Delaunay as _Delaunay,
+)
 
 from cdpyr.geometry import (
     cuboid as _cuboid,
@@ -34,7 +36,7 @@ from cdpyr.robot.anchor import (
 )
 from cdpyr.typing import (
     Matrix,
-    Vector
+    Vector,
 )
 from cdpyr.visualization import visualizer as _visualizer
 
@@ -111,11 +113,90 @@ class Plotly(_visualizer.Visualizer, ABC):
         )
         self._figure.show()
 
-    @abstractmethod
     def render_cuboid(self,
                       cuboid: '_cuboid.Cuboid',
-                      *args, **kwargs):
-        raise NotImplementedError()
+                      *args,
+                      **kwargs):
+        """
+        Render a cuboid by rendering it as a rectangle with only the width
+        and depth used because the height is assumed to be along the vertical
+        axis with is perpendicular to the plane of a planar robot
+        Parameters
+        ----------
+        cuboid
+        args
+        kwargs
+
+        Returns
+        -------
+
+        """
+        # get transformation to apply
+        transform = kwargs.get('transformation', _HomogenousTransformation())
+
+        # quicker access to width and height of cuboid
+        dimensions = _np.asarray((cuboid.width, cuboid.depth, cuboid.height))
+
+        if self._NUMBER_OF_AXES == 1:
+            vertices = _np.asarray([
+                [-1.0, 1.0, 0.0]
+            ])
+            edges = _np.asarray([
+                [0, 1]
+            ])
+        elif self._NUMBER_OF_AXES == 2:
+            vertices = _np.asarray((
+                (-1.0, 1.0, 0.0),
+                (1.0, 1.0, 0.0),
+                (1.0, -1.0, 0.0),
+                (-1.0, -1.0, 0.0),
+            ))
+            edges = _np.asarray([
+                [0, 1, 2, 3]
+            ])
+        elif self._NUMBER_OF_AXES == 3:
+            vertices = _np.asarray((
+                (-1.0, 1.0, 1.0),
+                (1.0, 1.0, 1.0),
+                (1.0, -1.0, 1.0),
+                (-1.0, -1.0, 1.0),
+                (-1.0, 1.0, -1.0),
+                (1.0, 1.0, -1.0),
+                (1.0, -1.0, -1.0),
+                (-1.0, -1.0, -1.0),
+            ))
+            edges = _np.asarray((
+                (0, 1, 2, 3),
+                (0, 1, 5, 4),
+                (1, 2, 6, 5),
+                (2, 3, 7, 6),
+                (3, 0, 4, 7),
+                (4, 5, 6, 7),
+            ))
+
+        # scale vertices to account for the dimensions
+        vertices = transform.apply((vertices * dimensions).T)
+        # close the circle and append first edge to the list of edges
+        edges = _np.hstack((edges, edges[:, 0, _np.newaxis]))
+
+        # off to plotting
+        self.figure.add_trace(
+            go.Scatter(
+                **self._prepare_plot_coordinates(
+                    self._extract_coordinates(vertices[:, edges]),
+                    self.AXES_NAMES),
+                mode='lines',
+                fill='toself',
+                line=dict(
+                    color='rgb(13, 13, 13)',
+                ),
+                fillcolor='rgb(178, 178, 178)',
+                name='cuboid',
+                hoverinfo='skip',
+                hovertext='',
+                showlegend=False
+            )
+        )
 
     def render_coordinate_system(self,
                                  position: Vector = None,
@@ -289,7 +370,8 @@ class Plotly(_visualizer.Visualizer, ABC):
                     edges = _np.append(edges, edges[0])
 
                 # ensure vertices are (N,3) arrays
-                vertices = _np.pad(vertices, ((0, 0), (0, 3 - vertices.shape[1])))
+                vertices = _np.pad(vertices,
+                                   ((0, 0), (0, 3 - vertices.shape[1])))
 
                 # also rotate and translate the platform anchors
                 vertices = (position[:, _np.newaxis] + dcm.dot(vertices.T)).T
@@ -299,8 +381,11 @@ class Plotly(_visualizer.Visualizer, ABC):
                     # first, plot the mesh of the platform i.e., its volume
                     self.figure.add_trace(
                         go.Mesh3d(
-                            **self._prepare_plot_coordinates(self._extract_coordinates(vertices.T), self.AXES_NAMES),
-                            **self._prepare_plot_coordinates(edges.T, ('i', 'j', 'k')),
+                            **self._prepare_plot_coordinates(
+                                self._extract_coordinates(vertices.T),
+                                self.AXES_NAMES),
+                            **self._prepare_plot_coordinates(edges.T,
+                                                             ('i', 'j', 'k')),
                             color='rgb(0, 0, 0)',
                             facecolor=['rgb(178, 178, 178)'] * edges.shape[0],
                             flatshading=True,
@@ -315,7 +400,8 @@ class Plotly(_visualizer.Visualizer, ABC):
                     for edge in edges:
                         self.figure.add_trace(
                             go.Scatter3d(
-                                **self._prepare_plot_coordinates(vertices[edge,:].T, self.AXES_NAMES),
+                                **self._prepare_plot_coordinates(
+                                    vertices[edge, :].T, self.AXES_NAMES),
                                 mode='lines',
                                 line=dict(
                                     color='rgb(13, 13, 13)',
@@ -330,7 +416,9 @@ class Plotly(_visualizer.Visualizer, ABC):
                 else:
                     self.figure.add_trace(
                         self._scatter(
-                            **self._prepare_plot_coordinates(self._extract_coordinates(vertices[edges,:].T), self.AXES_NAMES),
+                            **self._prepare_plot_coordinates(
+                                self._extract_coordinates(vertices[edges, :].T),
+                                self.AXES_NAMES),
                             mode='lines',
                             fill='toself',
                             line_color='rgb(13, 13, 13)',
