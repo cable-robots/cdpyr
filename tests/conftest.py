@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-from scipy.spatial.transform import Rotation
 
 import cdpyr
 
@@ -16,9 +15,11 @@ def robot_1t():
             anchors=[
                 cdpyr.robot.FrameAnchor(
                     position=[-1., 0., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., 0., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -70,12 +71,15 @@ def robot_2t():
             anchors=[
                 cdpyr.robot.FrameAnchor(
                     position=[-1., 1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., 1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[0., -1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -140,12 +144,15 @@ def robot_3t():
             anchors=[
                 cdpyr.robot.FrameAnchor(
                     position=[-1., 1., 1.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., 1., 1.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[0., -1., 1.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -210,15 +217,19 @@ def robot_1r2t():
             anchors=[
                 cdpyr.robot.FrameAnchor(
                     position=[-1., 1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., 1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., -1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[-1., -1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -303,28 +314,36 @@ def robot_2r3t():
         frame=cdpyr.robot.Frame(
             anchors=[
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, 1.0]
+                    position=[-1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, 1.0]
+                    position=[1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, 1.0]
+                    position=[1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, 1.0]
+                    position=[-1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, -1.0]
+                    position=[-1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, -1.0]
+                    position=[1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, -1.0]
+                    position=[1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, -1.0]
+                    position=[-1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -469,28 +488,36 @@ def robot_3r3t():
         frame=cdpyr.robot.Frame(
             anchors=[
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, 1.0]
+                    position=[-1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, 1.0]
+                    position=[1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, 1.0]
+                    position=[1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, 1.0]
+                    position=[-1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, -1.0]
+                    position=[-1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, -1.0]
+                    position=[1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, -1.0]
+                    position=[1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, -1.0]
+                    position=[-1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -650,31 +677,29 @@ def rand_pos_3t():
 
 @pytest.fixture
 def rand_rot_1r():
-    return Rotation.from_euler('z',
-                               (2 * np.pi * (np.random.rand() - 0.5))
-                               ).as_dcm()
+    return cdpyr.kinematics.transformation.Angular(sequence='z', euler=np.pi * (
+            np.random.random() - 0.5)).dcm
 
 
 @pytest.fixture
 def rand_rot_2r():
-    return Rotation.from_euler('yx',
-                               (2 * np.pi * (np.random.random(2) - 0.5))
-                               ).as_dcm()
+    return cdpyr.kinematics.transformation.Angular(sequence='xy', euler=np.pi * (
+        np.random.random(2) - 0.5)).dcm
 
 
 @pytest.fixture
 def rand_rot_3r():
-    return Rotation.random().as_dcm()
+    return cdpyr.kinematics.transformation.Angular.random().dcm
 
 
 @pytest.fixture
 def rand_rot():
-    return Rotation.random().as_dcm()
+    return cdpyr.kinematics.transformation.Angular.random().dcm
 
 
 @pytest.fixture
 def unit_rot():
-    return Rotation.from_quat([0., 0., 0., 1.]).as_dcm()
+    return cdpyr.kinematics.transformation.Angular().dcm
 
 
 @pytest.fixture

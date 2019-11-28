@@ -8,9 +8,11 @@ def mp_1t():
             anchors=[
                 cdpyr.robot.FrameAnchor(
                     position=[-1., 0., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., 0., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -65,12 +67,15 @@ def mp_2t():
             anchors=[
                 cdpyr.robot.FrameAnchor(
                     position=[-1., 1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., 1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[0., -1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -140,15 +145,19 @@ def mp_3t():
             anchors=[
                 cdpyr.robot.FrameAnchor(
                     position=[-1., 1., 1.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., 1., 1.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[0., -1., 1.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[0., 0., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -233,15 +242,19 @@ def mp_1r2t():
             anchors=[
                 cdpyr.robot.FrameAnchor(
                     position=[-1., 1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., 1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[1., -1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
                     position=[-1., -1., 0.],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -325,28 +338,36 @@ def mp_2r3t():
         frame=cdpyr.robot.Frame(
             anchors=[
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, 1.0]
+                    position=[-1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, 1.0]
+                    position=[1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, 1.0]
+                    position=[1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, 1.0]
+                    position=[-1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, -1.0]
+                    position=[-1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, -1.0]
+                    position=[1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, -1.0]
+                    position=[1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, -1.0]
+                    position=[-1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -490,28 +511,36 @@ def mp_3r3t():
         frame=cdpyr.robot.Frame(
             anchors=[
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, 1.0]
+                    position=[-1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, 1.0]
+                    position=[1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, 1.0]
+                    position=[1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, 1.0]
+                    position=[-1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, -1.0]
+                    position=[-1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, -1.0]
+                    position=[1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, -1.0]
+                    position=[1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, -1.0]
+                    position=[-1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
@@ -655,52 +684,68 @@ def mp_3r3t_2platform():
         frame=cdpyr.robot.Frame(
             anchors=[
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, 1.0]
+                    position=[-1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, 1.0]
+                    position=[1.0, 1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, 1.0]
+                    position=[1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, 1.0]
+                    position=[-1.0, -1.0, 1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, 0.0]
+                    position=[-1.0, 1.0, 0.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, 0.0]
+                    position=[1.0, 1.0, 0.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, 0.0]
+                    position=[1.0, -1.0, 0.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, 0.0]
+                    position=[-1.0, -1.0, 0.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, 0.0]
+                    position=[-1.0, 1.0, 0.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, 0.0]
+                    position=[1.0, 1.0, 0.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, 0.0]
+                    position=[1.0, -1.0, 0.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, 0.0]
+                    position=[-1.0, -1.0, 0.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, -1.0]
+                    position=[-1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, -1.0]
+                    position=[1.0, 1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, -1.0]
+                    position=[1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
                 cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, -1.0]
+                    position=[-1.0, -1.0, -1.0],
+                    angular=cdpyr.kinematics.transformation.Angular.random(),
                 ),
             ]
         ),
