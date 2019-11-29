@@ -3,30 +3,35 @@ stages:
 
 python37:
     image: colstrom/python:3
-    before_script: pip install tox
+    before_script:
+        - 'pip install tox'
     stage: test
     script: tox -e py37
 
 check:
     image: colstrom/python:3
-    before_script: pip install tox
+    before_script:
+        - 'pip install tox'
     stage: test
     script: tox -e check
 
 spell:
     image: colstrom/python:3
-    before_script: pip install tox
+    before_script:
+        - 'pip install tox'
     stage: test
     script: tox -e spell
 
 docs:
     image: colstrom/python:3
-    before_script: pip install tox
+    before_script:
+        - 'pip install tox'
     stage: test
     script: tox -e docs
 
 report:
     image: colstrom/python:3
-    before_script: pip install tox
+    before_script:
+        - 'pip install tox'
     stage: test
     script: tox -e dogfood
