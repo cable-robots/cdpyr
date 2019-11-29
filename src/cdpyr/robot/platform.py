@@ -11,7 +11,6 @@ from magic_repr import make_repr
 
 from cdpyr.geometry import geometry as _geometry
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.mixin.base_object import BaseObject
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import pattern as _motion_pattern
 from cdpyr.robot.anchor import platform_anchor as _platform_anchor
@@ -162,17 +161,16 @@ class Platform(RobotComponent):
     def num_anchors(self):
         return len(self._anchors)
 
-    def wrench(self,
-               pose: '_pose.Pose' = None,
-               gravity: Optional[Union[Num, Vector]] = None):
+    def gravitational_wrench(self,
+                             pose: '_pose.Pose' = None,
+                             gravity: Optional[Union[Num, Vector]] = None):
         # get rotation matrix from the given or internal pose
         dcm = (pose if pose is not None else self.pose).angular.dcm
 
         # pass down to the motion pattern for handling
-        return self.motion_pattern.wrench(self.inertia.linear,
-                                          self.motion_pattern.gravity(gravity),
-                                          dcm,
-                                          self.center_of_gravity)
+        return self.motion_pattern.gravitational_wrench(
+                self.inertia.linear, self.motion_pattern.gravity(gravity), dcm,
+                self.center_of_gravity)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

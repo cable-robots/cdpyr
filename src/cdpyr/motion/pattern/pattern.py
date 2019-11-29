@@ -3,7 +3,6 @@ from typing import AnyStr, Optional, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Num, Vector
 
@@ -75,33 +74,30 @@ class Pattern(BaseObject):
         # then make the gravity scalar match the linear DOF of the platform.
         # By convention, we will add the scalar gravity value to the last DOF
         # of translation
-        gravity = np_.pad(gravity, (self.dof_translation - gravity.size, 0))
+        return np_.pad(gravity, (self.dof_translation - gravity.size, 0))
 
-        # validate shape of the gravity vector is (n_trans, )
-        _validator.linalg.shape(gravity, (self.dof_translation,))
-
-        # and return it
-        return gravity
-
-    def wrench(self,
-               linear_inertia: Matrix,
-               gravity: Vector,
-               rot: Optional[Matrix] = None,
-               cog: Optional[Vector] = None):
+    def gravitational_wrench(self,
+                             linear_inertia: Matrix,
+                             gravity: Vector,
+                             rot: Optional[Matrix] = None,
+                             cog: Optional[Vector] = None):
         # default value for rotation
         rot = np_.asarray(rot) if rot is not None else np_.eye(3)
 
         # default value for center of gravity
-        cog = np_.asarray(
-            cog if cog is not None else [0] * self.dof_translation)
+        cog = np_.asarray(cog) if cog is not None else np_.zeros(
+                self.dof_translation)
 
+        gravity: Vector
+        linear_inertia: Matrix
+        cog: Vector
+        rot: Matrix
         # reduce dimensions of vectors and matrices for quicker calculations
-        gravity: np_.ndarray = gravity[0:self.dof_translation]
-        linear_inertia: np_.ndarray = linear_inertia[0:self.dof_translation,
-                                      0:self.dof_translation]
-        rot: np_.ndarray = rot[0:(self.dof_rotation + 1),
-                           0:(self.dof_rotation + 1)]
-        cog: np_.ndarray = cog[0:self.dof_translation]
+        gravity = gravity[0:self.dof_translation]
+        linear_inertia = linear_inertia[0:self.dof_translation,
+                         0:self.dof_translation]
+        rot = rot[0:(self.dof_rotation + 1), 0:(self.dof_rotation + 1)]
+        cog = cog[0:self.dof_translation]
 
         # wrench that acts on the platform is composed of the gravitational
         # forces (quite simply linear inertia multiplied by vector of
@@ -109,8 +105,8 @@ class Pattern(BaseObject):
         if self.dof_rotation > 1:
             return np_.hstack((
                 linear_inertia.dot(gravity),
-                np_.cross(rot.dot(cog), linear_inertia.dot(gravity))[
-                0:self.dof_rotation]
+                np_.cross(rot.dot(cog),
+                          linear_inertia.dot(gravity))[0:self.dof_rotation]
             ))
         elif self.dof_rotation == 1:
             return np_.hstack((

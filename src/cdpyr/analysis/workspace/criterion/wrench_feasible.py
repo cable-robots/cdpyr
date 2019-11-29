@@ -1,6 +1,6 @@
 from typing import (
     Optional,
-    Union
+    Union,
 )
 
 import numpy as _np
@@ -12,7 +12,7 @@ from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import (
     Num,
-    Vector
+    Vector,
 )
 
 __author__ = "Philipp Tempel"
@@ -35,8 +35,6 @@ class WrenchFeasible(_criterion.Criterion):
 
     @wrench.setter
     def wrench(self, wrench: Vector):
-        # TODO We should allow here for empty wrenches and if so, then take
-        #  the wrench as gravity wrench from the platform/robot
         if wrench is not None:
             # anything to a numpy array
             wrench = _np.asarray(wrench)
@@ -58,8 +56,16 @@ class WrenchFeasible(_criterion.Criterion):
                   pose: '_pose.Pose',
                   **kwargs):
         try:
+            # determine the gravitational wrench
+            wrenches = robot.gravitational_wrench(pose)[:, _np.newaxis]
+
+            # if other wrenches are given, we will add them to the
+            # gravitational wrench
+            if self._wrench is not None:
+                wrenches = _np.hstack((wrenches, wrenches + self._wrench)).T
+
             [self.force_distribution.evaluate(robot, pose, wrench)
-             for wrench in self._wrench.T]
+             for wrench in wrenches.T]
         except Exception:
             flag = False
         else:

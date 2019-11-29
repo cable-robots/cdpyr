@@ -11,6 +11,7 @@ from typing import (
 import numpy as _np
 from magic_repr import make_repr
 
+from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import (
     cable as _cable,
     frame as _frame,
@@ -22,17 +23,19 @@ from cdpyr.robot.anchor import (
     platform_anchor as _platform_anchor,
 )
 from cdpyr.robot.robot_component import RobotComponent
+from cdpyr.typing import Vector, Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class Robot(RobotComponent):
-    frame: '_frame.Frame'
     _cables: '_cable.CableList'
     _chains: '_kinematicchain.KinematicChainList'
-    _platforms: '_platform.PlatformList'
+    frame: '_frame.Frame'
+    _gravity: _np.ndarray
     name: AnyStr
+    _platforms: '_platform.PlatformList'
 
     def __init__(self,
                  name: Optional[AnyStr] = None,
@@ -50,13 +53,15 @@ class Robot(RobotComponent):
                      Sequence['_kinematicchain.KinematicChain'],
                      Sequence[Tuple[int, int, int, int]],
                      Sequence[Dict[AnyStr, int]]
-                 ]] = None
+                 ]] = None,
+                 gravity: Union[Num, Vector] = None
                  ):
         self.name = name or 'default'
         self.frame = frame or None
         self.platforms = platforms or []
         self.cables = cables or []
         self.kinematic_chains = kinematic_chains or {}
+        self.gravity = gravity if gravity is not None else [0]
 
     @property
     def ai(self):
@@ -84,6 +89,18 @@ class Robot(RobotComponent):
     @cables.deleter
     def cables(self):
         del self._cables
+
+    @property
+    def gravity(self):
+        return self._gravity
+
+    @gravity.setter
+    def gravity(self, gravity: Union[Num, Vector]):
+        self._gravity = _np.asarray(gravity)
+
+    @gravity.deleter
+    def gravity(self):
+        del self._gravity
 
     @property
     def kinematic_chains(self):
@@ -206,6 +223,14 @@ class Robot(RobotComponent):
     @platforms.deleter
     def platforms(self):
         del self._platforms
+
+    def gravitational_wrench(self, pose: '_pose.Pose'):
+        if self.num_platforms > 1:
+            raise NotImplementedError(
+                'Wrench calculation is not implemented for robots with more '
+                'than one platforms.')
+
+        return self.platforms[0].gravitational_wrench(pose, self.gravity)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

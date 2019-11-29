@@ -39,14 +39,15 @@ class WrenchClosure(_criterion.Criterion):
 
     @wrench.setter
     def wrench(self, wrench: Vector):
-        # anything to a numpy array
-        wrench = _np.asarray(wrench)
-        # scalar to vector
-        if wrench.ndim == 0:
-            wrench = _np.asarray([wrench])
-        # vector to matrix
-        if wrench.ndim == 1:
-            wrench = wrench[:, _np.newaxis]
+        if wrench is not None:
+            # anything to a numpy array
+            wrench = _np.asarray(wrench)
+            # scalar to vector
+            if wrench.ndim == 0:
+                wrench = _np.asarray([wrench])
+            # vector to matrix
+            if wrench.ndim == 1:
+                wrench = wrench[:, _np.newaxis]
 
         self._wrench = wrench
 
@@ -59,8 +60,16 @@ class WrenchClosure(_criterion.Criterion):
                   pose: '_pose.Pose',
                   **kwargs):
         try:
-            [self._force_distribution.evaluate(robot, pose, wrench)
-             for wrench in self._wrench.T]
+            # determine the gravitational wrench
+            wrenches = robot.gravitational_wrench(pose)[:, _np.newaxis]
+
+            # if other wrenches are given, we will add them to the
+            # gravitational wrench
+            if self._wrench is not None:
+                wrenches = _np.hstack((wrenches, wrenches + self._wrench)).T
+
+            [self.force_distribution.evaluate(robot, pose, wrench)
+             for wrench in wrenches.T]
         except Exception:
             flag = False
         else:
