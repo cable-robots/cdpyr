@@ -1,24 +1,32 @@
 import itertools
 from collections import UserList
-from typing import Optional, Sequence, Tuple, Union
+from typing import (
+    Optional,
+    Sequence,
+    Union,
+)
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
 from cdpyr.geometry import geometry as _geometry
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.motion import pose as _pose
 from cdpyr.motion.pattern import pattern as _motion_pattern
 from cdpyr.robot.anchor import platform_anchor as _platform_anchor
-from cdpyr.typing import Matrix, Num, Vector
+from cdpyr.robot.robot_component import RobotComponent
+from cdpyr.typing import (
+    Matrix,
+    Num,
+    Vector,
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Platform(BaseObject):
+class Platform(RobotComponent):
     _anchors: '_platform_anchor.PlatformAnchorList'
     _center_of_gravity: 'np_.ndarray'
     _center_of_linkage: 'np_.ndarray'
@@ -205,7 +213,7 @@ class Platform(BaseObject):
     )
 
 
-class PlatformList(UserList, BaseObject):
+class PlatformList(UserList, RobotComponent):
 
     @property
     def all_combinations(self):

@@ -1,16 +1,20 @@
-from typing import Optional, Sequence, Union
+from typing import (
+    Optional,
+    Sequence,
+    Union,
+)
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot.anchor import frame_anchor as _frame_anchor
+from cdpyr.robot.robot_component import RobotComponent
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Frame(BaseObject):
+class Frame(RobotComponent):
     _anchors: '_frame_anchor.FrameAnchorList'
 
     def __init__(self,

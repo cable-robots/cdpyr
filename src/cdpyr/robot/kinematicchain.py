@@ -1,21 +1,27 @@
 from collections import UserList
-from typing import Sequence, Union
+from typing import (
+    Sequence,
+    Union,
+)
 
 from magic_repr import make_repr
 
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.robot import (cable as _cable, platform as _platform)
+from cdpyr.robot import (
+    cable as _cable,
+    platform as _platform,
+)
 from cdpyr.robot.anchor import (
     frame_anchor as _frame_anchor,
     platform_anchor as _platform_anchor,
 )
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class KinematicChain(BaseObject):
+class KinematicChain(RobotComponent):
     cable: '_cable.Cable'
     platform: '_platform.Platform'
     frame_anchor: '_frame_anchor.FrameAnchor'
@@ -61,7 +67,7 @@ class KinematicChain(BaseObject):
     )
 
 
-class KinematicChainList(UserList, BaseObject):
+class KinematicChainList(UserList, RobotComponent):
 
     @property
     def frame_anchor(self):

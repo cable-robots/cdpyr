@@ -1,11 +1,11 @@
-from abc import ABC
 from collections import UserList
 from typing import (
     Optional,
-    Sequence
+    Sequence,
 )
 
 import numpy as np_
+from abc import ABC
 from magic_repr import make_repr
 
 from cdpyr.kinematics.transformation import (
@@ -13,16 +13,17 @@ from cdpyr.kinematics.transformation import (
     linear as _linear,
 )
 from cdpyr.mixin.base_object import BaseObject
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import (
     Matrix,
-    Vector
+    Vector,
 )
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Anchor(BaseObject):
+class Anchor(RobotComponent):
     linear: '_linear.Linear'
     angular: '_angular.Angular'
 
@@ -149,7 +150,7 @@ class Anchor(BaseObject):
     )
 
 
-class AnchorList(UserList, ABC, BaseObject):
+class AnchorList(UserList, RobotComponent):
     data: Sequence[Anchor]
 
     @property

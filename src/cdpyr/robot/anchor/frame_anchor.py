@@ -1,4 +1,7 @@
-from typing import Optional, Sequence
+from typing import (
+    Optional,
+    Sequence,
+)
 
 from magic_repr import make_repr
 
@@ -6,16 +9,22 @@ from cdpyr.kinematics.transformation import (
     angular as _angular,
     linear as _linear,
 )
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.robot import drivetrain as _drivetrain, pulley as _pulley
+from cdpyr.robot import (
+    drivetrain as _drivetrain,
+    pulley as _pulley,
+)
 from cdpyr.robot.anchor import anchor as _anchor
-from cdpyr.typing import Matrix, Vector
+from cdpyr.robot.robot_component import RobotComponent
+from cdpyr.typing import (
+    Matrix,
+    Vector,
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class FrameAnchor(_anchor.Anchor, BaseObject):
+class FrameAnchor(_anchor.Anchor, RobotComponent):
     pulley: '_pulley.Pulley'
     drivetrain: '_drivetrain.DriveTrain'
 
@@ -48,7 +57,7 @@ class FrameAnchor(_anchor.Anchor, BaseObject):
     )
 
 
-class FrameAnchorList(_anchor.AnchorList, BaseObject):
+class FrameAnchorList(_anchor.AnchorList, RobotComponent):
     data: Sequence[FrameAnchor]
 
     @property

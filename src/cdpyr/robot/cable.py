@@ -1,19 +1,23 @@
 from collections import UserList
-from typing import AnyStr, Optional, Sequence, Union
+from typing import (
+    AnyStr,
+    Optional,
+    Sequence,
+    Union,
+)
 
 import numpy as np_
 from colour import Color
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Cable(BaseObject):
+class Cable(RobotComponent):
     breaking_load: Num
     _color: Color
     diameter: Num
@@ -78,7 +82,10 @@ class Cable(BaseObject):
 
     @modulus.setter
     def modulus(self, modulus: dict):
-        default = {'elasticities': None, 'viscosities': None}
+        default = {
+            'elasticities': None,
+            'viscosities': None
+        }
         modulus = modulus or {}
 
         self._modulus = {**default, **modulus}
@@ -152,7 +159,7 @@ class Cable(BaseObject):
     )
 
 
-class CableList(UserList, BaseObject):
+class CableList(UserList, RobotComponent):
 
     @property
     def name(self):

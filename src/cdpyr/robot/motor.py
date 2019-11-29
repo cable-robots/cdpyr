@@ -1,17 +1,20 @@
-from typing import AnyStr, Dict, Optional
+from typing import (
+    AnyStr,
+    Dict,
+    Optional,
+)
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Motor(BaseObject):
+class Motor(RobotComponent):
     inertia: Num
     rated_power: Num
     rated_speed: Num
@@ -24,9 +27,9 @@ class Motor(BaseObject):
                  rated_power: Optional[Num] = None):
         self.torques = {
             'stall': None,
-            'peak':  None,
+            'peak': None,
             'rated': None,
-            'rms':   None
+            'rms': None
         }
 
         self.torques = torques or {}
@@ -40,7 +43,12 @@ class Motor(BaseObject):
 
     @torques.setter
     def torques(self, torques: dict):
-        default = {'stall': None, 'peak': None, 'rated': None, 'rms': None}
+        default = {
+            'stall': None,
+            'peak': None,
+            'rated': None,
+            'rms': None
+        }
         torques = torques or {}
 
         self._torques = {**default, **torques}

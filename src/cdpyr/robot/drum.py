@@ -1,17 +1,16 @@
-from typing import Optional, Tuple, Union
+from typing import Optional
 
 from magic_repr import make_repr
 
 from cdpyr.geometry import geometry as _geometry
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.typing import Matrix, Vector
+from cdpyr.robot.robot_component import RobotComponent
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Drum(BaseObject):
+class Drum(RobotComponent):
     geometry: '_geometry.Geometry'
     inertia: '_inertia.Inertia'
 

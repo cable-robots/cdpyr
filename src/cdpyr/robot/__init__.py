@@ -39,31 +39,31 @@ from cdpyr.robot.platform import (
 from cdpyr.robot.pulley import Pulley
 from cdpyr.robot.robot import Robot
 
-RobotComponent = Union[
-    Cable,
-    Sequence[Cable],
-    CableList,
-    DriveTrain,
-    Drum,
-    Frame,
-    FrameAnchor,
-    Sequence[FrameAnchor],
-    FrameAnchorList,
-    Gearbox,
-    KinematicChain,
-    Sequence[KinematicChain],
-    KinematicChainList,
-    Motor,
-    Platform,
-    Sequence[Platform],
-    PlatformList,
-    PlatformAnchor,
-    Sequence[PlatformAnchor],
-    PlatformAnchorList,
-    Pulley,
-    Robot,
-    WorkspaceResult,
-]
+# RobotComponent = Union[
+#     Cable,
+#     Sequence[Cable],
+#     CableList,
+#     DriveTrain,
+#     Drum,
+#     Frame,
+#     FrameAnchor,
+#     Sequence[FrameAnchor],
+#     FrameAnchorList,
+#     Gearbox,
+#     KinematicChain,
+#     Sequence[KinematicChain],
+#     KinematicChainList,
+#     Motor,
+#     Platform,
+#     Sequence[Platform],
+#     PlatformList,
+#     PlatformAnchor,
+#     Sequence[PlatformAnchor],
+#     PlatformAnchorList,
+#     Pulley,
+#     Robot,
+#     WorkspaceResult,
+# ]
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -88,6 +88,6 @@ __all__ = [
     'PlatformList',
     'Pulley',
     'Robot',
-    'RobotComponent',
-    'WorkspaceResult',
+    # 'RobotComponent',
+    # 'WorkspaceResult',
 ]

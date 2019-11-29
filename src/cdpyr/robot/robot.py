@@ -1,9 +1,16 @@
-from typing import AnyStr, Dict, List, Optional, Sequence, Tuple, Union
+from typing import (
+    AnyStr,
+    Dict,
+    List,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 import numpy as _np
 from magic_repr import make_repr
 
-from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot import (
     cable as _cable,
     frame as _frame,
@@ -14,12 +21,13 @@ from cdpyr.robot.anchor import (
     frame_anchor as _frame_anchor,
     platform_anchor as _platform_anchor,
 )
+from cdpyr.robot.robot_component import RobotComponent
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Robot(BaseObject):
+class Robot(RobotComponent):
     frame: '_frame.Frame'
     _cables: '_cable.CableList'
     _chains: '_kinematicchain.KinematicChainList'
@@ -69,7 +77,7 @@ class Robot(BaseObject):
     @cables.setter
     def cables(self,
                cables: Union['_cable.CableList',
-                   Sequence['_cable.Cable']
+                             Sequence['_cable.Cable']
                ]):
         self._cables = _cable.CableList(cables)
 

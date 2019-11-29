@@ -2,18 +2,18 @@ from typing import Optional
 
 from magic_repr import make_repr
 
-from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot import (
     drum as __drum,
     gearbox as __gearbox,
     motor as __motor,
 )
+from cdpyr.robot.robot_component import RobotComponent
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class DriveTrain(BaseObject):
+class DriveTrain(RobotComponent):
     gearbox: '__gearbox.Gearbox'
     drum: '__drum.Drum'
     motor: '__motor.Motor'

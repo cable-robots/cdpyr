@@ -3,15 +3,14 @@ from typing import Optional
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Gearbox(BaseObject):
+class Gearbox(RobotComponent):
     inertia: Num
     ratio: Num
 

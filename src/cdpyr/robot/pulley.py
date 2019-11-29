@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Union
+from typing import Optional
 
 import numpy as np_
 from magic_repr import make_repr
@@ -6,14 +6,14 @@ from magic_repr import make_repr
 from cdpyr.geometry import geometry as _geometry
 from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.typing import Matrix, Vector
+from cdpyr.robot.robot_component import RobotComponent
+from cdpyr.typing import Matrix
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Pulley(BaseObject):
+class Pulley(RobotComponent):
     angular: '_angular.Angular'
     geometry: '_geometry.Geometry'
     inertia: '_inertia.Inertia'
@@ -27,7 +27,8 @@ class Pulley(BaseObject):
         self.geometry = geometry or _geometry.Geometry()
         self.inertia = inertia or _inertia.Inertia()
         if angular is None:
-            angular = _angular.Angular(dcm=dcm if dcm is not None else np_.eye(3))
+            angular = _angular.Angular(
+                dcm=dcm if dcm is not None else np_.eye(3))
         self.angular = angular
 
     @property
