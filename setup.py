@@ -68,9 +68,11 @@ setup(
         'scipy',
         'colour',
         'repr',
+        'xmltodict',
         'marshmallow',
         'watchdog',
         'hurry.filesize',
+        'tabulate',
     ],
     extras_require={
         # eg:
