@@ -36,7 +36,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (1,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_1t_empty_pose_nonzero_cog(self,
                                               robot_1t: 'cdpyr.robot.Robot',
@@ -54,7 +54,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (1,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_1t_random_pose(self,
                                    robot_1t: 'cdpyr.robot.Robot',
@@ -71,7 +71,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (1,)
-        assert platform.wrench(rand_pose_1t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_1t, gravity) == pytest.approx(wrench)
 
     def test_wrench_1t_random_pose_nonzero_cog(self,
                                                robot_1t: 'cdpyr.robot.Robot',
@@ -90,7 +90,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (1,)
-        assert platform.wrench(rand_pose_1t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_1t, gravity) == pytest.approx(wrench)
 
     def test_wrench_2t_empty_pose(self,
                                   robot_2t: 'cdpyr.robot.Robot',
@@ -107,7 +107,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (2,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_2t_empty_pose_nonzero_cog(self,
                                               robot_2t: 'cdpyr.robot.Robot',
@@ -125,7 +125,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (2,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_2t_random_pose(self,
                                    robot_2t: 'cdpyr.robot.Robot',
@@ -142,7 +142,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (2,)
-        assert platform.wrench(rand_pose_2t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_2t, gravity) == pytest.approx(wrench)
 
     def test_wrench_2t_random_pose_nonzero_cog(self,
                                                robot_2t: 'cdpyr.robot.Robot',
@@ -161,7 +161,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (2,)
-        assert platform.wrench(rand_pose_2t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_2t, gravity) == pytest.approx(wrench)
 
     def test_wrench_3t_empty_pose(self,
                                   robot_3t: 'cdpyr.robot.Robot',
@@ -178,7 +178,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (3,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_3t_empty_pose_nonzero_cog(self,
                                               robot_3t: 'cdpyr.robot.Robot',
@@ -196,7 +196,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (3,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_3t_random_pose(self,
                                    robot_3t: 'cdpyr.robot.Robot',
@@ -213,7 +213,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (3,)
-        assert platform.wrench(rand_pose_3t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_3t, gravity) == pytest.approx(wrench)
 
     def test_wrench_3t_random_pose_nonzero_cog(self,
                                                robot_3t: 'cdpyr.robot.Robot',
@@ -231,7 +231,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (3,)
-        assert platform.wrench(rand_pose_3t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_3t, gravity) == pytest.approx(wrench)
 
     def test_wrench_1r2t_empty_pose(self,
                                     robot_1r2t: 'cdpyr.robot.Robot',
@@ -251,7 +251,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (3,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_1r2t_empty_pose_nonzero_cog(self,
                                                 robot_1r2t: 'cdpyr.robot.Robot',
@@ -279,7 +279,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (3,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_1r2t_random_pose(self,
                                      robot_1r2t: 'cdpyr.robot.Robot',
@@ -305,7 +305,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (3,)
-        assert platform.wrench(rand_pose_1r2t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_1r2t, gravity) == pytest.approx(wrench)
 
     def test_wrench_1r2t_random_pose_nonzero_cog(self,
                                                  robot_1r2t:
@@ -334,7 +334,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (3,)
-        assert platform.wrench(rand_pose_1r2t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_1r2t, gravity) == pytest.approx(wrench)
 
     def test_wrench_2r3t_empty_pose(self,
                                     robot_2r3t: 'cdpyr.robot.Robot',
@@ -354,7 +354,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (5,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_2r3t_empty_pose_nonzero_cog(self,
                                                 robot_2r3t: 'cdpyr.robot.Robot',
@@ -382,7 +382,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (5,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_2r3t_random_pose(self,
                                      robot_2r3t: 'cdpyr.robot.Robot',
@@ -408,7 +408,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (5,)
-        assert platform.wrench(rand_pose_2r3t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_2r3t, gravity) == pytest.approx(wrench)
 
     def test_wrench_2r3t_random_pose_nonzero_cog(self,
                                                  robot_2r3t:
@@ -437,7 +437,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (5,)
-        assert platform.wrench(rand_pose_2r3t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_2r3t, gravity) == pytest.approx(wrench)
 
     def test_wrench_3r3t_empty_pose(self,
                                     robot_3r3t: 'cdpyr.robot.Robot',
@@ -457,7 +457,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (6,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_3r3t_empty_pose_nonzero_cog(self,
                                                 robot_3r3t: 'cdpyr.robot.Robot',
@@ -485,7 +485,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (6,)
-        assert platform.wrench(empty_pose, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(empty_pose, gravity) == pytest.approx(wrench)
 
     def test_wrench_3r3t_random_pose(self,
                                      robot_3r3t: 'cdpyr.robot.Robot',
@@ -511,7 +511,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (6,)
-        assert platform.wrench(rand_pose_3r3t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_3r3t, gravity) == pytest.approx(wrench)
 
     def test_wrench_3r3t_random_pose_nonzero_cog(self,
                                                  robot_3r3t:
@@ -540,7 +540,7 @@ class PlatformTestSuite(object):
 
         assert wrench.ndim == 1
         assert wrench.shape == (6,)
-        assert platform.wrench(rand_pose_3r3t, gravity) == pytest.approx(wrench)
+        assert platform.gravitational_wrench(rand_pose_3r3t, gravity) == pytest.approx(wrench)
 
 
 if __name__ == "__main__":
