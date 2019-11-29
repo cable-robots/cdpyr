@@ -133,9 +133,9 @@ class Pattern(BaseObject):
         return not self == other
 
     __repr__ = make_repr(
-        'human',
-        'dof_translation',
-        'dof_rotation',
+            'human',
+            'dof_translation',
+            'dof_rotation',
     )
 
 

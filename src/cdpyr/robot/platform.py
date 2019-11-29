@@ -202,16 +202,17 @@ class Platform(RobotComponent):
                      self.pose))
 
     __repr__ = make_repr(
-        'anchors',
-        'center_of_gravity',
-        'center_of_linkage',
-        'inertia',
-        'motion_pattern',
-        'pose',
+            'anchors',
+            'center_of_gravity',
+            'center_of_linkage',
+            'inertia',
+            'motion_pattern',
+            'pose',
     )
 
 
 class PlatformList(UserList, RobotComponent):
+    data: Sequence[Platform]
 
     @property
     def all_combinations(self):
@@ -262,7 +263,7 @@ class PlatformList(UserList, RobotComponent):
         return not self == other
 
     __repr__ = make_repr(
-        'data'
+            'data'
     )
 
 

@@ -45,7 +45,7 @@ from cdpyr.typing import (
     Matrix,
     Vector,
 )
-from cdpyr.visualization import visualizer as _visualizer
+from cdpyr.visualization.engine import engine as _engine
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -60,7 +60,7 @@ def update_recursive(defaults, update):
     return defaults
 
 
-class Plotly(_visualizer.Visualizer, ABC):
+class Plotly(_engine.Engine, ABC):
     _figure: go.Figure
 
     COORDINATE_NAMES = ['x', 'y', 'z']

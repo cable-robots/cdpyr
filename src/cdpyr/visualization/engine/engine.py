@@ -1,5 +1,5 @@
 import itertools
-from typing import Dict, Union, AnyStr, Callable
+from typing import AnyStr, Callable, Dict, Union
 
 import numpy as _np
 from abc import ABC, abstractmethod
@@ -14,11 +14,15 @@ from cdpyr.robot import (
     drum as _drum,
     frame as _frame,
     gearbox as _gearbox,
-    kinematicchain as _kinematicchain,
+    kinematicchain as _kinematic_chain,
     motor as _motor,
     platform as _platform,
     pulley as _pulley,
     robot as _robot,
+)
+from cdpyr.robot.anchor import (
+    frame_anchor as _frame_anchor,
+    platform_anchor as _platform_anchor,
 )
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Matrix, Vector
@@ -28,7 +32,6 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Engine(ABC):
-
     AXES_NAMES = ('x', 'y', 'z')
     COORDINATE_DIRECTIONS = (
         (1.0, 0.0, 0.0),
@@ -47,22 +50,38 @@ class Engine(ABC):
 
     def __init__(self, *args, **kwargs):
         self._RESOLVER = {
-            fcn(_cable.Cable):                   self.render_cable,
-            fcn(_cable.CableList):               self.render_cable_list,
-            fcn(_drivetrain.DriveTrain):         self.render_drivetrain,
-            fcn(_drum.Drum):                     self.render_drum,
-            fcn(_frame.Frame):                   self.render_frame,
-            fcn(_gearbox.Gearbox):               self.render_gearbox,
-            fcn(_kinematicchain.KinematicChain): self.render_kinematicchain,
-            fcn(_kinematicchain.KinematicChainList):
-                                                 self.render_kinematicchain_list,
-            fcn(_motor.Motor):                   self.render_motor,
-            fcn(_platform.Platform):             self.render_platform,
-            fcn(_platform.PlatformList):         self.render_platform,
-            fcn(_pulley.Pulley):                 self.render_pulley,
-            fcn(_robot.Robot):                   self.render_robot,
-            fcn(_grid_result.GridResult):        self.render_workspace_grid,
-            fcn(_hull_result.HullResult):        self.render_workspace_hull,
+            fcn(_cable.Cable):              self.render_cable,
+            fcn(_cable.CableList):          self.render_cable_list,
+            fcn(_drivetrain.DriveTrain):    self.render_drivetrain,
+            fcn(_drum.Drum):                self.render_drum,
+            fcn(_frame.Frame):              self.render_frame,
+            fcn(_frame_anchor.FrameAnchor): self.render_frame_anchor,
+            fcn(
+                    _frame_anchor.FrameAnchorList):
+                                            self.render_frame_anchor_list,
+            fcn(_gearbox.Gearbox):          self.render_gearbox,
+            fcn(
+                    _kinematic_chain.KinematicChain):
+                                            self.render_kinematic_chain,
+            fcn(_kinematic_chain.KinematicChainList):
+                                            self.render_kinematic_chain_list,
+            fcn(_motor.Motor):              self.render_motor,
+            fcn(_platform.Platform):        self.render_platform,
+            fcn(_platform.PlatformList):    self.render_platform_list,
+            fcn(
+                    _platform_anchor.PlatformAnchor):
+                                            self.render_platform_anchor,
+            fcn(
+                    _platform_anchor.PlatformAnchorList):
+                                            self.render_platform_anchor_list,
+            fcn(_pulley.Pulley):            self.render_pulley,
+            fcn(_robot.Robot):              self.render_robot,
+            fcn(
+                    _grid_result.GridResult):
+                                            self.render_workspace_grid,
+            fcn(
+                    _hull_result.HullResult):
+                                            self.render_workspace_hull,
         }
 
     @abstractmethod
@@ -108,20 +127,32 @@ class Engine(ABC):
         pass
 
     @abstractmethod
+    def render_frame_anchor(self, anchor: '_frame_anchor.FrameAnchor', *args,
+                            **kwargs):
+        pass
+
+    def render_frame_anchor_list(self,
+                                 anchor_list: '_frame_anchor.FrameAnchorList',
+                                 *args, **kwargs):
+        for anchor in anchor_list:
+            self.render(anchor, *args, **kwargs)
+
+    @abstractmethod
     def render_gearbox(self, gearbox: '_gearbox.Gearbox', *args, **kwargs):
         pass
 
     @abstractmethod
-    def render_kinematicchain(self,
-                              kinematicchain: '_kinematicchain.KinematicChain',
-                              *args, **kwargs):
+    def render_kinematic_chain(self,
+                               kinematic_chain:
+                               '_kinematicchain.KinematicChain',
+                               *args, **kwargs):
         pass
 
-    def render_kinematicchain_list(self,
-                                   kinematicchainlist:
-                                   '_kinematicchain.KinematicChainList',
-                                   *args, **kwargs):
-        for chain in kinematicchainlist:
+    def render_kinematic_chain_list(self,
+                                    kinematic_chain_list:
+                                    '_kinematicchain.KinematicChainList',
+                                    *args, **kwargs):
+        for chain in kinematic_chain_list:
             self.render(chain, *args, **kwargs)
 
     @abstractmethod
@@ -131,6 +162,18 @@ class Engine(ABC):
     @abstractmethod
     def render_platform(self, platform: '_platform.Platform', *args, **kwargs):
         pass
+
+    @abstractmethod
+    def render_platform_anchor(self, anchor: '_platform_anchor.PlatformAnchor',
+                               *args, **kwargs):
+        pass
+
+    def render_platform_anchor_list(self,
+                                    anchor_list:
+                                    '_platform_anchor.PlatformAnchorList',
+                                    *args, **kwargs):
+        for anchor in anchor_list:
+            self.render(anchor, *args, **kwargs)
 
     def render_platform_list(self, platform_list: '_platform.PlatformList',
                              *args, **kwargs):

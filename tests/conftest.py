@@ -695,8 +695,11 @@ def rand_rot_1r():
 
 @pytest.fixture
 def rand_rot_2r():
-    return cdpyr.kinematics.transformation.Angular(sequence='xy', euler=np.pi * (
-        np.random.random(2) - 0.5)).dcm
+    return cdpyr.kinematics.transformation.Angular(sequence='xy',
+                                                   euler=np.pi * (
+                                                           np.random.random(
+                                                                   2) -
+                                                           0.5)).dcm
 
 
 @pytest.fixture

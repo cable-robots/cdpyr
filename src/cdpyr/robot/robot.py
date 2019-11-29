@@ -150,10 +150,10 @@ class Robot(RobotComponent):
                 # update the entry with the correct type i.e., convert
                 # anything into KinematicChain which isn't already
                 chains[idx] = _kinematicchain.KinematicChain(
-                    frame_anchor=frame_anchor,
-                    platform=platform,
-                    platform_anchor=platform_anchor,
-                    cable=cable
+                        frame_anchor=frame_anchor,
+                        platform=platform,
+                        platform_anchor=platform_anchor,
+                        cable=cable
                 )
 
         # We only support unique kinematic chains i.e., one cable may only be
@@ -256,11 +256,11 @@ class Robot(RobotComponent):
                      self.platforms))
 
     __repr__ = make_repr(
-        'name',
-        'frame',
-        'platforms',
-        'cables',
-        'kinematic_chains'
+            'name',
+            'frame',
+            'platforms',
+            'cables',
+            'kinematic_chains'
     )
 
 

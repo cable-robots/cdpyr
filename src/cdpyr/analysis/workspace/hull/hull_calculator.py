@@ -71,11 +71,11 @@ class HullCalculator(_algorithm.Algorithm):
 
         # calculate all vertices
         vertices = list(
-            self.__check_direction(robot,
-                                   direction,
-                                   min_step,
-                                   max_iters)
-            for direction in search_directions)
+                self.__check_direction(robot,
+                                       direction,
+                                       min_step,
+                                       max_iters)
+                for direction in search_directions)
 
         # return the hull result object
         return _result.HullResult(self,
@@ -104,8 +104,8 @@ class HullCalculator(_algorithm.Algorithm):
             # all poses are valid, so store the trial coordinate as
             # successful coordinate for the next loop
             if self._archetype.comparator(
-                self._criterion.evaluate(robot, pose) for pose in
-                self._archetype.poses(coordinate_trial)):
+                    self._criterion.evaluate(robot, pose) for pose in
+                    self._archetype.poses(coordinate_trial)):
                 # advance the pose
                 coordinate = coordinate_trial
             # any pose is invalid at this coordinate, then we will reduce the
@@ -201,9 +201,9 @@ class HullCalculator(_algorithm.Algorithm):
                     value = 1. / 2. * (vertices[v1][:] + vertices[v2][:])
                 else:
                     value = [3 / 8 * (
-                        vertices[v1][idx] + vertices[v2][idx]) + 1 / 8 * (
-                                 vertices[edge_vertices[v1][v2][1]][idx] +
-                                 vertices[edge_vertices[v1][v2][2]][idx])
+                            vertices[v1][idx] + vertices[v2][idx]) + 1 / 8 * (
+                                     vertices[edge_vertices[v1][v2][1]][idx] +
+                                     vertices[edge_vertices[v1][v2][2]][idx])
                              for idx in range(dim_vertices)]
 
                 new_vertices[vNIndex] = value
@@ -213,7 +213,7 @@ class HullCalculator(_algorithm.Algorithm):
         for v, vTmp in itertools.product(range(num_vertices),
                                          range(num_vertices)):
             if v < vTmp and edge_vertices[v][vTmp][1] != -1 \
-                or v > vTmp and edge_vertices[vTmp][v][1] != -1:
+                    or v > vTmp and edge_vertices[vTmp][v][1] != -1:
                 try:
                     adjacent_vertices[v].append(vTmp)
                 except IndexError as IndexE:
@@ -229,27 +229,27 @@ class HullCalculator(_algorithm.Algorithm):
             for i in range(k):
                 vi = adjacent_vertices[v][i]
                 if vi > v and edge_vertices[v][vi][2] == -1 \
-                    or vi < v and edge_vertices[vi][v][2] == -1:
+                        or vi < v and edge_vertices[vi][v][2] == -1:
                     adjacent_boundary_vertices.append(vi)
 
             # boundary case
             if len(adjacent_boundary_vertices) == 2:
                 value = [6 / 8 * vertices[v][idx] + 1 / 8 * _np.sum(
-                    [vertices[k][idx] for k in adjacent_boundary_vertices],
-                    axis=0)
+                        [vertices[k][idx] for k in adjacent_boundary_vertices],
+                        axis=0)
                          for idx in range(dim_vertices)]
             else:
                 beta = 1 / k * (
-                    5 / 8 - (3 / 8 + 1 / 4 * _np.cos(2 * _np.pi / k)) ** 2)
+                        5 / 8 - (3 / 8 + 1 / 4 * _np.cos(2 * _np.pi / k)) ** 2)
                 value = [(1 - k * beta) * vertices[v][idx] + beta * _np.sum(
-                    [vertices[k][idx] for k in adjacent_vertices[v]], axis=0)
+                        [vertices[k][idx] for k in adjacent_vertices[v]],
+                        axis=0)
                          for
                          idx in range(dim_vertices)]
             new_vertices[v] = value
 
-        return _np.asarray([new_vertices[k] for k in range(len(
-            new_vertices))]), \
-               new_faces
+        return _np.asarray(
+                [new_vertices[k] for k in range(len(new_vertices))]), new_faces
 
     def __add_edge_vertex(self, a, b, c, edge_vertices):
         # ensure right order of first two components
