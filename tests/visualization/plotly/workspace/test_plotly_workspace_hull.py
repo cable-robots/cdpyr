@@ -21,8 +21,7 @@ class plotlyPlotHullWorkspaceTestSuite(object):
         criterion = analysis.workspace.criterion.CableLength(
             ik_standard, np.asarray([0.50, 1.50]) * np.sqrt(3))
         archetype = analysis.workspace.archetype.Translation(np.eye(3))
-        calculator = analysis.workspace.HullCalculator(ik_standard,
-                                                       archetype,
+        calculator = analysis.workspace.HullCalculator(archetype,
                                                        criterion,
                                                        center=[0.0, 0.0, 0.0])
         workspace = calculator.evaluate(robot_3t)
@@ -42,8 +41,7 @@ class plotlyPlotHullWorkspaceTestSuite(object):
         criterion = analysis.workspace.criterion.CableLength(
             ik_standard, np.asarray([0.50, 1.50]) * np.sqrt(3))
         archetype = analysis.workspace.archetype.Translation(np.eye(3))
-        calculator = analysis.workspace.HullCalculator(ik_standard,
-                                                       archetype,
+        calculator = analysis.workspace.HullCalculator(archetype,
                                                        criterion,
                                                        center=[0.0, 0.0, 0.0])
         workspace = calculator.evaluate(robot_2r3t)
@@ -63,8 +61,7 @@ class plotlyPlotHullWorkspaceTestSuite(object):
         criterion = analysis.workspace.criterion.CableLength(
             ik_standard, np.asarray([0.50, 1.50]) * np.sqrt(3))
         archetype = analysis.workspace.archetype.Translation(np.eye(3))
-        calculator = analysis.workspace.HullCalculator(ik_standard,
-                                                       archetype,
+        calculator = analysis.workspace.HullCalculator(archetype,
                                                        criterion,
                                                        center=[0.0, 0.0, 0.0])
         workspace = calculator.evaluate(robot_3r3t)

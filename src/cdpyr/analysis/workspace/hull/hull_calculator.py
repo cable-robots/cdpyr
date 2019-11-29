@@ -31,18 +31,17 @@ class HullCalculator(_algorithm.Algorithm):
     _vertices: Matrix
 
     def __init__(self,
-                 # kinematics: '_kinematics.Algorithm',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  center: Union[Num, Vector] = None,
-                 maximum_iterations: int = 12,
-                 maximum_halvings: int = 6,
-                 depth: int = 3):
+                 maximum_iterations: int = None,
+                 maximum_halvings: int = None,
+                 depth: int = None):
         super().__init__(archetype, criterion)
         self.center = center if center is not None else [0]
-        self.maximum_iterations = maximum_iterations
-        self.maximum_halvings = maximum_halvings
-        self.depth = depth
+        self.maximum_iterations = maximum_iterations or 12
+        self.maximum_halvings = maximum_halvings or 6
+        self.depth = depth or 3
         self._index_vertex = None
 
     @property

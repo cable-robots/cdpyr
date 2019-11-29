@@ -21,8 +21,7 @@ class PlotlyGridGridWorkspaceTestSuite(object):
         criterion = analysis.workspace.criterion.CableLength(
             ik_standard, np.asarray([0.5, 1.5]))
         archetype = analysis.workspace.archetype.Translation(np.eye(3))
-        calculator = analysis.workspace.GridCalculator(ik_standard,
-                                                       archetype,
+        calculator = analysis.workspace.GridCalculator(archetype,
                                                        criterion,
                                                        lower_bound=-1,
                                                        upper_bound=1,
@@ -44,8 +43,7 @@ class PlotlyGridGridWorkspaceTestSuite(object):
         criterion = analysis.workspace.criterion.CableLength(
             ik_standard, np.asarray([0.50, 1.50]) * np.sqrt(2))
         archetype = analysis.workspace.archetype.Translation(np.eye(3))
-        calculator = analysis.workspace.GridCalculator(ik_standard,
-                                                       archetype,
+        calculator = analysis.workspace.GridCalculator(archetype,
                                                        criterion,
                                                        lower_bound=[-1, -1],
                                                        upper_bound=[1, 1],
@@ -67,8 +65,7 @@ class PlotlyGridGridWorkspaceTestSuite(object):
         criterion = analysis.workspace.criterion.CableLength(
             ik_standard, np.asarray([0.50, 1.50]) * np.sqrt(3))
         archetype = analysis.workspace.archetype.Translation(np.eye(3))
-        calculator = analysis.workspace.GridCalculator(ik_standard,
-                                                       archetype,
+        calculator = analysis.workspace.GridCalculator(archetype,
                                                        criterion,
                                                        lower_bound=[-1, -1, -1],
                                                        upper_bound=[1, 1, 1],
@@ -90,8 +87,7 @@ class PlotlyGridGridWorkspaceTestSuite(object):
         criterion = analysis.workspace.criterion.CableLength(
             ik_standard, np.asarray([0.50, 1.50]) * np.sqrt(2))
         archetype = analysis.workspace.archetype.Translation(np.eye(3))
-        calculator = analysis.workspace.GridCalculator(ik_standard,
-                                                       archetype,
+        calculator = analysis.workspace.GridCalculator(archetype,
                                                        criterion,
                                                        lower_bound=[-1, -1],
                                                        upper_bound=[1, 1],
@@ -113,8 +109,7 @@ class PlotlyGridGridWorkspaceTestSuite(object):
         criterion = analysis.workspace.criterion.CableLength(
             ik_standard, np.asarray([0.50, 1.50]) * np.sqrt(3))
         archetype = analysis.workspace.archetype.Translation(np.eye(3))
-        calculator = analysis.workspace.GridCalculator(ik_standard,
-                                                       archetype,
+        calculator = analysis.workspace.GridCalculator(archetype,
                                                        criterion,
                                                        lower_bound=[-1, -1, -1],
                                                        upper_bound=[1, 1, 1],
@@ -136,8 +131,7 @@ class PlotlyGridGridWorkspaceTestSuite(object):
         criterion = analysis.workspace.criterion.CableLength(
             ik_standard, np.asarray([0.50, 1.50]) * np.sqrt(3))
         archetype = analysis.workspace.archetype.Translation(np.eye(3))
-        calculator = analysis.workspace.GridCalculator(ik_standard,
-                                                       archetype,
+        calculator = analysis.workspace.GridCalculator(archetype,
                                                        criterion,
                                                        lower_bound=[-1, -1, -1],
                                                        upper_bound=[1, 1, 1],

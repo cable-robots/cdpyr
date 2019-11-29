@@ -1,5 +1,4 @@
 # import sys
-from typing import Union
 
 # import matplotlib.pyplot as plt
 import numpy as np
@@ -13,13 +12,6 @@ from cdpyr.analysis.kinematics.algorithm import Algorithm as Kinematics
 from cdpyr.analysis.workspace.archetype.archetype import Archetype
 from cdpyr.kinematics.transformation import Angular
 from cdpyr.robot import Robot
-from cdpyr.typing import (
-    Num,
-    Vector
-)
-
-
-# from mpl_toolkits.mplot3d import Axes3D
 
 
 class HullWorkspace2R3TTestSuite(object):
@@ -33,15 +25,14 @@ class HullWorkspace2R3TTestSuite(object):
         )
     )
     def test_2r3t_cable_length(self,
-                             robot_2r3t: Robot,
-                              ik_standard: Kinematics,
-                              archetype: Archetype):
+                               robot_2r3t: Robot,
+                               ik_standard: Kinematics,
+                               archetype: Archetype):
         # create the criterion
         criterion = workspace.criterion.CableLength(ik_standard, [0.5, 1.5])
 
         # create the hull calculator object
-        calculator = workspace.HullCalculator(ik_standard,
-                                              archetype,
+        calculator = workspace.HullCalculator(archetype,
                                               criterion)
 
         # evaluate workspace
@@ -56,15 +47,14 @@ class HullWorkspace2R3TTestSuite(object):
         )
     )
     def test_2r3t_singularities(self,
-                              robot_2r3t: Robot,
-                              ik_standard: Kinematics,
-                              archetype: Archetype):
+                                robot_2r3t: Robot,
+                                ik_standard: Kinematics,
+                                archetype: Archetype):
         # create the criterion
         criterion = workspace.criterion.Singularities(ik_standard)
 
         # create the hull calculator object
-        calculator = workspace.HullCalculator(ik_standard,
-                                              archetype,
+        calculator = workspace.HullCalculator(archetype,
                                               criterion)
 
         # evaluate workspace
@@ -79,15 +69,14 @@ class HullWorkspace2R3TTestSuite(object):
         )
     )
     def test_2r3t_singularities(self,
-                              robot_2r3t: Robot,
-                              ik_standard: Kinematics,
-                              archetype: Archetype):
+                                robot_2r3t: Robot,
+                                ik_standard: Kinematics,
+                                archetype: Archetype):
         # create the criterion
         criterion = workspace.criterion.Singularities(ik_standard)
 
         # create the hull calculator object
-        calculator = workspace.HullCalculator(ik_standard,
-                                              archetype,
+        calculator = workspace.HullCalculator(archetype,
                                               criterion)
 
         # evaluate workspace
@@ -102,16 +91,15 @@ class HullWorkspace2R3TTestSuite(object):
         )
     )
     def test_2r3t_wrench_feasible(self,
-                               robot_2r3t: Robot,
-                              ik_standard: Kinematics,
-                              archetype: Archetype):
+                                  robot_2r3t: Robot,
+                                  ik_standard: Kinematics,
+                                  archetype: Archetype):
         # create the criterion
         criterion = workspace.criterion.WrenchFeasible(
             force_distribution.ClosedFormImproved(ik_standard, 1, 10), -1)
 
         # create the hull calculator object
-        calculator = workspace.HullCalculator(ik_standard,
-                                              archetype,
+        calculator = workspace.HullCalculator(archetype,
                                               criterion)
 
         # evaluate workspace

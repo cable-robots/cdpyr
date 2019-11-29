@@ -11,16 +11,13 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Algorithm(ABC):
-    _kinematics: '_kinematics.Algorithm'
     _archetype: '_archetype.Archetype'
     _criterion: '_criterion.Criterion'
 
     def __init__(self,
-                 # kinematics: '_kinematics.Algorithm',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion'):
         self._archetype = archetype
-        # self._kinematics = kinematics
         self._criterion = criterion
 
     @property
@@ -30,10 +27,6 @@ class Algorithm(ABC):
     @property
     def criterion(self):
         return self._criterion
-
-    @property
-    def kinematics(self):
-        return self._kinematics
 
     def evaluate(self, robot: '_robot.Robot') -> '_result.Result':
         try:

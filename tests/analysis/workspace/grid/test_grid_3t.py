@@ -19,9 +19,6 @@ from cdpyr.typing import (
 )
 
 
-# from mpl_toolkits.mplot3d import Axes3D
-
-
 class GridWorkspace3TTestSuite(object):
 
     @pytest.mark.parametrize(
@@ -46,8 +43,7 @@ class GridWorkspace3TTestSuite(object):
         criterion = workspace.criterion.CableLength(ik_standard, [0.5, 1.5])
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(ik_standard,
-                                              archetype,
+        calculator = workspace.GridCalculator(archetype,
                                               criterion,
                                               lower_bound,
                                               upper_bound,
@@ -78,8 +74,7 @@ class GridWorkspace3TTestSuite(object):
         criterion = workspace.criterion.Singularities(ik_standard)
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(ik_standard,
-                                              archetype,
+        calculator = workspace.GridCalculator(archetype,
                                               criterion,
                                               lower_bound,
                                               upper_bound,
@@ -110,8 +105,7 @@ class GridWorkspace3TTestSuite(object):
         criterion = workspace.criterion.Singularities(ik_standard)
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(ik_standard,
-                                              archetype,
+        calculator = workspace.GridCalculator(archetype,
                                               criterion,
                                               lower_bound,
                                               upper_bound,
@@ -132,19 +126,18 @@ class GridWorkspace3TTestSuite(object):
         )
     )
     def test_3t_wrench_feasible(self,
-                               robot_3t: Robot,
-                               ik_standard: Kinematics,
-                               archetype: Archetype,
-                               lower_bound: Union[Num, Vector],
-                               upper_bound: Union[Num, Vector],
-                               steps: Union[Num, Vector]):
+                                robot_3t: Robot,
+                                ik_standard: Kinematics,
+                                archetype: Archetype,
+                                lower_bound: Union[Num, Vector],
+                                upper_bound: Union[Num, Vector],
+                                steps: Union[Num, Vector]):
         # create the criterion
         criterion = workspace.criterion.WrenchFeasible(
             force_distribution.ClosedFormImproved(ik_standard, 1, 10), -1)
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(ik_standard,
-                                              archetype,
+        calculator = workspace.GridCalculator(archetype,
                                               criterion,
                                               lower_bound,
                                               upper_bound,
