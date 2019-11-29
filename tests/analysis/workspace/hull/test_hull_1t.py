@@ -33,7 +33,8 @@ class HullWorkspace1TTestSuite(object):
 
         # create the hull calculator object
         calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+                                              criterion,
+                                              center=[0.0])
 
         # evaluate workspace
         workspace_result = calculator.evaluate(robot_1t)
@@ -55,7 +56,8 @@ class HullWorkspace1TTestSuite(object):
 
         # create the hull calculator object
         calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+                                              criterion,
+                                              center=[0.0])
 
         # evaluate workspace
         workspace_result = calculator.evaluate(robot_1t)
@@ -77,7 +79,8 @@ class HullWorkspace1TTestSuite(object):
 
         # create the hull calculator object
         calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+                                              criterion,
+                                              center=[0.0])
 
         # evaluate workspace
         workspace_result = calculator.evaluate(robot_1t)
@@ -96,11 +99,12 @@ class HullWorkspace1TTestSuite(object):
                                 archetype: Archetype):
         # create the criterion
         criterion = workspace.criterion.WrenchFeasible(
-            force_distribution.ClosedFormImproved(ik_standard, 1, 10), -1)
+            force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the hull calculator object
         calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+                                              criterion,
+                                              center=[0.0])
 
         # evaluate workspace
         workspace_result = calculator.evaluate(robot_1t)

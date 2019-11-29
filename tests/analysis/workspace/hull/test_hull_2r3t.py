@@ -21,7 +21,7 @@ class HullWorkspace2R3TTestSuite(object):
         (
             (
                 [workspace.archetype.Translation(dcm)]
-            ) for dcm in (np.eye(3), Angular.rotation_z(np.random.random()).dcm)
+            ) for dcm in (np.eye(3), Angular.random().dcm)
         )
     )
     def test_2r3t_cable_length(self,
@@ -43,7 +43,7 @@ class HullWorkspace2R3TTestSuite(object):
         (
             (
                 [workspace.archetype.Translation(dcm)]
-            ) for dcm in (np.eye(3), Angular.rotation_z(np.random.random()).dcm)
+            ) for dcm in (np.eye(3), Angular.random().dcm)
         )
     )
     def test_2r3t_singularities(self,
@@ -65,7 +65,7 @@ class HullWorkspace2R3TTestSuite(object):
         (
             (
                 [workspace.archetype.Translation(dcm)]
-            ) for dcm in (np.eye(3), Angular.rotation_z(np.random.random()).dcm)
+            ) for dcm in (np.eye(3), Angular.random().dcm)
         )
     )
     def test_2r3t_singularities(self,
@@ -87,7 +87,7 @@ class HullWorkspace2R3TTestSuite(object):
         (
             (
                 [workspace.archetype.Translation(dcm)]
-            ) for dcm in (np.eye(3), Angular.rotation_z(np.random.random()).dcm)
+            ) for dcm in (np.eye(3), Angular.random().dcm)
         )
     )
     def test_2r3t_wrench_feasible(self,
@@ -96,7 +96,7 @@ class HullWorkspace2R3TTestSuite(object):
                                   archetype: Archetype):
         # create the criterion
         criterion = workspace.criterion.WrenchFeasible(
-            force_distribution.ClosedFormImproved(ik_standard, 1, 10), -1)
+            force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the hull calculator object
         calculator = workspace.HullCalculator(archetype,

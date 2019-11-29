@@ -40,7 +40,9 @@ class GridWorkspace2R3TTestSuite(object):
                                upper_bound: Union[Num, Vector],
                                steps: Union[Num, Vector]):
         # create the criterion
-        criterion = workspace.criterion.CableLength(ik_standard, [0.5, 1.5])
+
+        criterion = workspace.criterion.CableLength(ik_standard, np.asarray(
+                [0.50, 1.50]) * np.sqrt(3))
 
         # create the grid calculator object
         calculator = workspace.GridCalculator(archetype,
@@ -134,7 +136,7 @@ class GridWorkspace2R3TTestSuite(object):
                                   steps: Union[Num, Vector]):
         # create the criterion
         criterion = workspace.criterion.WrenchFeasible(
-            force_distribution.ClosedFormImproved(ik_standard, 1, 10), -1)
+            force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the grid calculator object
         calculator = workspace.GridCalculator(archetype,

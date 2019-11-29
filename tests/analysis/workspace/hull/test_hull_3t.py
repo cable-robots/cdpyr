@@ -1,6 +1,3 @@
-# import sys
-
-# import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
@@ -33,7 +30,8 @@ class HullWorkspace3TTestSuite(object):
 
         # create the hull calculator object
         calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+                                              criterion,
+                                              center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
         workspace_result = calculator.evaluate(robot_3t)
@@ -55,7 +53,8 @@ class HullWorkspace3TTestSuite(object):
 
         # create the hull calculator object
         calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+                                              criterion,
+                                              center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
         workspace_result = calculator.evaluate(robot_3t)
@@ -77,7 +76,8 @@ class HullWorkspace3TTestSuite(object):
 
         # create the hull calculator object
         calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+                                              criterion,
+                                              center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
         workspace_result = calculator.evaluate(robot_3t)
@@ -96,11 +96,12 @@ class HullWorkspace3TTestSuite(object):
                                 archetype: Archetype):
         # create the criterion
         criterion = workspace.criterion.WrenchFeasible(
-            force_distribution.ClosedFormImproved(ik_standard, 1, 10), -1)
+            force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the hull calculator object
         calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+                                              criterion,
+                                              center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
         workspace_result = calculator.evaluate(robot_3t)
