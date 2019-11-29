@@ -9,9 +9,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class EllipticCylinder(Geometry):
-    _major_diameter: float
-    _minor_diameter: float
-    _height: float
+    major_diameter: float
+    minor_diameter: float
+    height: float
 
     def __init__(self,
                  major_diameter: Num,
@@ -23,55 +23,11 @@ class EllipticCylinder(Geometry):
         self.height = height
 
     @property
-    def major_diameter(self):
-        return self._major_diameter
-
-    @major_diameter.setter
-    def major_diameter(self, diameter: Num):
-        _validator.numeric.nonnegative(diameter, 'major_diameter')
-
-        self._major_diameter = diameter
-
-    @major_diameter.deleter
-    def major_diameter(self):
-        del self._major_diameter
-
-    @property
-    def minor_diameter(self):
-        return self._minor_diameter
-
-    @minor_diameter.setter
-    def minor_diameter(self, diameter: Num):
-        _validator.numeric.nonnegative(diameter, 'minor_diameter')
-
-        self._minor_diameter = diameter
-
-    @minor_diameter.deleter
-    def minor_diameter(self):
-        del self._minor_diameter
-
-    @property
-    def height(self):
-        return self._height
-
-    @height.setter
-    def height(self, height: Num):
-        _validator.numeric.nonnegative(height, 'height')
-
-        self._height = height
-
-    @height.deleter
-    def height(self):
-        del self._height
-
-    @property
     def major_radius(self):
         return self.major_diameter / 2.0
 
     @major_radius.setter
     def major_radius(self, radius: Num):
-        _validator.numeric.nonnegative(radius, 'major_radius')
-
         self.major_diameter = 2.0 * radius
 
     @major_radius.deleter
@@ -84,8 +40,6 @@ class EllipticCylinder(Geometry):
 
     @minor_radius.setter
     def minor_radius(self, radius: Num):
-        _validator.numeric.nonnegative(radius, 'minor_radius')
-
         self.minor_diameter = 2.0 * radius
 
     @minor_radius.deleter

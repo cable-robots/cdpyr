@@ -49,7 +49,7 @@ class Angular(BaseObject):
     _quaternion: Vector = np_.asarray([0.0, 0.0, 0.0, 1.0])
     _angular_velocity: np_.ndarray = np_.asarray((0., 0., 0.))
     _angular_acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
-    _sequence: AnyStr = 'xyz'
+    sequence: AnyStr = 'xyz'
 
     _AXIS_TO_IND = {'x': 0, 'y': 1, 'z': 2}
 
@@ -192,18 +192,6 @@ class Angular(BaseObject):
         else:
             # create a generator object
             return (Angular(sequence='z', euler=[a]) for a in angle)
-
-    @property
-    def sequence(self):
-        return self._sequence
-
-    @sequence.setter
-    def sequence(self, sequence: AnyStr):
-        self._sequence = sequence
-
-    @sequence.deleter
-    def sequence(self):
-        del self._sequence
 
     @property
     def euler(self):

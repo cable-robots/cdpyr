@@ -21,7 +21,7 @@ class Translation(_archetype.Archetype):
     and the observed criterion is valid
     """
 
-    _dcm: Matrix
+    dcm: Matrix
 
     def __init__(self, dcm: Matrix = None):
         self.dcm = dcm if dcm is not None else _np.eye(3)
@@ -30,22 +30,8 @@ class Translation(_archetype.Archetype):
     def comparator(self):
         return all
 
-    @property
-    def dcm(self):
-        return self._dcm
-
-    @dcm.setter
-    def dcm(self, dcm: Matrix):
-        _validator.linalg.rotation_matrix(dcm, 'dcm')
-
-        self._dcm = dcm
-
-    @dcm.deleter
-    def dcm(self):
-        del self._dcm
-
     def _poses(self, coordinate: Vector):
-        return [_pose.Pose(coordinate, self._dcm)]
+        return [_pose.Pose(coordinate, self.dcm)]
 
 
 __all__ = [

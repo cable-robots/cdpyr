@@ -9,9 +9,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Cuboid(Geometry):
-    _width: float
-    _height: float
-    _depth: float
+    width: float
+    height: float
+    depth: float
 
     def __init__(self,
                  width: Num,
@@ -21,48 +21,6 @@ class Cuboid(Geometry):
         self.width = width
         self.height = height
         self.depth = depth
-
-    @property
-    def width(self):
-        return self._width
-
-    @width.setter
-    def width(self, width: Num):
-        _validator.numeric.nonnegative(width, 'width')
-
-        self._width = width
-
-    @width.deleter
-    def width(self):
-        del self._width
-
-    @property
-    def height(self):
-        return self._height
-
-    @height.setter
-    def height(self, height: Num):
-        _validator.numeric.nonnegative(height, 'height')
-
-        self._height = height
-
-    @height.deleter
-    def height(self):
-        del self._height
-
-    @property
-    def depth(self):
-        return self._depth
-
-    @depth.setter
-    def depth(self, depth: Num):
-        _validator.numeric.nonnegative(depth, 'depth')
-
-        self._depth = depth
-
-    @depth.deleter
-    def depth(self):
-        del self._depth
 
     def __eq__(self, other):
         return super().__eq__(other) \

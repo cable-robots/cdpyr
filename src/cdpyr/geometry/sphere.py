@@ -9,7 +9,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Sphere(Geometry):
-    _diameter: float
+    diameter: float
 
     def __init__(self,
                  diameter: Num
@@ -17,27 +17,11 @@ class Sphere(Geometry):
         self.diameter = diameter
 
     @property
-    def diameter(self):
-        return self._diameter
-
-    @diameter.setter
-    def diameter(self, diameter: Num):
-        _validator.numeric.nonnegative(diameter, 'diameter')
-
-        self._diameter = diameter
-
-    @diameter.deleter
-    def diameter(self):
-        del self._diameter
-
-    @property
     def radius(self):
-        return self._diameter / 2.0
+        return self.diameter / 2.0
 
     @radius.setter
     def radius(self, radius: Num):
-        _validator.numeric.nonnegative(radius, 'radius')
-
         self.diameter = 2.0 * radius
 
     @radius.deleter

@@ -16,8 +16,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Pose(BaseObject):
-    _linear: '_linear.Linear'
-    _angular: '_angular.Angular'
+    linear: '_linear.Linear'
+    angular: '_angular.Angular'
     _time: Num
 
     def __init__(self,
@@ -75,30 +75,6 @@ class Pose(BaseObject):
     @time.deleter
     def time(self):
         del self._time
-
-    @property
-    def linear(self):
-        return self._linear
-
-    @linear.setter
-    def linear(self, linear: '_linear.Linear'):
-        self._linear = linear
-
-    @linear.deleter
-    def linear(self):
-        del self._linear
-
-    @property
-    def angular(self):
-        return self._angular
-
-    @angular.setter
-    def angular(self, angular: '_angular.Angular'):
-        self._angular = angular
-
-    @angular.deleter
-    def angular(self):
-        del self._angular
 
     @property
     def position(self):

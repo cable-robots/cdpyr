@@ -1,15 +1,21 @@
 import itertools
-from typing import Sequence, Union
+from typing import (
+    Sequence,
+    Union
+)
 
 import numpy as _np
 
-from cdpyr import validator as _validator
-from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.workspace import algorithm as _algorithm
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.analysis.workspace.hull import hull_result as _result
-from cdpyr.typing import Matrix, Num, Vector
+from cdpyr.robot import robot as _robot
+from cdpyr.typing import (
+    Matrix,
+    Num,
+    Vector
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -17,20 +23,22 @@ __email__ = "p.tempel@tudelft.nl"
 
 class HullCalculator(_algorithm.Algorithm):
     _center: Vector
-    _depth: Num
+    depth: Num
     _faces: Matrix
-    _vertices: Matrix
     _index_vertex: int
+    maximum_iterations: int
+    maximum_halvings: int
+    _vertices: Matrix
 
     def __init__(self,
-                 kinematics: '_kinematics.Algorithm',
+                 # kinematics: '_kinematics.Algorithm',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  center: Union[Num, Vector] = None,
                  maximum_iterations: int = 12,
                  maximum_halvings: int = 6,
                  depth: int = 3):
-        super().__init__(kinematics, archetype, criterion)
+        super().__init__(archetype, criterion)
         self.center = center if center is not None else [0]
         self.maximum_iterations = maximum_iterations
         self.maximum_halvings = maximum_halvings
@@ -54,55 +62,13 @@ class HullCalculator(_algorithm.Algorithm):
     def center(self):
         del self._center
 
-    @property
-    def depth(self):
-        return self._depth
-
-    @depth.setter
-    def depth(self, depth: int):
-        _validator.numeric.greater_than_or_equal_to(depth, 0, 'depth')
-
-        self._depth = depth
-
-    @depth.deleter
-    def depth(self):
-        del self._depth
-
-    @property
-    def maximum_iterations(self):
-        return self._maximum_iterations
-
-    @maximum_iterations.setter
-    def maximum_iterations(self, iterations: int):
-        _validator.numeric.greater_than(iterations, 1, 'maximum_iterations')
-
-        self._maximum_iterations = iterations
-
-    @maximum_iterations.deleter
-    def maximum_iterations(self):
-        del self._maximum_iterations
-
-    @property
-    def maximum_halvings(self):
-        return self._maximum_halvings
-
-    @maximum_halvings.setter
-    def maximum_halvings(self, halvings: int):
-        _validator.numeric.greater_than(halvings, 1, 'maximum_halvings')
-
-        self._maximum_halvings = halvings
-
-    @maximum_halvings.deleter
-    def maximum_halvings(self):
-        del self._maximum_halvings
-
     def _evaluate(self, robot: '_robot.Robot') -> '_result.Result':
         # a coordinate generator to get the grid of coordinates to evaluate
         search_directions, faces = self.__split_octahedron()
 
         # # termination conditions for each direction
-        min_step = 0.5 ** self._maximum_halvings
-        max_iters = self._maximum_iterations
+        min_step = 0.5 ** self.maximum_halvings
+        max_iters = self.maximum_iterations
 
         # calculate all vertices
         vertices = list(
@@ -180,7 +146,7 @@ class HullCalculator(_algorithm.Algorithm):
 
         # subdivide triangles into smaller ones using LOOP-SUBDIVISION
         # algorithm_old
-        for level in range(self._depth):
+        for level in range(self.depth):
             corners, faces = self.__subdivide(corners, faces)
 
         # convert into numpy arrays

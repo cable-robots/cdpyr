@@ -12,9 +12,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Motor(BaseObject):
-    _inertia: Num
-    _rated_power: Num
-    _rated_speed: Num
+    inertia: Num
+    rated_power: Num
+    rated_speed: Num
     _torques: dict
 
     def __init__(self,
@@ -55,8 +55,6 @@ class Motor(BaseObject):
 
     @stall_torque.setter
     def stall_torque(self, stall_torque: Num):
-        _validator.numeric.positive(stall_torque, 'stall_torque')
-
         self.torques['stall'] = stall_torque
 
     @stall_torque.deleter
@@ -69,8 +67,6 @@ class Motor(BaseObject):
 
     @peak_torque.setter
     def peak_torque(self, peak_torque: Num):
-        _validator.numeric.positive(peak_torque, 'peak_torque')
-
         self.torques['peak'] = peak_torque
 
     @peak_torque.deleter
@@ -78,41 +74,11 @@ class Motor(BaseObject):
         del self.torques['peak']
 
     @property
-    def rated_speed(self):
-        return self._rated_speed
-
-    @rated_speed.setter
-    def rated_speed(self, rated_speed: Num):
-        _validator.numeric.positive(rated_speed, 'rated_speed')
-
-        self._rated_speed = rated_speed
-
-    @rated_speed.deleter
-    def rated_speed(self):
-        del self._rated_speed
-
-    @property
-    def rated_power(self):
-        return self._rated_power
-
-    @rated_power.setter
-    def rated_power(self, rated_power: Num):
-        _validator.numeric.positive(rated_power, 'rated_power')
-
-        self._rated_power = rated_power
-
-    @rated_power.deleter
-    def rated_power(self):
-        del self._rated_power
-
-    @property
     def rated_torque(self):
         return self.torques['rated']
 
     @rated_torque.setter
     def rated_torque(self, rated_torque: Num):
-        _validator.numeric.positive(rated_torque, 'rated_torque')
-
         self.torques['rated'] = rated_torque
 
     @rated_torque.deleter
@@ -120,27 +86,11 @@ class Motor(BaseObject):
         del self.torques['rated']
 
     @property
-    def inertia(self):
-        return self._inertia
-
-    @inertia.setter
-    def inertia(self, inertia: Num):
-        _validator.numeric.positive(inertia, 'inertia')
-
-        self._inertia = inertia
-
-    @inertia.deleter
-    def inertia(self):
-        del self._inertia
-
-    @property
     def rms_torque(self):
         return self.torques['rms']
 
     @rms_torque.setter
     def rms_torque(self, rms_torque: Num):
-        _validator.numeric.positive(rms_torque, 'rms_torque')
-
         self.torques['rms'] = rms_torque
 
     @rms_torque.deleter
@@ -153,8 +103,6 @@ class Motor(BaseObject):
 
     @max_torque.setter
     def max_torque(self, max_torque: Num):
-        _validator.numeric.positive(max_torque, 'max_torque')
-
         self.peak_torque = max_torque
 
     @max_torque.deleter

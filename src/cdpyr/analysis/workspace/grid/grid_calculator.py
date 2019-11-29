@@ -23,13 +23,13 @@ class GridCalculator(_algorithm.Algorithm):
     _steps: Vector
 
     def __init__(self,
-                 kinematics: '_kinematics.Algorithm',
+                 # kinematics: '_kinematics.Algorithm',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  lower_bound: Union[Num, Vector] = None,
                  upper_bound: Union[Num, Vector] = None,
                  steps: Union[Num, Vector] = None):
-        super().__init__(kinematics, archetype, criterion)
+        super().__init__(archetype, criterion)
         self.lower_bound = lower_bound if lower_bound is not None else [0]
         self.upper_bound = upper_bound if upper_bound is not None else [0]
         self.steps = steps if steps is not None else [1]

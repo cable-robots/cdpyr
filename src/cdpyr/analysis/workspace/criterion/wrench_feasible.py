@@ -19,26 +19,13 @@ __email__ = "p.tempel@tudelft.nl"
 
 class WrenchFeasible(_criterion.Criterion):
     _wrench: Vector
-    _force_distribution: '_force_distribution.Algorithm'
+    force_distribution: '_force_distribution.Algorithm'
 
     def __init__(self,
                  force_distribution: '_force_distribution.Algorithm',
                  wrench: Optional[Union[Num, Vector]] = None):
         self.force_distribution = force_distribution
         self.wrench = wrench
-
-    @property
-    def force_distribution(self):
-        return self._force_distribution
-
-    @force_distribution.setter
-    def force_distribution(self,
-                           force_distribution: '_force_distribution.Algorithm'):
-        self._force_distribution = force_distribution
-
-    @force_distribution.deleter
-    def force_distribution(self):
-        del self._force_distribution
 
     @property
     def wrench(self):
@@ -69,7 +56,7 @@ class WrenchFeasible(_criterion.Criterion):
                   pose: '_pose.Pose',
                   **kwargs):
         try:
-            [self._force_distribution.evaluate(robot, pose, wrench)
+            [self.force_distribution.evaluate(robot, pose, wrench)
              for wrench in self._wrench.T]
         except Exception:
             flag = False

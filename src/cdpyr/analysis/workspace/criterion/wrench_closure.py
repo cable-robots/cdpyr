@@ -1,6 +1,6 @@
 from typing import (
-    Union,
-    Optional
+    Optional,
+    Union
 )
 
 import numpy as _np
@@ -8,7 +8,12 @@ import numpy as _np
 from cdpyr.analysis.force_distribution import algorithm as \
     _force_distribution
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
-from cdpyr.typing import Num, Vector
+from cdpyr.motion.pose import pose as _pose
+from cdpyr.robot import robot as _robot
+from cdpyr.typing import (
+    Num,
+    Vector
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -21,28 +26,12 @@ class WrenchClosure(_criterion.Criterion):
     def __init__(self,
                  force_distribution: '_force_distribution.Algorithm',
                  wrench: Optional[Union[Num, Vector]] = None):
+        # update the force limits to be in the expected range of the wrench
+        # closure algorithm
+        force_distribution.force_minimum = [0]
+        force_distribution.force_maximum = [_np.inf]
         self.force_distribution = force_distribution
         self.wrench = wrench
-
-    @property
-    def force_distribution(self):
-        return self._force_distribution
-
-    @force_distribution.setter
-    def force_distribution(self,
-                           force_distribution: '_force_distribution.Algorithm'):
-        self._force_distribution = force_distribution
-        # make sure the force distribution is set up correctly i.e.,
-        # its limits are set to [0, oo]
-        try:
-            self._force_distribution.force_minimum = [0]
-            self._force_distribution.force_maximum = [_np.inf]
-        except AttributeError as AttributeE:
-            pass
-
-    @force_distribution.deleter
-    def force_distribution(self):
-        del self._force_distribution
 
     @property
     def wrench(self):

@@ -22,11 +22,11 @@ class Platform(BaseObject):
     _anchors: '_platform_anchor.PlatformAnchorList'
     _center_of_gravity: 'np_.ndarray'
     _center_of_linkage: 'np_.ndarray'
-    _geometry: '_geometry.Geometry'
-    _inertia: '_inertia.Inertia'
-    _motion_pattern: '_motion_pattern.MotionPattern'
-    _name: str
-    _pose: '_pose.Pose'
+    geometry: '_geometry.Geometry'
+    inertia: '_inertia.Inertia'
+    motion_pattern: '_motion_pattern.MotionPattern'
+    name: str
+    pose: '_pose.Pose'
 
     def __init__(self,
                  motion_pattern: '_motion_pattern.Pattern',
@@ -60,10 +60,7 @@ class Platform(BaseObject):
                     '_platform_anchor.PlatformAnchorList',
                     Sequence['_platform_anchor.PlatformAnchor']
                 ]):
-        if not isinstance(anchors, _platform_anchor.PlatformAnchorList):
-            anchors = _platform_anchor.PlatformAnchorList(anchors)
-
-        self._anchors = anchors
+        self._anchors = _platform_anchor.PlatformAnchorList(anchors)
 
     @anchors.deleter
     def anchors(self):
@@ -91,11 +88,7 @@ class Platform(BaseObject):
 
     @center_of_gravity.setter
     def center_of_gravity(self, position: Vector):
-        position = np_.asarray(position)
-
-        _validator.linalg.shape(position, (3,), 'center_of_gravity')
-
-        self._center_of_gravity = position
+        self._center_of_gravity = np_.asarray(position)
 
     @center_of_gravity.deleter
     def center_of_gravity(self):
@@ -107,11 +100,7 @@ class Platform(BaseObject):
 
     @center_of_linkage.setter
     def center_of_linkage(self, position: Vector):
-        position = np_.asarray(position)
-
-        _validator.linalg.shape(position, (3,), 'center_of_linkage')
-
-        self._center_of_linkage = position
+        self._center_of_linkage = np_.asarray(position)
 
     @center_of_linkage.deleter
     def center_of_linkage(self):
@@ -128,37 +117,6 @@ class Platform(BaseObject):
     @property
     def dof_translation(self):
         return self.motion_pattern.dof_translation
-
-    @property
-    def geometry(self):
-        return self._geometry
-
-    @geometry.setter
-    def geometry(self, geometry: '_geometry.Geometry'):
-        self._geometry = geometry
-
-    @geometry.deleter
-    def geometry(self):
-        del self._geometry
-
-    @property
-    def inertia(self):
-        return self._inertia
-
-    @inertia.setter
-    def inertia(self,
-                inertia: Union[
-                    Tuple[Vector, Matrix],
-                    '_inertia.Inertia'
-                ]):
-        if not isinstance(inertia, _inertia.Inertia):
-            inertia = _inertia.Inertia(inertia[0], inertia[1])
-
-        self._inertia = inertia
-
-    @inertia.deleter
-    def inertia(self):
-        del self._inertia
 
     @property
     def is_point(self):
@@ -181,18 +139,6 @@ class Platform(BaseObject):
         self.inertia.linear = inertia
 
     @property
-    def motion_pattern(self):
-        return self._motion_pattern
-
-    @motion_pattern.setter
-    def motion_pattern(self, motion_pattern: '_motion_pattern.MotionPattern'):
-        self._motion_pattern = motion_pattern
-
-    @motion_pattern.deleter
-    def motion_pattern(self):
-        del self._motion_pattern
-
-    @property
     def moves_linear(self):
         return self.motion_pattern.moves_linear
 
@@ -205,32 +151,8 @@ class Platform(BaseObject):
         return self.motion_pattern.moves_spatial
 
     @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, name: str):
-        self._name = name
-
-    @name.deleter
-    def name(self):
-        del self._name
-
-    @property
     def num_anchors(self):
         return len(self._anchors)
-
-    @property
-    def pose(self):
-        return self._pose
-
-    @pose.setter
-    def pose(self, pose: '_pose.Pose'):
-        self._pose = pose
-
-    @pose.deleter
-    def pose(self):
-        del self._pose
 
     def wrench(self,
                pose: '_pose.Pose' = None,

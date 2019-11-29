@@ -103,8 +103,8 @@ def rotation_matrix(value: Union[Sequence[Sequence[Num]], Matrix],
     try:
         dimensions(value, 2, name)
         shape(value, (3, 3), name)
-        greater_than_or_equal_to(value, -1, name)
-        less_than_or_equal_to(value, 1, name)
+        # greater_than_or_equal_to(value, -1, name)
+        # less_than_or_equal_to(value, 1, name)
         equal_to(np_.abs(np_.linalg.det(value)), 1,
                  'det({})'.format(name if name is not None else 'value'))
     except ValueError as ValueE:

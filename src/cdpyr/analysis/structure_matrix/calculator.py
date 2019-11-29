@@ -24,7 +24,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Calculator(_evaluator.Evaluator):
-    _kinematics: '_kinematics.Algorithm'
+    kinematics: '_kinematics.Algorithm'
     resolver: Dict[AnyStr, _structure_matrix.Algorithm]
 
     def __init__(self,
@@ -49,18 +49,6 @@ class Calculator(_evaluator.Evaluator):
 
         self.resolver = resolver
 
-    @property
-    def kinematics(self):
-        return self._kinematics
-
-    @kinematics.setter
-    def kinematics(self, kinematics: '_kinematics.Algorithm'):
-        self._kinematics = kinematics
-
-    @kinematics.deleter
-    def kinematics(self):
-        del self._kinematics
-
     def evaluate(self,
                  robot: '_robot.Robot',
                  pose: '_pose.Pose'):
@@ -71,7 +59,7 @@ class Calculator(_evaluator.Evaluator):
             )
 
         # solve inverse kinematics
-        kinematics = self._kinematics.backward(robot, pose)
+        kinematics = self.kinematics.backward(robot, pose)
 
         # get first platform
         platform = robot.platforms[0]

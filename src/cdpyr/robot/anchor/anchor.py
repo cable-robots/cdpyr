@@ -1,8 +1,11 @@
+from abc import ABC
 from collections import UserList
-from typing import Optional, Sequence
+from typing import (
+    Optional,
+    Sequence
+)
 
 import numpy as np_
-from abc import ABC
 from magic_repr import make_repr
 
 from cdpyr.kinematics.transformation import (
@@ -10,15 +13,18 @@ from cdpyr.kinematics.transformation import (
     linear as _linear,
 )
 from cdpyr.mixin.base_object import BaseObject
-from cdpyr.typing import Matrix, Vector
+from cdpyr.typing import (
+    Matrix,
+    Vector
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class Anchor(BaseObject):
-    _linear: '_linear.Linear'
-    _angular: '_angular.Angular'
+    linear: '_linear.Linear'
+    angular: '_angular.Angular'
 
     def __init__(self,
                  position: Optional[Vector] = None,
@@ -45,20 +51,19 @@ class Anchor(BaseObject):
         """
         # initialize and set linear property if not given by the user
         if linear is None:
-            self.linear = _linear.Linear()
-            self.position = position if position is not None else [0.0, 0.0,
-                                                                   0.0]
-        # set linear transformation to user-defined value
-        else:
-            self.linear = linear
+            linear = _linear.Linear(
+                position if position is not None else [0.0, 0.0, 0.0])
+
+        # set linear transformation to inferred value
+        self.linear = linear
 
         # initialize and set angularlinear property if not given by the user
         if angular is None:
-            self.angular = _angular.Angular(
+            angular = _angular.Angular(
                 dcm=dcm if dcm is not None else np_.eye(3))
-        # set angular transformation to user-defined value
-        else:
-            self.angular = angular
+
+        # set linear transformation to inferred value
+        self.angular = angular
 
     @property
     def position(self):
@@ -71,30 +76,6 @@ class Anchor(BaseObject):
     @position.deleter
     def position(self):
         del self.linear.position
-
-    @property
-    def linear(self):
-        return self._linear
-
-    @linear.setter
-    def linear(self, linear: '_linear.Linear'):
-        self._linear = linear
-
-    @linear.deleter
-    def linear(self):
-        del self.linear
-
-    @property
-    def angular(self):
-        return self._angular
-
-    @angular.setter
-    def angular(self, angular: '_angular.Angular'):
-        self._angular = angular
-
-    @angular.deleter
-    def angular(self):
-        del self.angular
 
     @property
     def dcm(self):

@@ -2,6 +2,7 @@ import numpy as _np
 
 from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
+from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Vector
 
@@ -10,7 +11,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class CableLength(_criterion.Criterion):
-    _kinematics: '_kinematics.Algorithm'
+    kinematics: '_kinematics.Algorithm'
     _limits: Vector
 
     def __init__(self,
@@ -18,18 +19,6 @@ class CableLength(_criterion.Criterion):
                  limits: Vector = None):
         self.kinematics = kinematics
         self.limits = limits if limits is not None else [0, _np.inf]
-
-    @property
-    def kinematics(self):
-        return self._kinematics
-
-    @kinematics.setter
-    def kinematics(self, kinematics: '_kinematics.Algorithm'):
-        self._kinematics = kinematics
-
-    @kinematics.deleter
-    def kinematics(self):
-        del self._kinematics
 
     @property
     def limits(self):
@@ -56,7 +45,7 @@ class CableLength(_criterion.Criterion):
                   pose: '_pose.Pose',
                   **kwargs):
         try:
-            kinematics = self._kinematics.backward(robot, pose)
+            kinematics = self.kinematics.backward(robot, pose)
         except BaseException:
             return False
         else:

@@ -12,8 +12,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Gearbox(BaseObject):
-    _inertia: Num
-    _ratio: Num
+    inertia: Num
+    ratio: Num
 
     def __init__(self,
                  ratio: Optional[Num] = None,
@@ -21,34 +21,6 @@ class Gearbox(BaseObject):
                  ):
         self.ratio = ratio or 1
         self.inertia = inertia or np_.Inf
-
-    @property
-    def ratio(self):
-        return self._ratio
-
-    @ratio.setter
-    def ratio(self, ratio: Num):
-        _validator.numeric.nonnegative(ratio, 'ratio')
-
-        self._ratio = ratio
-
-    @ratio.deleter
-    def ratio(self):
-        del self._ratio
-
-    @property
-    def inertia(self):
-        return self._inertia
-
-    @inertia.setter
-    def inertia(self, inertia: Num):
-        _validator.numeric.positive(inertia, 'inertia')
-
-        self._inertia = inertia
-
-    @inertia.deleter
-    def inertia(self):
-        del self._inertia
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

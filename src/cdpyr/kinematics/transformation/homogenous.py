@@ -13,51 +13,43 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Homogenous(BaseObject):
-    _linear: '_linear.Linear'
-    _angular: '_angular.Angular'
+    linear: '_linear.Linear'
+    angular: '_angular.Angular'
 
     def __init__(self,
                  translation: Optional[Vector] = None,
                  dcm: Optional[Matrix] = None
                  ):
         # init internal variables
-        self._linear = _linear.Linear()
-        self._angular = _angular.Angular()
+        self.linear = _linear.Linear()
+        self.angular = _angular.Angular()
         # and set values
         self.translation = translation if translation is not None else [0, 0, 0]
         self.dcm = dcm if dcm is not None else np_.eye(3)
 
     @property
     def translation(self):
-        return self._linear.position
+        return self.linear.position
 
     @translation.setter
     def translation(self, translation: Vector):
-        translation = np_.asarray(translation)
-
-        _validator.linalg.space_coordinate(translation, 'translation')
-
-        self._linear.position = translation
+        self.linear.position = np_.asarray(translation)
 
     @translation.deleter
     def translation(self):
-        del self._linear
+        del self.linear
 
     @property
     def dcm(self):
-        return self._angular.dcm
+        return self.angular.dcm
 
     @dcm.setter
     def dcm(self, dcm: Matrix):
-        dcm = np_.asarray(dcm)
-
-        _validator.linalg.rotation_matrix(dcm, 'dcm')
-
-        self._angular.dcm = dcm
+        self.angular.dcm = np_.asarray(dcm)
 
     @dcm.deleter
     def dcm(self):
-        del self._angular
+        del self.angular
 
     @property
     def matrix(self):

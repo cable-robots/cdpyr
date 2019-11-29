@@ -20,11 +20,11 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Robot(BaseObject):
-    _name: AnyStr
-    _frame: '_frame.Frame'
-    _platforms: '_platform.PlatformList'
+    frame: '_frame.Frame'
     _cables: '_cable.CableList'
     _chains: '_kinematicchain.KinematicChainList'
+    _platforms: '_platform.PlatformList'
+    name: AnyStr
 
     def __init__(self,
                  name: Optional[AnyStr] = None,
@@ -51,49 +51,6 @@ class Robot(BaseObject):
         self.kinematic_chains = kinematic_chains or {}
 
     @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, name: AnyStr):
-        self._name = name
-
-    @name.deleter
-    def name(self):
-        del self._name
-
-    @property
-    def frame(self):
-        return self._frame
-
-    @frame.setter
-    def frame(self, frame: '_frame.Frame'):
-        self._frame = frame
-
-    @frame.deleter
-    def frame(self):
-        del self._frame
-
-    @property
-    def platforms(self):
-        return self._platforms
-
-    @platforms.setter
-    def platforms(self,
-                  platforms: Union[
-                      '_platform.PlatformList',
-                      Sequence['_platform.Platform']
-                  ]):
-        if not isinstance(platforms, _platform.PlatformList):
-            platforms = _platform.PlatformList(platforms)
-
-        self._platforms = platforms
-
-    @platforms.deleter
-    def platforms(self):
-        del self._platforms
-
-    @property
     def ai(self):
         return self.frame.ai
 
@@ -102,19 +59,19 @@ class Robot(BaseObject):
         return _np.hstack(list(self.platforms.bi))
 
     @property
+    def can_rotate(self):
+        return any(platform.can_rotate for platform in self.platforms)
+
+    @property
     def cables(self):
         return self._cables
 
     @cables.setter
     def cables(self,
-               cables: Union[
-                   '_cable.CableList',
+               cables: Union['_cable.CableList',
                    Sequence['_cable.Cable']
                ]):
-        if not isinstance(cables, _cable.CableList):
-            cables = _cable.CableList(cables)
-
-        self._cables = cables
+        self._cables = _cable.CableList(cables)
 
     @cables.deleter
     def cables(self):
@@ -191,30 +148,6 @@ class Robot(BaseObject):
         del self._chains
 
     @property
-    def num_cables(self):
-        return len(self.cables)
-
-    @property
-    def num_dof(self):
-        return sum(platform.dof for platform in self.platforms)
-
-    @property
-    def num_dof_translation(self):
-        return sum(platform.dof_translation for platform in self.platforms)
-
-    @property
-    def num_dof_rotation(self):
-        return sum(platform.dof_rotation for platform in self.platforms)
-
-    @property
-    def num_platforms(self):
-        return len(self.platforms)
-
-    @property
-    def num_kinematic_chains(self):
-        return len(self.kinematic_chains)
-
-    @property
     def moves_linear(self):
         return any(platform.moves_linear for platform in self.platforms)
 
@@ -227,8 +160,44 @@ class Robot(BaseObject):
         return any(platform.moves_spatial for platform in self.platforms)
 
     @property
-    def can_rotate(self):
-        return any(platform.can_rotate for platform in self.platforms)
+    def num_cables(self):
+        return len(self.cables)
+
+    @property
+    def num_dof(self):
+        return sum(platform.dof for platform in self.platforms)
+
+    @property
+    def num_dof_rotation(self):
+        return sum(platform.dof_rotation for platform in self.platforms)
+
+    @property
+    def num_dof_translation(self):
+        return sum(platform.dof_translation for platform in self.platforms)
+
+    @property
+    def num_kinematic_chains(self):
+        return len(self.kinematic_chains)
+
+    @property
+    def num_platforms(self):
+        return len(self.platforms)
+
+    @property
+    def platforms(self):
+        return self._platforms
+
+    @platforms.setter
+    def platforms(self,
+                  platforms: Union[
+                      '_platform.PlatformList',
+                      Sequence['_platform.Platform']
+                  ]):
+        self._platforms = _platform.PlatformList(platforms)
+
+    @platforms.deleter
+    def platforms(self):
+        del self._platforms
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

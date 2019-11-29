@@ -37,11 +37,7 @@ class Linear(BaseObject):
 
     @position.setter
     def position(self, position: Vector):
-        position = np_.asarray(position)
-
-        _validator.linalg.space_coordinate(position, 'position')
-
-        self._position = position
+        self._position = np_.asarray(position)
 
     @position.deleter
     def position(self):
@@ -53,11 +49,7 @@ class Linear(BaseObject):
 
     @velocity.setter
     def velocity(self, velocity: Vector):
-        velocity = np_.asarray(velocity)
-
-        _validator.linalg.space_coordinate(velocity, 'velocity')
-
-        self._velocity = velocity
+        self._velocity = np_.asarray(velocity)
 
     @velocity.deleter
     def velocity(self):
@@ -69,11 +61,7 @@ class Linear(BaseObject):
 
     @acceleration.setter
     def acceleration(self, acceleration: Vector):
-        acceleration = np_.asarray(acceleration)
-
-        _validator.linalg.space_coordinate(acceleration, 'acceleration')
-
-        self._acceleration = acceleration
+        self._acceleration = np_.asarray(acceleration)
 
     @acceleration.deleter
     def acceleration(self):

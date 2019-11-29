@@ -19,7 +19,6 @@ __email__ = "p.tempel@tudelft.nl"
 class Algorithm(_evaluator.Evaluator):
     _force_minimum: Vector
     _force_maximum: Vector
-    _kinematics: '_kinematics.Algorithm'
     _structure_matrix: '_structure_matrix.Calculator'
 
     def __init__(self,
@@ -27,7 +26,6 @@ class Algorithm(_evaluator.Evaluator):
                  force_minimum: Union[Num, Vector],
                  force_maximum: Union[Num, Vector]):
         self._structure_matrix = _structure_matrix.Calculator(kinematics)
-        self.kinematics = kinematics
         self.force_minimum = force_minimum
         self.force_maximum = force_maximum
 
@@ -59,27 +57,13 @@ class Algorithm(_evaluator.Evaluator):
         if force.ndim == 0:
             force = _np.asarray([force])
 
+        _validator.numeric.nonnegative(force, 'force_minimum')
+
         self._force_minimum = force
 
     @force_minimum.deleter
     def force_minimum(self):
         del self._force_minimum
-
-    @property
-    def kinematics(self):
-        return self._kinematics
-
-    @kinematics.setter
-    def kinematics(self, kinematics: '_kinematics.Algorithm'):
-        self._kinematics = kinematics
-        try:
-            self._structure_matrix.kinematics = self._kinematics
-        except AttributeError as AttributeE:
-            self._structure_matrix = _structure_matrix.Calculator(self._kinematics)
-
-    @kinematics.deleter
-    def kinematics(self):
-        del self._kinematics
 
     def evaluate(self,
                  robot: '_robot.Robot',

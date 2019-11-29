@@ -14,64 +14,21 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Pulley(BaseObject):
-    _angular: '_angular.Angular'
-    _geometry: '_geometry.Geometry'
-    _inertia: '_inertia.Inertia'
+    angular: '_angular.Angular'
+    geometry: '_geometry.Geometry'
+    inertia: '_inertia.Inertia'
 
     def __init__(self,
                  geometry: Optional['_geometry.Geometry'] = None,
-                 inertia: Optional[
-                     Union[Tuple[Vector, Matrix], '_inertia.Inertia']] = None,
+                 inertia: Optional['_inertia.Inertia'] = None,
                  dcm: Optional[Matrix] = None,
                  angular: Optional['_angular.Angular'] = None
                  ):
         self.geometry = geometry or _geometry.Geometry()
         self.inertia = inertia or _inertia.Inertia()
         if angular is None:
-            self.angular = _angular.Angular(
-                dcm=dcm if dcm is not None else np_.eye(3))
-        else:
-            self.angular = angular
-
-    @property
-    def geometry(self):
-        return self._geometry
-
-    @geometry.setter
-    def geometry(self, geometry: '_geometry.Geometry'):
-        self._geometry = geometry
-
-    @geometry.deleter
-    def geometry(self):
-        del self._geometry
-
-    @property
-    def inertia(self):
-        return self._inertia
-
-    @inertia.setter
-    def inertia(self,
-                inertia: Union[Tuple[Vector, Matrix], '_inertia.Inertia']):
-        if not isinstance(inertia, _inertia.Inertia):
-            inertia = _inertia.Inertia(inertia[0], inertia[1])
-
-        self._inertia = inertia
-
-    @inertia.deleter
-    def inertia(self):
-        del self._inertia
-
-    @property
-    def angular(self):
-        return self._angular
-
-    @angular.setter
-    def angular(self, angular: '_angular.Angular'):
-        self._angular = angular
-
-    @angular.deleter
-    def angular(self):
-        del self.angular
+            angular = _angular.Angular(dcm=dcm if dcm is not None else np_.eye(3))
+        self.angular = angular
 
     @property
     def dcm(self):

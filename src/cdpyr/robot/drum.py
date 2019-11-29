@@ -12,44 +12,15 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Drum(BaseObject):
-    _geometry: '_geometry.Geometry'
-    _inertia: '_inertia.Inertia'
+    geometry: '_geometry.Geometry'
+    inertia: '_inertia.Inertia'
 
     def __init__(self,
                  geometry: Optional['_geometry.Geometry'] = None,
-                 inertia: Optional[
-                     Union[Tuple[Vector, Matrix], '_inertia.Inertia']] = None
+                 inertia: Optional['_inertia.Inertia'] = None
                  ):
         self.geometry = geometry or _geometry.Geometry()
         self.inertia = inertia or _inertia.Inertia()
-
-    @property
-    def geometry(self):
-        return self.geometry
-
-    @geometry.setter
-    def geometry(self, geometry: '_geometry.Geometry'):
-        self._geometry = geometry
-
-    @geometry.deleter
-    def geometry(self):
-        del self.geometry
-
-    @property
-    def inertia(self):
-        return self._inertia
-
-    @inertia.setter
-    def inertia(self,
-                inertia: Union[Tuple[Vector, Matrix], '_inertia.Inertia']):
-        if not isinstance(inertia, _inertia.Inertia):
-            inertia = _inertia.Inertia(linear=inertia[0], angular=inertia[1])
-
-        self._inertia = inertia
-
-    @inertia.deleter
-    def inertia(self):
-        del self.inertia
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

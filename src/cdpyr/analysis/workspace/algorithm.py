@@ -16,56 +16,24 @@ class Algorithm(ABC):
     _criterion: '_criterion.Criterion'
 
     def __init__(self,
-                 kinematics: '_kinematics.Algorithm',
+                 # kinematics: '_kinematics.Algorithm',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion'):
-        self.archetype = archetype
-        self.criterion = criterion
-        self.kinematics = kinematics
+        self._archetype = archetype
+        # self._kinematics = kinematics
+        self._criterion = criterion
 
     @property
     def archetype(self):
         return self._archetype
 
-    @archetype.setter
-    def archetype(self, archetype: '_archetype.Archetype'):
-        self._archetype = archetype
-
-    @archetype.deleter
-    def archetype(self):
-        del self._archetype
-
     @property
     def criterion(self):
         return self._criterion
 
-    @criterion.setter
-    def criterion(self, criterion: '_criterion.Criterion'):
-        try:
-            criterion.kinematics = self._kinematics
-        except AttributeError as AttributeE:
-            pass
-        self._criterion = criterion
-
-    @criterion.deleter
-    def criterion(self):
-        del self._criterion
-
     @property
     def kinematics(self):
         return self._kinematics
-
-    @kinematics.setter
-    def kinematics(self, kinematics: '_kinematics.Algorithm'):
-        self._kinematics = kinematics
-        try:
-            self._criterion.kinematics = kinematics
-        except AttributeError as AttributeE:
-            pass
-
-    @kinematics.deleter
-    def kinematics(self):
-        del self._kinematics
 
     def evaluate(self, robot: '_robot.Robot') -> '_result.Result':
         try:

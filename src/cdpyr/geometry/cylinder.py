@@ -9,8 +9,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Cylinder(Geometry):
-    _diameter: float
-    _height: float
+    diameter: float
+    height: float
 
     def __init__(self,
                  diameter: Num,
@@ -20,41 +20,11 @@ class Cylinder(Geometry):
         self.height = height
 
     @property
-    def diameter(self):
-        return self._diameter
-
-    @diameter.setter
-    def diameter(self, diameter: Num):
-        _validator.numeric.nonnegative(diameter, 'diameter')
-
-        self._diameter = diameter
-
-    @diameter.deleter
-    def diameter(self):
-        del self._diameter
-
-    @property
-    def height(self):
-        return self._height
-
-    @height.setter
-    def height(self, height: Num):
-        _validator.numeric.nonnegative(height, 'height')
-
-        self._height = height
-
-    @height.deleter
-    def height(self):
-        del self._height
-
-    @property
     def radius(self):
-        return self._diameter / 2.0
+        return self.diameter / 2.0
 
     @radius.setter
     def radius(self, radius: Num):
-        _validator.numeric.nonnegative(radius, 'radius')
-
         self.diameter = 2.0 * radius
 
     @radius.deleter

@@ -36,10 +36,7 @@ class Frame(BaseObject):
     def anchors(self, anchors: Union[
         '_frame_anchor.FrameAnchorList', Sequence[
             '_frame_anchor.FrameAnchor']]):
-        if not isinstance(anchors, _frame_anchor.FrameAnchorList):
-            anchors = _frame_anchor.FrameAnchorList(anchors)
-
-        self._anchors = anchors
+        self._anchors = _frame_anchor.FrameAnchorList(anchors)
 
     @anchors.deleter
     def anchors(self):

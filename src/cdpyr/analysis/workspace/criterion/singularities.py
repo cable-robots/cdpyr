@@ -1,6 +1,8 @@
 from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.structure_matrix import calculator as _structure_matrix
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
+from cdpyr.motion.pose import pose as _pose
+from cdpyr.robot import robot as _robot
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -11,24 +13,12 @@ class Singularities(_criterion.Criterion):
     _structure_matrix: '_structure_matrix.Calculator'
 
     def __init__(self, kinematics: '_kinematics.Algorithm'):
-        self.kinematics = kinematics
+        self._kinematics = kinematics
+        self._structure_matrix = _structure_matrix.Calculator(self._kinematics)
 
     @property
     def kinematics(self):
         return self._kinematics
-
-    @kinematics.setter
-    def kinematics(self, kinematics: '_kinematics.Algorithm'):
-        self._kinematics = kinematics
-        try:
-            self._structure_matrix.kinematics = self._kinematics
-        except AttributeError as AttributeE:
-            self._structure_matrix = _structure_matrix.Calculator(
-                self._kinematics)
-
-    @kinematics.deleter
-    def kinematics(self):
-        del self._kinematics
 
     def _evaluate(self,
                   robot: '_robot.Robot',

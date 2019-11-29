@@ -16,10 +16,10 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class KinematicChain(BaseObject):
-    _cable: '_cable.Cable'
-    _platform: '_platform.Platform'
-    _frame_anchor: '_frame_anchor.FrameAnchor'
-    _platform_anchor: '_platform_anchor.PlatformAnchor'
+    cable: '_cable.Cable'
+    platform: '_platform.Platform'
+    frame_anchor: '_frame_anchor.FrameAnchor'
+    platform_anchor: '_platform_anchor.PlatformAnchor'
 
     def __init__(self,
                  frame_anchor: Union['_frame_anchor.FrameAnchor', Num],
@@ -31,55 +31,6 @@ class KinematicChain(BaseObject):
         self.platform = platform
         self.frame_anchor = frame_anchor
         self.platform_anchor = platform_anchor
-
-    @property
-    def cable(self):
-        return self._cable
-
-    @cable.setter
-    def cable(self, cable: Union['_cable.Cable', Num]):
-        self._cable = cable
-
-    @cable.deleter
-    def cable(self):
-        del self._cable
-
-    @property
-    def platform(self):
-        return self._platform
-
-    @platform.setter
-    def platform(self, platform: Union['_platform.Platform', Num]):
-        self._platform = platform
-
-    @platform.deleter
-    def platform(self):
-        del self._platform
-
-    @property
-    def frame_anchor(self):
-        return self._frame_anchor
-
-    @frame_anchor.setter
-    def frame_anchor(self, anchor: Union['_frame_anchor.FrameAnchor', Num]):
-        self._frame_anchor = anchor
-
-    @frame_anchor.deleter
-    def frame_anchor(self):
-        del self._frame_anchor
-
-    @property
-    def platform_anchor(self):
-        return self._platform_anchor
-
-    @platform_anchor.setter
-    def platform_anchor(self,
-                        anchor: Union['_platform_anchor.PlatformAnchor', Num]):
-        self._platform_anchor = anchor
-
-    @platform_anchor.deleter
-    def platform_anchor(self):
-        del self._platform_anchor
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

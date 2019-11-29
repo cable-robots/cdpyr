@@ -14,12 +14,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Cable(BaseObject):
-    _breaking_load: Num
+    breaking_load: Num
     _color: Color
-    _diameter: Num
-    _material: AnyStr
+    diameter: Num
+    material: AnyStr
     _modulus: dict
-    _name: AnyStr
+    name: AnyStr
 
     def __init__(self,
                  name: Optional[AnyStr] = None,
@@ -56,58 +56,6 @@ class Cable(BaseObject):
         self.diameter = diameter or 0
         self.color = color or 'red'
         self.breaking_load = breaking_load or np_.Infinity
-
-    @property
-    def diameter(self):
-        return self._diameter
-
-    @diameter.setter
-    def diameter(self, diameter: Num):
-        _validator.numeric.nonnegative(diameter, 'diameter')
-
-        self._diameter = diameter
-
-    @diameter.deleter
-    def diameter(self):
-        del self._diameter
-
-    @property
-    def breaking_load(self):
-        return self._breaking_load
-
-    @breaking_load.setter
-    def breaking_load(self, breaking_load: Num):
-        _validator.numeric.nonnegative(breaking_load, 'breaking_load')
-
-        self._breaking_load = breaking_load
-
-    @breaking_load.deleter
-    def breaking_load(self):
-        del self._breaking_load
-
-    @property
-    def material(self):
-        return self._material
-
-    @material.setter
-    def material(self, material: AnyStr):
-        self._material = material
-
-    @material.deleter
-    def material(self):
-        del self._material
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, name: AnyStr):
-        self._name = name
-
-    @name.deleter
-    def name(self):
-        del self._name
 
     @property
     def color(self):

@@ -28,11 +28,11 @@ class Orientation(_archetype_orientation.ArchetypeOrientation):
         return all
 
     def _poses(self, *args, **kwargs):
-        return _generator.orientation(self._euler_min,
-                                      self._euler_max,
-                                      self._sequence,
+        return _generator.orientation(self.euler_min,
+                                      self.euler_max,
+                                      self.sequence,
                                       self._position,
-                                      self._steps)
+                                      self.steps)
 
 
 __all__ = [

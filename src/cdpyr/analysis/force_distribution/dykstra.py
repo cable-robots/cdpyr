@@ -2,22 +2,29 @@ from typing import Union
 
 import numpy as _np
 
-from cdpyr import validator as _validator
 from cdpyr.analysis.force_distribution import (
     algorithm as _algorithm,
 )
-from cdpyr.typing import Matrix, Num, Vector
+from cdpyr.analysis.kinematics import algorithm as _kinematics
+from cdpyr.motion.pose import pose as _pose
+from cdpyr.robot import robot as _robot
+from cdpyr.typing import (
+    Matrix,
+    Num,
+    Vector
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class Dykstra(_algorithm.Algorithm):
-    _maximum_iterations: int
-    _threshold_projection: float
-    _threshold_convergence: float
+    maximum_iterations: int
+    threshold_projection: float
+    threshold_convergence: float
 
-    def __init__(self, kinematics: '_kinematics.Algorithm',
+    def __init__(self,
+                 kinematics: '_kinematics.Algorithm',
                  force_minimum: Union[Num, Vector],
                  force_maximum: Union[Num, Vector],
                  max_iterations: int = 5000,
@@ -27,59 +34,6 @@ class Dykstra(_algorithm.Algorithm):
         self.maximum_iterations = max_iterations
         self.threshold_projection = eps_projection
         self.threshold_convergence = eps_convergence
-
-    @property
-    def maximum_iterations(self):
-        return self._maximum_iterations
-
-    @maximum_iterations.setter
-    def maximum_iterations(self, iterations: int):
-        _validator.numeric.greater_than_or_equal_to(iterations,
-                                                    1,
-                                                    'maximum_iterations')
-        self._maximum_iterations = iterations
-
-    @maximum_iterations.deleter
-    def maximum_iterations(self):
-        del self._maximum_iterations
-
-    @property
-    def threshold_projection(self):
-        return self._threshold_projection
-
-    @threshold_projection.setter
-    def threshold_projection(self, threshold: float):
-        _validator.numeric.less_than_or_equal_to(threshold,
-                                                 1,
-                                                 'threshold_projection')
-        _validator.numeric.greater_than(threshold,
-                                        0,
-                                        'threshold_projection')
-
-        self._threshold_projection = threshold
-
-    @threshold_projection.deleter
-    def threshold_projection(self):
-        del self._threshold_projection
-
-    @property
-    def threshold_convergence(self):
-        return self._threshold_convergence
-
-    @threshold_convergence.setter
-    def threshold_convergence(self, threshold: float):
-        _validator.numeric.less_than_or_equal_to(threshold,
-                                                 1,
-                                                 'threshold_convergence')
-        _validator.numeric.greater_than(threshold,
-                                        0,
-                                        'threshold_convergence')
-
-        self._threshold_convergence = threshold
-
-    @threshold_convergence.deleter
-    def threshold_convergence(self):
-        del self._threshold_convergence
 
     def _evaluate(self,
                   robot: '_robot.Robot',
@@ -96,11 +50,11 @@ class Dykstra(_algorithm.Algorithm):
         # non-square structure matrix
         else:
             # number of maximum iterations
-            max_iter = self._maximum_iterations
+            max_iter = self.maximum_iterations
             # threshold for projection
-            eps_projection = self._threshold_projection
+            eps_projection = self.threshold_projection
             # threshold for convergence
-            eps_convergence = self._threshold_convergence
+            eps_convergence = self.threshold_convergence
 
             # get number of cables/forces from the number of columns of the
             # structure matrix
