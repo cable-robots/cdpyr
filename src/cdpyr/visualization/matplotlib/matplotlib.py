@@ -1,5 +1,7 @@
 import itertools
-from abc import ABC
+from abc import (
+    ABC,
+)
 from typing import (
     Dict,
     Union
@@ -16,7 +18,7 @@ from mpl_toolkits.mplot3d import (
 )
 from scipy.spatial import (
     ConvexHull as _ConvexHull,
-    Delaunay as _Delaunay
+    Delaunay as _Delaunay,
 )
 
 from cdpyr.analysis.workspace.grid import grid_result as _grid
@@ -24,26 +26,38 @@ from cdpyr.analysis.workspace.hull import hull_result as _hull
 from cdpyr.geometry import (
     cuboid as _cuboid,
     cylinder as _cylinder,
-    elliptic_cylinder as _elliptic_cylinder,
     sphere as _sphere,
-    tube as _tube
+    tube as _tube,
 )
 from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
 from cdpyr.robot import (
+    cable as _cable,
+    drivetrain as _drivetrain,
+    drum as _drum,
+    frame as _frame,
+    gearbox as _gearbox,
+    kinematicchain as _kinematic_chain,
+    motor as _motor,
+    platform as _platform,
+    pulley as _pulley,
     robot as _robot,
+)
+from cdpyr.robot.anchor import (
+    frame_anchor as _frame_anchor,
+    platform_anchor as _platform_anchor,
 )
 from cdpyr.typing import (
     Matrix,
-    Vector
+    Vector,
 )
-from cdpyr.visualization.visualizer import Visualizer
+from cdpyr.visualization import visualizer as _visualizer
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Matplotlib(Visualizer, ABC):
+class Matplotlib(_visualizer.Visualizer, ABC):
     _figure: plt.Figure
 
     def __init__(self, *args, figure: plt.Figure = None, **kwargs):
@@ -86,14 +100,14 @@ class Matplotlib(Visualizer, ABC):
         del self.figure
 
     def draw(self):
-        self._figure.canvas.draw_idle()
+        self.figure.canvas.draw_idle()
 
     def reset(self):
         # create a new figure
-        self._figure = plt.figure()
+        self.figure = plt.figure()
 
     def show(self):
-        self._figure.show()
+        self.figure.show()
 
     def render_robot(self,
                      robot: '_robot.Robot',
@@ -108,11 +122,11 @@ class Matplotlib(Visualizer, ABC):
         for list_name in ('kinematic_chains', 'platforms'):
             self._render_component_list(robot, list_name, **kwargs)
 
-    # def render_cable(self,
-    #                  cable: '_cable.Cable',
-    #                  *args,
-    #                  **kwargs):
-    #     pass
+    def render_cable(self,
+                     cable: '_cable.Cable',
+                     *args,
+                     **kwargs):
+        pass
 
     def render_cuboid(self,
                       cuboid: '_cuboid.Cuboid',
@@ -413,14 +427,14 @@ class Matplotlib(Visualizer, ABC):
                               workspace: '_hull.HullResult',
                               *args,
                               **kwargs):
-            pc_args = {
-                'edgecolors': [0.0, 0.0, 0.0],
-                'facecolors': [0.9, 0.9, 0.9],
-                'alpha': 0.75,
-            }
-            self._axes().add_collection(
-                self._poly_collection(workspace.vertices[workspace.faces,:],
-                                      **pc_args))
+        pc_args = {
+            'edgecolors': [0.0, 0.0, 0.0],
+            'facecolors': [0.9, 0.9, 0.9],
+            'alpha':      0.75,
+        }
+        self._axes().add_collection(
+            self._poly_collection(workspace.vertices[workspace.faces, :],
+                                  **pc_args))
 
     def _render_component_list(self,
                                obj: object,

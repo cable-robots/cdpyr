@@ -20,6 +20,8 @@ class Linear(_plotly.Plotly):
     def draw(self):
         self.figure.update_layout(
             yaxis=dict(
+                scaleanchor="x",
+                scaleratio=1,
                 showline=False,
                 showticklabels=False,
                 showgrid=False
@@ -33,42 +35,42 @@ class Linear(_plotly.Plotly):
     #                   **kwargs):
     #     raise NotImplementedError()
 
-    def render_cylinder(self,
-                        cylinder: '_cylinder.Cylinder',
-                        *args,
-                        **kwargs):
-        raise NotImplementedError()
-
-    def render_elliptic_cylinder(self,
-                                 cylinder:
-                                 '_elliptic_cylinder.EllipticCylinder',
-                                 *args,
-                                 **kwargs):
-        raise NotImplementedError()
-
-    def render_sphere(self,
-                      sphere: '_sphere.Sphere',
-                      *args,
-                      **kwargs):
-        raise NotImplementedError()
-
-    def render_tube(self,
-                    tube: '_tube.Tube',
-                    *args,
-                    **kwargs):
-        raise NotImplementedError()
-
-    def render_workspace_grid(self,
-                              workspace: '_grid.GridResult',
-                              *args,
-                              **kwargs):
-        pass
-
-    def render_workspace_hull(self,
-                              workspace: '_hull.HullResult',
-                              *args,
-                              **kwargs):
-        pass
+    # def render_cylinder(self,
+    #                     cylinder: '_cylinder.Cylinder',
+    #                     *args,
+    #                     **kwargs):
+    #     raise NotImplementedError()
+    #
+    # def render_elliptic_cylinder(self,
+    #                              cylinder:
+    #                              '_elliptic_cylinder.EllipticCylinder',
+    #                              *args,
+    #                              **kwargs):
+    #     raise NotImplementedError()
+    #
+    # def render_sphere(self,
+    #                   sphere: '_sphere.Sphere',
+    #                   *args,
+    #                   **kwargs):
+    #     raise NotImplementedError()
+    #
+    # def render_tube(self,
+    #                 tube: '_tube.Tube',
+    #                 *args,
+    #                 **kwargs):
+    #     raise NotImplementedError()
+    #
+    # def render_workspace_grid(self,
+    #                           workspace: '_grid.GridResult',
+    #                           *args,
+    #                           **kwargs):
+    #     pass
+    #
+    # def render_workspace_hull(self,
+    #                           workspace: '_hull.HullResult',
+    #                           *args,
+    #                           **kwargs):
+    #     pass
 
 
 __all__ = [

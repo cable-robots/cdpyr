@@ -1,25 +1,32 @@
-from collections import Mapping
-
-import numpy as _np
 from abc import (
     ABC,
-    abstractmethod,
 )
+from collections import Mapping
+from typing import (
+    Sequence,
+    Union
+)
+
+import numpy as _np
 from plotly import graph_objects as go
 from scipy.spatial import (
     ConvexHull as _ConvexHull,
     Delaunay as _Delaunay,
 )
 
+from cdpyr.analysis.workspace.grid import grid_result as _grid
+from cdpyr.analysis.workspace.hull import hull_result as _hull
 from cdpyr.geometry import (
     cuboid as _cuboid,
     cylinder as _cylinder,
+    elliptic_cylinder as _el_cylinder,
     sphere as _sphere,
     tube as _tube,
 )
 from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
 from cdpyr.robot import (
+    cable as _cable,
     drivetrain as _drivetrain,
     drum as _drum,
     frame as _frame,
@@ -61,13 +68,11 @@ class Plotly(_visualizer.Visualizer, ABC):
     def __init__(self, *args, **kwargs):
         super().__init__()
         self._figure = None
-        self._NUMBER_OF_COORDINATES = 2
-        self._NUMBER_OF_AXES = 2
 
     @property
     def figure(self):
         if self._figure is None:
-            self.figure = go.Figure()
+            self._figure = go.Figure()
 
         return self._figure
 
@@ -90,18 +95,7 @@ class Plotly(_visualizer.Visualizer, ABC):
         pass
 
     def draw(self):
-        self._figure.update_layout()
-
-    def reset(self):
-        self._figure.layout = {}
-        self.figure = go.Figure()
-
-    def show(self):
-        self._figure.update_layout(
-            yaxis=dict(
-                scaleanchor="x",
-                scaleratio=1,
-            ),
+        self.figure.update_layout(
             scene=dict(
                 aspectmode='data',
                 aspectratio=dict(
@@ -111,7 +105,18 @@ class Plotly(_visualizer.Visualizer, ABC):
                 )
             )
         )
-        self._figure.show()
+
+    def reset(self):
+        self.figure = go.Figure()
+
+    def show(self):
+        self.figure.show()
+
+    def render_cable(self,
+                     cable: '_cable.Cable',
+                     *args,
+                     **kwargs):
+        pass
 
     def render_cuboid(self,
                       cuboid: '_cuboid.Cuboid',
@@ -183,8 +188,7 @@ class Plotly(_visualizer.Visualizer, ABC):
         self.figure.add_trace(
             go.Scatter(
                 **self._prepare_plot_coordinates(
-                    self._extract_coordinates(vertices[:, edges]),
-                    self.AXES_NAMES),
+                    self._extract_coordinates(vertices[:, edges])),
                 mode='lines',
                 fill='toself',
                 line=dict(
@@ -214,7 +218,7 @@ class Plotly(_visualizer.Visualizer, ABC):
         self.figure.add_trace(
             self._scatter(
                 **self._prepare_plot_coordinates(
-                    self._extract_coordinates(position), self.AXES_NAMES),
+                    self._extract_coordinates(position)),
                 **update_recursive(dict(
                     mode='markers',
                     marker=dict(
@@ -246,7 +250,7 @@ class Plotly(_visualizer.Visualizer, ABC):
                         self._extract_coordinates(_np.hstack((
                             position, position + 0.25 * dcm.dot(
                                 self.COORDINATE_DIRECTIONS[idx])
-                        ))), self.AXES_NAMES),
+                        )))),
                     **update_recursive(dict(
                         mode='lines',
                         line_color=f'rgb({rgb[0]},{rgb[1]},{rgb[2]})',
@@ -258,11 +262,10 @@ class Plotly(_visualizer.Visualizer, ABC):
                 )
             )
 
-    @abstractmethod
     def render_cylinder(self,
                         cylinder: '_cylinder.Cylinder',
                         *args, **kwargs):
-        raise NotImplementedError()
+        pass
 
     def render_drivetrain(self,
                           drivetrain: '_drivetrain.DriveTrain',
@@ -274,6 +277,12 @@ class Plotly(_visualizer.Visualizer, ABC):
                     drum: '_drum.Drum',
                     *args,
                     **kwargs):
+        pass
+
+    def render_elliptic_cylinder(self,
+                                 cylinder: '_el_cylinder.EllipticCylinder',
+                                 *args,
+                                 **kwargs):
         pass
 
     def render_frame(self,
@@ -382,8 +391,7 @@ class Plotly(_visualizer.Visualizer, ABC):
                     self.figure.add_trace(
                         go.Mesh3d(
                             **self._prepare_plot_coordinates(
-                                self._extract_coordinates(vertices.T),
-                                self.AXES_NAMES),
+                                self._extract_coordinates(vertices.T)),
                             **self._prepare_plot_coordinates(edges.T,
                                                              ('i', 'j', 'k')),
                             color='rgb(0, 0, 0)',
@@ -395,13 +403,13 @@ class Plotly(_visualizer.Visualizer, ABC):
                         )
                     )
                     # close all edges by appending the first column
-                    edges = _np.hstack((edges, edges[:, 0, _np.newxis]))
+                    edges = _np.hstack((edges, edges[:, 0, _np.newaxis]))
                     # and loop over each edge to plot
                     for edge in edges:
                         self.figure.add_trace(
                             go.Scatter3d(
                                 **self._prepare_plot_coordinates(
-                                    vertices[edge, :].T, self.AXES_NAMES),
+                                    vertices[edge, :].T),
                                 mode='lines',
                                 line=dict(
                                     color='rgb(13, 13, 13)',
@@ -417,8 +425,8 @@ class Plotly(_visualizer.Visualizer, ABC):
                     self.figure.add_trace(
                         self._scatter(
                             **self._prepare_plot_coordinates(
-                                self._extract_coordinates(vertices[edges, :].T),
-                                self.AXES_NAMES),
+                                self._extract_coordinates(
+                                    vertices[edges, :].T)),
                             mode='lines',
                             fill='toself',
                             line_color='rgb(13, 13, 13)',
@@ -479,8 +487,7 @@ class Plotly(_visualizer.Visualizer, ABC):
         self.figure.add_trace(
             self._scatter(
                 **self._prepare_plot_coordinates(self._extract_coordinates(
-                    transformation.apply(anchor.linear.position)),
-                    self.AXES_NAMES),
+                    transformation.apply(anchor.linear.position))),
                 **update_recursive(dict(
                     mode='markers',
                     marker=dict(
@@ -514,19 +521,100 @@ class Plotly(_visualizer.Visualizer, ABC):
         for list_name in ('platforms', 'kinematic_chains'):
             self._render_component_list(robot, list_name, **kwargs)
 
-    @abstractmethod
     def render_sphere(self,
                       sphere: '_sphere.Sphere',
                       *args,
                       **kwargs):
-        raise NotImplementedError()
+        pass
 
-    @abstractmethod
     def render_tube(self,
                     tube: '_tube.Tube',
                     *args,
                     **kwargs):
-        raise NotImplementedError()
+        pass
+
+    def render_workspace_grid(self,
+                              workspace: '_grid.GridResult',
+                              *args,
+                              **kwargs):
+        # option to plot only the points inside the workspace
+        only_inside = kwargs.pop('only_inside', False)
+
+        # find the correct scatter object
+        scatter = go.Scatter3d if self._NUMBER_OF_AXES == 3 else go.Scatter
+
+        # plot the points inside the workspace
+        self.figure.add_trace(
+            scatter(
+                **self._prepare_plot_coordinates(
+                    self._extract_coordinates(workspace.inside.T)),
+                mode='markers',
+                marker=dict(
+                    color='rgb(0, 255, 0)',
+                    size=4 if self._NUMBER_OF_AXES == 2 else 6,
+                ),
+                name='workspace: inside',
+                hoverinfo='text',
+                hovertext='',
+                showlegend=False,
+                **kwargs,
+            )
+        )
+        if not only_inside:
+            # plot the points outside the workspace
+            self.figure.add_trace(
+                scatter(
+                    **self._prepare_plot_coordinates(
+                        self._extract_coordinates(workspace.outside.T)),
+                    mode='markers',
+                    marker=dict(
+                        color='rgb(255, 0, 0)',
+                        size=3 if self._NUMBER_OF_AXES == 3 else 5,
+                    ),
+                    name='workspace: outside',
+                    hoverinfo='text',
+                    hovertext='',
+                    showlegend=False,
+                    **kwargs,
+                )
+            )
+
+    def render_workspace_hull(self,
+                              workspace: '_hull.HullResult',
+                              *args,
+                              **kwargs):
+        if self._NUMBER_OF_AXES != 3:
+            raise NotImplementedError()
+
+        # as simple as that
+        self.figure.add_trace(
+            go.Mesh3d(
+                **self._prepare_plot_coordinates(self._extract_coordinates(workspace.vertices.T)),
+                **self._prepare_plot_coordinates(workspace.faces.T, ('i', 'j', 'k')),
+                facecolor=['rgb(255, 0, 0)'] * workspace.faces.shape[0],
+                vertexcolor=['rgb(0, 0, 0)'] * workspace.vertices.shape[0],
+                flatshading=True,
+                opacity=0.75,
+                contour=dict(
+                    show=True,
+                    color='rgb(0, 0, 0)',
+                ),
+                name='workspace',
+                hoverinfo='skip',
+                hovertext='',
+                **kwargs,
+            )
+        )
+
+    def _prepare_plot_coordinates(self, coordinates: Union[Vector, Matrix],
+                                  axes: Sequence = None):
+        # default value for the axes be ('x', 'y', 'z') if not given elsewise
+        if axes is None:
+            axes = self.AXES_NAMES
+
+        # return result as a dictionary of ('e0': [], 'e1': [], ..., 'en': [])
+        return dict(zip(axes[0:self._NUMBER_OF_AXES],
+                        super()._prepare_plot_coordinates(coordinates)))
 
 
 __all__ = [

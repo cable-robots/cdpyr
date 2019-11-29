@@ -7,8 +7,8 @@ from typing import (
     AnyStr,
     Callable,
     Dict,
-    Union,
-    Sequence
+    Sequence,
+    Union
 )
 
 import numpy as _np
@@ -26,8 +26,10 @@ from cdpyr.geometry import (
     sphere as _sphere,
     tube as _tube,
 )
+from cdpyr.helpers import full_classname as fcn
 from cdpyr.robot import (
     RobotComponent,
+    cable as _cable,
     drivetrain as _drivetrain,
     drum as _drum,
     frame as _frame,
@@ -70,32 +72,32 @@ class Visualizer(ABC):
 
     def __init__(self):
         self._MAPPING = {
-            # _cable.Cable.__name__:           self.render_cable,
-            _cuboid.Cuboid.__name__:     self.render_cuboid,
-            _cylinder.Cylinder.__name__: self.render_cylinder,
-            _drivetrain.DriveTrain.__name__:
-                                         self.render_drivetrain,
-            _drum.Drum.__name__:         self.render_drum,
-            _elliptic_cylinder.EllipticCylinder.__name__:
-                                         self.render_elliptic_cylinder,
-            _frame.Frame.__name__:       self.render_frame,
-            _frame_anchor.FrameAnchor.__name__:
-                                         self.render_frame_anchor,
-            _gearbox.Gearbox.__name__:   self.render_gearbox,
-            _geometry.Geometry.__name__: self.render_geometry,
-            _kinematic_chain.KinematicChain.__name__:
-                                         self.render_kinematic_chain,
-            _motor.Motor.__name__:       self.render_motor,
-            _platform.Platform.__name__: self.render_platform,
-            _platform_anchor.PlatformAnchor.__name__:
-                                         self.render_platform_anchor,
-            _pulley.Pulley.__name__:     self.render_pulley,
-            _robot.Robot.__name__:       self.render_robot,
-            _sphere.Sphere.__name__:     self.render_sphere,
-            _tube.Tube.__name__:         self.render_tube,
-            _workspace.Result.__name__:  self.render_workspace,
-            _grid.GridResult.__name__:       self.render_workspace_grid,
-            _hull.HullResult.__name__:       self.render_workspace_hull,
+            fcn(_cable.Cable):              self.render_cable,
+            fcn(_cuboid.Cuboid):            self.render_cuboid,
+            fcn(_cylinder.Cylinder):        self.render_cylinder,
+            fcn(_drivetrain.DriveTrain):    self.render_drivetrain,
+            fcn(_drum.Drum):                self.render_drum,
+            fcn(_elliptic_cylinder.EllipticCylinder):
+                                            self.render_elliptic_cylinder,
+            fcn(_frame.Frame):              self.render_frame,
+            fcn(_frame_anchor.FrameAnchor): self.render_frame_anchor,
+            fcn(_gearbox.Gearbox):          self.render_gearbox,
+            fcn(_geometry.Geometry):        self.render_geometry,
+            fcn(_kinematic_chain.KinematicChain):
+                                            self.render_kinematic_chain,
+            fcn(_motor.Motor):              self.render_motor,
+            fcn(_platform.Platform):        self.render_platform,
+            fcn(_platform_anchor.PlatformAnchor):
+                                            self.render_platform_anchor,
+            fcn(_pulley.Pulley):            self.render_pulley,
+            fcn(_robot.Robot):              self.render_robot,
+            fcn(_sphere.Sphere):            self.render_sphere,
+            fcn(_tube.Tube):                self.render_tube,
+            fcn(_workspace.Result):         self.render_workspace,
+            fcn(_grid.GridResult):
+                                            self.render_workspace_grid,
+            fcn(_hull.HullResult):
+                                            self.render_workspace_hull,
         }
 
     @abstractmethod
@@ -119,7 +121,7 @@ class Visualizer(ABC):
         # that particular object's rendering method
 
         # get type of the object being passed
-        type = obj.__class__.__name__
+        type = fcn(obj)
 
         # draw the given object only if it is supposed to be drawn
         if not args or (args and isinstance(args[0], bool) and args[0]):
@@ -131,12 +133,12 @@ class Visualizer(ABC):
                     f'No render method for object of type `{type}` found.') \
                     from KeyE
 
-    # @abstractmethod
-    # def render_cable(self,
-    #                  cable: '_cable.Cable',
-    #                  *args,
-    #                  **kwargs):
-    #     raise NotImplementedError()
+    @abstractmethod
+    def render_cable(self,
+                     cable: '_cable.Cable',
+                     *args,
+                     **kwargs):
+        raise NotImplementedError()
 
     @abstractmethod
     def render_coordinate_system(self,
@@ -348,7 +350,7 @@ class Visualizer(ABC):
                 (0, self._NUMBER_OF_AXES - coordinate.shape[0]),))
 
         # return result
-        return coordinate[0:self._NUMBER_OF_AXES,:]
+        return coordinate[0:self._NUMBER_OF_AXES, :]
 
     def _extract_dcm(self, dcm: Union[Vector, Matrix]):
         """
@@ -379,12 +381,12 @@ class Visualizer(ABC):
             dcm = dcm[:, :, _np.newaxis]
 
         # extract the data
-        dcm = dcm[0:self._NUMBER_OF_AXES,0:self._NUMBER_OF_AXES,:]
+        dcm = dcm[0:self._NUMBER_OF_AXES, 0:self._NUMBER_OF_AXES, :]
 
         # return single or all dcms
         return dcm[0] if single else dcm
 
-    def _prepare_plot_coordinates(self, coordinates: Union[Vector, Matrix], axes: Sequence[AnyStr] = None):
+    def _prepare_plot_coordinates(self, coordinates: Union[Vector, Matrix]):
         """
         Convert any given (3,) coordinate into something that the plotting
         engine can understand for the current amount of axes
@@ -413,12 +415,7 @@ class Visualizer(ABC):
         if coordinates.ndim == 1:
             coordinates = coordinates[:, _np.newaxis]
 
-        # return result as a dictionary of ('e0': [], 'e1': [], ..., 'en': [])
-        if axes is not None:
-            return dict(zip(axes[0:self._NUMBER_OF_AXES], coordinates))
-        # return result as simple array
-        else:
-            return coordinates
+        return coordinates
 
     def _rgb2RGB(self, rgb: Vector):
         rgb = _np.asarray(rgb)
