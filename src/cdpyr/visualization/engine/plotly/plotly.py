@@ -66,7 +66,7 @@ class Plotly(_visualizer.Visualizer, ABC):
     COORDINATE_NAMES = ['x', 'y', 'z']
 
     def __init__(self, *args, **kwargs):
-        super().__init__()
+        super().__init__(*args, **kwargs)
         self._figure = None
 
     @property
@@ -91,10 +91,10 @@ class Plotly(_visualizer.Visualizer, ABC):
         else:
             return go.Scatter
 
-    def close(self):
+    def close(self, *args, **kwargs):
         pass
 
-    def draw(self):
+    def draw(self, *args, **kwargs):
         self.figure.update_layout(
             scene=dict(
                 aspectmode='data',
@@ -103,7 +103,8 @@ class Plotly(_visualizer.Visualizer, ABC):
                     y=1.00,
                     z=1.00
                 )
-            )
+            ),
+            **kwargs
         )
 
     def reset(self):
