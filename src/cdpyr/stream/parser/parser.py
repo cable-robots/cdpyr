@@ -1,17 +1,25 @@
-from typing import AnyStr, Sequence
+from abc import (
+    ABC,
+    abstractmethod
+)
+from collections import OrderedDict
+from typing import (
+    AnyStr,
+    Union
+)
 
-from abc import ABC, abstractmethod
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
+from cdpyr.robot import RobotComponent
 
 
 class Parser(ABC):
 
+    def kwargs(self, o: RobotComponent, **kwargs):
+        return kwargs
+
     @abstractmethod
-    def encode(self, obj: object, *args, **kwargs) -> AnyStr:
+    def dumps(self, d: Union[OrderedDict, dict], *args, **kwargs) -> AnyStr:
         raise NotImplementedError()
 
     @abstractmethod
-    def decode(self, stream: AnyStr, *args, **kwargs) -> object:
+    def loads(self, s: AnyStr, *args, **kwargs) -> Union[OrderedDict, dict]:
         raise NotImplementedError()
