@@ -1,0 +1,33 @@
+image: python
+
+stages:
+    - test
+
+before_script:
+    - curl -O https://bootstrap.pypa.io/get-pip.py
+    - python get-pip.py
+    - pip install -r dev-requirements.txt
+
+python37:
+    image: python:3.7
+    stage: test
+    script: tox -e py37
+
+check:
+    image: python:3.7
+    stage: test
+    script: tox -e check
+
+spell:
+    image: python:3.7
+    stage: test
+    script: tox -e spell
+
+docs:
+    image: python:3.7
+    stage: test
+    script: tox -e docs
+
+report:
+    stage: test
+    script: tox -e dogfood
