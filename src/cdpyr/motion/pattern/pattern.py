@@ -89,19 +89,11 @@ class Pattern(BaseObject):
                rot: Optional[Matrix] = None,
                cog: Optional[Vector] = None):
         # default value for rotation
-        rot = np_.asarray(rot if rot is not None else (
-            (1.0, 0.0, 0.0),
-            (0.0, 1.0, 0.0),
-            (0.0, 0.0, 1.0)
-        ))
+        rot = np_.asarray(rot) if rot is not None else np_.eye(3)
 
         # default value for center of gravity
         cog = np_.asarray(
             cog if cog is not None else [0] * self.dof_translation)
-
-        # # ensure right dimensions of some arguments
-        # _validator.shape(gravity, (self.dof_translation, ), 'gravity')
-        # _validator.shape(cog, (self.dof_translation, ), 'cog')
 
         # reduce dimensions of vectors and matrices for quicker calculations
         gravity: np_.ndarray = gravity[0:self.dof_translation]
