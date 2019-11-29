@@ -8,7 +8,7 @@ from typing import (
     Union
 )
 
-from cdpyr.robot import RobotComponent
+from cdpyr.robot.robot_component import RobotComponent
 
 
 class Parser(ABC):

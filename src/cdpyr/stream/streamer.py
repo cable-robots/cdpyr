@@ -12,7 +12,7 @@ from cdpyr import (
     schema as _schema
 )
 from cdpyr.helpers import full_classname as fcn
-from cdpyr.robot import RobotComponent
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser as _parser
 
 __author__ = "Philipp Tempel"

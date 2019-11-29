@@ -8,7 +8,7 @@ from typing import (
 
 import xmltodict
 
-from cdpyr.robot import RobotComponent
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser as _parser
 
 
