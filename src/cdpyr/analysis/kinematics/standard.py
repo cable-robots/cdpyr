@@ -3,7 +3,7 @@ from scipy import optimize
 
 from cdpyr.analysis.kinematics import algorithm as _algorithm
 from cdpyr.kinematics.transformation import angular as _angular
-from cdpyr.motion.pose import generator as _pose_generator, pose as _pose
+from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 
@@ -17,19 +17,24 @@ class Standard(_algorithm.Algorithm):
                  robot: '_robot.Robot',
                  joints: Vector,
                  **kwargs) -> dict:
+        # for now, this is the inner-loop code for the first platform
+        index_platform = 0
+
         # consistent arguments
         joints = _np.asarray(joints)
 
         # quicker and shorter access to platform object
-        platform = robot.platforms[0]
+        platform = robot.platforms[index_platform]
 
         # kinematic chains of the platform
-        kcs = robot.kinematic_chains.with_platform(platform)
+        kcs = robot.kinematic_chains.with_platform(index_platform)
         # get frame anchors and platform anchors
-        frame_anchors = _np.asarray(
-            [anchor.position for anchor in kcs.frame_anchor]).T
-        platform_anchors = _np.asarray(
-            [anchor.position for anchor in kcs.platform_anchor]).T
+        frame_anchors = _np.asarray([anchor.position for idx, anchor in
+                                     enumerate(robot.frame.anchors) if
+                                     idx in kcs.frame_anchor]).T
+        platform_anchors = _np.asarray([anchor.position for idx, anchor in
+                                        enumerate(platform.anchors) if
+                                        idx in kcs.platform_anchor]).T
 
         # scaling of all parameters to increase sensitivity of the optimizer
         scaling = _np.asarray([0.1, 0.1, 0.1, 10.0, 10.0, 10.0, 10.0]) * 10
@@ -69,7 +74,7 @@ class Standard(_algorithm.Algorithm):
         initial_estimate = kwargs.get('x0', None)
         # no initial pose estimate given, so calculate one based on Schmidt.2016
         if initial_estimate is None:
-            initial_estimate = self._pose_estimate(robot, joints)
+            # initial_estimate = self._pose_estimate(robot, joints)
             initial_estimate = _np.asarray([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
 
         # introduce scaling
@@ -82,6 +87,7 @@ class Standard(_algorithm.Algorithm):
         # minimization method to use
         method: str = kwargs.get('method', 'COBYLA')
 
+        # tolerances on step size, residual size, and constraint residual size
         xtol, ftol, gtol = 1e-14, 1e-12, 1e-14
 
         # default options of all supported minimization methods
@@ -144,21 +150,22 @@ class Standard(_algorithm.Algorithm):
         try:
             if result.success is not True:
                 raise ArithmeticError(
-                    f'Optimizer did not exit successfully. Last message was '
-                    f'{result.message}')
+                        f'Optimizer did not exit successfully. Last message '
+                        f'was '
+                        f'{result.message}')
         except ArithmeticError as ArithmeticE:
             raise ValueError(
-                'Unable to solve the standard forward kinematics for the '
-                'given joints. Please check if your inputs are correct and '
-                'then run again. You may also pass additional arguments to '
-                'the underlying optimization method.') from ArithmeticE
+                    'Unable to solve the standard forward kinematics for the '
+                    'given joints. Please check if your inputs are correct and '
+                    'then run again. You may also pass additional arguments to '
+                    'the underlying optimization method.') from ArithmeticE
         else:
             final = result.x / scaling
 
             return {
                 'pose':       _pose.Pose(
-                    final[0:3],
-                    angular=_angular.Angular(quaternion=final[3:7])
+                        final[0:3],
+                        angular=_angular.Angular(quaternion=final[3:7])
                 ),
                 'joints':     joints,
                 'directions': last_direction[0]
@@ -168,18 +175,22 @@ class Standard(_algorithm.Algorithm):
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
                   **kwargs) -> dict:
+        # for now, this is the inner-loop code for the first platform
+        index_platform = 0
         # quicker and shorter access to platform object
-        platform = robot.platforms[0]
+        platform = robot.platforms[index_platform]
 
         # get platform position
         pos, rot = pose.position
         # kinematic chains of the platform
-        kcs = robot.kinematic_chains.with_platform(platform)
+        kcs = robot.kinematic_chains.with_platform(index_platform)
         # get frame anchors and platform anchors
-        frame_anchors = _np.asarray(
-            [anchor.position for anchor in kcs.frame_anchor]).T
-        platform_anchors = _np.asarray(
-            [anchor.position for anchor in kcs.platform_anchor]).T
+        frame_anchors = _np.asarray([anchor.position for idx, anchor in
+                                     enumerate(robot.frame.anchors) if
+                                     idx in kcs.frame_anchor]).T
+        platform_anchors = _np.asarray([anchor.position for idx, anchor in
+                                        enumerate(platform.anchors) if
+                                        idx in kcs.platform_anchor]).T
 
         # cable directions
         directions = self._vector_loop(pos,
@@ -215,34 +226,42 @@ class Standard(_algorithm.Algorithm):
                      frame_anchor: Matrix,
                      platform_anchor: Matrix):
         return frame_anchor - (
-            position[:, _np.newaxis] + dcm.dot(platform_anchor)
+                position[:, _np.newaxis] + dcm.dot(platform_anchor)
         )
 
     def _pose_estimate(self, robot: '_robot.Robot', joints: Vector):
         # consistent arguments
         joints = _np.asarray(joints)
 
-        # calculate using the kinematic chains
-        kcs = robot.kinematic_chains
-
         # initialize estimated initial position
         estimate = _np.asarray([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
 
-        frame_anchors = _np.vstack(
-            [anchor.linear.position for anchor in kcs.frame_anchor]).T[
-                        0:robot.platforms[0].dof_translation, :]
-        platform_anchors = _np.vstack(
-            [anchor.linear.position for anchor in kcs.platform_anchor]).T[
-                           0:robot.platforms[0].dof_translation, :]
+        # for now, this is the inner-loop code for the first platform
+        index_platform = 0
+
+        # quicker and shorter access to platform object
+        platform = robot.platforms[index_platform]
+
+        # kinematic chains of the platform
+        kcs = robot.kinematic_chains.with_platform(index_platform)
+        # get frame anchors and platform anchors
+        frame_anchors = _np.asarray([anchor.position for idx, anchor in
+                                     enumerate(robot.frame.anchors) if
+                                     idx in kcs.frame_anchor]).T
+        platform_anchors = _np.asarray([anchor.position for idx, anchor in
+                                        enumerate(platform.anchors) if
+                                        idx in kcs.platform_anchor]).T
 
         radius_low = _np.max(frame_anchors - (joints + _np.linalg.norm(
-            platform_anchors, axis=0))[_np.newaxis, :], axis=1)
+                platform_anchors, axis=0))[_np.newaxis, :], axis=1)
         radius_high = _np.min(frame_anchors + (joints + _np.linalg.norm(
-            platform_anchors, axis=0))[_np.newaxis, :], axis=1)
+                platform_anchors, axis=0))[_np.newaxis, :], axis=1)
+
+        # build index slicer to push values into correct entries
+        platform_slice = slice(0, robot.platforms[index_platform].dof_translation)
 
         # use center of bounding box as initial estimate
-        estimate[0:robot.platforms[0].dof_translation] = 0.5 * (
-            radius_high + radius_low)
+        estimate[platform_slice] = (0.5 * (radius_high + radius_low))[platform_slice]
 
         return estimate
 

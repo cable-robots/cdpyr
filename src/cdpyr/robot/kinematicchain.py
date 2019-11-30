@@ -6,36 +6,28 @@ from typing import (
 
 from magic_repr import make_repr
 
-from cdpyr.robot import (
-    cable as _cable,
-    platform as _platform,
-)
-from cdpyr.robot.anchor import (
-    frame_anchor as _frame_anchor,
-    platform_anchor as _platform_anchor,
-)
 from cdpyr.robot.robot_component import RobotComponent
-from cdpyr.typing import Num
+from cdpyr.typing import Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class KinematicChain(RobotComponent):
-    cable: '_cable.Cable'
-    platform: '_platform.Platform'
-    frame_anchor: '_frame_anchor.FrameAnchor'
-    platform_anchor: '_platform_anchor.PlatformAnchor'
+    cable: int
+    frame_anchor: int
+    platform: int
+    platform_anchor: int
 
     def __init__(self,
-                 frame_anchor: Union['_frame_anchor.FrameAnchor', Num],
-                 platform: Union['_platform.Platform', Num],
-                 platform_anchor: Union['_platform_anchor.PlatformAnchor', Num],
-                 cable: Union['_cable.Cable', Num]
+                 frame_anchor: int,
+                 platform: int,
+                 platform_anchor: int,
+                 cable: int
                  ):
         self.cable = cable
-        self.platform = platform
         self.frame_anchor = frame_anchor
+        self.platform = platform
         self.platform_anchor = platform_anchor
 
     def __eq__(self, other):
@@ -60,14 +52,15 @@ class KinematicChain(RobotComponent):
                      self.platform_anchor))
 
     __repr__ = make_repr(
-        'frame_anchor',
-        'platform',
-        'platform_anchor',
-        'cable'
+            'frame_anchor',
+            'platform',
+            'platform_anchor',
+            'cable'
     )
 
 
 class KinematicChainList(UserList, RobotComponent):
+    data: Sequence[KinematicChain]
 
     @property
     def frame_anchor(self):
@@ -85,23 +78,23 @@ class KinematicChainList(UserList, RobotComponent):
     def cable(self):
         return (kinematicchain.cable for kinematicchain in self.data)
 
-    def with_frame_anchor(self, anchor: '_frame_anchor.FrameAnchor'):
+    def with_frame_anchor(self, anchor: Union[Sequence[Num], Vector]):
         anchor = anchor if isinstance(anchor, Sequence) else [anchor]
 
         return self.__class__(d for d in self.data if d.frame_anchor in anchor)
 
-    def with_platform(self, platform: '_platform.Platform'):
+    def with_platform(self, platform: Union[Sequence[Num], Vector]):
         platform = platform if isinstance(platform, Sequence) else [platform]
 
         return self.__class__(d for d in self.data if d.platform in platform)
 
-    def with_platform_anchor(self, anchor: '_platform.Platform'):
+    def with_platform_anchor(self, anchor: Union[Sequence[Num], Vector]):
         anchor = anchor if isinstance(anchor, Sequence) else [anchor]
 
         return self.__class__(
-            d for d in self.data if d.platform_anchor in anchor)
+                d for d in self.data if d.platform_anchor in anchor)
 
-    def with_cable(self, cable: '_cable.Cable'):
+    def with_cable(self, cable: Union[Sequence[Num], Vector]):
         cable = cable if isinstance(cable, Sequence) else [cable]
 
         return self.__class__(d for d in self.data if d.cable in cable)
@@ -119,7 +112,7 @@ class KinematicChainList(UserList, RobotComponent):
         return not self == other
 
     __repr__ = make_repr(
-        'data'
+            'data'
     )
 
 

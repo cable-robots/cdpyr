@@ -1,12 +1,4 @@
-from typing import (
-    AnyStr,
-    Dict,
-    List,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import AnyStr, Dict, Iterable, Optional, Sequence, Tuple, Union
 
 import numpy as _np
 from magic_repr import make_repr
@@ -17,10 +9,6 @@ from cdpyr.robot import (
     frame as _frame,
     kinematicchain as _kinematicchain,
     platform as _platform,
-)
-from cdpyr.robot.anchor import (
-    frame_anchor as _frame_anchor,
-    platform_anchor as _platform_anchor,
 )
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num, Vector
@@ -109,74 +97,35 @@ class Robot(RobotComponent):
     @kinematic_chains.setter
     def kinematic_chains(self,
                          chains: Union[
-                             '_kinematicchain.KinematicChainList',
                              Sequence['_kinematicchain.KinematicChain'],
+                             '_kinematicchain.KinematicChainList',
                              Sequence[Tuple[int, int, int, int]],
-                             Sequence[Dict[AnyStr, int]]
-                         ]):
-        # turn anything not a set into a set (also removes already redundant
-        # objects)
-        # if not isinstance(chains, Set) and not isinstance(chains, tuple):
-        #     chains = set(chains)
-
-        # loop over each chain and turn it from integer values into object
-        # values
-        for idx, v in enumerate(chains):
-            if not isinstance(v, _kinematicchain.KinematicChain):
-                # create a proper KinematicChain object
-                if isinstance(v, Dict):
-                    frame_anchor = v['frame_anchor']
-                    # platform value may be provided, but must not be,
-                    # so it defaults to the first platform
+                             Sequence[Dict[AnyStr, int]]]):
+        if isinstance(chains, Iterable) \
+                and not isinstance(chains, _kinematicchain.KinematicChainList):
+            # loop over each chain
+            for idx, chain in enumerate(chains):
+                # deal with chain as dictionary
+                if isinstance(chain, dict):
+                    cable = chain['cable']
+                    frame_anchor = chain['frame_anchor']
+                    platform_anchor = chain['platform_anchor']
                     try:
-                        platform = v['platform']
+                        platform = chain['platform']
                     except KeyError:
                         platform = 0
-                    platform_anchor = v['platform_anchor']
-                    cable = v['cable']
-                elif isinstance(v, List) or isinstance(v, Tuple):
-                    # platform value may be provided, but must not be,
-                    # so it defaults to the first platform
+                else:
                     try:
-                        frame_anchor, platform, platform_anchor, cable = v
+                        frame_anchor, platform, platform_anchor, cable = chain
                     except ValueError:
-                        frame_anchor, platform_anchor, cable = v
+                        frame_anchor, platform_anchor, cable = chain
                         platform = 0
+                chains[idx] = _kinematicchain.KinematicChain(frame_anchor,
+                                                                 platform,
+                                                                 platform_anchor,
+                                                                 cable)
 
-                if not isinstance(frame_anchor, _frame_anchor.FrameAnchor):
-                    frame_anchor = self.frame.anchors[frame_anchor]
-
-                if not isinstance(platform, _platform.Platform):
-                    platform = self.platforms[platform]
-
-                if not isinstance(platform_anchor,
-                                  _platform_anchor.PlatformAnchor):
-                    platform_anchor = self.platforms[
-                        self.platforms.index(platform)
-                    ].anchors[platform_anchor]
-
-                if not isinstance(cable, _cable.Cable):
-                    cable = self.cables[cable]
-
-                # update the entry with the correct type i.e., convert
-                # anything into KinematicChain which isn't already
-                chains[idx] = _kinematicchain.KinematicChain(
-                        frame_anchor=frame_anchor,
-                        platform=platform,
-                        platform_anchor=platform_anchor,
-                        cable=cable
-                )
-
-        # We only support unique kinematic chains i.e., one cable may only be
-        # attached to one winch and one platform anchor at a time. That's why
-        # we will remove duplicate kinematic chains from the list but in a
-        # way that the original order is preserved (FIFO-style).
-        # @SEE https://stackoverflow.com/questions/44628186
-        seen = set()
-        seen_add = seen.add
-        chains = [x for x in chains if not (x in seen or seen_add(x))]
-
-        # and set the correct object type
+        # set final value
         self._chains = _kinematicchain.KinematicChainList(chains)
 
     @kinematic_chains.deleter

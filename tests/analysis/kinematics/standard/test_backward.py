@@ -18,9 +18,10 @@ class StandardKinematicsBackwardTestSuite(object):
         res_backward = ik_standard.backward(robot_1t, rand_pose)
 
         # right order of frame and platform anchors
-        frame_anchor = np.asarray([anchor.position for anchor in
-                                   robot_1t.kinematic_chains.with_platform(
-                                       robot_1t.platforms[0]).frame_anchor]).T
+        kcs = robot_1t.kinematic_chains.with_platform(0)
+        frame_anchor = np.asarray([anchor.position for idx, anchor in
+                                   enumerate(robot_1t.frame.anchors) if
+                                   idx in kcs.frame_anchor]).T
 
         assert res_backward.pose == rand_pose
         assert res_backward.lengths.ndim == 1
@@ -29,11 +30,11 @@ class StandardKinematicsBackwardTestSuite(object):
         assert res_backward.directions.shape == (
             1, robot_1t.num_kinematic_chains)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
-            np.ones(robot_1t.num_kinematic_chains, ))
+                np.ones(robot_1t.num_kinematic_chains, ))
         assert rand_pose.linear.position[0:1,
                np.newaxis] + res_backward.lengths * res_backward.directions == \
                pytest.approx(
-                   frame_anchor[0:1, :])
+                       frame_anchor[0:1, :])
 
     def test_motion_pattern_2t(self,
                                robot_2t: Robot,
@@ -44,9 +45,10 @@ class StandardKinematicsBackwardTestSuite(object):
         res_backward = ik_standard.backward(robot_2t, rand_pose)
 
         # right order of frame and platform anchors
-        frame_anchor = np.asarray([anchor.position for anchor in
-                                   robot_2t.kinematic_chains.with_platform(
-                                       robot_2t.platforms[0]).frame_anchor]).T
+        kcs = robot_2t.kinematic_chains.with_platform(0)
+        frame_anchor = np.asarray([anchor.position for idx, anchor in
+                                   enumerate(robot_2t.frame.anchors) if
+                                   idx in kcs.frame_anchor]).T
 
         assert res_backward.pose == rand_pose
         assert res_backward.lengths.ndim == 1
@@ -55,11 +57,11 @@ class StandardKinematicsBackwardTestSuite(object):
         assert res_backward.directions.shape == (
             2, robot_2t.num_kinematic_chains)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
-            np.ones(robot_2t.num_kinematic_chains, ))
+                np.ones(robot_2t.num_kinematic_chains, ))
         assert rand_pose.linear.position[0:2, np.newaxis] \
                + res_backward.lengths * res_backward.directions == \
                pytest.approx(
-                   frame_anchor[0:2, :])
+                       frame_anchor[0:2, :])
 
     def test_motion_pattern_3t(self,
                                robot_3t: Robot,
@@ -70,9 +72,10 @@ class StandardKinematicsBackwardTestSuite(object):
         res_backward = ik_standard.backward(robot_3t, rand_pose)
 
         # right order of frame and platform anchors
-        frame_anchor = np.asarray([anchor.position for anchor in
-                                   robot_3t.kinematic_chains.with_platform(
-                                       robot_3t.platforms[0]).frame_anchor]).T
+        kcs = robot_3t.kinematic_chains.with_platform(0)
+        frame_anchor = np.asarray([anchor.position for idx, anchor in
+                                   enumerate(robot_3t.frame.anchors) if
+                                   idx in kcs.frame_anchor]).T
 
         assert res_backward.pose == rand_pose
         assert res_backward.lengths.ndim == 1
@@ -81,7 +84,7 @@ class StandardKinematicsBackwardTestSuite(object):
         assert res_backward.directions.shape == (
             3, robot_3t.num_kinematic_chains)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
-            np.ones(robot_3t.num_kinematic_chains, ))
+                np.ones(robot_3t.num_kinematic_chains, ))
         assert rand_pose.linear.position[0:3,
                np.newaxis] + res_backward.lengths * res_backward.directions == \
                pytest.approx(frame_anchor[0:3, :])
@@ -95,13 +98,13 @@ class StandardKinematicsBackwardTestSuite(object):
         res_backward = ik_standard.backward(robot_1r2t, rand_pose)
 
         # right order of frame and platform anchors
-        frame_anchor = np.asarray([anchor.position for anchor in
-                                   robot_1r2t.kinematic_chains.with_platform(
-                                       robot_1r2t.platforms[0]).frame_anchor]).T
-        platform_anchor = np.asarray([anchor.position for anchor in
-                                      robot_1r2t.kinematic_chains.with_platform(
-                                          robot_1r2t.platforms[
-                                              0]).platform_anchor]).T
+        kcs = robot_1r2t.kinematic_chains.with_platform(0)
+        frame_anchor = np.asarray([anchor.position for idx, anchor in
+                                   enumerate(robot_1r2t.frame.anchors) if
+                                   idx in kcs.frame_anchor]).T
+        platform_anchor = np.asarray([anchor.position for idx, anchor in
+                                      enumerate(robot_1r2t.platforms[0].anchors)
+                                      if idx in kcs.platform_anchor]).T
 
         assert res_backward.pose == rand_pose
         assert res_backward.lengths.ndim == 1
@@ -110,13 +113,13 @@ class StandardKinematicsBackwardTestSuite(object):
         assert res_backward.directions.shape == (
             2, robot_1r2t.num_kinematic_chains)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
-            np.ones(robot_1r2t.num_kinematic_chains, ))
+                np.ones(robot_1r2t.num_kinematic_chains, ))
         assert rand_pose.linear.position[0:2,
                np.newaxis] + rand_pose.angular.dcm[0:2, 0:2].dot(
-            platform_anchor[0:2, :]) \
+                platform_anchor[0:2, :]) \
                + res_backward.lengths * res_backward.directions == \
                pytest.approx(
-                   frame_anchor[0:2, :])
+                       frame_anchor[0:2, :])
 
     def test_motion_pattern_2r3t(self,
                                  robot_2r3t: Robot,
@@ -127,13 +130,13 @@ class StandardKinematicsBackwardTestSuite(object):
         res_backward = ik_standard.backward(robot_2r3t, rand_pose)
 
         # right order of frame and platform anchors
-        frame_anchor = np.asarray([anchor.position for anchor in
-                                   robot_2r3t.kinematic_chains.with_platform(
-                                       robot_2r3t.platforms[0]).frame_anchor]).T
-        platform_anchor = np.asarray([anchor.position for anchor in
-                                      robot_2r3t.kinematic_chains.with_platform(
-                                          robot_2r3t.platforms[
-                                              0]).platform_anchor]).T
+        kcs = robot_2r3t.kinematic_chains.with_platform(0)
+        frame_anchor = np.asarray([anchor.position for idx, anchor in
+                                   enumerate(robot_2r3t.frame.anchors) if
+                                   idx in kcs.frame_anchor]).T
+        platform_anchor = np.asarray([anchor.position for idx, anchor in
+                                      enumerate(robot_2r3t.platforms[0].anchors)
+                                      if idx in kcs.platform_anchor]).T
 
         assert res_backward.pose == rand_pose
         assert res_backward.lengths.ndim == 1
@@ -142,12 +145,12 @@ class StandardKinematicsBackwardTestSuite(object):
         assert res_backward.directions.shape == (
             3, robot_2r3t.num_kinematic_chains)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
-            np.ones(robot_2r3t.num_kinematic_chains, ))
+                np.ones(robot_2r3t.num_kinematic_chains, ))
         assert rand_pose.linear.position[:, np.newaxis] \
                + rand_pose.angular.dcm.dot(platform_anchor) \
                + res_backward.lengths * res_backward.directions == \
                pytest.approx(
-                   frame_anchor)
+                       frame_anchor)
 
     def test_motion_pattern_3r3t(self,
                                  robot_3r3t: Robot,
@@ -158,13 +161,13 @@ class StandardKinematicsBackwardTestSuite(object):
         res_backward = ik_standard.backward(robot_3r3t, rand_pose)
 
         # right order of frame and platform anchors
-        frame_anchor = np.asarray([anchor.position for anchor in
-                                   robot_3r3t.kinematic_chains.with_platform(
-                                       robot_3r3t.platforms[0]).frame_anchor]).T
-        platform_anchor = np.asarray([anchor.position for anchor in
-                                      robot_3r3t.kinematic_chains.with_platform(
-                                          robot_3r3t.platforms[
-                                              0]).platform_anchor]).T
+        kcs = robot_3r3t.kinematic_chains.with_platform(0)
+        frame_anchor = np.asarray([anchor.position for idx, anchor in
+                                   enumerate(robot_3r3t.frame.anchors) if
+                                   idx in kcs.frame_anchor]).T
+        platform_anchor = np.asarray([anchor.position for idx, anchor in
+                                      enumerate(robot_3r3t.platforms[0].anchors)
+                                      if idx in kcs.platform_anchor]).T
 
         assert res_backward.pose == rand_pose
         assert res_backward.lengths.ndim == 1
@@ -173,12 +176,12 @@ class StandardKinematicsBackwardTestSuite(object):
         assert res_backward.directions.shape == (
             3, robot_3r3t.num_kinematic_chains)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
-            np.ones(robot_3r3t.num_kinematic_chains, ))
+                np.ones(robot_3r3t.num_kinematic_chains, ))
         assert rand_pose.linear.position[:, np.newaxis] \
                + rand_pose.angular.dcm.dot(platform_anchor) \
                + res_backward.lengths * res_backward.directions == \
                pytest.approx(
-                   frame_anchor)
+                       frame_anchor)
 
 
 if __name__ == "__main__":
