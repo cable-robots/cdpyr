@@ -23,6 +23,13 @@ class Spatial(_plotly.Plotly):
                                 z=1.00
                         )
                 ),
+                scene_camera=dict(
+                        eye=dict(
+                                x=-0.75,
+                                y=-1.75,
+                                z=0.25
+                        )
+                ),
                 **kwargs
         )
 
