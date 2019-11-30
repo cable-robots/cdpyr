@@ -69,7 +69,11 @@ class Pattern(BaseObject):
 
     def gravity(self, gravity: Optional[Union[Num, Vector]]):
         # first, scalar value for gravity
-        gravity = np_.asarray(gravity if gravity is not None else [0])
+        gravity = np_.asarray(gravity if gravity is not None else 0)
+
+        # ensure we have a 1-dim vector
+        if gravity.ndim == 0:
+            gravity = np_.asarray([gravity])
 
         # then make the gravity scalar match the linear DOF of the platform.
         # By convention, we will add the scalar gravity value to the last DOF
