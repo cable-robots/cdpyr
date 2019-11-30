@@ -17,4 +17,4 @@ include pyproject.toml
 
 include tox.ini .travis.yml .appveyor.yml
 
-global-exclude *.py[cod] __pycache__/* *.so *.dylib .idea/*
+global-exclude *.py[cod] __pycache__/* *.so *.dylib .idea/* *.DS_Store
