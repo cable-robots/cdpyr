@@ -27,7 +27,7 @@ class Pulley(RobotComponent):
                  angular: Optional['_angular.Angular'] = None
                  ):
         self.radius = radius
-        self.geometry = geometry or _geometry.Geometry()
+        self.geometry = geometry or None
         self.inertia = inertia or _inertia.Inertia()
         if angular is None:
             angular = _angular.Angular(
