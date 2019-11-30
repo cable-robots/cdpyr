@@ -821,26 +821,26 @@ def ipanema_3():
                 {
                     'frame_anchor':    4,
                     # 'platform':        0,  # implied
+                    'platform_anchor': 0,
+                    'cable':           0
+                },
+                {
+                    'frame_anchor':    5,
+                    # 'platform':        0,  # implied
                     'platform_anchor': 1,
                     'cable':           1
                 },
                 {
-                    'frame_anchor':    5,
+                    'frame_anchor':    6,
                     # 'platform':        0,  # implied
                     'platform_anchor': 2,
                     'cable':           2
                 },
                 {
-                    'frame_anchor':    6,
+                    'frame_anchor':    7,
                     # 'platform':        0,  # implied
                     'platform_anchor': 3,
                     'cable':           3
-                },
-                {
-                    'frame_anchor':    7,
-                    # 'platform':        0,  # implied
-                    'platform_anchor': 4,
-                    'cable':           4
                 },
             ],
     )
