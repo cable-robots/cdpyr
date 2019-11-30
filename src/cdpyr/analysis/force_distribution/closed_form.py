@@ -1,13 +1,11 @@
 import numpy as _np
 
-from cdpyr.analysis.force_distribution import (
-    algorithm as _algorithm,
-)
+from cdpyr.analysis.force_distribution import force_distribution as _algorithm
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import (
     Matrix,
-    Vector
+    Vector,
 )
 
 __author__ = "Philipp Tempel"
@@ -33,7 +31,7 @@ class ClosedForm(_algorithm.Algorithm):
             force_mean = 0.5 * (force_max + force_min)
             # and distribution
             distribution = force_mean - _np.linalg.pinv(structure_matrix).dot(
-                wrench + structure_matrix.dot(force_mean))
+                    wrench + structure_matrix.dot(force_mean))
 
         return {
             'pose':   pose,

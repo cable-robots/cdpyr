@@ -1,13 +1,11 @@
 import numpy as _np
 
-from cdpyr.analysis.force_distribution import (
-    algorithm as _algorithm,
-)
+from cdpyr.analysis.force_distribution import force_distribution as _algorithm
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import (
     Matrix,
-    Vector
+    Vector,
 )
 
 __author__ = "Philipp Tempel"
@@ -37,8 +35,8 @@ class ClosedFormImproved(_algorithm.Algorithm):
                 # solve the closed form for the given distribution
                 distribution = self._closed_form(_structure_matrix,
                                                  0.5 * (
-                                                     _force_min +
-                                                     _force_max),
+                                                         _force_min +
+                                                         _force_max),
                                                  _wrench)
 
                 # logical indices where forces are below and above limits
@@ -88,10 +86,10 @@ class ClosedFormImproved(_algorithm.Algorithm):
                 new_distribution = _np.zeros_like(distribution)
                 new_distribution[reduce] = invalid_force
                 new_distribution[keep] = solve_and_reduce(
-                    _structure_matrix[:, keep],
-                    _force_min[keep],
-                    _force_max[keep],
-                    _wrench + _structure_matrix[:, reduce] * invalid_force)
+                        _structure_matrix[:, keep],
+                        _force_min[keep],
+                        _force_max[keep],
+                        _wrench + _structure_matrix[:, reduce] * invalid_force)
 
                 return new_distribution
 
@@ -112,7 +110,7 @@ class ClosedFormImproved(_algorithm.Algorithm):
                      wrench: Vector):
         # return a quick form of the closed form
         return force_mean - _np.linalg.pinv(structure_matrix).dot(
-            wrench + structure_matrix.dot(force_mean))
+                wrench + structure_matrix.dot(force_mean))
 
 
 __all__ = [

@@ -1,6 +1,6 @@
 import numpy as _np
 
-from cdpyr.analysis.kinematics import algorithm as _kinematics
+from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot

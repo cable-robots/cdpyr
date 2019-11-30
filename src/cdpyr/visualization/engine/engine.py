@@ -4,9 +4,9 @@ from typing import AnyStr, Callable, Dict, Union
 import numpy as _np
 from abc import ABC, abstractmethod
 
-from cdpyr.analysis.workspace.grid import grid_result as _grid_result
-from cdpyr.analysis.workspace.hull import hull_result as _hull_result
-from cdpyr.analysis.workspace.result import Result as WorkspaceResult
+from cdpyr.analysis.kinematics import kinematics as _kinematics
+from cdpyr.analysis.workspace import grid as _grid, hull as _hull
+from cdpyr.analysis.workspace.workspace import Result as WorkspaceResult
 from cdpyr.helpers import full_classname as fcn
 from cdpyr.robot import (
     cable as _cable,
@@ -14,7 +14,6 @@ from cdpyr.robot import (
     drum as _drum,
     frame as _frame,
     gearbox as _gearbox,
-    kinematicchain as _kinematic_chain,
     motor as _motor,
     platform as _platform,
     pulley as _pulley,
@@ -56,32 +55,21 @@ class Engine(ABC):
             fcn(_drum.Drum):                self.render_drum,
             fcn(_frame.Frame):              self.render_frame,
             fcn(_frame_anchor.FrameAnchor): self.render_frame_anchor,
-            fcn(
-                    _frame_anchor.FrameAnchorList):
+            fcn(_frame_anchor.FrameAnchorList):
                                             self.render_frame_anchor_list,
             fcn(_gearbox.Gearbox):          self.render_gearbox,
-            fcn(
-                    _kinematic_chain.KinematicChain):
-                                            self.render_kinematic_chain,
-            fcn(_kinematic_chain.KinematicChainList):
-                                            self.render_kinematic_chain_list,
+            fcn(_kinematics.Result):        self.render_kinematics,
             fcn(_motor.Motor):              self.render_motor,
             fcn(_platform.Platform):        self.render_platform,
             fcn(_platform.PlatformList):    self.render_platform_list,
-            fcn(
-                    _platform_anchor.PlatformAnchor):
+            fcn(_platform_anchor.PlatformAnchor):
                                             self.render_platform_anchor,
-            fcn(
-                    _platform_anchor.PlatformAnchorList):
+            fcn(_platform_anchor.PlatformAnchorList):
                                             self.render_platform_anchor_list,
             fcn(_pulley.Pulley):            self.render_pulley,
             fcn(_robot.Robot):              self.render_robot,
-            fcn(
-                    _grid_result.GridResult):
-                                            self.render_workspace_grid,
-            fcn(
-                    _hull_result.HullResult):
-                                            self.render_workspace_hull,
+            fcn(_grid.Result):              self.render_workspace_grid,
+            fcn(_hull.Result):              self.render_workspace_hull,
         }
 
     @abstractmethod
@@ -100,7 +88,7 @@ class Engine(ABC):
     def show(self):
         raise NotImplementedError()
 
-    def render(self, o: Union[RobotComponent, WorkspaceResult], *args,
+    def render(self, o: Union['RobotComponent', 'WorkspaceResult'], *args,
                **kwargs):
         self._RESOLVER[fcn(o)](o, *args, **kwargs)
 
@@ -180,16 +168,16 @@ class Engine(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_workspace_grid(self, workspace: '_grid_result.GridResult', *args,
+    def render_workspace_grid(self, workspace: '_grid.Result', *args,
                               **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_workspace_hull(self, workspace: '_hull_result.HullResult', *args,
+    def render_workspace_hull(self, workspace: '_hull.Result', *args,
                               **kwargs):
         raise NotImplementedError()
 
-    def _render_component_list(self, obj: RobotComponent, name: str, *args,
+    def _render_component_list(self, obj: 'RobotComponent', name: str, *args,
                                **kwargs):
         # get user-defined plot styles for the component
         styles = kwargs.pop(name, {})

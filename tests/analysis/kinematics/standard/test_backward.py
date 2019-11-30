@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.analysis.kinematics.algorithm import Algorithm as Calculator
+from cdpyr.analysis.kinematics.standard import Standard as StandardKinematics
 from cdpyr.motion import Pose
 from cdpyr.robot import Robot
 
@@ -11,7 +11,7 @@ class StandardKinematicsBackwardTestSuite(object):
     def test_motion_pattern_1t(self,
                                robot_1t: Robot,
                                rand_pose_1t: Pose,
-                               ik_standard: Calculator):
+                               ik_standard: StandardKinematics):
         # shift so we can copy code more easily from one test case to another
         rand_pose = rand_pose_1t
 
@@ -39,7 +39,7 @@ class StandardKinematicsBackwardTestSuite(object):
     def test_motion_pattern_2t(self,
                                robot_2t: Robot,
                                rand_pose_2t: Pose,
-                               ik_standard: Calculator):
+                               ik_standard: StandardKinematics):
         rand_pose = rand_pose_2t
 
         res_backward = ik_standard.backward(robot_2t, rand_pose)
@@ -66,7 +66,7 @@ class StandardKinematicsBackwardTestSuite(object):
     def test_motion_pattern_3t(self,
                                robot_3t: Robot,
                                rand_pose_3t: Pose,
-                               ik_standard: Calculator):
+                               ik_standard: StandardKinematics):
         rand_pose = rand_pose_3t
 
         res_backward = ik_standard.backward(robot_3t, rand_pose)
@@ -92,7 +92,7 @@ class StandardKinematicsBackwardTestSuite(object):
     def test_motion_pattern_1r2t(self,
                                  robot_1r2t: Robot,
                                  rand_pose_1r2t: Pose,
-                                 ik_standard: Calculator):
+                                 ik_standard: StandardKinematics):
         rand_pose = rand_pose_1r2t
 
         res_backward = ik_standard.backward(robot_1r2t, rand_pose)
@@ -124,7 +124,7 @@ class StandardKinematicsBackwardTestSuite(object):
     def test_motion_pattern_2r3t(self,
                                  robot_2r3t: Robot,
                                  rand_pose_2r3t: Pose,
-                                 ik_standard: Calculator):
+                                 ik_standard: StandardKinematics):
         rand_pose = rand_pose_2r3t
 
         res_backward = ik_standard.backward(robot_2r3t, rand_pose)
@@ -155,7 +155,7 @@ class StandardKinematicsBackwardTestSuite(object):
     def test_motion_pattern_3r3t(self,
                                  robot_3r3t: Robot,
                                  rand_pose_3r3t: Pose,
-                                 ik_standard: Calculator):
+                                 ik_standard: StandardKinematics):
         rand_pose = rand_pose_3r3t
 
         res_backward = ik_standard.backward(robot_3r3t, rand_pose)

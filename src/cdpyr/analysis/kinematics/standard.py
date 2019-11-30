@@ -1,7 +1,7 @@
 import numpy as _np
 from scipy import optimize
 
-from cdpyr.analysis.kinematics import algorithm as _algorithm
+from cdpyr.analysis.kinematics import kinematics as _algorithm
 from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
@@ -258,10 +258,12 @@ class Standard(_algorithm.Algorithm):
                 platform_anchors, axis=0))[_np.newaxis, :], axis=1)
 
         # build index slicer to push values into correct entries
-        platform_slice = slice(0, robot.platforms[index_platform].dof_translation)
+        platform_slice = slice(0,
+                               robot.platforms[index_platform].dof_translation)
 
         # use center of bounding box as initial estimate
-        estimate[platform_slice] = (0.5 * (radius_high + radius_low))[platform_slice]
+        estimate[platform_slice] = (0.5 * (radius_high + radius_low))[
+            platform_slice]
 
         return estimate
 

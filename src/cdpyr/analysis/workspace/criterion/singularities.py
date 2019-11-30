@@ -1,4 +1,4 @@
-from cdpyr.analysis.kinematics import algorithm as _kinematics
+from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.structure_matrix import calculator as _structure_matrix
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.motion.pose import pose as _pose

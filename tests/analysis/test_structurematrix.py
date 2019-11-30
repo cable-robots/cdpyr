@@ -1,16 +1,18 @@
 import pytest
 
-import cdpyr
-import cdpyr.analysis.kinematics.algorithm
+from cdpyr.analysis.kinematics.standard import Standard as StandardKinematics
+from cdpyr.analysis.structure_matrix.calculator import Calculator as StructureMatrixCalculator
+from cdpyr.motion.pose import Pose
+from cdpyr.robot import Robot
 
 
 class StructureMatrixTestSuite(object):
 
     def test_1t(self,
-                robot_1t: cdpyr.robot.Robot,
-                rand_pose_1t: cdpyr.motion.Pose,
-                ik_standard: cdpyr.analysis.kinematics.algorithm.Algorithm):
-        sms = cdpyr.analysis.structure_matrix.Calculator(ik_standard)
+                robot_1t: Robot,
+                rand_pose_1t: Pose,
+                ik_standard: StandardKinematics):
+        sms = StructureMatrixCalculator(ik_standard)
         structmat = sms.evaluate(robot_1t, rand_pose_1t)
 
         assert structmat.pose == rand_pose_1t
@@ -20,10 +22,10 @@ class StructureMatrixTestSuite(object):
         assert structmat.null_space is structmat.nullspace
 
     def test_2t(self,
-                robot_2t: cdpyr.robot.Robot,
-                rand_pose_2t: cdpyr.motion.Pose,
-                ik_standard: cdpyr.analysis.kinematics.algorithm.Algorithm):
-        sms = cdpyr.analysis.structure_matrix.Calculator(ik_standard)
+                robot_2t: Robot,
+                rand_pose_2t: Pose,
+                ik_standard: StandardKinematics):
+        sms = StructureMatrixCalculator(ik_standard)
         structmat = sms.evaluate(robot_2t, rand_pose_2t)
 
         assert structmat.pose == rand_pose_2t
@@ -33,10 +35,10 @@ class StructureMatrixTestSuite(object):
         assert structmat.null_space is structmat.nullspace
 
     def test_3t(self,
-                robot_3t: cdpyr.robot.Robot,
-                rand_pose_3t: cdpyr.motion.Pose,
-                ik_standard: cdpyr.analysis.kinematics.algorithm.Algorithm):
-        sms = cdpyr.analysis.structure_matrix.Calculator(ik_standard)
+                robot_3t: Robot,
+                rand_pose_3t: Pose,
+                ik_standard: StandardKinematics):
+        sms = StructureMatrixCalculator(ik_standard)
         structmat = sms.evaluate(robot_3t, rand_pose_3t)
 
         assert structmat.pose == rand_pose_3t
@@ -46,11 +48,10 @@ class StructureMatrixTestSuite(object):
         assert structmat.null_space is structmat.nullspace
 
     def test_1r2t(self,
-                  robot_1r2t: cdpyr.robot.Robot,
-                  rand_pose_1r2t: cdpyr.motion.Pose,
-                  ik_standard:
-                  cdpyr.analysis.kinematics.algorithm.Algorithm):
-        sms = cdpyr.analysis.structure_matrix.Calculator(ik_standard)
+                  robot_1r2t: Robot,
+                  rand_pose_1r2t: Pose,
+                  ik_standard: StandardKinematics):
+        sms = StructureMatrixCalculator(ik_standard)
         structmat = sms.evaluate(robot_1r2t, rand_pose_1r2t)
 
         assert structmat.pose == rand_pose_1r2t
@@ -60,11 +61,10 @@ class StructureMatrixTestSuite(object):
         assert structmat.null_space is structmat.nullspace
 
     def test_2r3t(self,
-                  robot_2r3t: cdpyr.robot.Robot,
-                  rand_pose_2r3t: cdpyr.motion.Pose,
-                  ik_standard:
-                  cdpyr.analysis.kinematics.algorithm.Algorithm):
-        sms = cdpyr.analysis.structure_matrix.Calculator(ik_standard)
+                  robot_2r3t: Robot,
+                  rand_pose_2r3t: Pose,
+                  ik_standard: StandardKinematics):
+        sms = StructureMatrixCalculator(ik_standard)
         structmat = sms.evaluate(robot_2r3t, rand_pose_2r3t)
 
         assert structmat.pose == rand_pose_2r3t
@@ -74,11 +74,10 @@ class StructureMatrixTestSuite(object):
         assert structmat.null_space is structmat.nullspace
 
     def test_3r3t(self,
-                  robot_3r3t: cdpyr.robot.Robot,
-                  rand_pose_3r3t: cdpyr.motion.Pose,
-                  ik_standard:
-                  cdpyr.analysis.kinematics.algorithm.Algorithm):
-        sms = cdpyr.analysis.structure_matrix.Calculator(ik_standard)
+                  robot_3r3t: Robot,
+                  rand_pose_3r3t: Pose,
+                  ik_standard: StandardKinematics):
+        sms = StructureMatrixCalculator(ik_standard)
         structmat = sms.evaluate(robot_3r3t, rand_pose_3r3t)
 
         assert structmat.pose == rand_pose_3r3t

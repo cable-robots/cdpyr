@@ -5,7 +5,7 @@ from typing import (
 
 import numpy as _np
 
-from cdpyr.analysis.force_distribution import algorithm as \
+from cdpyr.analysis.force_distribution import force_distribution as \
     _force_distribution
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.motion.pose import pose as _pose

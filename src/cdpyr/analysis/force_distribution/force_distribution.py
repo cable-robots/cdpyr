@@ -1,12 +1,13 @@
 from typing import Union
 
+import copy
 import numpy as _np
 from abc import abstractmethod
+from magic_repr import make_repr
 
 from cdpyr import validator as _validator
-from cdpyr.analysis import evaluator as _evaluator
-from cdpyr.analysis.force_distribution import force_distribution_result as _result
-from cdpyr.analysis.kinematics import algorithm as _kinematics
+from cdpyr.analysis import evaluator as _evaluator, result as _result
+from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.structure_matrix import calculator as _structure_matrix
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
@@ -72,8 +73,9 @@ class Algorithm(_evaluator.PoseEvaluator):
                  **kwargs):
         if robot.num_platforms > 1:
             raise NotImplementedError(
-                'Force distributions are currently not implemented for robots '
-                'with more than one platform.'
+                    'Force distributions are currently not implemented for '
+                    'robots '
+                    'with more than one platform.'
             )
 
         # parse force limits
@@ -83,15 +85,13 @@ class Algorithm(_evaluator.PoseEvaluator):
         structure_matrix = self._structure_matrix.evaluate(robot, pose)
 
         # pass down to actual implementation
-        return _result.ForceDistributionResult(self,
-                                               **self._evaluate(robot,
-                                               pose,
-                                               structure_matrix.matrix,
-                                               wrench,
-                                               force_min,
-                                               force_max,
-                                               **kwargs)
-                                               )
+        return Result(self, **self._evaluate(robot,
+                                             pose,
+                                             structure_matrix.matrix,
+                                             wrench,
+                                             force_min,
+                                             force_max,
+                                             **kwargs))
 
     @abstractmethod
     def _evaluate(self,
@@ -112,13 +112,13 @@ class Algorithm(_evaluator.PoseEvaluator):
         # fewer limits than kinematic chains passed
         if force_min.size < robot.num_kinematic_chains:
             force_min = _np.repeat(
-                force_min,
-                _np.ceil(robot.num_kinematic_chains / force_min.size)
+                    force_min,
+                    _np.ceil(robot.num_kinematic_chains / force_min.size)
             )[0:robot.num_kinematic_chains]
         if force_max.size < robot.num_kinematic_chains:
             force_max = _np.repeat(
-                force_max,
-                _np.ceil(robot.num_kinematic_chains / force_max.size)
+                    force_max,
+                    _np.ceil(robot.num_kinematic_chains / force_max.size)
             )[0:robot.num_kinematic_chains]
 
         # finally validate these values
@@ -136,4 +136,46 @@ class Algorithm(_evaluator.PoseEvaluator):
 
 __all__ = [
     'Algorithm',
+]
+
+
+class Result(_result.PoseResult):
+    _algorithm: 'Algorithm'
+    _forces: Vector
+    _wrench: Vector
+
+    def __init__(self,
+                 algorithm: 'Algorithm',
+                 pose: '_pose.Pose',
+                 forces: Vector,
+                 wrench: Vector,
+                 **kwargs):
+        super().__init__(pose)
+        self._algorithm = copy.deepcopy(algorithm)
+        self._forces = forces
+        self._wrench = wrench
+
+    @property
+    def algorithm(self):
+        return self._algorithm
+
+    @property
+    def forces(self):
+        return self._forces
+
+    @property
+    def wrench(self):
+        return self._wrench
+
+    __repr__ = make_repr(
+            'algorithm',
+            'pose',
+            'forces',
+            'wrench'
+    )
+
+
+__all__ = [
+    'Algorithm',
+    'Result',
 ]

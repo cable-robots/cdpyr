@@ -8,7 +8,7 @@ from cdpyr.analysis import (
     force_distribution,
     workspace,
 )
-from cdpyr.analysis.kinematics.algorithm import Algorithm as Kinematics
+from cdpyr.analysis.kinematics.kinematics import Algorithm as Kinematics
 from cdpyr.analysis.workspace.archetype.archetype import Archetype
 from cdpyr.kinematics.transformation import Angular
 from cdpyr.robot import Robot
@@ -38,20 +38,20 @@ class GridWorkspace1R2TTestSuite(object):
                                lower_bound: Union[Num, Vector],
                                upper_bound: Union[Num, Vector],
                                steps: Union[Num, Vector]):
-        rob = robot_1r2t
+        robot = robot_1r2t
         # create the criterion
         criterion = workspace.criterion.CableLength(ik_standard, np.asarray(
                 [0.50, 1.50]) * np.sqrt(2))
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(archetype,
-                                              criterion,
-                                              lower_bound,
-                                              upper_bound,
-                                              steps)
+        calculator = workspace.grid.Calculator(archetype,
+                                               criterion,
+                                               lower_bound,
+                                               upper_bound,
+                                               steps)
 
         # evaluate workspace
-        workspace_grid = calculator.evaluate(rob)
+        workspace_grid = calculator.evaluate(robot)
 
     @pytest.mark.parametrize(
             ['archetype', 'lower_bound', 'upper_bound', 'steps'],
@@ -71,19 +71,19 @@ class GridWorkspace1R2TTestSuite(object):
                                 lower_bound: Union[Num, Vector],
                                 upper_bound: Union[Num, Vector],
                                 steps: Union[Num, Vector]):
-        rob = robot_1r2t
+        robot = robot_1r2t
         # create the criterion
         criterion = workspace.criterion.Singularities(ik_standard)
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(archetype,
-                                              criterion,
-                                              lower_bound,
-                                              upper_bound,
-                                              steps)
+        calculator = workspace.grid.Calculator(archetype,
+                                               criterion,
+                                               lower_bound,
+                                               upper_bound,
+                                               steps)
 
         # evaluate workspace
-        workspace_grid = calculator.evaluate(rob)
+        workspace_grid = calculator.evaluate(robot)
 
     @pytest.mark.parametrize(
             ['archetype', 'lower_bound', 'upper_bound', 'steps'],
@@ -103,19 +103,19 @@ class GridWorkspace1R2TTestSuite(object):
                                 lower_bound: Union[Num, Vector],
                                 upper_bound: Union[Num, Vector],
                                 steps: Union[Num, Vector]):
-        rob = robot_1r2t
+        robot = robot_1r2t
         # create the criterion
         criterion = workspace.criterion.Singularities(ik_standard)
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(archetype,
-                                              criterion,
-                                              lower_bound,
-                                              upper_bound,
-                                              steps)
+        calculator = workspace.grid.Calculator(archetype,
+                                               criterion,
+                                               lower_bound,
+                                               upper_bound,
+                                               steps)
 
         # evaluate workspace
-        workspace_grid = calculator.evaluate(rob)
+        workspace_grid = calculator.evaluate(robot)
 
     @pytest.mark.parametrize(
             ['archetype', 'lower_bound', 'upper_bound', 'steps'],
@@ -135,20 +135,20 @@ class GridWorkspace1R2TTestSuite(object):
                                   lower_bound: Union[Num, Vector],
                                   upper_bound: Union[Num, Vector],
                                   steps: Union[Num, Vector]):
-        rob = robot_1r2t
+        robot = robot_1r2t
         # create the criterion
         criterion = workspace.criterion.WrenchFeasible(
                 force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(archetype,
-                                              criterion,
-                                              lower_bound,
-                                              upper_bound,
-                                              steps)
+        calculator = workspace.grid.Calculator(archetype,
+                                               criterion,
+                                               lower_bound,
+                                               upper_bound,
+                                               steps)
 
         # evaluate workspace
-        workspace_grid = calculator.evaluate(rob)
+        workspace_grid = calculator.evaluate(robot)
 
 
 if __name__ == "__main__":

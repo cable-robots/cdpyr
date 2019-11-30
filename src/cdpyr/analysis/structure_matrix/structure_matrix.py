@@ -1,25 +1,43 @@
 from typing import Union
 
 import numpy as _np
+from abc import abstractmethod
 from magic_repr import make_repr
 from scipy.linalg import null_space
 
-from cdpyr.analysis import result as _result
-from cdpyr.motion import pose as _pose
+from cdpyr.analysis import evaluator as _evaluator, result as _result
+from cdpyr.motion.pose import pose as _pose
+from cdpyr.robot import platform as _platform
 from cdpyr.typing import Matrix
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class StructureMatrixResult(_result.PoseResult):
+class Algorithm(_evaluator.Evaluator):
+
+    def evaluate(self,
+                 platform: '_platform.Platform',
+                 pose: '_pose.Pose',
+                 directions: Matrix) -> '_result.StructureMatrixResult':
+        return Result(pose, **self._evaluate(platform, pose, directions))
+
+    @abstractmethod
+    def _evaluate(self,
+                  platform: '_platform.Platform',
+                  pose: '_pose.Pose',
+                  directions: Matrix) -> dict:
+        raise NotImplementedError()
+
+
+class Result(_result.PoseResult):
     _matrix: Matrix
     _kernel: Matrix
     _pinv: Matrix
 
-    def __init__(self, pose: '_pose.Pose', matrix: Union[Matrix, 'StructureMatrixResult']):
+    def __init__(self, pose: '_pose.Pose', matrix: Union[Matrix, 'Result']):
         super().__init__(pose)
-        self._matrix = matrix.matrix if isinstance(matrix, StructureMatrixResult) else matrix
+        self._matrix = matrix.matrix if isinstance(matrix, Result) else matrix
         self._kernel = None
         self._pinv = None
 
@@ -61,12 +79,13 @@ class StructureMatrixResult(_result.PoseResult):
         return self._pinv
 
     __repr__ = make_repr(
-        'pose',
-        'matrix',
-        'kernel',
+            'pose',
+            'matrix',
+            'kernel',
     )
 
 
 __all__ = [
-    'StructureMatrixResult',
+    'Algorithm',
+    'Result',
 ]

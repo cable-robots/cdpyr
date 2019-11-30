@@ -2,16 +2,14 @@ from typing import Union
 
 import numpy as _np
 
-from cdpyr.analysis.force_distribution import (
-    algorithm as _algorithm,
-)
-from cdpyr.analysis.kinematics import algorithm as _kinematics
+from cdpyr.analysis.force_distribution import force_distribution as _algorithm
+from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import (
     Matrix,
     Num,
-    Vector
+    Vector,
 )
 
 __author__ = "Philipp Tempel"
@@ -70,23 +68,23 @@ class Dykstra(_algorithm.Algorithm):
 
             # initial projection before loop starts
             projection_c = projection_a = 0.5 * (
-                force_min + force_max) * _np.ones(
-                num_cables)
+                    force_min + force_max) * _np.ones(
+                    num_cables)
 
             # actual loop
             while not converged:
                 # first projection step
                 projection_a_new = (
-                                       eye
-                                       - structurematrix_pinv.dot(
-                                       structure_matrix)
+                                           eye
+                                           - structurematrix_pinv.dot(
+                                           structure_matrix)
                                    ).dot(projection_c) \
                                    - structurematrix_pinv.dot(wrench)
 
                 # project down onto force limit boundaries
                 projection_c_new = _np.minimum(
-                    _np.maximum(projection_c, force_min),
-                    force_max
+                        _np.maximum(projection_c, force_min),
+                        force_max
                 )
 
                 # check for break conditions
@@ -110,10 +108,12 @@ class Dykstra(_algorithm.Algorithm):
                 # fail if not converged
                 if kiter >= max_iter:
                     raise ArithmeticError(
-                        'Could not find a valid force distribution using the '
-                        'current algorithm. Please check your arguments or '
-                        'try another algorithm if you are sure there must be '
-                        'a valid force distribution.')
+                            'Could not find a valid force distribution using '
+                            'the '
+                            'current algorithm. Please check your arguments or '
+                            'try another algorithm if you are sure there must '
+                            'be '
+                            'a valid force distribution.')
 
                 distribution = projection_a
 

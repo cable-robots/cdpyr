@@ -1,19 +1,18 @@
 from typing import (
     AnyStr,
-    Dict
+    Dict,
 )
 
 from cdpyr.analysis import evaluator as _evaluator
-from cdpyr.analysis.kinematics import algorithm as _kinematics
+from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.structure_matrix import (
-    algorithm as _structure_matrix,
     motion_pattern_1r2t as _structure_matrix_1r2t,
     motion_pattern_1t as _structure_matrix_1t,
     motion_pattern_2r3t as _structure_matrix_2r3t,
     motion_pattern_2t as _structure_matrix_2t,
     motion_pattern_3r3t as _structure_matrix_3r3t,
     motion_pattern_3t as _structure_matrix_3t,
-    structure_matrix_result as _result,
+    structure_matrix as _structure_matrix,
 )
 from cdpyr.motion import pattern as _motion_pattern
 from cdpyr.motion.pose import pose as _pose
@@ -25,7 +24,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Calculator(_evaluator.PoseEvaluator):
     kinematics: '_kinematics.Algorithm'
-    resolver: Dict[AnyStr, _structure_matrix.Algorithm]
+    resolver: Dict[AnyStr, '_structure_matrix.Algorithm']
 
     def __init__(self,
                  kinematics: '_kinematics.Algorithm',
@@ -54,8 +53,9 @@ class Calculator(_evaluator.PoseEvaluator):
                  pose: '_pose.Pose'):
         if robot.num_platforms > 1:
             raise NotImplementedError(
-                'Structure matrices are currently not implemented for robots '
-                'with more than one platform.'
+                    'Structure matrices are currently not implemented for '
+                    'robots '
+                    'with more than one platform.'
             )
 
         # solve inverse kinematics
@@ -64,13 +64,13 @@ class Calculator(_evaluator.PoseEvaluator):
         # get first platform
         platform = robot.platforms[0]
 
-        return _result.StructureMatrixResult(pose,
-                                             self.resolver[platform.motion_pattern]
-                                             .evaluate(platform,
-                                        pose,
-                                        kinematics.directions
-                                        )
-                                             )
+        return _structure_matrix.Result(
+                pose,
+                self.resolver[platform.motion_pattern].evaluate(
+                        platform,
+                        pose,
+                        kinematics.directions)
+        )
 
 
 __all__ = [

@@ -1,21 +1,21 @@
-from abc import (
-    ABC,
-)
 from collections import Mapping
 from typing import (
     Sequence,
-    Union
+    Union,
 )
 
 import numpy as _np
+from abc import (
+    ABC,
+)
 from plotly import graph_objects as go
 from scipy.spatial import (
     ConvexHull as _ConvexHull,
     Delaunay as _Delaunay,
 )
 
-from cdpyr.analysis.workspace.grid import grid_result as _grid
-from cdpyr.analysis.workspace.hull import hull_result as _hull
+from cdpyr.analysis.kinematics import kinematics as _kinematics
+from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.geometry import (
     cuboid as _cuboid,
     cylinder as _cylinder,
@@ -31,7 +31,6 @@ from cdpyr.robot import (
     drum as _drum,
     frame as _frame,
     gearbox as _gearbox,
-    kinematicchain as _kinematic_chain,
     motor as _motor,
     platform as _platform,
     pulley as _pulley,
@@ -96,15 +95,15 @@ class Plotly(_engine.Engine, ABC):
 
     def draw(self, *args, **kwargs):
         self.figure.update_layout(
-            scene=dict(
-                aspectmode='data',
-                aspectratio=dict(
-                    x=1.00,
-                    y=1.00,
-                    z=1.00
-                )
-            ),
-            **kwargs
+                scene=dict(
+                        aspectmode='data',
+                        aspectratio=dict(
+                                x=1.00,
+                                y=1.00,
+                                z=1.00
+                        )
+                ),
+                **kwargs
         )
 
     def reset(self):
@@ -187,20 +186,20 @@ class Plotly(_engine.Engine, ABC):
 
         # off to plotting
         self.figure.add_trace(
-            go.Scatter(
-                **self._prepare_plot_coordinates(
-                    self._extract_coordinates(vertices[:, edges])),
-                mode='lines',
-                fill='toself',
-                line=dict(
-                    color='rgb(13, 13, 13)',
-                ),
-                fillcolor='rgb(178, 178, 178)',
-                name='cuboid',
-                hoverinfo='skip',
-                hovertext='',
-                showlegend=False
-            )
+                go.Scatter(
+                        **self._prepare_plot_coordinates(
+                                self._extract_coordinates(vertices[:, edges])),
+                        mode='lines',
+                        fill='toself',
+                        line=dict(
+                                color='rgb(13, 13, 13)',
+                        ),
+                        fillcolor='rgb(178, 178, 178)',
+                        name='cuboid',
+                        hoverinfo='skip',
+                        hovertext='',
+                        showlegend=False
+                )
         )
 
     def render_coordinate_system(self,
@@ -217,18 +216,19 @@ class Plotly(_engine.Engine, ABC):
 
         # draw center of the coordinate system
         self.figure.add_trace(
-            self._scatter(
-                **self._prepare_plot_coordinates(
-                    self._extract_coordinates(position)),
-                **update_recursive(dict(
-                    mode='markers',
-                    marker=dict(
-                        color='Black',
-                        size=3 if self._NUMBER_OF_AXES == 3 else 5,
-                    ),
-                    showlegend=False,
-                ), kwargs)
-            )
+                self._scatter(
+                        **self._prepare_plot_coordinates(
+                                self._extract_coordinates(position)),
+                        **update_recursive(dict(
+                                mode='markers',
+                                marker=dict(
+                                        color='Black',
+                                        size=3 if self._NUMBER_OF_AXES == 3
+                                        else 5,
+                                ),
+                                showlegend=False,
+                        ), kwargs)
+                )
         )
 
         # plot each coordinate axis i.e., x, y, z or which of them are available
@@ -246,21 +246,23 @@ class Plotly(_engine.Engine, ABC):
             # plot the axis as a line (currently, a quiver isn't supported in
             # 2D... no idea why, plot.ly?!)
             self.figure.add_trace(
-                self._scatter(
-                    **self._prepare_plot_coordinates(
-                        self._extract_coordinates(_np.hstack((
-                            position, position + 0.25 * dcm.dot(
-                                self.COORDINATE_DIRECTIONS[idx])
-                        )))),
-                    **update_recursive(dict(
-                        mode='lines',
-                        line_color=f'rgb({rgb[0]},{rgb[1]},{rgb[2]})',
-                        name=f'{kwargs.get("name")}: axis {idx}',
-                        hoverinfo='text',
-                        hovertext=f'{kwargs.get("name")}: axis {idx}',
-                        showlegend=False,
-                    ), kwargs)
-                )
+                    self._scatter(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(_np.hstack((
+                                        position, position + 0.25 * dcm.dot(
+                                                self.COORDINATE_DIRECTIONS[idx])
+                                    )))),
+                            **update_recursive(dict(
+                                    mode='lines',
+                                    line_color=f'rgb({rgb[0]},{rgb[1]},'
+                                               f'{rgb[2]})',
+                                    name=f'{kwargs.get("name")}: axis {idx}',
+                                    hoverinfo='text',
+                                    hovertext=f'{kwargs.get("name")}: axis '
+                                              f'{idx}',
+                                    showlegend=False,
+                            ), kwargs)
+                    )
             )
 
     def render_cylinder(self,
@@ -319,12 +321,6 @@ class Plotly(_engine.Engine, ABC):
                        **kwargs):
         pass
 
-    def render_kinematic_chain(self,
-                               kinematic_chain:
-                               '_kinematic_chain.KinematicChain',
-                               *args,
-                               **kwargs):
-        pass
 
     def render_motor(self,
                      motor: '_motor.Motor',
@@ -390,53 +386,56 @@ class Plotly(_engine.Engine, ABC):
                 if self._NUMBER_OF_AXES == 3:
                     # first, plot the mesh of the platform i.e., its volume
                     self.figure.add_trace(
-                        go.Mesh3d(
-                            **self._prepare_plot_coordinates(
-                                self._extract_coordinates(vertices.T)),
-                            **self._prepare_plot_coordinates(edges.T,
-                                                             ('i', 'j', 'k')),
-                            color='rgb(0, 0, 0)',
-                            facecolor=['rgb(178, 178, 178)'] * edges.shape[0],
-                            flatshading=True,
-                            name='',
-                            hoverinfo='skip',
-                            hovertext='',
-                        )
+                            go.Mesh3d(
+                                    **self._prepare_plot_coordinates(
+                                            self._extract_coordinates(
+                                                    vertices.T)),
+                                    **self._prepare_plot_coordinates(edges.T,
+                                                                     ('i', 'j',
+                                                                      'k')),
+                                    color='rgb(0, 0, 0)',
+                                    facecolor=['rgb(178, 178, 178)'] *
+                                              edges.shape[0],
+                                    flatshading=True,
+                                    name='',
+                                    hoverinfo='skip',
+                                    hovertext='',
+                            )
                     )
                     # close all edges by appending the first column
                     edges = _np.hstack((edges, edges[:, 0, _np.newaxis]))
                     # and loop over each edge to plot
                     for edge in edges:
                         self.figure.add_trace(
-                            go.Scatter3d(
-                                **self._prepare_plot_coordinates(
-                                    vertices[edge, :].T),
-                                mode='lines',
-                                line=dict(
-                                    color='rgb(13, 13, 13)',
-                                ),
-                                name='',
-                                hoverinfo='skip',
-                                hovertext='',
-                                showlegend=False
-                            )
+                                go.Scatter3d(
+                                        **self._prepare_plot_coordinates(
+                                                vertices[edge, :].T),
+                                        mode='lines',
+                                        line=dict(
+                                                color='rgb(13, 13, 13)',
+                                        ),
+                                        name='',
+                                        hoverinfo='skip',
+                                        hovertext='',
+                                        showlegend=False
+                                )
                         )
                 # 2D plot
                 else:
                     self.figure.add_trace(
-                        self._scatter(
-                            **self._prepare_plot_coordinates(
-                                self._extract_coordinates(
-                                    vertices[edges, :].T)),
-                            mode='lines',
-                            fill='toself',
-                            line_color='rgb(13, 13, 13)',
-                            fillcolor='rgb(178, 178, 178)',
-                            name='',
-                            hoverinfo='skip',
-                            hovertext='',
-                            showlegend=False
-                        )
+                            self._scatter(
+                                    **self._prepare_plot_coordinates(
+                                            self._extract_coordinates(
+                                                    vertices[edges, :].T)),
+                                    mode='lines',
+                                    fill='toself',
+                                    line_color='rgb(13, 13, 13)',
+                                    fillcolor='rgb(178, 178, 178)',
+                                    name='',
+                                    hoverinfo='skip',
+                                    hovertext='',
+                                    showlegend=False
+                            )
                     )
 
         # render all anchors
@@ -453,8 +452,8 @@ class Plotly(_engine.Engine, ABC):
                                       hoverinfo='text',
                                       hovertext=f'platform {pidx}: center',
                                       line=dict(
-                                          dash='dash' if platform.can_rotate
-                                          else 'solid'
+                                              dash='dash' if platform.can_rotate
+                                              else 'solid'
                                       )
                                       )
 
@@ -466,7 +465,7 @@ class Plotly(_engine.Engine, ABC):
                                           hovertext=f'platform {pidx}',
                                           hoverinfo='text',
                                           line=dict(
-                                              dash='solid',
+                                                  dash='solid',
                                           )
                                           )
 
@@ -486,21 +485,24 @@ class Plotly(_engine.Engine, ABC):
         pidx = kwargs.pop('platform_index', -1)
 
         self.figure.add_trace(
-            self._scatter(
-                **self._prepare_plot_coordinates(self._extract_coordinates(
-                    transformation.apply(anchor.linear.position))),
-                **update_recursive(dict(
-                    mode='markers',
-                    marker=dict(
-                        color='Red',
-                        size=3 if self._NUMBER_OF_AXES == 3 else 5,
-                    ),
-                    name=f'platform {pidx}: anchor {aidx}',
-                    hoverinfo='text',
-                    hovertext=f'platform {pidx}: anchor {aidx}',
-                    showlegend=False,
-                ), kwargs)
-            )
+                self._scatter(
+                        **self._prepare_plot_coordinates(
+                                self._extract_coordinates(
+                                        transformation.apply(
+                                                anchor.linear.position))),
+                        **update_recursive(dict(
+                                mode='markers',
+                                marker=dict(
+                                        color='Red',
+                                        size=3 if self._NUMBER_OF_AXES == 3
+                                        else 5,
+                                ),
+                                name=f'platform {pidx}: anchor {aidx}',
+                                hoverinfo='text',
+                                hovertext=f'platform {pidx}: anchor {aidx}',
+                                showlegend=False,
+                        ), kwargs)
+                )
         )
 
     def render_pulley(self,
@@ -519,8 +521,7 @@ class Plotly(_engine.Engine, ABC):
             self.render(robot.frame, **frame_style)
 
         # loop over the components to list
-        for list_name in ('platforms', 'kinematic_chains'):
-            self._render_component_list(robot, list_name, **kwargs)
+        self._render_component_list(robot, 'platforms', **kwargs)
 
     def render_sphere(self,
                       sphere: '_sphere.Sphere',
@@ -535,7 +536,7 @@ class Plotly(_engine.Engine, ABC):
         pass
 
     def render_workspace_grid(self,
-                              workspace: '_grid.GridResult',
+                              workspace: '_grid.Result',
                               *args,
                               **kwargs):
         # option to plot only the points inside the workspace
@@ -546,42 +547,43 @@ class Plotly(_engine.Engine, ABC):
 
         # plot the points inside the workspace
         self.figure.add_trace(
-            scatter(
-                **self._prepare_plot_coordinates(
-                    self._extract_coordinates(workspace.inside.T)),
-                mode='markers',
-                marker=dict(
-                    color='rgb(0, 255, 0)',
-                    size=4 if self._NUMBER_OF_AXES == 2 else 6,
-                ),
-                name='workspace: inside',
-                hoverinfo='text',
-                hovertext='',
-                showlegend=False,
-                **kwargs,
-            )
+                scatter(
+                        **self._prepare_plot_coordinates(
+                                self._extract_coordinates(workspace.inside.T)),
+                        mode='markers',
+                        marker=dict(
+                                color='rgb(0, 255, 0)',
+                                size=4 if self._NUMBER_OF_AXES == 2 else 6,
+                        ),
+                        name='workspace: inside',
+                        hoverinfo='text',
+                        hovertext='',
+                        showlegend=False,
+                        **kwargs,
+                )
         )
         if not only_inside:
             # plot the points outside the workspace
             self.figure.add_trace(
-                scatter(
-                    **self._prepare_plot_coordinates(
-                        self._extract_coordinates(workspace.outside.T)),
-                    mode='markers',
-                    marker=dict(
-                        color='rgb(255, 0, 0)',
-                        size=3 if self._NUMBER_OF_AXES == 3 else 5,
-                    ),
-                    name='workspace: outside',
-                    hoverinfo='text',
-                    hovertext='',
-                    showlegend=False,
-                    **kwargs,
-                )
+                    scatter(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(
+                                            workspace.outside.T)),
+                            mode='markers',
+                            marker=dict(
+                                    color='rgb(255, 0, 0)',
+                                    size=3 if self._NUMBER_OF_AXES == 3 else 5,
+                            ),
+                            name='workspace: outside',
+                            hoverinfo='text',
+                            hovertext='',
+                            showlegend=False,
+                            **kwargs,
+                    )
             )
 
     def render_workspace_hull(self,
-                              workspace: '_hull.HullResult',
+                              workspace: '_hull.Result',
                               *args,
                               **kwargs):
         if self._NUMBER_OF_AXES != 3:
@@ -589,22 +591,26 @@ class Plotly(_engine.Engine, ABC):
 
         # as simple as that
         self.figure.add_trace(
-            go.Mesh3d(
-                **self._prepare_plot_coordinates(self._extract_coordinates(workspace.vertices.T)),
-                **self._prepare_plot_coordinates(workspace.faces.T, ('i', 'j', 'k')),
-                facecolor=['rgb(255, 0, 0)'] * workspace.faces.shape[0],
-                vertexcolor=['rgb(0, 0, 0)'] * workspace.vertices.shape[0],
-                flatshading=True,
-                opacity=0.75,
-                contour=dict(
-                    show=True,
-                    color='rgb(0, 0, 0)',
-                ),
-                name='workspace',
-                hoverinfo='skip',
-                hovertext='',
-                **kwargs,
-            )
+                go.Mesh3d(
+                        **self._prepare_plot_coordinates(
+                                self._extract_coordinates(
+                                    workspace.vertices.T)),
+                        **self._prepare_plot_coordinates(workspace.faces.T,
+                                                         ('i', 'j', 'k')),
+                        facecolor=['rgb(255, 0, 0)'] * workspace.faces.shape[0],
+                        vertexcolor=['rgb(0, 0, 0)'] * workspace.vertices.shape[
+                            0],
+                        flatshading=True,
+                        opacity=0.75,
+                        contour=dict(
+                                show=True,
+                                color='rgb(0, 0, 0)',
+                        ),
+                        name='workspace',
+                        hoverinfo='skip',
+                        hovertext='',
+                        **kwargs,
+                )
         )
 
     def _prepare_plot_coordinates(self, coordinates: Union[Vector, Matrix],
