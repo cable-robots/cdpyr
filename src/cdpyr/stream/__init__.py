@@ -1,5 +1,4 @@
-from cdpyr.stream import marshmallow, parser, parser
-from cdpyr.stream.streamer import Streamer
+from cdpyr.stream import parser
 from cdpyr.stream.streamer import Streamer
 
 __author__ = "Philipp Tempel"
@@ -9,6 +8,4 @@ __all__ = [
     'Streamer',
     'Streamer',
     'parser',
-    'parsers',
-    'marshmallow'
 ]
