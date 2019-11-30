@@ -1,7 +1,15 @@
 from marshmallow import Schema, fields, post_load
 
+from cdpyr.geometry import Cuboid, Cylinder, EllipticCylinder, Sphere, Tube
 from cdpyr.robot import drum as _drum
-from cdpyr.schema.geometry import geometry as _geometry
+from cdpyr.schema import fields as custom_fields
+from cdpyr.schema.geometry import (
+    CuboidSchema,
+    CylinderSchema,
+    EllipticCylinderSchema,
+    SphereSchema,
+    TubeSchema,
+)
 from cdpyr.schema.mechanics import inertia as _inertia
 
 __author__ = "Philipp Tempel"

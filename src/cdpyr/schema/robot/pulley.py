@@ -9,27 +9,26 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class PulleySchema(Schema):
-    geometry = fields.Nested(
-        _geometry.GeometrySchema,
-        missing=None
+    radius = fields.Float(
+            required=True
     )
     inertia = fields.Nested(
-        _inertia.InertiaSchema,
-        missing=None
+            _inertia.InertiaSchema,
+            missing=None
     )
     dcm = fields.Tuple(
-        (
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
+            (
+                fields.Tuple(
+                        (fields.Float(), fields.Float(), fields.Float())
+                ),
+                fields.Tuple(
+                        (fields.Float(), fields.Float(), fields.Float())
+                ),
+                fields.Tuple(
+                        (fields.Float(), fields.Float(), fields.Float())
+                )
             ),
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
-            ),
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
-            )
-        ),
-        missing=None
+            missing=None
     )
 
     __model__ = _pulley.Pulley
