@@ -13,6 +13,7 @@ robot_3t = pytest.fixture(robots.robot_3t, name='robot_3t')
 robot_1r2t = pytest.fixture(robots.robot_1r2t, name='robot_1r2t')
 robot_2r3t = pytest.fixture(robots.robot_2r3t, name='robot_2r3t')
 robot_3r3t = pytest.fixture(robots.robot_3r3t, name='robot_3r3t')
+ipanema_3 = pytest.fixture(robots.ipanema_3, name='ipanema_3')
 
 
 @pytest.fixture
