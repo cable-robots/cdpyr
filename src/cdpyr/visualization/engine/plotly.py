@@ -321,6 +321,10 @@ class Plotly(_engine.Engine, ABC):
                        **kwargs):
         pass
 
+    def render_kinematics(self, kinematics: '_kinematics.Result',
+                          robot: '_robot.Robot', *args, **kwargs):
+        # ask the kinematics result object to calculate the cable shape
+        shape = kinematics.shape(robot)
 
     def render_motor(self,
                      motor: '_motor.Motor',
@@ -622,6 +626,77 @@ class Plotly(_engine.Engine, ABC):
         # return result as a dictionary of ('e0': [], 'e1': [], ..., 'en': [])
         return dict(zip(axes[0:self._NUMBER_OF_AXES],
                         super()._prepare_plot_coordinates(coordinates)))
+
+
+class Linear(Plotly):
+    _NUMBER_OF_COORDINATES = 1
+    _NUMBER_OF_AXES = 2
+
+    def draw(self, *args, **kwargs):
+        super().draw()
+        self.figure.update_layout(
+                yaxis=dict(
+                        scaleanchor="x",
+                        scaleratio=1,
+                        showline=False,
+                        showticklabels=False,
+                        showgrid=False
+                ),
+                **kwargs
+        )
+
+
+class Planar(Plotly):
+    _NUMBER_OF_COORDINATES = 2
+    _NUMBER_OF_AXES = 2
+
+    def draw(self, *args, **kwargs):
+        super().draw()
+        self.figure.update_layout(
+                yaxis=dict(
+                        scaleanchor="x",
+                        scaleratio=1,
+                ),
+                scene=dict(
+                        aspectmode='data',
+                        aspectratio=dict(
+                                x=1.00,
+                                y=1.00,
+                                z=1.00
+                        )
+                ),
+                **kwargs
+        )
+
+
+class Spatial(Plotly):
+    _NUMBER_OF_COORDINATES = 3
+    _NUMBER_OF_AXES = 3
+
+    def draw(self, *args, **kwargs):
+        super().draw()
+        self.figure.update_layout(
+                yaxis=dict(
+                        scaleanchor="x",
+                        scaleratio=1,
+                ),
+                scene=dict(
+                        aspectmode='data',
+                        aspectratio=dict(
+                                x=1.00,
+                                y=1.00,
+                                z=1.00
+                        )
+                ),
+                scene_camera=dict(
+                        eye=dict(
+                                x=-0.75,
+                                y=-1.75,
+                                z=0.25
+                        )
+                ),
+                **kwargs
+        )
 
 
 __all__ = [
