@@ -23,7 +23,7 @@ from cdpyr.robot.anchor import (
     platform_anchor as _platform_anchor,
 )
 from cdpyr.robot.robot_component import RobotComponent
-from cdpyr.typing import Vector, Num
+from cdpyr.typing import Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -126,11 +126,22 @@ class Robot(RobotComponent):
                 # create a proper KinematicChain object
                 if isinstance(v, Dict):
                     frame_anchor = v['frame_anchor']
-                    platform = v['platform']
+                    # platform value may be provided, but must not be,
+                    # so it defaults to the first platform
+                    try:
+                        platform = v['platform']
+                    except KeyError:
+                        platform = 0
                     platform_anchor = v['platform_anchor']
                     cable = v['cable']
                 elif isinstance(v, List) or isinstance(v, Tuple):
-                    frame_anchor, platform, platform_anchor, cable = v
+                    # platform value may be provided, but must not be,
+                    # so it defaults to the first platform
+                    try:
+                        frame_anchor, platform, platform_anchor, cable = v
+                    except ValueError:
+                        frame_anchor, platform_anchor, cable = v
+                        platform = 0
 
                 if not isinstance(frame_anchor, _frame_anchor.FrameAnchor):
                     frame_anchor = self.frame.anchors[frame_anchor]
@@ -227,8 +238,8 @@ class Robot(RobotComponent):
     def gravitational_wrench(self, pose: '_pose.Pose'):
         if self.num_platforms > 1:
             raise NotImplementedError(
-                'Wrench calculation is not implemented for robots with more '
-                'than one platforms.')
+                    'Wrench calculation is not implemented for robots with '
+                    'more than one platforms.')
 
         return self.platforms[0].gravitational_wrench(pose, self.gravity)
 
