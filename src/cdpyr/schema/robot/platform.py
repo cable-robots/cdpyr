@@ -4,6 +4,7 @@ from cdpyr.robot import platform as _platform
 from cdpyr.schema.motion import pose as _pose
 from cdpyr.schema.motion.pattern import pattern as _motion_pattern
 from cdpyr.schema.robot.anchor import platform_anchor as _platform_anchor
+from cdpyr.schema.mechanics import inertia as _inertia
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -23,6 +24,11 @@ class PlatformSchema(Schema):
     motion_pattern = fields.Nested(
         _motion_pattern.PatternSchema,
         required=True,
+    )
+    inertia = fields.Nested(
+            _inertia.InertiaSchema,
+            required=False,
+            missing=None,
     )
 
     __model__ = _platform.Platform
