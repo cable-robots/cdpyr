@@ -1,16 +1,17 @@
 import copy
 from abc import ABC
-
 from magic_repr import make_repr
+
+from cdpyr.motion.pose import pose as _pose
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class Result(ABC):
-    _pose: object
+    _pose: '_pose.Pose'
 
-    def __init__(self, pose):
+    def __init__(self, pose: '_pose.Pose'):
         self._pose = copy.deepcopy(pose)
 
     @property
@@ -18,7 +19,7 @@ class Result(ABC):
         return self._pose
 
     __repr__ = make_repr(
-        'pose'
+            'pose'
     )
 
 
