@@ -28,7 +28,7 @@ def full(position: Tuple[Union[Num, Vector], Union[Num, Vector]],
          steps: Union[
              Num, Tuple[Union[Num, Vector], Union[Num, Vector]]] = 10):
     # Default arguments for the steps
-    steps = 10 if steps is None else steps
+    steps = 5 if steps is None else steps
 
     # ensure both position values are numpy arrays
     position = [np_.asarray(x if isinstance(x, Iterable) else [x]) for x in
