@@ -21,8 +21,8 @@ class Visualizer(object):
     def close(self):
         self._engine.close()
 
-    def draw(self):
-        self._engine.draw()
+    def draw(self, *args, **kwargs):
+        self._engine.draw(*args, **kwargs)
 
     def reset(self):
         self._engine.reset()
