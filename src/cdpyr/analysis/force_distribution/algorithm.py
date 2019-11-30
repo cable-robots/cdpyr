@@ -16,7 +16,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Algorithm(_evaluator.Evaluator):
+class Algorithm(_evaluator.PoseEvaluator):
     _force_minimum: Vector
     _force_maximum: Vector
     _structure_matrix: '_structure_matrix.Calculator'

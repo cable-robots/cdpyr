@@ -8,7 +8,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Criterion(_evaluator.Evaluator):
+class Criterion(_evaluator.PoseEvaluator):
 
     def evaluate(self, robot: '_robot.Robot', pose: '_pose.Pose', **kwargs):
         # TODO remove this check

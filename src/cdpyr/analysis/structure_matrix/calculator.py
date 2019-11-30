@@ -23,7 +23,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Calculator(_evaluator.Evaluator):
+class Calculator(_evaluator.PoseEvaluator):
     kinematics: '_kinematics.Algorithm'
     resolver: Dict[AnyStr, _structure_matrix.Algorithm]
 
