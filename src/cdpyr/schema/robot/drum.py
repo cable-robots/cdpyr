@@ -17,13 +17,19 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class DrumSchema(Schema):
-    geometry = fields.Nested(
-        _geometry.GeometrySchema,
-        missing=None
+    geometry = custom_fields.Polymorphic(
+            (
+                (Cuboid, CuboidSchema),
+                (CylinderSchema, Cylinder),
+                (EllipticCylinder, EllipticCylinderSchema),
+                (Sphere, SphereSchema),
+                (Tube, TubeSchema),
+            ),
+            missing=None
     )
     inertia = fields.Nested(
-        _inertia.InertiaSchema,
-        missing=None
+            _inertia.InertiaSchema,
+            missing=None
     )
 
     __model__ = _drum.Drum
