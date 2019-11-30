@@ -6,21 +6,6 @@ import cdpyr
 
 class PlatformTestSuite(object):
 
-    # def test_pose_1t(self, robot_1t: 'cdpyr.robot.Robot', rand_pose_1t:
-    # 'cdpyr.motion.Pose'):
-    #     platform: cdpyr.robot.Platform = robot_1t.platforms[0]
-    #
-    #     assert platform.pose.linear.position == pytest.approx((0.0, 0.0, 0.0))
-    #     assert platform.pose.angular.quaternion == pytest.approx((0.0, 0.0,
-    #     0.0, 1.0))
-    #
-    #     platform.pose = rand_pose_1t
-    #
-    #     assert platform.pose.linear.position == pytest.approx(
-    #     rand_pose_1t.linear.position)
-    #     assert platform.pose.angular.quaternion == pytest.approx(
-    #     rand_pose_1t.angular.quaternaion)
-
     def test_wrench_1t_empty_pose(self,
                                   robot_1t: 'cdpyr.robot.Robot',
                                   empty_pose: 'cdpyr.motion.Pose'):
