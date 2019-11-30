@@ -31,7 +31,7 @@ class HullWorkspace2R3TTestSuite(object):
                 [0.5, 1.5]) * np.sqrt(3))
 
         # create the hull calculator object
-        calculator = workspace.hull.Calculator(archetype,
+        calculator = workspace.hull.Algorithm(archetype,
                                               criterion,
                                               center=[0.0, 0.0, 0.0])
 
@@ -55,7 +55,7 @@ class HullWorkspace2R3TTestSuite(object):
         criterion = workspace.criterion.Singularities(ik_standard)
 
         # create the hull calculator object
-        calculator = workspace.hull.Calculator(archetype,
+        calculator = workspace.hull.Algorithm(archetype,
                                               criterion,
                                               center=[0.0, 0.0, 0.0])
 
@@ -80,7 +80,7 @@ class HullWorkspace2R3TTestSuite(object):
                 force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the hull calculator object
-        calculator = workspace.hull.Calculator(archetype,
+        calculator = workspace.hull.Algorithm(archetype,
                                               criterion,
                                               center=[0.0, 0.0, 0.0])
 

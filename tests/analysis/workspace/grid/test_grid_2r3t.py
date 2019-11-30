@@ -44,7 +44,7 @@ class GridWorkspace2R3TTestSuite(object):
                 [0.50, 1.50]) * np.sqrt(3))
 
         # create the grid calculator object
-        calculator = workspace.grid.Calculator(archetype,
+        calculator = workspace.grid.Algorithm(archetype,
                                                criterion,
                                                lower_bound,
                                                upper_bound,
@@ -76,7 +76,7 @@ class GridWorkspace2R3TTestSuite(object):
         criterion = workspace.criterion.Singularities(ik_standard)
 
         # create the grid calculator object
-        calculator = workspace.grid.Calculator(archetype,
+        calculator = workspace.grid.Algorithm(archetype,
                                                criterion,
                                                lower_bound,
                                                upper_bound,
@@ -108,7 +108,7 @@ class GridWorkspace2R3TTestSuite(object):
         criterion = workspace.criterion.Singularities(ik_standard)
 
         # create the grid calculator object
-        calculator = workspace.grid.Calculator(archetype,
+        calculator = workspace.grid.Algorithm(archetype,
                                                criterion,
                                                lower_bound,
                                                upper_bound,
@@ -141,7 +141,7 @@ class GridWorkspace2R3TTestSuite(object):
                 force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the grid calculator object
-        calculator = workspace.grid.Calculator(archetype,
+        calculator = workspace.grid.Algorithm(archetype,
                                                criterion,
                                                lower_bound,
                                                upper_bound,
