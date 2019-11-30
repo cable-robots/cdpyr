@@ -46,7 +46,7 @@ class PoseGeneratorFullTestSuite(object):
         actual_poses = generator.full(position, angle, sequence, steps)
 
         # Default arguments for the steps
-        steps = 10 if steps is None else steps
+        steps = 5 if steps is None else steps
 
         # ensure both position values are numpy arrays
         position = [np.asarray(x if isinstance(x, Iterable) else [x]) for x in
@@ -95,11 +95,8 @@ class PoseGeneratorFullTestSuite(object):
         ) for step in
             itertools.product(*(range(k + 1) for k in itertools.chain(*steps))))
 
-        for actual_pose, expected_pose in zip(actual_poses, expected_poses):
-            assert actual_pose.linear.position == pytest.approx(
-                expected_pose.linear.position)
-            assert actual_pose.angular.dcm == pytest.approx(
-                expected_pose.angular.dcm)
+        for actual, expected in zip(actual_poses, expected_poses):
+            assert actual == expected
 
     @pytest.mark.parametrize(
         ['position', 'angle', 'sequence', 'steps'],
