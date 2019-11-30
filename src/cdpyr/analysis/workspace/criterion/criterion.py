@@ -22,7 +22,7 @@ class Criterion(_evaluator.Evaluator):
 
     @abstractmethod
     def _evaluate(self, robot: '_robot.Robot', pose: '_pose.Pose', **kwargs):
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = [

@@ -102,7 +102,7 @@ class Algorithm(_evaluator.Evaluator):
                   force_min: Vector,
                   force_max: Vector,
                   **kwargs) -> dict:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def _parse_force_limits(self, robot: '_robot.Robot'):
         # get configure force limits

@@ -41,12 +41,12 @@ class Result(ABC):
     @property
     @abstractmethod
     def surface(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     @abstractmethod
     def volume(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = [

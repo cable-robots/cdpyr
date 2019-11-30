@@ -16,14 +16,14 @@ class Archetype(ABC):
     @property
     @abstractmethod
     def comparator(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def poses(self, coordinate: Vector):
         return self._poses(_np.pad(coordinate, (0, 3 - coordinate.size)))
 
     @abstractmethod
     def _poses(self, coordinate: Vector):
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = [

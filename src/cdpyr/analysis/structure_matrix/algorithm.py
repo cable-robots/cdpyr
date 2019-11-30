@@ -24,7 +24,7 @@ class Algorithm(_evaluator.Evaluator):
                   platform: '_platform.Platform',
                   pose: '_pose.Pose',
                   directions: Matrix) -> dict:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = [

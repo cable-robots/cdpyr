@@ -57,7 +57,7 @@ class Algorithm(ABC):
 
     @abstractmethod
     def _evaluate(self, robot: '_robot.Robot') -> '_result.Result':
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = [

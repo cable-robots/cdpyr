@@ -86,7 +86,7 @@ class Engine(ABC):
 
     @abstractmethod
     def close(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @abstractmethod
     def draw(self):

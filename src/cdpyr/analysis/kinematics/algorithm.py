@@ -58,14 +58,14 @@ class Algorithm(ABC):
                  robot: '_robot.Robot',
                  joints: Matrix,
                  **kwargs) -> dict:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @abstractmethod
     def _backward(self,
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
                   **kwargs) -> dict:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = [
