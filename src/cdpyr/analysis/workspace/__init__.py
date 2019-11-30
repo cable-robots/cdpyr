@@ -1,4 +1,4 @@
-from cdpyr.analysis.workspace import archetype, criterion
+from cdpyr.analysis.workspace import archetype, criterion, workspace
 
 from cdpyr.analysis.workspace import grid, hull
 
@@ -10,4 +10,5 @@ __all__ = [
     'criterion',
     'grid',
     'hull',
+    'workspace',
 ]

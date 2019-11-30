@@ -45,10 +45,10 @@ class GridWorkspace3R3TTestSuite(object):
 
         # create the grid calculator object
         calculator = workspace.grid.Algorithm(archetype,
-                                               criterion,
-                                               lower_bound,
-                                               upper_bound,
-                                               steps)
+                                              criterion,
+                                              lower_bound,
+                                              upper_bound,
+                                              steps)
 
         # evaluate workspace
         workspace_grid = calculator.evaluate(robot)
@@ -77,10 +77,10 @@ class GridWorkspace3R3TTestSuite(object):
 
         # create the grid calculator object
         calculator = workspace.grid.Algorithm(archetype,
-                                               criterion,
-                                               lower_bound,
-                                               upper_bound,
-                                               steps)
+                                              criterion,
+                                              lower_bound,
+                                              upper_bound,
+                                              steps)
 
         # evaluate workspace
         workspace_grid = calculator.evaluate(robot)
@@ -109,10 +109,10 @@ class GridWorkspace3R3TTestSuite(object):
 
         # create the grid calculator object
         calculator = workspace.grid.Algorithm(archetype,
-                                               criterion,
-                                               lower_bound,
-                                               upper_bound,
-                                               steps)
+                                              criterion,
+                                              lower_bound,
+                                              upper_bound,
+                                              steps)
 
         # evaluate workspace
         workspace_grid = calculator.evaluate(robot)
@@ -142,10 +142,10 @@ class GridWorkspace3R3TTestSuite(object):
 
         # create the grid calculator object
         calculator = workspace.grid.Algorithm(archetype,
-                                               criterion,
-                                               lower_bound,
-                                               upper_bound,
-                                               steps)
+                                              criterion,
+                                              lower_bound,
+                                              upper_bound,
+                                              steps)
 
         # evaluate workspace
         workspace_grid = calculator.evaluate(robot)
@@ -175,10 +175,10 @@ class GridWorkspace3R3TTestSuite(object):
 
         # create the grid calculator object
         calculator = workspace.grid.Algorithm(archetype,
-                                               criterion,
-                                               lower_bound,
-                                               upper_bound,
-                                               steps)
+                                              criterion,
+                                              lower_bound,
+                                              upper_bound,
+                                              steps)
 
         # evaluate workspace
         workspace_grid = calculator.evaluate(robot)

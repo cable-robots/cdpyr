@@ -15,7 +15,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Calculator(_workspace.Algorithm):
+class Algorithm(_workspace.Algorithm):
     _lower_bound: Vector
     _upper_bound: Vector
     _steps: Vector
@@ -266,6 +266,6 @@ class Result(_workspace.Result, abc.Collection):
 
 
 __all__ = [
-    'Calculator',
+    'Algorithm',
     'Result',
 ]
