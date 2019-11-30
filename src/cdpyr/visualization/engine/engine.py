@@ -106,7 +106,7 @@ class Engine(ABC):
 
     @abstractmethod
     def render_cable(self, cable: '_cable.Cable', *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     def render_cable_list(self, cable_list: '_cable.CableList', *args,
                           **kwargs):
@@ -116,20 +116,20 @@ class Engine(ABC):
     @abstractmethod
     def render_drivetrain(self, drivetrain: '_drivetrain.DriveTrain', *args,
                           **kwargs):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def render_drum(self, drum: '_drum.Drum', *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def render_frame(self, frame: '_frame.Frame', *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def render_frame_anchor(self, anchor: '_frame_anchor.FrameAnchor', *args,
                             **kwargs):
-        pass
+        raise NotImplementedError()
 
     def render_frame_anchor_list(self,
                                  anchor_list: '_frame_anchor.FrameAnchorList',
@@ -139,34 +139,25 @@ class Engine(ABC):
 
     @abstractmethod
     def render_gearbox(self, gearbox: '_gearbox.Gearbox', *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
-    def render_kinematic_chain(self,
-                               kinematic_chain:
-                               '_kinematicchain.KinematicChain',
-                               *args, **kwargs):
-        pass
-
-    def render_kinematic_chain_list(self,
-                                    kinematic_chain_list:
-                                    '_kinematicchain.KinematicChainList',
-                                    *args, **kwargs):
-        for chain in kinematic_chain_list:
-            self.render(chain, *args, **kwargs)
+    def render_kinematics(self, kinematics: '_kinematics.Result',
+                          robot: '_robot.Robot', *args, **kwargs):
+        raise NotImplementedError()
 
     @abstractmethod
     def render_motor(self, motor: '_motor.Motor', *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def render_platform(self, platform: '_platform.Platform', *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def render_platform_anchor(self, anchor: '_platform_anchor.PlatformAnchor',
                                *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     def render_platform_anchor_list(self,
                                     anchor_list:
@@ -182,21 +173,21 @@ class Engine(ABC):
 
     @abstractmethod
     def render_pulley(self, pulley: '_pulley.Pulley', *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def render_robot(self, robot: '_robot.Robot', *args, **kwargs):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def render_workspace_grid(self, workspace: '_grid_result.GridResult', *args,
                               **kwargs):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def render_workspace_hull(self, workspace: '_hull_result.HullResult', *args,
                               **kwargs):
-        pass
+        raise NotImplementedError()
 
     def _render_component_list(self, obj: RobotComponent, name: str, *args,
                                **kwargs):
