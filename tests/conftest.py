@@ -16,11 +16,19 @@ def robot_1t():
                     anchors=[
                         cdpyr.robot.FrameAnchor(
                                 position=[-1., 0., 0.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1., 0., 0.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                     ]
             ),
@@ -74,15 +82,27 @@ def robot_2t():
                     anchors=[
                         cdpyr.robot.FrameAnchor(
                                 position=[-1., 1., 0.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1., 1., 0.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[0., -1., 0.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                     ]
             ),
@@ -149,15 +169,27 @@ def robot_3t():
                     anchors=[
                         cdpyr.robot.FrameAnchor(
                                 position=[-1., 1., 1.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1., 1., 1.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[0., -1., 1.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                     ]
             ),
@@ -224,19 +256,35 @@ def robot_1r2t():
                     anchors=[
                         cdpyr.robot.FrameAnchor(
                                 position=[-1., 1., 0.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1., 1., 0.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1., -1., 0.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-1., -1., 0.],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                     ]
             ),
@@ -324,35 +372,67 @@ def robot_2r3t():
                     anchors=[
                         cdpyr.robot.FrameAnchor(
                                 position=[-1.0, 1.0, 1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1.0, 1.0, 1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1.0, -1.0, 1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-1.0, -1.0, 1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-1.0, 1.0, -1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1.0, 1.0, -1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1.0, -1.0, -1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-1.0, -1.0, -1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                     ]
             ),
@@ -500,35 +580,67 @@ def robot_3r3t():
                     anchors=[
                         cdpyr.robot.FrameAnchor(
                                 position=[-1.0, 1.0, 1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1.0, 1.0, 1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1.0, -1.0, 1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-1.0, -1.0, 1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-1.0, 1.0, -1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1.0, 1.0, -1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[1.0, -1.0, -1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-1.0, -1.0, -1.0],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                     ]
             ),
@@ -676,42 +788,74 @@ def ipanema_3():
                     anchors=[
                         cdpyr.robot.FrameAnchor(
                                 position=[-8.544, 5.463, 3.202],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[8.184, 5.692, 3.236],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[8.224, -5.492, 3.25],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-8.491, -5.322, 3.221],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-8.192, 5.648, -0.589],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[7.208, 6.463, -0.548],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[7.869, -5.557, -0.527],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                         cdpyr.robot.FrameAnchor(
                                 position=[-8.27, -5.545, -0.582],
-                                angular=cdpyr.kinematics.transformation.Angular.random(),
+                                # angular=cdpyr.kinematics.transformation.Angular.random(),
+                                pulley=cdpyr.robot.Pulley(
+                                        radius=0.1,
+                                        angular=cdpyr.kinematics.transformation.Angular()
+                                )
                         ),
                     ]
             ),
             platforms=[
                 cdpyr.robot.Platform(
                         motion_pattern=cdpyr.motion.pattern.MP_3R3T,
-                        inertia=cdpyr.mechanics.Inertia(np.diag((1, 1, 1)) * 25,
+                        inertia=cdpyr.mechanics.Inertia(np.diag((1, 1, 1)) * 30,
                                                         np.diag((5.226154,
                                                                  0.637352,
                                                                  4.723802))),
