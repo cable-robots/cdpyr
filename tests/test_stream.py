@@ -169,7 +169,7 @@ class StreamTestSuite(object):
 
         # decode the file
         with open(tmpfile, 'r') as f:
-            resto: dpyr.robot.PlatformAnchor = stream.loads(
+            resto: cdpyr.robot.PlatformAnchor = stream.loads(
                 ''.join(f.readlines()))
 
         assert isinstance(resto, cdpyr.robot.PlatformAnchor)
