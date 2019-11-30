@@ -110,6 +110,32 @@ class HullWorkspace3R3TTestSuite(object):
         # evaluate workspace
         hull_workspace = calculator.evaluate(robot_3r3t)
 
+    @pytest.mark.parametrize(
+            ['archetype'],
+            (
+                    (
+                            [workspace.archetype.Translation(dcm)]
+                    ) for dcm in
+                    (np.eye(3), Angular.random().dcm)
+            )
+    )
+    def test_ipanema_3_wrench_feasible(self,
+                                       ipanema_3: Robot,
+                                       ik_standard: Kinematics,
+                                       archetype: Archetype):
+        # create the criterion
+        criterion = workspace.criterion.WrenchFeasible(
+                force_distribution.ClosedFormImproved(ik_standard, 120, 3000))
+
+        # create the hull calculator object
+        calculator = workspace.HullCalculator(archetype,
+                                              criterion,
+                                              center=[0.0, 0.0, 0.0],
+                                              maximum_iterations=25,
+                                              depth=4 )
+
+        # evaluate workspace
+        hull_workspace = calculator.evaluate(ipanema_3)
 
 
 if __name__ == "__main__":
