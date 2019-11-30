@@ -83,7 +83,7 @@ class HullWorkspace3R3TTestSuite(object):
                 force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the hull calculator object
-        calculator = workspace.hull.Calculator(archetype,
+        calculator = workspace.hull.Algorithm(archetype,
                                               criterion,
                                               center=[0.0, 0.0, 0.0])
 
