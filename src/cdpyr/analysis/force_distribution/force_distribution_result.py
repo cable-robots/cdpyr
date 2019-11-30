@@ -12,7 +12,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Result(_result.Result):
+class ForceDistributionResult(_result.PoseResult):
     _algorithm: '_force_distribution.Algorithm'
     _forces: Vector
     _wrench: Vector
@@ -49,5 +49,5 @@ class Result(_result.Result):
 
 
 __all__ = [
-    'Result',
+    'ForceDistributionResult',
 ]

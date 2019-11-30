@@ -5,7 +5,7 @@ from abc import abstractmethod
 
 from cdpyr import validator as _validator
 from cdpyr.analysis import evaluator as _evaluator
-from cdpyr.analysis.force_distribution import result as _result
+from cdpyr.analysis.force_distribution import force_distribution_result as _result
 from cdpyr.analysis.kinematics import algorithm as _kinematics
 from cdpyr.analysis.structure_matrix import calculator as _structure_matrix
 from cdpyr.motion.pose import pose as _pose
@@ -83,15 +83,15 @@ class Algorithm(_evaluator.PoseEvaluator):
         structure_matrix = self._structure_matrix.evaluate(robot, pose)
 
         # pass down to actual implementation
-        return _result.Result(self,
-                              **self._evaluate(robot,
+        return _result.ForceDistributionResult(self,
+                                               **self._evaluate(robot,
                                                pose,
                                                structure_matrix.matrix,
                                                wrench,
                                                force_min,
                                                force_max,
                                                **kwargs)
-                              )
+                                               )
 
     @abstractmethod
     def _evaluate(self,

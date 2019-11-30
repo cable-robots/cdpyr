@@ -12,14 +12,14 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Result(_result.Result):
+class StructureMatrixResult(_result.PoseResult):
     _matrix: Matrix
     _kernel: Matrix
     _pinv: Matrix
 
-    def __init__(self, pose: '_pose.Pose', matrix: Union[Matrix, 'Result']):
+    def __init__(self, pose: '_pose.Pose', matrix: Union[Matrix, 'StructureMatrixResult']):
         super().__init__(pose)
-        self._matrix = matrix.matrix if isinstance(matrix, Result) else matrix
+        self._matrix = matrix.matrix if isinstance(matrix, StructureMatrixResult) else matrix
         self._kernel = None
         self._pinv = None
 
@@ -68,5 +68,5 @@ class Result(_result.Result):
 
 
 __all__ = [
-    'Result',
+    'StructureMatrixResult',
 ]

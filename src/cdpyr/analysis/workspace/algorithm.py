@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from cdpyr.analysis.kinematics import algorithm as _kinematics
-from cdpyr.analysis.workspace import result as _result
+from cdpyr.analysis.workspace import workspace_result as _result
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.robot import robot as _robot
@@ -28,7 +28,7 @@ class Algorithm(ABC):
     def criterion(self):
         return self._criterion
 
-    def evaluate(self, robot: '_robot.Robot') -> '_result.Result':
+    def evaluate(self, robot: '_robot.Robot') -> '_result.WorkspaceResult':
         try:
             if not isinstance(self._archetype, _archetype.Archetype):
                 raise AttributeError(
@@ -56,7 +56,7 @@ class Algorithm(ABC):
             raise RuntimeError('Could not determine workspace.') from BaseE
 
     @abstractmethod
-    def _evaluate(self, robot: '_robot.Robot') -> '_result.Result':
+    def _evaluate(self, robot: '_robot.Robot') -> '_result.WorkspaceResult':
         raise NotImplementedError()
 
 

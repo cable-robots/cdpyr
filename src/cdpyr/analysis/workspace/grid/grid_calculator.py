@@ -98,7 +98,7 @@ class GridCalculator(_algorithm.Algorithm):
             *(range(0, iterations[k] + 1) for k in range(0, len(iterations)))
         ))
 
-    def _evaluate(self, robot: '_robot.Robot') -> '_result.Result':
+    def _evaluate(self, robot: '_robot.Robot') -> '_result.WorkspaceGridResult':
         # temporarily store the robot as local property so it won't be passed
         # as method argument on every coordinate evaluation
         self.__robot = robot
@@ -113,7 +113,7 @@ class GridCalculator(_algorithm.Algorithm):
         del self.__robot
 
         # return the tuple of poses that were evaluated
-        return _result.GridResult(
+        return _result.WorkspaceGridResult(
             self,
             self._archetype,
             self._criterion,

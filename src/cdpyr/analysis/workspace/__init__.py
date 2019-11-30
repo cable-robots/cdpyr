@@ -16,7 +16,7 @@ __all__ = [
     'archetype',
     'criterion',
     'GridCalculator',
-    'GridResult',
-    'HullResult',
+    'WorkspaceGridResult',
+    'WorkspaceHullResult',
     'HullCalculator'
 ]

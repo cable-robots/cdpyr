@@ -3,7 +3,9 @@ from collections import abc
 import numpy as _np
 from scipy.spatial import Delaunay as _Delaunay
 
-from cdpyr.analysis.workspace import result as _result
+from cdpyr.analysis.workspace import workspace_result as _result
+from cdpyr.analysis.workspace.archetype import archetype as _archetype
+from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.analysis.workspace.grid import grid_calculator as _calculator
 from cdpyr.typing import Matrix, Vector
 
@@ -11,14 +13,14 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class GridResult(_result.Result, abc.Collection):
+class WorkspaceGridResult(_result.WorkspaceResult, abc.Collection):
     _coordinates: Matrix
     _flags: Vector
     _inside: Matrix
     _outside: Matrix
 
     def __init__(self,
-                 algorithm: '_calculator.Calculator',
+                 algorithm: '_calculator.GridCalculator',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  coordinates: Matrix,
@@ -42,8 +44,8 @@ class GridResult(_result.Result, abc.Collection):
         # no cached result?
         if self._inside is None:
             self._inside = _np.asarray(
-                [self._coordinates[idx, :] for idx in range(len(self)) if
-                 self._flags[idx]])
+                    [self._coordinates[idx, :] for idx in range(len(self)) if
+                     self._flags[idx]])
 
         return self._inside
 
@@ -56,8 +58,8 @@ class GridResult(_result.Result, abc.Collection):
         # no cached result?
         if self._outside is None:
             self._outside = _np.asarray(
-                [self._coordinates[idx, :] for idx in range(len(self)) if
-                 not self._flags[idx]])
+                    [self._coordinates[idx, :] for idx in range(len(self)) if
+                     not self._flags[idx]])
 
         return self._outside
 
@@ -82,8 +84,8 @@ class GridResult(_result.Result, abc.Collection):
 
                 # heron's formula
                 self._surface = _np.sum(1.0 / 4.0 * _np.sqrt(
-                    (a ** 2 + b ** 2 + c ** 2) ** 2 - 2 * (
-                        a ** 4 + b ** 4 + c ** 4)), axis=0)
+                        (a ** 2 + b ** 2 + c ** 2) ** 2 - 2 * (
+                                a ** 4 + b ** 4 + c ** 4)), axis=0)
             except (IndexError, ValueError) as Error:
                 self._surface = 0
 
@@ -107,8 +109,8 @@ class GridResult(_result.Result, abc.Collection):
                 # -----------------------------------
                 #                  6
                 self._volume = _np.sum(_np.abs(
-                    _np.sum((a - d) * _np.cross(b - d, c - d, axis=1),
-                            axis=1))) / 6
+                        _np.sum((a - d) * _np.cross(b - d, c - d, axis=1),
+                                axis=1))) / 6
             except (IndexError, ValueError) as Error:
                 self._volume = 0
 
@@ -141,7 +143,7 @@ class GridResult(_result.Result, abc.Collection):
                              (0, self._coordinates[0].size - coordinate.size))
         # find the coordinate that's closest to the given coordinate
         idx = _np.linalg.norm(self._coordinates - coordinate, axis=1).argmin(
-            axis=0)
+                axis=0)
 
         try:
             return self._flags[idx]
@@ -150,5 +152,5 @@ class GridResult(_result.Result, abc.Collection):
 
 
 __all__ = [
-    'GridResult',
+    'WorkspaceGridResult',
 ]

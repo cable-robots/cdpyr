@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from cdpyr.analysis.kinematics import result as _result
+from cdpyr.analysis.kinematics import kinematics_result as _result
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix
@@ -21,7 +21,7 @@ class Algorithm(ABC):
                 'more than one platform.'
             )
 
-        return _result.Result(
+        return _result.KinematicsResult(
             self,
             **self._forward(robot, joints, **kwargs)
         )
@@ -42,7 +42,7 @@ class Algorithm(ABC):
                 'more than one platform.'
             )
 
-        return _result.Result(
+        return _result.KinematicsResult(
             self,
             **self._backward(robot, pose, **kwargs)
         )

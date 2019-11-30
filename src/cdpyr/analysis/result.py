@@ -9,6 +9,10 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Result(ABC):
+    pass
+
+
+class PoseResult(Result):
     _pose: '_pose.Pose'
 
     def __init__(self, pose: '_pose.Pose'):
@@ -25,4 +29,5 @@ class Result(ABC):
 
 __all__ = [
     'Result',
+    'PoseResult',
 ]

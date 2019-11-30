@@ -9,7 +9,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Result(ABC):
+class WorkspaceResult(ABC):
     _algorithm: '_workspace.Algorithm'
     _archetype: '_archetype.Archetype'
     _criterion: '_criterion.Criterion'
@@ -50,5 +50,5 @@ class Result(ABC):
 
 
 __all__ = [
-    'Result',
+    'WorkspaceResult',
 ]

@@ -13,7 +13,7 @@ from cdpyr.analysis.structure_matrix import (
     motion_pattern_2t as _structure_matrix_2t,
     motion_pattern_3r3t as _structure_matrix_3r3t,
     motion_pattern_3t as _structure_matrix_3t,
-    result as _result,
+    structure_matrix_result as _result,
 )
 from cdpyr.motion import pattern as _motion_pattern
 from cdpyr.motion.pose import pose as _pose
@@ -64,13 +64,13 @@ class Calculator(_evaluator.PoseEvaluator):
         # get first platform
         platform = robot.platforms[0]
 
-        return _result.Result(pose,
-                              self.resolver[platform.motion_pattern]
-                              .evaluate(platform,
+        return _result.StructureMatrixResult(pose,
+                                             self.resolver[platform.motion_pattern]
+                                             .evaluate(platform,
                                         pose,
                                         kinematics.directions
                                         )
-                              )
+                                             )
 
 
 __all__ = [

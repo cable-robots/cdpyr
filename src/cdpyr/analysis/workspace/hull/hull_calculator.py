@@ -61,8 +61,8 @@ class HullCalculator(_algorithm.Algorithm):
     def center(self):
         del self._center
 
-    def _evaluate(self, robot: '_robot.Robot') -> '_result.Result':
-        # a coordinate generator to get the grid of coordinates to evaluate
+    def _evaluate(self, robot: '_robot.Robot') -> '_result.WorkspaceHullResult':
+        # a coordinate generator to get the coordinates to evaluate
         search_directions, faces = self.__split_octahedron()
 
         # # termination conditions for each direction
@@ -78,11 +78,11 @@ class HullCalculator(_algorithm.Algorithm):
                 for direction in search_directions)
 
         # return the hull result object
-        return _result.HullResult(self,
-                                  self._archetype,
-                                  self._criterion,
-                                  vertices,
-                                  faces)
+        return _result.WorkspaceHullResult(self,
+                                           self._archetype,
+                                           self._criterion,
+                                           vertices,
+                                           faces)
 
     def __check_direction(self, robot, direction: Vector, min_step, max_iters):
         # step length along this coordinate

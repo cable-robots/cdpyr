@@ -3,23 +3,23 @@ from collections import abc
 import numpy as _np
 
 from cdpyr.analysis.workspace import (
-    result as _result,
+    workspace_result as _result,
 )
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
-from cdpyr.analysis.workspace.grid import grid_calculator as _calculator
+from cdpyr.analysis.workspace.hull import hull_calculator as _calculator
 from cdpyr.typing import Matrix
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class HullResult(_result.Result, abc.Collection):
+class WorkspaceHullResult(_result.WorkspaceResult, abc.Collection):
     _faces: Matrix
     _vertices: Matrix
 
     def __init__(self,
-                 algorithm: '_calculator.GridCalculator',
+                 algorithm: '_calculator.HullCalculator',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  vertices: Matrix,
@@ -135,5 +135,5 @@ class HullResult(_result.Result, abc.Collection):
 
 
 __all__ = [
-    'HullResult',
+    'WorkspaceHullResult',
 ]
