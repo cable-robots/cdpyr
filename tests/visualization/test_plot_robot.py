@@ -191,6 +191,36 @@ class PlotRobotTestSuite(object):
         wizard.show()
         wizard.close()
 
+    @pytest.mark.parametrize(
+            ('engine'),
+            [
+                (visualization.engine.plotly.Spatial())
+            ]
+    )
+    def test_render_ipanema3(self, engine: visualization.engine.Engine,
+                             ipanema_3: robot.Robot):
+        wizard = visualization.Visualizer(engine)
+        wizard.render(ipanema_3)
+        wizard.draw()
+        wizard.show()
+        wizard.close()
+
+    @pytest.mark.parametrize(
+            ('engine'),
+            [
+                (visualization.engine.plotly.Spatial())
+            ]
+    )
+    def test_render_ipanema3_random(self, engine: visualization.engine.Engine,
+                                    rand_pose_3r3t: pose.Pose,
+                                    ipanema_3: robot.Robot):
+        ipanema_3.platforms[0].pose = rand_pose_3r3t
+        wizard = visualization.Visualizer(engine)
+        wizard.render(ipanema_3)
+        wizard.draw()
+        wizard.show()
+        wizard.close()
+
 
 if __name__ == "__main__":
     pytest.main()
