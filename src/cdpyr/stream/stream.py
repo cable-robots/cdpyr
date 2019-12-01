@@ -19,7 +19,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Streamer(object):
+class Stream(object):
     parser: '_parser.Parser'
 
     # define the mapping of object type and marshmallow schemes
