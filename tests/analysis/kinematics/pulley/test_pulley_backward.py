@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.analysis.kinematics.pulley import Pulley as Calculator
+from cdpyr.analysis.kinematics.pulley import Pulley as PulleyKinematics
 from cdpyr.kinematics.transformation import Angular
 from cdpyr.motion.pose import Pose
 from cdpyr.robot import Robot
@@ -12,7 +12,7 @@ class PulleyKinematicsBackwardTestSuite(object):
     def test_motion_pattern_1t(self,
                                robot_1t: Robot,
                                rand_pose_1t: Pose,
-                               ik_pulley: Calculator):
+                               ik_pulley: PulleyKinematics):
         # shift so we can copy code more easily from one test case to another
         pose = rand_pose_1t
         robot = robot_1t
@@ -54,7 +54,7 @@ class PulleyKinematicsBackwardTestSuite(object):
     def test_motion_pattern_2t(self,
                                robot_2t: Robot,
                                rand_pose_2t: Pose,
-                               ik_pulley: Calculator):
+                               ik_pulley: PulleyKinematics):
         # shift so we can copy code more easily from one test case to another
         pose = rand_pose_2t
         robot = robot_2t
@@ -96,7 +96,7 @@ class PulleyKinematicsBackwardTestSuite(object):
     def test_motion_pattern_3t(self,
                                robot_3t: Robot,
                                rand_pose_3t: Pose,
-                               ik_pulley: Calculator):
+                               ik_pulley: PulleyKinematics):
         # shift so we can copy code more easily from one test case to another
         pose = rand_pose_3t
         robot = robot_3t
@@ -143,7 +143,7 @@ class PulleyKinematicsBackwardTestSuite(object):
     def test_motion_pattern_1r2t(self,
                                  robot_1r2t: Robot,
                                  rand_pose_1r2t: Pose,
-                                 ik_pulley: Calculator):
+                                 ik_pulley: PulleyKinematics):
         # shift so we can copy code more easily from one test case to another
         pose = rand_pose_1r2t
         robot = robot_1r2t
@@ -190,7 +190,7 @@ class PulleyKinematicsBackwardTestSuite(object):
     def test_motion_pattern_2r3t(self,
                                  robot_2r3t: Robot,
                                  rand_pose_2r3t: Pose,
-                                 ik_pulley: Calculator):
+                                 ik_pulley: PulleyKinematics):
         # shift so we can copy code more easily from one test case to another
         pose = rand_pose_2r3t
         robot = robot_2r3t
@@ -237,7 +237,7 @@ class PulleyKinematicsBackwardTestSuite(object):
     def test_motion_pattern_3r3t(self,
                                  robot_3r3t: Robot,
                                  rand_pose_3r3t: Pose,
-                                 ik_pulley: Calculator):
+                                 ik_pulley: PulleyKinematics):
         # shift so we can copy code more easily from one test case to another
         pose = rand_pose_3r3t
         robot = robot_3r3t
