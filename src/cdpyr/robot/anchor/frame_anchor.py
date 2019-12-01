@@ -24,7 +24,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class FrameAnchor(_anchor.Anchor, RobotComponent):
+class FrameAnchor(_anchor.Anchor):
     pulley: '_pulley.Pulley'
     drivetrain: '_drivetrain.DriveTrain'
 

@@ -20,7 +20,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class PlatformAnchor(_anchor.Anchor, RobotComponent):
+class PlatformAnchor(_anchor.Anchor):
 
     def __init__(self,
                  position: Optional[Vector] = None,
