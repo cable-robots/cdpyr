@@ -27,7 +27,7 @@ class StreamTestSuite(object):
         orig: cdpyr.motion.Pose = rand_pose_3r3t
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -61,7 +61,7 @@ class StreamTestSuite(object):
             0].motion_pattern
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -94,7 +94,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.Cable = robot_3r3t.cables[0]
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -126,7 +126,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.CableList = robot_3r3t.cables
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -158,7 +158,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.PlatformAnchor = robot_3r3t.platforms[0].anchors[0]
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -191,7 +191,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.PlatformAnchorList = robot_3r3t.platforms[0].anchors
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -224,7 +224,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.FrameAnchor = robot_3r3t.frame.anchors[0]
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -257,7 +257,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.FrameAnchorList = robot_3r3t.frame.anchors
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -290,7 +290,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.Frame = robot_3r3t.frame
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -322,7 +322,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.Platform = robot_3r3t.platforms[0]
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -354,7 +354,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.PlatformList = robot_3r3t.platforms
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -387,7 +387,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.KinematicChain = robot_3r3t.kinematic_chains[0]
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -420,7 +420,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.KinematicChainList = robot_3r3t.kinematic_chains
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
@@ -453,7 +453,7 @@ class StreamTestSuite(object):
         orig: cdpyr.robot.Robot = robot_3r3t
 
         # create a JSON stream object
-        stream = cdpyr.stream.Streamer(parser)
+        stream = cdpyr.stream.Stream(parser)
 
         # file path to save to (with the extension at first)
         tmpfile = tmpdir / f'{orig.__class__.__name__.lower()}.{ext}'
