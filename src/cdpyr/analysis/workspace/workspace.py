@@ -1,6 +1,7 @@
 import copy
 from abc import ABC, abstractmethod
 
+from cdpyr.analysis import result as _result
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.robot import robot as _robot
@@ -41,7 +42,7 @@ class Algorithm(ABC):
         raise NotImplementedError()
 
 
-class Result(ABC):
+class Result(_result.PlottableResult):
     _algorithm: 'Algorithm'
     _archetype: '_archetype.Archetype'
     _criterion: '_criterion.Criterion'

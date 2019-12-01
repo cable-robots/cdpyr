@@ -56,7 +56,7 @@ class Algorithm(ABC):
         raise NotImplementedError()
 
 
-class Result(_result.PoseResult):
+class Result(_result.PoseResult, _result.PlottableResult):
     _algorithm: 'Algorithm'
     _directions: Matrix
     _joints: Vector
