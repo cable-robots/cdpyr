@@ -12,6 +12,10 @@ class Result(ABC):
     pass
 
 
+class PlottableResult(Result):
+    pass
+
+
 class PoseResult(Result):
     _pose: '_pose.Pose'
 
@@ -28,6 +32,7 @@ class PoseResult(Result):
 
 
 __all__ = [
-    'Result',
+    'PlottableResult',
     'PoseResult',
+    'Result',
 ]
