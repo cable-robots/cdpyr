@@ -15,13 +15,13 @@ class Standard(_algorithm.Algorithm):
 
     def _forward(self,
                  robot: '_robot.Robot',
-                 joints: Vector,
+                 lengths: Vector,
                  **kwargs) -> dict:
         # for now, this is the inner-loop code for the first platform
         index_platform = 0
 
         # consistent arguments
-        joints = _np.asarray(joints)
+        lengths = _np.asarray(lengths)
 
         # quicker and shorter access to platform object
         platform = robot.platforms[index_platform]
@@ -65,16 +65,16 @@ class Standard(_algorithm.Algorithm):
             last_direction.insert(0, directions)
 
             # cable lengths
-            estimated_joints = _np.linalg.norm(directions, axis=0)
+            estimated_lengths = _np.linalg.norm(directions, axis=0)
 
             # return error as || l - l_in || ^ 2
-            return _np.linalg.norm(estimated_joints - joints) ** 2
+            return _np.linalg.norm(estimated_lengths - lengths) ** 2
 
         # initial pose estimate given by user?
         initial_estimate = kwargs.get('x0', None)
         # no initial pose estimate given, so calculate one based on Schmidt.2016
         if initial_estimate is None:
-            # initial_estimate = self._pose_estimate(robot, joints)
+            # initial_estimate = self._pose_estimate(robot, lengths)
             initial_estimate = _np.asarray([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
 
         # introduce scaling
@@ -156,9 +156,10 @@ class Standard(_algorithm.Algorithm):
         except ArithmeticError as ArithmeticE:
             raise ValueError(
                     'Unable to solve the standard forward kinematics for the '
-                    'given joints. Please check if your inputs are correct and '
-                    'then run again. You may also pass additional arguments to '
-                    'the underlying optimization method.') from ArithmeticE
+                    'given cable lengths. Please check if your inputs are '
+                    'correct and then run again. You may also pass additional '
+                    'arguments to the underlying optimization method.') from \
+                ArithmeticE
         else:
             final = result.x / scaling
 
@@ -167,7 +168,7 @@ class Standard(_algorithm.Algorithm):
                         final[0:3],
                         angular=_angular.Angular(quaternion=final[3:7])
                 ),
-                'joints':     joints,
+                'lengths':    lengths,
                 'directions': last_direction[0]
             }
 
@@ -198,6 +199,9 @@ class Standard(_algorithm.Algorithm):
                                        frame_anchors,
                                        platform_anchors)
 
+        # cable swivel angles
+        swivel = _np.arctan2(directions[1, :], directions[0, :])
+
         # strip additional spatial dimensions
         directions = directions[0:platform.motion_pattern.dof_translation, :]
 
@@ -216,8 +220,9 @@ class Standard(_algorithm.Algorithm):
 
         return {
             'pose':       pose,
-            'joints':     lengths,
-            'directions': directions
+            'lengths':    lengths,
+            'directions': directions,
+            'swivel':     swivel
         }
 
     def _vector_loop(self,
@@ -229,9 +234,9 @@ class Standard(_algorithm.Algorithm):
                 position[:, _np.newaxis] + dcm.dot(platform_anchor)
         )
 
-    def _pose_estimate(self, robot: '_robot.Robot', joints: Vector):
+    def _pose_estimate(self, robot: '_robot.Robot', lengths: Vector):
         # consistent arguments
-        joints = _np.asarray(joints)
+        lengths = _np.asarray(lengths)
 
         # initialize estimated initial position
         estimate = _np.asarray([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
@@ -252,9 +257,9 @@ class Standard(_algorithm.Algorithm):
                                         enumerate(platform.anchors) if
                                         idx in kcs.platform_anchor]).T
 
-        radius_low = _np.max(frame_anchors - (joints + _np.linalg.norm(
+        radius_low = _np.max(frame_anchors - (lengths + _np.linalg.norm(
                 platform_anchors, axis=0))[_np.newaxis, :], axis=1)
-        radius_high = _np.min(frame_anchors + (joints + _np.linalg.norm(
+        radius_high = _np.min(frame_anchors + (lengths + _np.linalg.norm(
                 platform_anchors, axis=0))[_np.newaxis, :], axis=1)
 
         # build index slicer to push values into correct entries
