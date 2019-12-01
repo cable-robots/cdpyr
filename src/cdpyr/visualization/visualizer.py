@@ -1,6 +1,6 @@
 from typing import Union
 
-from cdpyr.analysis.workspace.workspace import Result as WorkspaceResult
+from cdpyr.analysis.result import PlottableResult
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.visualization.engine import engine as _engine
 
@@ -30,7 +30,7 @@ class Visualizer(object):
     def show(self):
         self._engine.show()
 
-    def render(self, obj: Union['RobotComponent', 'WorkspaceResult'], *args,
+    def render(self, obj: Union['RobotComponent', 'PlottableResult'], *args,
                **kwargs):
         return self._engine.render(obj, *args, **kwargs)
 

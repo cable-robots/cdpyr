@@ -5,8 +5,8 @@ import numpy as _np
 from abc import ABC, abstractmethod
 
 from cdpyr.analysis.kinematics import kinematics as _kinematics
+from cdpyr.analysis.result import PlottableResult
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
-from cdpyr.analysis.workspace.workspace import Result as WorkspaceResult
 from cdpyr.helpers import full_classname as fcn
 from cdpyr.robot import (
     cable as _cable,
@@ -88,7 +88,7 @@ class Engine(ABC):
     def show(self):
         raise NotImplementedError()
 
-    def render(self, o: Union['RobotComponent', 'WorkspaceResult'], *args,
+    def render(self, o: Union['RobotComponent', 'PlottableResult'], *args,
                **kwargs):
         self._RESOLVER[fcn(o)](o, *args, **kwargs)
 
