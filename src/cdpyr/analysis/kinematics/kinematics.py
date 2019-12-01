@@ -1,6 +1,8 @@
+from typing import Union
+
 import copy
+import numpy as _np
 from abc import ABC, abstractmethod
-from magic_repr import make_repr
 
 from cdpyr.analysis import result as _result
 from cdpyr.motion.pose import pose as _pose
@@ -57,33 +59,48 @@ class Algorithm(ABC):
 
 
 class Result(_result.PoseResult, _result.PlottableResult):
+    """
+
+    """
+
+    """
+    Algorithm used for calculation of the kinematics result
+    """
     _algorithm: 'Algorithm'
-    _directions: Matrix
-    _joints: Vector
+    """
+    `(M,)` of swivel angles of each cable frame
+    """
     _swivel: Vector
+    """
+    `(M,)` of wrap angles of each pulley
+    """
     _wrap: Vector
 
-    def __init__(self,
-                 algorithm: 'Algorithm',
-                 pose: '_pose.Pose',
-                 joints: Vector,
+    """
+    `(NT, M)` array of unit cable direction vectors
+    """
+    _directions: Matrix
+
+    """
+    `(2, M)` array where each column consists of `[workspace, pulley]` lengths
+    """
+    _lengths: Matrix
+
+    def __init__(self, algorithm: 'Algorithm', pose: '_pose.Pose',
+                 lengths: Union[Vector, Matrix],
                  directions: Matrix,
                  swivel: Vector = None,
-                 wrap: Vector = None,
-                 **kwargs):
+                 wrap: Vector = None):
         super().__init__(pose)
         self._algorithm = copy.deepcopy(algorithm)
-        self._joints = joints
-        self._directions = directions
-        self._swivel = swivel
-        self._wrap = wrap
+        lengths = _np.asarray(lengths)
+        self._lengths = lengths if lengths.ndim == 2 else lengths[None, :]
+        self._directions = _np.asarray(directions)
+        self._swivel = _np.asarray(swivel)
+        self._wrap = _np.asarray(wrap)
 
     @property
-    def algorithm(self):
-        return self._algorithm
-
-    @property
-    def cable_lengths(self):
+    def lengths(self):
         return self.joints
 
     @property
@@ -92,27 +109,26 @@ class Result(_result.PoseResult, _result.PlottableResult):
 
     @property
     def joints(self):
-        return self._joints
+        return _np.sum(self._lengths, axis=0)
 
     @property
-    def lengths(self):
-        return self._joints
-
-    @property
-    def swivel(self):
+    def swivel_angles(self):
         return self._swivel
 
     @property
-    def wrap(self):
-        return self._wrap
+    def workspace_length(self):
+        return self._lengths[0, :]
 
-    __repr__ = make_repr(
-            'algorithm',
-            'pose',
-            'joints',
-            'swivel',
-            'wrap',
-    )
+    @property
+    def wrapped_length(self):
+        try:
+            return self._lengths[1, :]
+        except IndexError:
+            return None
+
+    @property
+    def wrap_angles(self):
+        return self._wrap
 
 
 __all__ = [
