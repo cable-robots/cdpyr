@@ -15,7 +15,7 @@ from cdpyr.stream.parser import parser as _parser
 class Xml(_parser.Parser):
 
     def kwargs(self, o: RobotComponent, **kwargs):
-        return super().kwargs(o, root=o.__class__.__name__, **kwargs)
+        return super().kwargs(o, root=o.__class__.__name__.lower(), **kwargs)
 
     def dumps(self, d: Union[OrderedDict, dict],
               *args,
@@ -24,8 +24,7 @@ class Xml(_parser.Parser):
 
     def loads(self, s: AnyStr, *args, **kwargs) -> Union[OrderedDict, dict]:
         # first, parse from XML to dictionary
-        d = xmltodict.parse(s, force_list={'dcm'}, disable_entities=False,
-                            postprocessor=self._postprocessing)
+        d = xmltodict.parse(s, force_list=('dcm'), postprocessor=self._postprocessing)
         # then, since there always must be a root object in XML, we will
         # strip this off the dictionary from here
         return d[list(d.keys())[0]]
