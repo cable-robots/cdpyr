@@ -108,3 +108,5 @@ def rand_pose_3d(rand_pos_3t, rand_rot_3r):
 
 ik_standard = pytest.fixture(lambda: cdpyr.analysis.kinematics.Standard(),
                              name='ik_standard')
+ik_pulley = pytest.fixture(lambda: cdpyr.analysis.kinematics.Pulley(),
+                           name='ik_pulley')
