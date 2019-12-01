@@ -20,11 +20,11 @@ class StreamTestSuite(object):
         )
     )
     def test_stream_pose(self,
-                         rand_pose_3r3t: cdpyr.motion.Pose,
+                         rand_pose_3r3t: cdpyr.motion.pose.Pose,
                          parser: cdpyr.stream.parser.Parser,
                          ext: str,
                          tmpdir: pl.Path):
-        orig: cdpyr.motion.Pose = rand_pose_3r3t
+        orig: cdpyr.motion.pose.Pose = rand_pose_3r3t
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -38,10 +38,10 @@ class StreamTestSuite(object):
 
         # decode the file
         with open(tmpfile, 'r') as f:
-            resto: cdpyr.motion.Pose = stream.loads(''.join(f.readlines()))
+            resto: cdpyr.motion.pose.Pose = stream.loads(''.join(f.readlines()))
 
         # compare all data
-        assert isinstance(resto, cdpyr.motion.Pose)
+        assert isinstance(resto, cdpyr.motion.pose.Pose)
         assert resto == orig
 
     @pytest.mark.parametrize(

@@ -11,7 +11,7 @@ from magic_repr import make_repr
 
 from cdpyr.geometry import geometry as _geometry
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.motion import pose as _pose
+from cdpyr.motion.pose import pose as _pose
 from cdpyr.motion.pattern import pattern as _motion_pattern
 from cdpyr.robot.anchor import platform_anchor as _platform_anchor
 from cdpyr.robot.robot_component import RobotComponent
@@ -27,11 +27,11 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Platform(RobotComponent):
     _anchors: '_platform_anchor.PlatformAnchorList'
-    _center_of_gravity: 'np_.ndarray'
-    _center_of_linkage: 'np_.ndarray'
+    _center_of_gravity: np_.ndarray
+    _center_of_linkage: np_.ndarray
     geometry: '_geometry.Geometry'
     inertia: '_inertia.Inertia'
-    motion_pattern: '_motion_pattern.MotionPattern'
+    motion_pattern: '_motion_pattern.Pattern'
     name: str
     pose: '_pose.Pose'
 

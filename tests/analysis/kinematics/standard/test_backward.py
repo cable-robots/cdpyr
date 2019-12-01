@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from cdpyr.analysis.kinematics.standard import Standard as StandardKinematics
-from cdpyr.motion import Pose
+from cdpyr.motion.pose import Pose
 from cdpyr.robot import Robot
 
 

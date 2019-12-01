@@ -68,42 +68,42 @@ def unit_rot():
 
 @pytest.fixture
 def empty_pose():
-    return cdpyr.motion.Pose()
+    return cdpyr.motion.pose.Pose()
 
 
 @pytest.fixture
 def rand_pose_1t(rand_pos_1t, unit_rot):
-    return cdpyr.motion.Pose(rand_pos_1t, unit_rot)
+    return cdpyr.motion.pose.Pose(rand_pos_1t, unit_rot)
 
 
 @pytest.fixture
 def rand_pose_2t(rand_pos_2t, unit_rot):
-    return cdpyr.motion.Pose(rand_pos_2t, unit_rot)
+    return cdpyr.motion.pose.Pose(rand_pos_2t, unit_rot)
 
 
 @pytest.fixture
 def rand_pose_3t(rand_pos_3t, unit_rot):
-    return cdpyr.motion.Pose(rand_pos_3t, unit_rot)
+    return cdpyr.motion.pose.Pose(rand_pos_3t, unit_rot)
 
 
 @pytest.fixture
 def rand_pose_1r2t(rand_pos_2t, rand_rot_1r):
-    return cdpyr.motion.Pose(rand_pos_2t, rand_rot_1r)
+    return cdpyr.motion.pose.Pose(rand_pos_2t, rand_rot_1r)
 
 
 @pytest.fixture
 def rand_pose_2r3t(rand_pos_3t, rand_rot_2r):
-    return cdpyr.motion.Pose(rand_pos_3t, rand_rot_2r)
+    return cdpyr.motion.pose.Pose(rand_pos_3t, rand_rot_2r)
 
 
 @pytest.fixture
 def rand_pose_3r3t(rand_pos_3t, rand_rot_3r):
-    return cdpyr.motion.Pose(rand_pos_3t, rand_rot_3r)
+    return cdpyr.motion.pose.Pose(rand_pos_3t, rand_rot_3r)
 
 
 @pytest.fixture
 def rand_pose_3d(rand_pos_3t, rand_rot_3r):
-    return cdpyr.motion.Pose(rand_pos_3t, rand_rot_3r)
+    return cdpyr.motion.pose.Pose(rand_pos_3t, rand_rot_3r)
 
 
 ik_standard = pytest.fixture(lambda: cdpyr.analysis.kinematics.Standard(),
