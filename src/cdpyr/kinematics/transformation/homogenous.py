@@ -87,10 +87,10 @@ class Homogenous(BaseObject):
         coordinates = np_.vstack(
                 (coordinates, np_.ones(tuple([1]) + coordinates.shape[1:])))
 
-        # First, apply the transformation
+        # first, apply the transformation
         transformed = self.matrix.dot(coordinates)
 
-        # Return whatever we have
+        # return whatever we have
         return transformed[0:3, 0] if single else transformed[0:3, :]
 
     def __eq__(self, other):

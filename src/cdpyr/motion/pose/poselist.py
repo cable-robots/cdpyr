@@ -44,7 +44,7 @@ class PoseList(UserList, BaseObject):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            raise TypeError()
 
         if self is other:
             return True
