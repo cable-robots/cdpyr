@@ -7,8 +7,7 @@ from scipy.linalg import null_space
 
 from cdpyr.analysis import evaluator as _evaluator, result as _result
 from cdpyr.motion.pose import pose as _pose
-from cdpyr.robot import platform as _platform
-from cdpyr.typing import Matrix
+from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -17,14 +16,15 @@ __email__ = "p.tempel@tudelft.nl"
 class Algorithm(_evaluator.Evaluator):
 
     def evaluate(self,
-                 platform: '_platform.Platform',
+                 platform_anchors: Vector,
                  pose: '_pose.Pose',
                  directions: Matrix) -> '_result.StructureMatrixResult':
-        return Result(pose, **self._evaluate(platform, pose, directions))
+        return Result(pose,
+                      **self._evaluate(platform_anchors, pose, directions))
 
     @abstractmethod
     def _evaluate(self,
-                  platform: '_platform.Platform',
+                  platform_anchors: Vector,
                   pose: '_pose.Pose',
                   directions: Matrix) -> dict:
         raise NotImplementedError()

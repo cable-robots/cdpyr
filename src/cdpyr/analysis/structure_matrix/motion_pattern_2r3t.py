@@ -3,8 +3,7 @@ import numpy as _np
 from cdpyr.analysis.structure_matrix.structure_matrix import Algorithm as \
     StructureMatrixAlgorithm
 from cdpyr.motion.pose import pose as _pose
-from cdpyr.robot import platform as _platform
-from cdpyr.typing import Matrix
+from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -13,7 +12,7 @@ __email__ = "p.tempel@tudelft.nl"
 class MotionPattern2R3T(StructureMatrixAlgorithm):
 
     def _evaluate(self,
-                  platform: '_platform.Platform',
+                  platform_anchors: Vector,
                   pose: '_pose.Pose',
                   directions: Matrix):
         return {
@@ -22,7 +21,7 @@ class MotionPattern2R3T(StructureMatrixAlgorithm):
                                 directions,
                                 _np.cross(
                                         pose.angular.dcm.dot(
-                                                platform.bi
+                                                platform_anchors
                                         ),
                                         directions,
                                         axis=0

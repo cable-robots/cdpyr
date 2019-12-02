@@ -1,5 +1,7 @@
 from typing import AnyStr, Dict
 
+import numpy as _np
+
 from cdpyr.analysis import evaluator as _evaluator
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.structure_matrix import (
@@ -52,20 +54,26 @@ class Calculator(_evaluator.PoseEvaluator):
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Structure matrices are currently not implemented for '
-                    'robots '
-                    'with more than one platform.'
+                    'robots with more than one platform.'
             )
 
         # solve inverse kinematics
         kinematics = self.kinematics.backward(robot, pose)
 
-        # get first platform
-        platform = robot.platforms[0]
+        # platform index (to fake the `for platform` loop)
+        platform_index = 0
+
+        # get the current  platform
+        platform = robot.platforms[platform_index]
 
         return _structure_matrix.Result(
                 pose,
                 self.resolver[platform.motion_pattern].evaluate(
-                        platform,
+                        _np.asarray(
+                                [platform.anchors[anchor_index].linear.position
+                                 for anchor_index in
+                                 robot.kinematic_chains.with_platform(
+                                     platform_index).platform_anchor]).T,
                         pose,
                         kinematics.directions)
         )
