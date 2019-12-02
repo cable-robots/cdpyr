@@ -1,9 +1,7 @@
-from cdpyr.analysis.structure_matrix import calculator as _calculator
+from cdpyr.analysis.structure_matrix.calculator import Calculator
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-
-Calculator = _calculator.Calculator
 
 __all__ = [
         'Calculator',
