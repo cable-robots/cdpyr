@@ -3,14 +3,15 @@
 root = true
 
 [*]
-indent_style = space
-indent_size = 4
-trim_trailing_whitespace = true
-insert_final_newline = true
 charset = utf-8
 end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
 
 [*.py]
+continuation_indent_size = 8
 
 [*.rst]
 indent_size = 3
