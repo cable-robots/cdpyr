@@ -75,7 +75,8 @@ class Algorithm(_workspace.Algorithm):
                       self._archetype,
                       self._criterion,
                       vertices,
-                      faces)
+                      faces,
+                      self._center)
 
     def __check_direction(self, robot, direction: Vector, min_step, max_iters):
         # step length along this coordinate
@@ -266,16 +267,41 @@ class Algorithm(_workspace.Algorithm):
 class Result(_workspace.Result, abc.Collection):
     _faces: Matrix
     _vertices: Matrix
+    _centroid: Vector
+    _center: Vector
 
     def __init__(self,
                  algorithm: 'Algorithm',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  vertices: Matrix,
-                 faces: Matrix):
+                 faces: Matrix,
+                 center: Vector):
         super().__init__(algorithm, archetype, criterion)
         self._faces = _np.asarray(faces)
         self._vertices = _np.asarray(vertices)
+        self._center = center
+        self._centroid = None
+
+    @property
+    def centroid(self):
+        if self._centroid is None:
+            # get each vertex
+            a = self._vertices[self._faces[:, 0], :]
+            b = self._vertices[self._faces[:, 1], :]
+            c = self._vertices[self._faces[:, 2], :]
+            d = self._center
+
+            # | (a - d) . ( (b - d) x (c - d) ) |
+            # -----------------------------------
+            #                  6
+            volumes = _np.abs(
+                    _np.sum((a - d) * _np.cross(b - d, c - d, axis=1),
+                            axis=1)) / 6
+
+            # centroids as weighted surface-weighted volumes
+            self._centroid = _np.sum(volumes[:, None] * ((_np.sum(self._vertices[self._faces, :], axis=1) + d)/ 4), axis=0)
+        return self._centroid
 
     @property
     def faces(self):
@@ -312,7 +338,7 @@ class Result(_workspace.Result, abc.Collection):
             a = self._vertices[self._faces[:, 0], :]
             b = self._vertices[self._faces[:, 1], :]
             c = self._vertices[self._faces[:, 2], :]
-            d = _np.zeros((3,))
+            d = self.centroid
 
             # | (a - d) . ( (b - d) x (c - d) ) |
             # -----------------------------------
