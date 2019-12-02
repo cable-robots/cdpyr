@@ -19,8 +19,7 @@ from cdpyr import (
     analysis,
     # I/O imports
     stream,
-    schema,
-    visualization
+    schema
 )
 # @formatter:on
 
@@ -41,5 +40,4 @@ __all__ = [
         'stream',
         'typing',
         'validator',
-        'visualization',
 ]
