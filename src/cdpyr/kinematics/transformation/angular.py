@@ -41,7 +41,10 @@ class Angular(BaseObject):
     _quaternion: Vector = np_.asarray([0.0, 0.0, 0.0, 1.0])
     _angular_velocity: np_.ndarray = np_.asarray((0., 0., 0.))
     _angular_acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
-    sequence: AnyStr = 'xyz'
+    """
+    Intrinsic orientation about local Z, then local Y, then local X axis
+    """
+    sequence: AnyStr = 'XYZ'
 
     _AXIS_TO_IND = {'x': 0, 'y': 1, 'z': 2}
 
