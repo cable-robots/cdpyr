@@ -1,12 +1,24 @@
 import itertools
-from typing import AnyStr, Callable, Dict, Union
+from abc import (
+    ABC,
+    abstractmethod
+)
+from typing import (
+    AnyStr,
+    Callable,
+    Dict,
+    Union
+)
 
 import numpy as _np
-from abc import ABC, abstractmethod
 
+from cdpyr import geometry as _geometry
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.result import PlottableResult
-from cdpyr.analysis.workspace import grid as _grid, hull as _hull
+from cdpyr.analysis.workspace import (
+    grid as _grid,
+    hull as _hull
+)
 from cdpyr.helpers import full_classname as fcn
 from cdpyr.robot import (
     cable as _cable,
@@ -24,7 +36,10 @@ from cdpyr.robot.anchor import (
     platform_anchor as _platform_anchor,
 )
 from cdpyr.robot.robot_component import RobotComponent
-from cdpyr.typing import Matrix, Vector
+from cdpyr.typing import (
+    Matrix,
+    Vector
+)
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -49,27 +64,32 @@ class Engine(ABC):
 
     def __init__(self, *args, **kwargs):
         self._RESOLVER = {
-            fcn(_cable.Cable):              self.render_cable,
-            fcn(_cable.CableList):          self.render_cable_list,
-            fcn(_drivetrain.DriveTrain):    self.render_drivetrain,
-            fcn(_drum.Drum):                self.render_drum,
-            fcn(_frame.Frame):              self.render_frame,
-            fcn(_frame_anchor.FrameAnchor): self.render_frame_anchor,
+            fcn(_cable.Cable):               self.render_cable,
+            fcn(_cable.CableList):           self.render_cable_list,
+            fcn(_drivetrain.DriveTrain):     self.render_drivetrain,
+            fcn(_drum.Drum):                 self.render_drum,
+            fcn(_frame.Frame):               self.render_frame,
+            fcn(_frame_anchor.FrameAnchor):  self.render_frame_anchor,
             fcn(_frame_anchor.FrameAnchorList):
-                                            self.render_frame_anchor_list,
-            fcn(_gearbox.Gearbox):          self.render_gearbox,
-            fcn(_kinematics.Result):        self.render_kinematics,
-            fcn(_motor.Motor):              self.render_motor,
-            fcn(_platform.Platform):        self.render_platform,
-            fcn(_platform.PlatformList):    self.render_platform_list,
+                                             self.render_frame_anchor_list,
+            fcn(_gearbox.Gearbox):           self.render_gearbox,
+            fcn(_geometry.Cuboid):           self.render_cuboid,
+            fcn(_geometry.Cylinder):         self.render_cylinder,
+            fcn(_geometry.EllipticCylinder): self.render_elliptic_cylinder,
+            fcn(_geometry.Sphere):           self.render_sphere,
+            fcn(_geometry.Tube):             self.render_tube,
+            fcn(_kinematics.Result):         self.render_kinematics,
+            fcn(_motor.Motor):               self.render_motor,
+            fcn(_platform.Platform):         self.render_platform,
+            fcn(_platform.PlatformList):     self.render_platform_list,
             fcn(_platform_anchor.PlatformAnchor):
-                                            self.render_platform_anchor,
+                                             self.render_platform_anchor,
             fcn(_platform_anchor.PlatformAnchorList):
-                                            self.render_platform_anchor_list,
-            fcn(_pulley.Pulley):            self.render_pulley,
-            fcn(_robot.Robot):              self.render_robot,
-            fcn(_grid.Result):              self.render_workspace_grid,
-            fcn(_hull.Result):              self.render_workspace_hull,
+                                             self.render_platform_anchor_list,
+            fcn(_pulley.Pulley):             self.render_pulley,
+            fcn(_robot.Robot):               self.render_robot,
+            fcn(_grid.Result):               self.render_workspace_grid,
+            fcn(_hull.Result):               self.render_workspace_hull,
         }
 
     @abstractmethod
@@ -102,12 +122,27 @@ class Engine(ABC):
             self.render(cable, *args, **kwargs)
 
     @abstractmethod
+    def render_cuboid(self, cuboid: '_geometry.Cuboid', *args, **kwargs):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def render_cylinder(self, cylinder: '_geometry.Cylinder', *args, **kwargs):
+        raise NotImplementedError()
+
+    @abstractmethod
     def render_drivetrain(self, drivetrain: '_drivetrain.DriveTrain', *args,
                           **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
     def render_drum(self, drum: '_drum.Drum', *args, **kwargs):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def render_elliptic_cylinder(self,
+                                 elliptic_cylinder:
+                                 '_geometry.EllipticCylinder',
+                                 *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
@@ -165,6 +200,14 @@ class Engine(ABC):
 
     @abstractmethod
     def render_robot(self, robot: '_robot.Robot', *args, **kwargs):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def render_sphere(self, sphere: '_geometry.Sphere', *args, **kwargs):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def render_tube(self, tube: '_geometry.Tube', *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
