@@ -1,11 +1,7 @@
 from abc import ABC
-from collections import Mapping
-from typing import Sequence, Union
+from typing import Mapping, Sequence, Union
 
 import numpy as _np
-from plotly import graph_objects as go
-from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
-
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.geometry import (
@@ -13,7 +9,7 @@ from cdpyr.geometry import (
     cylinder as _cylinder,
     elliptic_cylinder as _el_cylinder,
     sphere as _sphere,
-    tube as _tube
+    tube as _tube,
 )
 from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
@@ -26,20 +22,22 @@ from cdpyr.robot import (
     motor as _motor,
     platform as _platform,
     pulley as _pulley,
-    robot as _robot
+    robot as _robot,
 )
 from cdpyr.robot.anchor import (
     frame_anchor as _frame_anchor,
-    platform_anchor as _platform_anchor
+    platform_anchor as _platform_anchor,
 )
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
+from plotly import graph_objects as go
+from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-def update_recursive(defaults, update):
+def update_recursive(defaults: Mapping, update: Mapping):
     for k, v in update.items():
         if isinstance(v, Mapping):
             defaults[k] = update_recursive(defaults.get(k, {}), v)
@@ -91,15 +89,19 @@ class Plotly(_engine.Engine, ABC):
 
     def draw(self, *args, **kwargs):
         self.figure.update_layout(
-                scene=dict(
-                        aspectmode='data',
-                        aspectratio=dict(
-                                x=1.00,
-                                y=1.00,
-                                z=1.00
-                        )
-                ),
-                **kwargs
+                **update_recursive(
+                        dict(
+                                scene=dict(
+                                        aspectmode='data',
+                                        aspectratio=dict(
+                                                x=1.00,
+                                                y=1.00,
+                                                z=1.00
+                                        )
+                                )
+                        ),
+                        kwargs
+                )
         )
 
     def reset(self):
@@ -140,48 +142,48 @@ class Plotly(_engine.Engine, ABC):
 
         if self._NUMBER_OF_COORDINATES == 1:
             vertices = _np.asarray((
-                    (-1.0, 0.0, 0.0),
-                    (1.0, 0.0, 0.0),
+                (-1.0, 0.0, 0.0),
+                (1.0, 0.0, 0.0),
             ))
             edges = _np.asarray([
-                    [0, 1, 0]
+                [0, 1, 0]
             ])
             plotter = self._scatter
         elif self._NUMBER_OF_COORDINATES == 2:
             vertices = _np.asarray((
-                    (-1.0, 1.0, 0.0),
-                    (1.0, 1.0, 0.0),
-                    (1.0, -1.0, 0.0),
-                    (-1.0, -1.0, 0.0),
+                (-1.0, 1.0, 0.0),
+                (1.0, 1.0, 0.0),
+                (1.0, -1.0, 0.0),
+                (-1.0, -1.0, 0.0),
             ))
             edges = _np.asarray([
-                    [0, 1, 2, 3, 0]
+                [0, 1, 2, 3, 0]
             ])
             plotter = self._scatter
         elif self._NUMBER_OF_COORDINATES == 3:
             vertices = _np.asarray((
-                    (-1.0, 1.0, 1.0),
-                    (1.0, 1.0, 1.0),
-                    (1.0, -1.0, 1.0),
-                    (-1.0, -1.0, 1.0),
-                    (-1.0, 1.0, -1.0),
-                    (1.0, 1.0, -1.0),
-                    (1.0, -1.0, -1.0),
-                    (-1.0, -1.0, -1.0),
+                (-1.0, 1.0, 1.0),
+                (1.0, 1.0, 1.0),
+                (1.0, -1.0, 1.0),
+                (-1.0, -1.0, 1.0),
+                (-1.0, 1.0, -1.0),
+                (1.0, 1.0, -1.0),
+                (1.0, -1.0, -1.0),
+                (-1.0, -1.0, -1.0),
             ))
             edges = _np.asarray((
-                    (2, 1, 0),
-                    (6, 2, 1),
-                    (4, 1, 0),
-                    (3, 2, 0),
-                    (6, 3, 2),
-                    (3, 4, 0),
-                    (5, 4, 1),
-                    (6, 5, 1),
-                    (6, 5, 4),
-                    (7, 3, 4),
-                    (6, 7, 4),
-                    (6, 7, 3),
+                (2, 1, 0),
+                (6, 2, 1),
+                (4, 1, 0),
+                (3, 2, 0),
+                (6, 3, 2),
+                (3, 4, 0),
+                (5, 4, 1),
+                (6, 5, 1),
+                (6, 5, 4),
+                (7, 3, 4),
+                (6, 7, 4),
+                (6, 7, 3),
             ))
             plotter = self._mesh
 
@@ -271,9 +273,9 @@ class Plotly(_engine.Engine, ABC):
                     self._scatter(
                             **self._prepare_plot_coordinates(
                                     self._extract_coordinates(_np.hstack((
-                                            position, position + 0.25 * dcm.dot(
-                                                    self.COORDINATE_DIRECTIONS[
-                                                        idx])
+                                        position, position + 0.25 * dcm.dot(
+                                                self.COORDINATE_DIRECTIONS[
+                                                    idx])
                                     )))),
                             **update_recursive(dict(
                                     mode='lines',
@@ -665,14 +667,18 @@ class Linear(Plotly):
     def draw(self, *args, **kwargs):
         super().draw()
         self.figure.update_layout(
-                yaxis=dict(
-                        scaleanchor="x",
-                        scaleratio=1,
-                        showline=False,
-                        showticklabels=False,
-                        showgrid=False
-                ),
-                **kwargs
+                **update_recursive(
+                        dict(
+                                yaxis=dict(
+                                        scaleanchor="x",
+                                        scaleratio=1,
+                                        showline=False,
+                                        showticklabels=False,
+                                        showgrid=False
+                                )
+                        ),
+                        kwargs
+                )
         )
 
 
@@ -683,19 +689,23 @@ class Planar(Plotly):
     def draw(self, *args, **kwargs):
         super().draw()
         self.figure.update_layout(
-                yaxis=dict(
-                        scaleanchor="x",
-                        scaleratio=1,
-                ),
-                scene=dict(
-                        aspectmode='data',
-                        aspectratio=dict(
-                                x=1.00,
-                                y=1.00,
-                                z=1.00
-                        )
-                ),
-                **kwargs
+                **update_recursive(
+                        dict(
+                                yaxis=dict(
+                                        scaleanchor="x",
+                                        scaleratio=1,
+                                ),
+                                scene=dict(
+                                        aspectmode='data',
+                                        aspectratio=dict(
+                                                x=1.00,
+                                                y=1.00,
+                                                z=1.00
+                                        )
+                                ),
+                        ),
+                        kwargs
+                )
         )
 
 
@@ -706,29 +716,33 @@ class Spatial(Plotly):
     def draw(self, *args, **kwargs):
         super().draw()
         self.figure.update_layout(
-                yaxis=dict(
-                        scaleanchor="x",
-                        scaleratio=1,
+                **update_recursive(
+                        dict(
+                                yaxis=dict(
+                                        scaleanchor="x",
+                                        scaleratio=1,
+                                ),
+                                scene=dict(
+                                        aspectmode='cube',
+                                        aspectratio=dict(
+                                                x=1.00,
+                                                y=1.00,
+                                                z=1.00
+                                        ),
+                                ),
+                                scene_camera=dict(
+                                        eye=dict(
+                                                x=-0.75,
+                                                y=-1.75,
+                                                z=0.25
+                                        )
+                                ),
+                        ),
+                        kwargs
                 ),
-                scene=dict(
-                        aspectmode='data',
-                        aspectratio=dict(
-                                x=1.00,
-                                y=1.00,
-                                z=1.00
-                        )
-                ),
-                scene_camera=dict(
-                        eye=dict(
-                                x=-0.75,
-                                y=-1.75,
-                                z=0.25
-                        )
-                ),
-                **kwargs
         )
 
 
 __all__ = [
-        'Plotly',
+    'Plotly',
 ]
