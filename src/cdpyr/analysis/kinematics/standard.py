@@ -29,12 +29,12 @@ class Standard(_algorithm.Algorithm):
         # kinematic chains of the platform
         kcs = robot.kinematic_chains.with_platform(index_platform)
         # get frame anchors and platform anchors
-        frame_anchors = _np.asarray([anchor.position for idx, anchor in
-                                     enumerate(robot.frame.anchors) if
-                                     idx in kcs.frame_anchor]).T
-        platform_anchors = _np.asarray([anchor.position for idx, anchor in
-                                        enumerate(platform.anchors) if
-                                        idx in kcs.platform_anchor]).T
+        frame_anchors = _np.asarray(
+                [robot.frame.anchors[anchor_index].linear.position for
+                 anchor_index in kcs.frame_anchor]).T
+        platform_anchors = _np.asarray(
+                [platform.anchors[anchor_index].linear.position for anchor_index
+                 in kcs.platform_anchor]).T
 
         # scaling of all parameters to increase sensitivity of the optimizer
         scaling = _np.asarray([0.1, 0.1, 0.1, 10.0, 10.0, 10.0, 10.0]) * 10
@@ -186,12 +186,12 @@ class Standard(_algorithm.Algorithm):
         # kinematic chains of the platform
         kcs = robot.kinematic_chains.with_platform(index_platform)
         # get frame anchors and platform anchors
-        frame_anchors = _np.asarray([anchor.position for idx, anchor in
-                                     enumerate(robot.frame.anchors) if
-                                     idx in kcs.frame_anchor]).T
-        platform_anchors = _np.asarray([anchor.position for idx, anchor in
-                                        enumerate(platform.anchors) if
-                                        idx in kcs.platform_anchor]).T
+        frame_anchors = _np.asarray(
+                [robot.frame.anchors[anchor_index].linear.position for
+                 anchor_index in kcs.frame_anchor]).T
+        platform_anchors = _np.asarray(
+                [platform.anchors[anchor_index].linear.position for anchor_index
+                 in kcs.platform_anchor]).T
 
         # cable directions
         directions = self._vector_loop(pos,
