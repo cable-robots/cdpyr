@@ -8,14 +8,14 @@ __email__ = "p.tempel@tudelft.nl"
 
 class PatternSchema(Schema):
     dof_translation = fields.Int(
-        required=True,
-        data_key='translation',
-        default=0
+            required=True,
+            data_key='translation',
+            default=0
     )
     dof_rotation = fields.Int(
-        required=True,
-        data_key='rotation',
-        default=0
+            required=True,
+            data_key='rotation',
+            default=0
     )
 
     __model__ = _motion_pattern.Pattern
@@ -27,5 +27,5 @@ class PatternSchema(Schema):
 
 
 __all__ = [
-    'PatternSchema',
+        'PatternSchema',
 ]

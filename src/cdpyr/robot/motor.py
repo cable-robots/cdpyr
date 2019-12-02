@@ -1,8 +1,4 @@
-from typing import (
-    AnyStr,
-    Dict,
-    Optional,
-)
+from typing import AnyStr, Dict, Optional
 
 import numpy as np_
 from magic_repr import make_repr
@@ -26,10 +22,10 @@ class Motor(RobotComponent):
                  rated_speed: Optional[Num] = None,
                  rated_power: Optional[Num] = None):
         self.torques = {
-            'stall': None,
-            'peak': None,
-            'rated': None,
-            'rms': None
+                'stall': None,
+                'peak':  None,
+                'rated': None,
+                'rms':   None
         }
 
         self.torques = torques or {}
@@ -44,10 +40,10 @@ class Motor(RobotComponent):
     @torques.setter
     def torques(self, torques: dict):
         default = {
-            'stall': None,
-            'peak': None,
-            'rated': None,
-            'rms': None
+                'stall': None,
+                'peak':  None,
+                'rated': None,
+                'rms':   None
         }
         torques = torques or {}
 
@@ -139,13 +135,13 @@ class Motor(RobotComponent):
                      self.torques))
 
     __repr__ = make_repr(
-        'torques',
-        'rated_power',
-        'rated_speed',
-        'inertia'
+            'torques',
+            'rated_power',
+            'rated_speed',
+            'inertia'
     )
 
 
 __all__ = [
-    'Motor',
+        'Motor',
 ]

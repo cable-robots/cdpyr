@@ -9,12 +9,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 class SphereSchema(_geometry.GeometrySchema):
     diameter = fields.Float(
-        required=True
+            required=True
     )
 
     __model__ = _sphere.Sphere
 
 
 __all__ = [
-    'SphereSchema',
+        'SphereSchema',
 ]

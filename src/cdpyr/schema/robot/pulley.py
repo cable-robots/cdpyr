@@ -1,7 +1,6 @@
 from marshmallow import Schema, fields, post_load
 
 from cdpyr.robot import pulley as _pulley
-from cdpyr.schema.geometry import geometry as _geometry
 from cdpyr.schema.mechanics import inertia as _inertia
 
 __author__ = "Philipp Tempel"
@@ -18,15 +17,15 @@ class PulleySchema(Schema):
     )
     dcm = fields.Tuple(
             (
-                fields.Tuple(
-                        (fields.Float(), fields.Float(), fields.Float())
-                ),
-                fields.Tuple(
-                        (fields.Float(), fields.Float(), fields.Float())
-                ),
-                fields.Tuple(
-                        (fields.Float(), fields.Float(), fields.Float())
-                )
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    ),
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    ),
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    )
             ),
             missing=None
     )
@@ -39,5 +38,5 @@ class PulleySchema(Schema):
 
 
 __all__ = [
-    'PulleySchema',
+        'PulleySchema',
 ]

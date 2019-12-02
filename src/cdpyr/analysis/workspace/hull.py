@@ -1,9 +1,6 @@
 import itertools
 from collections import abc
-from typing import (
-    Sequence,
-    Union,
-)
+from typing import Sequence, Union
 
 import numpy as _np
 
@@ -11,11 +8,7 @@ from cdpyr.analysis.workspace import workspace as _workspace
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.robot import robot as _robot
-from cdpyr.typing import (
-    Matrix,
-    Num,
-    Vector,
-)
+from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -124,23 +117,23 @@ class Algorithm(_workspace.Algorithm):
     def __split_octahedron(self):
         # original corners of an octahedron
         corners = [
-            [1.0, 0.0, 0.0],
-            [0.0, 1.0, 0.0],
-            [0.0, 0.0, 1.0],
-            [-1.0, 0.0, 0.0],
-            [0.0, -1.0, 0.0],
-            [0.0, 0.0, -1.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [0.0, 0.0, 1.0],
+                [-1.0, 0.0, 0.0],
+                [0.0, -1.0, 0.0],
+                [0.0, 0.0, -1.0],
         ]
         # original faces of an octahedron
         faces = [
-            [0, 1, 2],
-            [1, 3, 2],
-            [3, 4, 2],
-            [4, 0, 2],
-            [0, 1, 5],
-            [1, 3, 5],
-            [3, 4, 5],
-            [4, 0, 5],
+                [0, 1, 2],
+                [1, 3, 2],
+                [3, 4, 2],
+                [4, 0, 2],
+                [0, 1, 5],
+                [1, 3, 5],
+                [3, 4, 5],
+                [4, 0, 5],
         ]
 
         # subdivide triangles into smaller ones using LOOP-SUBDIVISION
@@ -168,13 +161,13 @@ class Algorithm(_workspace.Algorithm):
 
         # matrix that holds which edges are adjacent to another
         edge_vertices = [
-            [
                 [
-                    -1 for kx in range(dim_vertices)
+                        [
+                                -1 for kx in range(dim_vertices)
+                        ]
+                        for ky in range(num_vertices)
                 ]
-                for ky in range(num_vertices)
-            ]
-            for kz in range(num_vertices)
+                for kz in range(num_vertices)
         ]
 
         # create matrix of edge-vertices and new vertices
@@ -185,10 +178,10 @@ class Algorithm(_workspace.Algorithm):
             ac = self.__add_edge_vertex(a, c, b, edge_vertices)
 
             new_faces.extend([
-                [a, ab, ac],
-                [ab, b, bc],
-                [ac, bc, c],
-                [ac, ab, bc],
+                    [a, ab, ac],
+                    [ab, b, bc],
+                    [ac, bc, c],
+                    [ac, ab, bc],
             ])
 
         # position of new vertices
@@ -378,6 +371,6 @@ class Result(_workspace.Result, abc.Collection):
 
 
 __all__ = [
-    'Algorithm',
-    'Result',
+        'Algorithm',
+        'Result',
 ]

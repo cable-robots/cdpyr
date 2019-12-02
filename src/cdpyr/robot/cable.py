@@ -1,10 +1,5 @@
 from collections import UserList
-from typing import (
-    AnyStr,
-    Optional,
-    Sequence,
-    Union,
-)
+from typing import AnyStr, Optional, Sequence, Union
 
 import numpy as np_
 from colour import Color
@@ -83,8 +78,8 @@ class Cable(RobotComponent):
     @modulus.setter
     def modulus(self, modulus: dict):
         default = {
-            'elasticities': None,
-            'viscosities': None
+                'elasticities': None,
+                'viscosities':  None
         }
         modulus = modulus or {}
 
@@ -150,12 +145,12 @@ class Cable(RobotComponent):
                      self.name))
 
     __repr__ = make_repr(
-        'name',
-        'material',
-        'diameter',
-        'modulus',
-        'color',
-        'breaking_load',
+            'name',
+            'material',
+            'diameter',
+            'modulus',
+            'color',
+            'breaking_load',
     )
 
 
@@ -209,11 +204,11 @@ class CableList(UserList, RobotComponent):
         return hash(tuple(self.data))
 
     __repr__ = make_repr(
-        'data'
+            'data'
     )
 
 
 __all__ = [
-    'Cable',
-    'CableList',
+        'Cable',
+        'CableList',
 ]

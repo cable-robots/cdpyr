@@ -58,10 +58,10 @@ class PoseList(UserList, BaseObject):
         return hash(tuple(self.data))
 
     __repr__ = make_repr(
-        'data'
+            'data'
     )
 
 
 __all__ = [
-    'PoseList',
+        'PoseList',
 ]

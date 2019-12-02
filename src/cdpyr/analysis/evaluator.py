@@ -1,7 +1,4 @@
-from abc import (
-    ABC,
-    abstractmethod,
-)
+from abc import ABC, abstractmethod
 
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
@@ -33,7 +30,7 @@ class PoseEvaluator(RobotEvaluator):
 
 
 __all__ = [
-    'Evaluator',
-    'RobotEvaluator',
-    'PoseEvaluator',
+        'Evaluator',
+        'RobotEvaluator',
+        'PoseEvaluator',
 ]

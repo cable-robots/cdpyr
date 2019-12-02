@@ -31,5 +31,5 @@ class Singularities(_criterion.Criterion):
 
 
 __all__ = [
-    'Singularities',
+        'Singularities',
 ]

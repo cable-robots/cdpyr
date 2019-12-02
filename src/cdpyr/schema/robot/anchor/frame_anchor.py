@@ -10,12 +10,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 class FrameAnchorSchema(_anchor.AnchorSchema):
     pulley = fields.Nested(
-        _pulley.PulleySchema,
-        missing=None
+            _pulley.PulleySchema,
+            missing=None
     )
     drivetrain = fields.Nested(
-        _drivetrain.DriveTrainSchema,
-        missing=None
+            _drivetrain.DriveTrainSchema,
+            missing=None
     )
 
     __model__ = _frame_anchor.FrameAnchor
@@ -24,11 +24,11 @@ class FrameAnchorSchema(_anchor.AnchorSchema):
     def make_object(self, data, many, **kwargs):
         if many:
             return _frame_anchor.FrameAnchorList(
-                (self.make_object(each, False) for each in data))
+                    (self.make_object(each, False) for each in data))
         else:
             return self.__model__(**data)
 
 
 __all__ = [
-    'FrameAnchorSchema',
+        'FrameAnchorSchema',
 ]

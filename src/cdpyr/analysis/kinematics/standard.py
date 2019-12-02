@@ -92,45 +92,45 @@ class Standard(_algorithm.Algorithm):
 
         # default options of all supported minimization methods
         method_option_defaults = {
-            'Nelder-Mead': {
-                'xtol': xtol,
-                'ftol': ftol,
-            },
-            'Powell':      {
-                'xtol': xtol,
-                'ftol': ftol,
-            },
-            'CG':          {
-                'gtol': gtol,
-            },
-            'BFGS':        {
-                'gtol': gtol,
-            },
-            'Newton-CG':   {
-                'xtol': xtol,
-            },
-            'L-BFGS-B':    {
-                'ftol':  ftol,
-                'gtol':  gtol,
-                'factr': 1e4,
-            },
-            'TNC':         {
-                'xtol': xtol,
-                'ftol': ftol,
-                'gtol': gtol,
-            },
-            'COBYLA':      {
-                'tol': ftol,
-            },
-            'SLSQP':       {
-                'ftol': ftol,
-            },
-            'dogleg':      {
-                'gtol': gtol,
-            },
-            'trust-ncg':   {
-                'gtol': gtol,
-            },
+                'Nelder-Mead': {
+                        'xtol': xtol,
+                        'ftol': ftol,
+                },
+                'Powell':      {
+                        'xtol': xtol,
+                        'ftol': ftol,
+                },
+                'CG':          {
+                        'gtol': gtol,
+                },
+                'BFGS':        {
+                        'gtol': gtol,
+                },
+                'Newton-CG':   {
+                        'xtol': xtol,
+                },
+                'L-BFGS-B':    {
+                        'ftol':  ftol,
+                        'gtol':  gtol,
+                        'factr': 1e4,
+                },
+                'TNC':         {
+                        'xtol': xtol,
+                        'ftol': ftol,
+                        'gtol': gtol,
+                },
+                'COBYLA':      {
+                        'tol': ftol,
+                },
+                'SLSQP':       {
+                        'ftol': ftol,
+                },
+                'dogleg':      {
+                        'gtol': gtol,
+                },
+                'trust-ncg':   {
+                        'gtol': gtol,
+                },
         }
 
         method_options = {'maxiter': 7 * 314, 'disp': False}
@@ -164,12 +164,12 @@ class Standard(_algorithm.Algorithm):
             final = result.x / scaling
 
             return {
-                'pose':       _pose.Pose(
-                        final[0:3],
-                        angular=_angular.Angular(quaternion=final[3:7])
-                ),
-                'lengths':    lengths,
-                'directions': last_direction[0]
+                    'pose':       _pose.Pose(
+                            final[0:3],
+                            angular=_angular.Angular(quaternion=final[3:7])
+                    ),
+                    'lengths':    lengths,
+                    'directions': last_direction[0]
             }
 
     def _backward(self,
@@ -219,10 +219,10 @@ class Standard(_algorithm.Algorithm):
         directions[:, _np.isclose(lengths, 0)] = 0
 
         return {
-            'pose':       pose,
-            'lengths':    lengths,
-            'directions': directions,
-            'swivel':     swivel
+                'pose':       pose,
+                'lengths':    lengths,
+                'directions': directions,
+                'swivel':     swivel
         }
 
     def _vector_loop(self,
@@ -274,5 +274,5 @@ class Standard(_algorithm.Algorithm):
 
 
 __all__ = [
-    'Standard',
+        'Standard',
 ]

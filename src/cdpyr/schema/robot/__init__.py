@@ -1,16 +1,14 @@
 from cdpyr.schema.robot.anchor import (
     AnchorSchema,
     FrameAnchorSchema,
-    PlatformAnchorSchema,
+    PlatformAnchorSchema
 )
 from cdpyr.schema.robot.cable import CableSchema
 from cdpyr.schema.robot.drivetrain import DriveTrainSchema
 from cdpyr.schema.robot.drum import DrumSchema
 from cdpyr.schema.robot.frame import FrameSchema
 from cdpyr.schema.robot.gearbox import GearboxSchema
-from cdpyr.schema.robot.kinematic_chain import (
-    KinematicChainSchema,
-)
+from cdpyr.schema.robot.kinematic_chain import KinematicChainSchema
 from cdpyr.schema.robot.motor import MotorSchema
 from cdpyr.schema.robot.platform import PlatformSchema
 from cdpyr.schema.robot.pulley import PulleySchema
@@ -20,17 +18,17 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 __all__ = [
-    'AnchorSchema',
-    'FrameAnchorSchema',
-    'PlatformAnchorSchema',
-    'CableSchema',
-    'DrumSchema',
-    'DriveTrainSchema',
-    'FrameSchema',
-    'GearboxSchema',
-    'KinematicChainSchema',
-    'MotorSchema',
-    'PlatformSchema',
-    'PulleySchema',
-    'RobotSchema',
+        'AnchorSchema',
+        'FrameAnchorSchema',
+        'PlatformAnchorSchema',
+        'CableSchema',
+        'DrumSchema',
+        'DriveTrainSchema',
+        'FrameSchema',
+        'GearboxSchema',
+        'KinematicChainSchema',
+        'MotorSchema',
+        'PlatformSchema',
+        'PulleySchema',
+        'RobotSchema',
 ]

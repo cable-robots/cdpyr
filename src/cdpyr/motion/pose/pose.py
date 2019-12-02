@@ -6,7 +6,7 @@ from magic_repr import make_repr
 from cdpyr.kinematics.transformation import (
     angular as _angular,
     homogenous as _homogenous,
-    linear as _linear,
+    linear as _linear
 )
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Num, Vector
@@ -35,17 +35,17 @@ class Pose(BaseObject):
         # defaults
         if linear is None:
             linear = _linear.Linear(
-                position,
-                velocity,
-                acceleration
+                    position,
+                    velocity,
+                    acceleration
             )
         # no angular object given, then build it from the arguments and their
         # defaults
         if angular is None:
             angular = _angular.Angular(
-                dcm,
-                angular_velocity,
-                angular_acceleration
+                    dcm,
+                    angular_velocity,
+                    angular_acceleration
             )
 
         # assign processed properties
@@ -60,8 +60,8 @@ class Pose(BaseObject):
     @property
     def transformation(self):
         return _homogenous.Homogenous(
-            self.linear.position,
-            self.angular.dcm
+                self.linear.position,
+                self.angular.dcm
         )
 
     @property
@@ -180,13 +180,13 @@ class Pose(BaseObject):
                or self.angular >= other.angular
 
     __repr__ = make_repr(
-        'time',
-        'position',
-        'velocity',
-        'acceleration'
+            'time',
+            'position',
+            'velocity',
+            'acceleration'
     )
 
 
 __all__ = [
-    'Pose',
+        'Pose',
 ]

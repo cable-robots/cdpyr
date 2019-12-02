@@ -4,10 +4,10 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 __all__ = [
-    'geometry',
-    'fields',
-    'kinematics',
-    'mechanics',
-    'motion',
-    'robot',
+        'geometry',
+        'fields',
+        'kinematics',
+        'mechanics',
+        'motion',
+        'robot',
 ]

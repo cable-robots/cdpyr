@@ -1,7 +1,7 @@
+from abc import abstractmethod
 from typing import Union
 
 import numpy as _np
-from abc import abstractmethod
 from magic_repr import make_repr
 from scipy.linalg import null_space
 
@@ -86,6 +86,6 @@ class Result(_result.PoseResult):
 
 
 __all__ = [
-    'Algorithm',
-    'Result',
+        'Algorithm',
+        'Result',
 ]

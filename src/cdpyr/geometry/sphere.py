@@ -1,6 +1,5 @@
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
 from cdpyr.geometry.geometry import Geometry
 from cdpyr.typing import Num
 
@@ -36,10 +35,10 @@ class Sphere(Geometry):
         return hash((self.diameter))
 
     __repr__ = make_repr(
-        'diameter',
+            'diameter',
     )
 
 
 __all__ = [
-    'Sphere',
+        'Sphere',
 ]

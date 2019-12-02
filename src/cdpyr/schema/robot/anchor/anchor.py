@@ -8,22 +8,22 @@ __email__ = "p.tempel@tudelft.nl"
 
 class AnchorSchema(Schema):
     position = fields.Tuple(
-        (fields.Float(), fields.Float(), fields.Float()),
-        required=True,
+            (fields.Float(), fields.Float(), fields.Float()),
+            required=True,
     )
     dcm = fields.Tuple(
-        (
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
+            (
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    ),
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    ),
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    )
             ),
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
-            ),
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
-            )
-        ),
-        missing=None
+            missing=None
     )
 
     __model__ = _anchor.Anchor
@@ -32,11 +32,11 @@ class AnchorSchema(Schema):
     def make_object(self, data, many, **kwargs):
         if many:
             return _anchor.AnchorList(
-                (self.make_object(each, False, **kwargs) for each in data))
+                    (self.make_object(each, False, **kwargs) for each in data))
         else:
             return self.__model__(**data)
 
 
 __all__ = [
-    'AnchorSchema',
+        'AnchorSchema',
 ]

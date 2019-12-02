@@ -8,10 +8,10 @@ __email__ = "p.tempel@tudelft.nl"
 
 class GearboxSchema(Schema):
     ratio = fields.Float(
-        missing=None
+            missing=None
     )
     inertia = fields.Float(
-        missing=None
+            missing=None
     )
 
     __model__ = _gearbox.Gearbox
@@ -22,5 +22,5 @@ class GearboxSchema(Schema):
 
 
 __all__ = [
-    'GearboxSchema',
+        'GearboxSchema',
 ]

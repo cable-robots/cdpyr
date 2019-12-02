@@ -1,4 +1,5 @@
 from abc import abstractmethod
+
 from marshmallow import Schema, post_load
 
 __author__ = "Philipp Tempel"
@@ -18,5 +19,5 @@ class GeometrySchema(Schema):
 
 
 __all__ = [
-    'GeometrySchema',
+        'GeometrySchema',
 ]

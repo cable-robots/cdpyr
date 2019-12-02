@@ -3,7 +3,6 @@ from typing import Optional
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Num
 
@@ -20,19 +19,19 @@ class Inertia(BaseObject):
                  angular: Optional[Matrix] = None
                  ):
         self.linear = linear if linear is not None else np_.diag(
-            np_.full((3,), np_.inf))
+                np_.full((3,), np_.inf))
         self.angular = angular if angular is not None else np_.diag(
-            np_.full((3,), np_.inf))
+                np_.full((3,), np_.inf))
 
     @staticmethod
     def cuboid(mass: Num, width: Num, depth: Num, height: Num):
         return Inertia(
-            mass * np_.eye(3),
-            1.0 / 12.0 * mass * np_.diag((
-                depth ** 2.0 + height ** 2.0,
-                width ** 2.0 + height ** 2.0,
-                width ** 2.0 + depth ** 2.0,
-            ))
+                mass * np_.eye(3),
+                1.0 / 12.0 * mass * np_.diag((
+                        depth ** 2.0 + height ** 2.0,
+                        width ** 2.0 + height ** 2.0,
+                        width ** 2.0 + depth ** 2.0,
+                ))
         )
 
     @staticmethod
@@ -40,12 +39,12 @@ class Inertia(BaseObject):
         radius_height = 3.0 * (radius ** 2.0) + height ** 2.0
 
         return Inertia(
-            mass * np_.eye(3),
-            1.0 / 12.0 * mass * np_.diag((
-                radius_height,
-                radius_height,
-                6.0 * (radius ** 2.0)
-            ))
+                mass * np_.eye(3),
+                1.0 / 12.0 * mass * np_.diag((
+                        radius_height,
+                        radius_height,
+                        6.0 * (radius ** 2.0)
+                ))
         )
 
     @staticmethod
@@ -53,12 +52,12 @@ class Inertia(BaseObject):
         radius_squared = radius ** 2.0
 
         return Inertia(
-            mass * np_.eye(3),
-            2.0 / 3.0 * mass * np_.diag((
-                radius_squared,
-                radius_squared,
-                radius_squared
-            ))
+                mass * np_.eye(3),
+                2.0 / 3.0 * mass * np_.diag((
+                        radius_squared,
+                        radius_squared,
+                        radius_squared
+                ))
         )
 
     @staticmethod
@@ -67,12 +66,12 @@ class Inertia(BaseObject):
         rh = 3.0 * (radius ** 2.0) + height ** 2.0
 
         return Inertia(
-            mass * np_.eye(3),
-            1.0 / 12.0 * mass * np_.diag((
-                rh,
-                rh,
-                6.0 * (radius ** 2.0)
-            ))
+                mass * np_.eye(3),
+                1.0 / 12.0 * mass * np_.diag((
+                        rh,
+                        rh,
+                        6.0 * (radius ** 2.0)
+                ))
         )
 
     @property
@@ -108,11 +107,11 @@ class Inertia(BaseObject):
         return hash((id(self.angular), id(self.linear)))
 
     __repr__ = make_repr(
-        'linear',
-        'angular'
+            'linear',
+            'angular'
     )
 
 
 __all__ = [
-    'Inertia',
+        'Inertia',
 ]

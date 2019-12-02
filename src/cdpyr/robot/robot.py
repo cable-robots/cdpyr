@@ -8,7 +8,7 @@ from cdpyr.robot import (
     cable as _cable,
     frame as _frame,
     kinematicchain as _kinematicchain,
-    platform as _platform,
+    platform as _platform
 )
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num, Vector
@@ -121,9 +121,9 @@ class Robot(RobotComponent):
                         frame_anchor, platform_anchor, cable = chain
                         platform = 0
                 chains[idx] = _kinematicchain.KinematicChain(frame_anchor,
-                                                                 platform,
-                                                                 platform_anchor,
-                                                                 cable)
+                                                             platform,
+                                                             platform_anchor,
+                                                             cable)
 
         # set final value
         self._chains = _kinematicchain.KinematicChainList(chains)
@@ -225,5 +225,5 @@ class Robot(RobotComponent):
 
 
 __all__ = [
-    'Robot',
+        'Robot',
 ]

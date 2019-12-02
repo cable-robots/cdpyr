@@ -1,23 +1,15 @@
 from collections import UserList
-from typing import (
-    Optional,
-    Sequence,
-)
+from typing import Optional, Sequence
 
 import numpy as np_
-from abc import ABC
 from magic_repr import make_repr
 
 from cdpyr.kinematics.transformation import (
     angular as _angular,
-    linear as _linear,
+    linear as _linear
 )
-from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot.robot_component import RobotComponent
-from cdpyr.typing import (
-    Matrix,
-    Vector,
-)
+from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -53,7 +45,7 @@ class Anchor(RobotComponent):
         # initialize and set linear property if not given by the user
         if linear is None:
             linear = _linear.Linear(
-                position if position is not None else [0.0, 0.0, 0.0])
+                    position if position is not None else [0.0, 0.0, 0.0])
 
         # set linear transformation to inferred value
         self.linear = linear
@@ -61,7 +53,7 @@ class Anchor(RobotComponent):
         # initialize and set angularlinear property if not given by the user
         if angular is None:
             angular = _angular.Angular(
-                dcm=dcm if dcm is not None else np_.eye(3))
+                    dcm=dcm if dcm is not None else np_.eye(3))
 
         # set linear transformation to inferred value
         self.angular = angular
@@ -143,10 +135,10 @@ class Anchor(RobotComponent):
         return hash((self.angular, self.linear))
 
     __repr__ = make_repr(
-        'position',
-        'dcm',
-        'quaternion',
-        'rotvec'
+            'position',
+            'dcm',
+            'quaternion',
+            'rotvec'
     )
 
 
@@ -198,6 +190,6 @@ class AnchorList(UserList, RobotComponent):
 
 
 __all__ = [
-    'Anchor',
-    'AnchorList',
+        'Anchor',
+        'AnchorList',
 ]

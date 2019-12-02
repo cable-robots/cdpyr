@@ -1,8 +1,8 @@
+import copy
+from abc import ABC, abstractmethod
 from typing import Union
 
-import copy
 import numpy as _np
-from abc import ABC, abstractmethod
 
 from cdpyr.analysis import result as _result
 from cdpyr.motion.pose import pose as _pose
@@ -132,6 +132,6 @@ class Result(_result.PoseResult, _result.PlottableResult):
 
 
 __all__ = [
-    'Algorithm',
-    'Result',
+        'Algorithm',
+        'Result',
 ]

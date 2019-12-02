@@ -5,6 +5,6 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 __all__ = [
-    'Standard',
-    'Pulley',
+        'Standard',
+        'Pulley',
 ]

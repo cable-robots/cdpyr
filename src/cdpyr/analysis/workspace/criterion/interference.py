@@ -21,5 +21,5 @@ class Interference(_criterion.Criterion):
 
 
 __all__ = [
-    'Interference',
+        'Interference',
 ]

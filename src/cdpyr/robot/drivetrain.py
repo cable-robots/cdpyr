@@ -2,11 +2,7 @@ from typing import Optional
 
 from magic_repr import make_repr
 
-from cdpyr.robot import (
-    drum as __drum,
-    gearbox as __gearbox,
-    motor as __motor,
-)
+from cdpyr.robot import drum as __drum, gearbox as __gearbox, motor as __motor
 from cdpyr.robot.robot_component import RobotComponent
 
 __author__ = "Philipp Tempel"
@@ -45,12 +41,12 @@ class DriveTrain(RobotComponent):
         return hash((self.drum, self.gearbox, self.motor))
 
     __repr__ = make_repr(
-        'motor',
-        'gearbox',
-        'drum'
+            'motor',
+            'gearbox',
+            'drum'
     )
 
 
 __all__ = [
-    'DriveTrain',
+        'DriveTrain',
 ]

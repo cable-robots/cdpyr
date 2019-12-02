@@ -1,8 +1,8 @@
+import copy
+from abc import abstractmethod
 from typing import Union
 
-import copy
 import numpy as _np
-from abc import abstractmethod
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
@@ -135,7 +135,7 @@ class Algorithm(_evaluator.PoseEvaluator):
 
 
 __all__ = [
-    'Algorithm',
+        'Algorithm',
 ]
 
 
@@ -176,6 +176,6 @@ class Result(_result.PoseResult):
 
 
 __all__ = [
-    'Algorithm',
-    'Result',
+        'Algorithm',
+        'Result',
 ]

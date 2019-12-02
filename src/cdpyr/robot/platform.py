@@ -1,18 +1,14 @@
 import itertools
 from collections import UserList
-from typing import (
-    Optional,
-    Sequence,
-    Union,
-)
+from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.geometry import geometry as _geometry
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.motion.pose import pose as _pose
 from cdpyr.motion.pattern import pattern as _motion_pattern
+from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot.anchor import platform_anchor as _platform_anchor
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import (
@@ -268,6 +264,6 @@ class PlatformList(UserList, RobotComponent):
 
 
 __all__ = [
-    'Platform',
-    'PlatformList',
+        'Platform',
+        'PlatformList',
 ]

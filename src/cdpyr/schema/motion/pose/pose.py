@@ -4,7 +4,7 @@ from cdpyr.motion.pose import pose as _pose, poselist as _pose_list
 from cdpyr.schema import fields as custom_fields
 from cdpyr.schema.kinematics.transformation import (
     angular as _angular,
-    linear as _linear,
+    linear as _linear
 )
 
 __author__ = "Philipp Tempel"
@@ -36,5 +36,5 @@ class PoseSchema(Schema):
 
 
 __all__ = [
-    'PoseSchema',
+        'PoseSchema',
 ]

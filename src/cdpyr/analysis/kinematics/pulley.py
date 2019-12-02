@@ -7,11 +7,11 @@ from cdpyr.robot import (
     cable as _cable,
     kinematicchain as _kinematicchain,
     pulley as _pulley,
-    robot as _robot,
+    robot as _robot
 )
 from cdpyr.robot.anchor import (
     frame_anchor as _frame_anchor,
-    platform_anchor as _platform_anchor,
+    platform_anchor as _platform_anchor
 )
 from cdpyr.typing import Vector
 
@@ -83,8 +83,8 @@ class Pulley(_algorithm.Algorithm):
 
             # build matrix of cable workspace length and pulley radius
             leave_dcm = _np.asarray((
-                (pulley.radius, length_workspace),
-                (-length_workspace, pulley.radius),
+                    (pulley.radius, length_workspace),
+                    (-length_workspace, pulley.radius),
             ))
             # position of the cable leave point in coordinates of the roller
             # center
@@ -117,14 +117,14 @@ class Pulley(_algorithm.Algorithm):
                               length_workspace)
 
         return {
-            'pose':       pose,
-            'lengths':    _np.asarray(lengths).T,
-            'directions': _np.asarray(directions).T,
-            'swivel':     _np.asarray(swivel),
-            'wrap':       _np.asarray(wrap),
+                'pose':       pose,
+                'lengths':    _np.asarray(lengths).T,
+                'directions': _np.asarray(directions).T,
+                'swivel':     _np.asarray(swivel),
+                'wrap':       _np.asarray(wrap),
         }
 
 
 __all__ = [
-    'Pulley',
+        'Pulley',
 ]

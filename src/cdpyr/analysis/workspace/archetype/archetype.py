@@ -1,7 +1,4 @@
-from abc import (
-    ABC,
-    abstractmethod
-)
+from abc import ABC, abstractmethod
 
 import numpy as _np
 
@@ -27,5 +24,5 @@ class Archetype(ABC):
 
 
 __all__ = [
-    'Archetype'
+        'Archetype'
 ]

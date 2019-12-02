@@ -6,7 +6,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 __all__ = [
-    'AnchorSchema',
-    'FrameAnchorSchema',
-    'PlatformAnchorSchema',
+        'AnchorSchema',
+        'FrameAnchorSchema',
+        'PlatformAnchorSchema',
 ]

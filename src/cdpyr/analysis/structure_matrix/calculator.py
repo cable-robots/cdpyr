@@ -1,18 +1,16 @@
-from typing import (
-    AnyStr,
-    Dict,
-)
+from typing import AnyStr, Dict
 
 from cdpyr.analysis import evaluator as _evaluator
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.structure_matrix import (
-    motion_pattern_1r2t as _structure_matrix_1r2t,
+    motion_pattern_1r2t as \
+        _structure_matrix_1r2t,
     motion_pattern_1t as _structure_matrix_1t,
     motion_pattern_2r3t as _structure_matrix_2r3t,
     motion_pattern_2t as _structure_matrix_2t,
     motion_pattern_3r3t as _structure_matrix_3r3t,
     motion_pattern_3t as _structure_matrix_3t,
-    structure_matrix as _structure_matrix,
+    structure_matrix as _structure_matrix
 )
 from cdpyr.motion import pattern as _motion_pattern
 from cdpyr.motion.pose import pose as _pose
@@ -32,18 +30,18 @@ class Calculator(_evaluator.PoseEvaluator):
         self.kinematics = kinematics
         if resolver is None:
             resolver = {
-                _motion_pattern.MP_1T:
-                    _structure_matrix_1t.MotionPattern1T(),
-                _motion_pattern.MP_2T:
-                    _structure_matrix_2t.MotionPattern2T(),
-                _motion_pattern.MP_3T:
-                    _structure_matrix_3t.MotionPattern3T(),
-                _motion_pattern.MP_1R2T:
-                    _structure_matrix_1r2t.MotionPattern1R2T(),
-                _motion_pattern.MP_2R3T:
-                    _structure_matrix_2r3t.MotionPattern2R3T(),
-                _motion_pattern.MP_3R3T:
-                    _structure_matrix_3r3t.MotionPattern3R3T(),
+                    _motion_pattern.MP_1T:
+                        _structure_matrix_1t.MotionPattern1T(),
+                    _motion_pattern.MP_2T:
+                        _structure_matrix_2t.MotionPattern2T(),
+                    _motion_pattern.MP_3T:
+                        _structure_matrix_3t.MotionPattern3T(),
+                    _motion_pattern.MP_1R2T:
+                        _structure_matrix_1r2t.MotionPattern1R2T(),
+                    _motion_pattern.MP_2R3T:
+                        _structure_matrix_2r3t.MotionPattern2R3T(),
+                    _motion_pattern.MP_3R3T:
+                        _structure_matrix_3r3t.MotionPattern3R3T(),
             }
 
         self.resolver = resolver
@@ -74,5 +72,5 @@ class Calculator(_evaluator.PoseEvaluator):
 
 
 __all__ = [
-    'Calculator',
+        'Calculator',
 ]

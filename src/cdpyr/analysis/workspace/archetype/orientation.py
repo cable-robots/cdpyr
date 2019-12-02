@@ -36,5 +36,5 @@ class Orientation(_archetype_orientation.ArchetypeOrientation):
 
 
 __all__ = [
-    'Orientation',
+        'Orientation',
 ]

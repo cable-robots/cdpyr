@@ -3,7 +3,6 @@ from typing import Optional
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Vector
 
@@ -131,12 +130,12 @@ class Linear(BaseObject):
                      id(self.velocity)))
 
     __repr__ = make_repr(
-        'position',
-        'velocity',
-        'acceleration'
+            'position',
+            'velocity',
+            'acceleration'
     )
 
 
 __all__ = [
-    'Linear',
+        'Linear',
 ]

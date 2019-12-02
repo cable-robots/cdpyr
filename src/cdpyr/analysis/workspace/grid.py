@@ -266,6 +266,6 @@ class Result(_workspace.Result, abc.Collection):
 
 
 __all__ = [
-    'Algorithm',
-    'Result',
+        'Algorithm',
+        'Result',
 ]

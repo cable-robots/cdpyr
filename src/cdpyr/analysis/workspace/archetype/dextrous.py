@@ -26,5 +26,5 @@ class Dextrous(_archetype_orientation.ArchetypeOrientation):
 
 
 __all__ = [
-    'Dextrous',
+        'Dextrous',
 ]

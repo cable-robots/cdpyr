@@ -1,16 +1,11 @@
-import itertools
+from abc import ABC
 from typing import Union
 
 import numpy as _np
-from abc import ABC
 
-from cdpyr import validator as _validator
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
-from cdpyr.motion.pose import generator as _generator, pose as _pose
-from cdpyr.typing import (
-    Vector,
-    Num
-)
+from cdpyr.motion.pose import generator as _generator
+from cdpyr.typing import Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -46,5 +41,5 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
 
 
 __all__ = [
-    'ArchetypeOrientation',
+        'ArchetypeOrientation',
 ]

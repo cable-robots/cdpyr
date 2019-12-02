@@ -8,18 +8,18 @@ __email__ = "p.tempel@tudelft.nl"
 
 class MotorSchema(Schema):
     inertia = fields.Float(
-        missing=None
+            missing=None
     )
     rated_power = fields.Float(
-        missing=None
+            missing=None
     )
     rated_speed = fields.Float(
-        missing=None
+            missing=None
     )
     torques = fields.Dict(
-        missing=None,
-        keys=fields.String(),
-        values=fields.Float(),
+            missing=None,
+            keys=fields.String(),
+            values=fields.Float(),
     )
 
     __model__ = _motor.Motor
@@ -30,5 +30,5 @@ class MotorSchema(Schema):
 
 
 __all__ = [
-    'MotorSchema',
+        'MotorSchema',
 ]

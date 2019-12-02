@@ -8,28 +8,28 @@ __email__ = "p.tempel@tudelft.nl"
 
 class CableSchema(Schema):
     name = fields.String(
-        missing=None
+            missing=None
     )
     material = fields.String(
-        missing=None
+            missing=None
     )
     diameter = fields.Float(
-        required=True
+            required=True
     )
     modulus = fields.Dict(
-        keys=fields.String(),
-        values=fields.List(
-            fields.Float(),
-            allow_none=True
-        ),
-        missing=None
+            keys=fields.String(),
+            values=fields.List(
+                    fields.Float(),
+                    allow_none=True
+            ),
+            missing=None
     )
     color = fields.String(
-        missing=None
+            missing=None
     )
     breaking_load = fields.Float(
-        missing=None,
-        allow_nan=True
+            missing=None,
+            allow_nan=True
     )
 
     __model__ = _cable.Cable
@@ -38,11 +38,11 @@ class CableSchema(Schema):
     def make_object(self, data, many, **kwargs):
         if many:
             return _cable.CableList(
-                (self.make_object(each, False) for each in data))
+                    (self.make_object(each, False) for each in data))
         else:
             return self.__model__(**data)
 
 
 __all__ = [
-    'CableSchema',
+        'CableSchema',
 ]

@@ -9,5 +9,5 @@ class RobotComponent(BaseObject):
 
 
 __all__ = [
-    'RobotComponent',
+        'RobotComponent',
 ]

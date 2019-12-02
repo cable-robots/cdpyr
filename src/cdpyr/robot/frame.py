@@ -1,8 +1,4 @@
-from typing import (
-    Optional,
-    Sequence,
-    Union,
-)
+from typing import Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -62,7 +58,7 @@ class Frame(RobotComponent):
             return True
 
         return all(
-            this == that for this, that in zip(self.anchors, other.anchors))
+                this == that for this, that in zip(self.anchors, other.anchors))
 
     def __ne__(self, other):
         return not self == other
@@ -71,10 +67,10 @@ class Frame(RobotComponent):
         return hash(self.anchors)
 
     __repr__ = make_repr(
-        'anchors'
+            'anchors'
     )
 
 
 __all__ = [
-    'Frame',
+        'Frame',
 ]

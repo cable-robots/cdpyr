@@ -1,22 +1,12 @@
 import itertools
-from typing import (
-    AnyStr,
-    Iterable,
-    Optional,
-    Tuple,
-    Union
-)
+from typing import AnyStr, Iterable, Optional, Tuple, Union
 
 import numpy as np_
 
 from cdpyr import validator as _validator
 from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion.pose import pose as _pose
-from cdpyr.typing import (
-    Matrix,
-    Num,
-    Vector
-)
+from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -54,8 +44,8 @@ def full(position: Tuple[Union[Num, Vector], Union[Num, Vector]],
     # or it is a 2-tuple of ([steps[pos_0], ..., steps[pos_n]], [steps[
     # angle_0], ..., steps[angle_n]]) so let's check for that
     steps = [np_.asarray(
-        step if isinstance(step, Iterable) else np_.repeat(step, num)) for
-        num, step in zip(nums, steps)]
+            step if isinstance(step, Iterable) else np_.repeat(step, num)) for
+            num, step in zip(nums, steps)]
 
     # check steps has the right dimensions now, should be count ((Np, ), (Na, ))
     [_validator.data.length(step, nums[idx], f'steps[{idx}]') for idx, step in
@@ -78,12 +68,12 @@ def full(position: Tuple[Union[Num, Vector], Union[Num, Vector]],
 
     # Finally, return the iterator object
     return (_pose.Pose(
-        position[0] + deltas[0] * step[0:3],
-        angular=_angular.Angular(
-            sequence=sequence,
-            euler=angle[0] + deltas[1] * step[3:])
+            position[0] + deltas[0] * step[0:3],
+            angular=_angular.Angular(
+                    sequence=sequence,
+                    euler=angle[0] + deltas[1] * step[3:])
     ) for step in
-        itertools.product(*(range(k + 1) for k in itertools.chain(*steps))))
+            itertools.product(*(range(k + 1) for k in itertools.chain(*steps))))
 
 
 def translation(start: Union[Num, Vector],
@@ -249,8 +239,9 @@ def orientation(start: Union[Num, Vector],
 
     # return an iterator object
     return (_pose.Pose(
-        position,
-        angular=_angular.Angular(
-            sequence=sequence,
-            euler=start + delta * step
-        )) for step in itertools.product(*(range(k + 1) for k in iterations)))
+            position,
+            angular=_angular.Angular(
+                    sequence=sequence,
+                    euler=start + delta * step
+            )) for step in
+    itertools.product(*(range(k + 1) for k in iterations)))

@@ -22,5 +22,5 @@ class EllipticCylinderSchema(_geometry.GeometrySchema):
 
 
 __all__ = [
-    'EllipticCylinderSchema',
+        'EllipticCylinderSchema',
 ]

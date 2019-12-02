@@ -15,10 +15,10 @@ class MotionPattern1T(StructureMatrixAlgorithm):
                   pose: '_pose.Pose',
                   directions: Matrix):
         return {
-            'matrix': directions[0:1, :],
+                'matrix': directions[0:1, :],
         }
 
 
 __all__ = [
-    'MotionPattern1T',
+        'MotionPattern1T',
 ]

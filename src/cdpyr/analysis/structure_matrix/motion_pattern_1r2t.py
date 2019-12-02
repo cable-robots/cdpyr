@@ -17,21 +17,21 @@ class MotionPattern1R2T(StructureMatrixAlgorithm):
                   pose: '_pose.Pose',
                   directions: Matrix):
         return {
-            'matrix': _np.vstack(
-                    (
-                        directions,
-                        _np.cross(
-                                pose.angular.dcm[0:2, 0:2].dot(
-                                        platform.bi[0:2, :]
-                                ),
-                                directions[0:2, :],
-                                axis=0
+                'matrix': _np.vstack(
+                        (
+                                directions,
+                                _np.cross(
+                                        pose.angular.dcm[0:2, 0:2].dot(
+                                                platform.bi[0:2, :]
+                                        ),
+                                        directions[0:2, :],
+                                        axis=0
+                                )
                         )
-                    )
-            ),
+                ),
         }
 
 
 __all__ = [
-    'MotionPattern1R2T',
+        'MotionPattern1R2T',
 ]

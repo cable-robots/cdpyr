@@ -1,6 +1,5 @@
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
 from cdpyr.geometry.geometry import Geometry
 from cdpyr.typing import Num
 
@@ -40,11 +39,11 @@ class Cylinder(Geometry):
         return hash((self.diameter, self.height))
 
     __repr__ = make_repr(
-        'diameter',
-        'height',
+            'diameter',
+            'height',
     )
 
 
 __all__ = [
-    'Cylinder',
+        'Cylinder',
 ]

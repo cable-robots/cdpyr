@@ -6,5 +6,5 @@ __email__ = "p.tempel@tudelft.nl"
 Calculator = _calculator.Calculator
 
 __all__ = [
-    'Calculator',
+        'Calculator',
 ]

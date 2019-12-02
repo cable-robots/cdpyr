@@ -31,5 +31,5 @@ class Numpy(fields.Field):
 
 
 __all__ = [
-    'Numpy'
+        'Numpy'
 ]

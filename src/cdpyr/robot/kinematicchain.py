@@ -1,8 +1,5 @@
 from collections import UserList
-from typing import (
-    Sequence,
-    Union,
-)
+from typing import Sequence, Union
 
 from magic_repr import make_repr
 
@@ -117,6 +114,6 @@ class KinematicChainList(UserList, RobotComponent):
 
 
 __all__ = [
-    'KinematicChain',
-    'KinematicChainList',
+        'KinematicChain',
+        'KinematicChainList',
 ]

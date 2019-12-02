@@ -15,5 +15,5 @@ def issquare(value: Union[Num, Vector, Matrix]):
 
 
 __all__ = [
-    'issquare'
+        'issquare'
 ]

@@ -1,5 +1,6 @@
 import copy
 from abc import ABC
+
 from magic_repr import make_repr
 
 from cdpyr.motion.pose import pose as _pose
@@ -32,7 +33,7 @@ class PoseResult(Result):
 
 
 __all__ = [
-    'PlottableResult',
-    'PoseResult',
-    'Result',
+        'PlottableResult',
+        'PoseResult',
+        'Result',
 ]

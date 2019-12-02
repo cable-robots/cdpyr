@@ -17,5 +17,5 @@ class Geometry(ABC, BaseObject):
 
 
 __all__ = [
-    'Geometry',
+        'Geometry',
 ]

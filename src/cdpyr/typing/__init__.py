@@ -10,7 +10,7 @@ Vector = Union[Sequence[Num], np_.ndarray]
 Matrix = Union[Sequence[Sequence[Num]], np_.ndarray]
 
 __all__ = [
-    'Num',
-    'Vector',
-    'Matrix',
+        'Num',
+        'Vector',
+        'Matrix',
 ]

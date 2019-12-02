@@ -8,7 +8,7 @@ from cdpyr.schema.geometry import (
     CylinderSchema,
     EllipticCylinderSchema,
     SphereSchema,
-    TubeSchema,
+    TubeSchema
 )
 from cdpyr.schema.mechanics import inertia as _inertia
 
@@ -19,11 +19,11 @@ __email__ = "p.tempel@tudelft.nl"
 class DrumSchema(Schema):
     geometry = custom_fields.Polymorphic(
             (
-                (Cuboid, CuboidSchema),
-                (CylinderSchema, Cylinder),
-                (EllipticCylinder, EllipticCylinderSchema),
-                (Sphere, SphereSchema),
-                (Tube, TubeSchema),
+                    (Cuboid, CuboidSchema),
+                    (CylinderSchema, Cylinder),
+                    (EllipticCylinder, EllipticCylinderSchema),
+                    (Sphere, SphereSchema),
+                    (Tube, TubeSchema),
             ),
             missing=None
     )
@@ -40,5 +40,5 @@ class DrumSchema(Schema):
 
 
 __all__ = [
-    'DrumSchema',
+        'DrumSchema',
 ]

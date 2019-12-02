@@ -69,5 +69,5 @@ class Pulley(RobotComponent):
 
 
 __all__ = [
-    'Pulley',
+        'Pulley',
 ]

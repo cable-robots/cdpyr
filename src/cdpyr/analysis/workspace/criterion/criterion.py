@@ -14,8 +14,9 @@ class Criterion(_evaluator.PoseEvaluator):
         # TODO remove this check
         if robot.num_platforms > 1:
             raise NotImplementedError(
-                'Workspace criteria are currently not implemented for robots '
-                'with more than one platform.')
+                    'Workspace criteria are currently not implemented for '
+                    'robots '
+                    'with more than one platform.')
 
         # pass down to the criterion's actual evaluation implementation
         return self._evaluate(robot, pose, **kwargs)
@@ -26,5 +27,5 @@ class Criterion(_evaluator.PoseEvaluator):
 
 
 __all__ = [
-    'Criterion',
+        'Criterion',
 ]

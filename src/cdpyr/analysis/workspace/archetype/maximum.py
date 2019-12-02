@@ -27,5 +27,5 @@ class Maximum(_archetype_orientation.ArchetypeOrientation):
 
 
 __all__ = [
-    'Maximum',
+        'Maximum',
 ]

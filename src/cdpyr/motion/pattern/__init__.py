@@ -11,11 +11,11 @@ MP_2R3T = Pattern(3, 2)
 MP_3R3T = Pattern(3, 3)
 
 __all__ = [
-    'Pattern',
-    'MP_1T',
-    'MP_2T',
-    'MP_3T',
-    'MP_1R2T',
-    'MP_2R3T',
-    'MP_3R3T',
+        'Pattern',
+        'MP_1T',
+        'MP_2T',
+        'MP_3T',
+        'MP_1R2T',
+        'MP_2R3T',
+        'MP_3R3T',
 ]

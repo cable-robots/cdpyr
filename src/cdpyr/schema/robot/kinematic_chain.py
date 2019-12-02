@@ -34,5 +34,5 @@ class KinematicChainSchema(Schema):
 
 
 __all__ = [
-    'KinematicChainSchema',
+        'KinematicChainSchema',
 ]

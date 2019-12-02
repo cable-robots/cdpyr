@@ -8,28 +8,28 @@ __email__ = "p.tempel@tudelft.nl"
 
 class AngularSchema(Schema):
     dcm = fields.Tuple(
-        (
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
+            (
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    ),
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    ),
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    )
             ),
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
-            ),
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
-            )
-        ),
-        missing=None
+            missing=None
     )
     angular_velocity = fields.Tuple(
-        (fields.Float(), fields.Float(), fields.Float()),
-        missing=None,
-        data_key='velocity'
+            (fields.Float(), fields.Float(), fields.Float()),
+            missing=None,
+            data_key='velocity'
     )
     angular_acceleration = fields.Tuple(
-        (fields.Float(), fields.Float(), fields.Float()),
-        missing=None,
-        data_key='acceleration'
+            (fields.Float(), fields.Float(), fields.Float()),
+            missing=None,
+            data_key='acceleration'
     )
 
     __model__ = _angular.Angular
@@ -40,5 +40,5 @@ class AngularSchema(Schema):
 
 
 __all__ = [
-    'AngularSchema',
+        'AngularSchema',
 ]

@@ -3,10 +3,12 @@ from typing import Optional, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
+from cdpyr.kinematics.transformation import (
+    angular as _angular,
+    linear as _linear
+)
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Vector
-from cdpyr.kinematics.transformation import angular as _angular, linear as _linear
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -54,20 +56,20 @@ class Homogenous(BaseObject):
     @property
     def matrix(self):
         return np_.vstack(
-            (
-                np_.hstack(
-                    (
-                        self.dcm,
-                        self.translation[:, np_.newaxis]
-                    ),
+                (
+                        np_.hstack(
+                                (
+                                        self.dcm,
+                                        self.translation[:, np_.newaxis]
+                                ),
+                        ),
+                        np_.hstack(
+                                (
+                                        np_.zeros((3,)),
+                                        1
+                                ),
+                        )
                 ),
-                np_.hstack(
-                    (
-                        np_.zeros((3,)),
-                        1
-                    ),
-                )
-            ),
         )
 
     def apply(self, coordinates: Union[Vector, Matrix]):
@@ -83,13 +85,13 @@ class Homogenous(BaseObject):
 
         # stack coordinates above a row of `1`
         coordinates = np_.vstack(
-            (coordinates, np_.ones(tuple([1]) + coordinates.shape[1:])))
+                (coordinates, np_.ones(tuple([1]) + coordinates.shape[1:])))
 
         # First, apply the transformation
         transformed = self.matrix.dot(coordinates)
 
         # Return whatever we have
-        return transformed[0:3,0] if single else transformed[0:3,:]
+        return transformed[0:3, 0] if single else transformed[0:3, :]
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -108,11 +110,11 @@ class Homogenous(BaseObject):
         return hash((id(self.dcm), id(self.translation)))
 
     __repr__ = make_repr(
-        'translation',
-        'dcm',
+            'translation',
+            'dcm',
     )
 
 
 __all__ = [
-    'Homogenous',
+        'Homogenous',
 ]

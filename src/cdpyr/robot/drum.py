@@ -38,11 +38,11 @@ class Drum(RobotComponent):
         return hash((self.geometry, self.inertia))
 
     __repr__ = make_repr(
-        'geometry',
-        'inertia'
+            'geometry',
+            'inertia'
     )
 
 
 __all__ = [
-    'Drum',
+        'Drum',
 ]

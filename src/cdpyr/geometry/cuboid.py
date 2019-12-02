@@ -1,6 +1,5 @@
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
 from cdpyr.geometry.geometry import Geometry
 from cdpyr.typing import Num
 
@@ -32,12 +31,12 @@ class Cuboid(Geometry):
         return hash((self.depth, self.height, self.width))
 
     __repr__ = make_repr(
-        'width',
-        'depth',
-        'height',
+            'width',
+            'depth',
+            'height',
     )
 
 
 __all__ = [
-    'Cuboid',
+        'Cuboid',
 ]

@@ -1,4 +1,4 @@
-from typing import AnyStr, Optional, Iterable
+from typing import AnyStr, Iterable, Optional
 
 from hurry.filesize import size as filesize
 
@@ -34,7 +34,8 @@ def full_classname(o: object):
 
     See Also
     --------
-    https://stackoverflow.com/questions/2020014/get-fully-qualified-class-name-of-an-object-in-python
+    https://stackoverflow.com/questions/2020014/get-fully-qualified-class
+    -name-of-an-object-in-python
 
     Parameters
     ----------
@@ -51,7 +52,7 @@ def full_classname(o: object):
 
 
 __all__ = [
-    'format_time',
-    'filesize',
-    'full_classname',
+        'format_time',
+        'filesize',
+        'full_classname',
 ]

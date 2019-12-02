@@ -9,18 +9,18 @@ __email__ = "p.tempel@tudelft.nl"
 
 class TubeSchema(_geometry.GeometrySchema):
     inner_diameter = fields.Float(
-        required=True
+            required=True
     )
     outer_diameter = fields.Float(
-        required=True
+            required=True
     )
     height = fields.Float(
-        required=True
+            required=True
     )
 
     __model__ = _tube.Tube
 
 
 __all__ = [
-    'TubeSchema',
+        'TubeSchema',
 ]

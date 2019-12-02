@@ -2,11 +2,8 @@ import typing
 
 from marshmallow import class_registry, fields, types, utils
 from marshmallow.base import SchemaABC
-from marshmallow.exceptions import (StringNotCollectionError, ValidationError)
-from marshmallow.utils import (
-    is_collection,
-    missing as missing_,
-)
+from marshmallow.exceptions import StringNotCollectionError, ValidationError
+from marshmallow.utils import is_collection, missing as missing_
 
 
 class Polymorphic(fields.Field):
@@ -14,7 +11,8 @@ class Polymorphic(fields.Field):
 
     def __init__(
             self,
-            candidates: typing.Iterable[typing.Tuple[object, typing.Union[SchemaABC, type, str]]],
+            candidates: typing.Iterable[
+                typing.Tuple[object, typing.Union[SchemaABC, type, str]]],
             *,
             default: typing.Any = missing_,
             only: types.StrSequenceOrSet = None,
@@ -99,9 +97,9 @@ class Polymorphic(fields.Field):
     def _nested_normalized_option(self, option_name: str) -> typing.List[str]:
         nested_field = "%s." % self.name
         return [
-            field.split(nested_field, 1)[1]
-            for field in getattr(self.root, option_name, set())
-            if field.startswith(nested_field)
+                field.split(nested_field, 1)[1]
+                for field in getattr(self.root, option_name, set())
+                if field.startswith(nested_field)
         ]
 
     def _serialize(self, nested_obj, attr, obj, many=False, **kwargs):
@@ -118,8 +116,9 @@ class Polymorphic(fields.Field):
 
         # match all objects against a schema candidate
         obj_schemas = [
-            [schema for base, schema in schemas if isinstance(obj, base)] for
-            obj in nested_obj]
+                [schema for base, schema in schemas if isinstance(obj, base)]
+                for
+                obj in nested_obj]
 
         # loop over each object
         for obj, schema in zip(nested_obj, obj_schemas):

@@ -1,12 +1,6 @@
-from abc import (
-    ABC,
-    abstractmethod
-)
+from abc import ABC, abstractmethod
 from collections import OrderedDict
-from typing import (
-    AnyStr,
-    Union
-)
+from typing import AnyStr, Union
 
 from cdpyr.robot.robot_component import RobotComponent
 

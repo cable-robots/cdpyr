@@ -55,5 +55,5 @@ class CableLength(_criterion.Criterion):
 
 
 __all__ = [
-    'CableLength',
+        'CableLength',
 ]

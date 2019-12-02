@@ -20,5 +20,5 @@ class InclusionOrientation(_archetype_orientation.ArchetypeOrientation):
 
 
 __all__ = [
-    'InclusionOrientation',
+        'InclusionOrientation',
 ]

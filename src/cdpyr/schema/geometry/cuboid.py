@@ -9,18 +9,18 @@ __email__ = "p.tempel@tudelft.nl"
 
 class CuboidSchema(_geometry.GeometrySchema):
     width = fields.Float(
-        required=True
+            required=True
     )
     depth = fields.Float(
-        required=True
+            required=True
     )
     height = fields.Float(
-        required=True
+            required=True
     )
 
     __model__ = _cuboid.Cuboid
 
 
 __all__ = [
-    'CuboidSchema',
+        'CuboidSchema',
 ]

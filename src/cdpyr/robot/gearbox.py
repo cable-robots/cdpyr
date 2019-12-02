@@ -38,11 +38,11 @@ class Gearbox(RobotComponent):
         return hash((self.inertia, self.ratio))
 
     __repr__ = make_repr(
-        'ratio',
-        'inertia'
+            'ratio',
+            'inertia'
     )
 
 
 __all__ = [
-    'Gearbox',
+        'Gearbox',
 ]

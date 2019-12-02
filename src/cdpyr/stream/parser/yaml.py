@@ -1,8 +1,6 @@
 from collections import OrderedDict
-from typing import (
-    AnyStr,
-    Union
-)
+from typing import AnyStr, Union
+
 import yaml
 
 from cdpyr.stream.parser import parser as _parser

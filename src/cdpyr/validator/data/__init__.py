@@ -9,9 +9,9 @@ def length(value: Sized,
            name: Optional[AnyStr] = None):
     if len(value) != expected:
         raise ValueError(
-            'Expected `{}` to have {} element{}, got {} instead.'.format(
-                name if name is not None else 'value',
-                expected,
-                's' if expected > 1 else '',
-                len(value)
-            ))
+                'Expected `{}` to have {} element{}, got {} instead.'.format(
+                        name if name is not None else 'value',
+                        expected,
+                        's' if expected > 1 else '',
+                        len(value)
+                ))

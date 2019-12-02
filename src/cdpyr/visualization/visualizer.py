@@ -36,5 +36,5 @@ class Visualizer(object):
 
 
 __all__ = [
-    'Visualizer',
+        'Visualizer',
 ]

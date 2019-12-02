@@ -1,12 +1,8 @@
 import numpy as _np
 
-from cdpyr import validator as _validator
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.motion.pose import pose as _pose
-from cdpyr.typing import (
-    Matrix,
-    Vector
-)
+from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -35,5 +31,5 @@ class Translation(_archetype.Archetype):
 
 
 __all__ = [
-    'Translation',
+        'Translation',
 ]

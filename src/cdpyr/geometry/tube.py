@@ -2,7 +2,6 @@ from typing import Tuple
 
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
 from cdpyr.geometry.geometry import Geometry
 from cdpyr.typing import Num
 
@@ -78,12 +77,12 @@ class Tube(Geometry):
         return hash((self.height, self.inner_diameter, self.outer_diameter))
 
     __repr__ = make_repr(
-        'inner_diameter',
-        'outer_diameter',
-        'height',
+            'inner_diameter',
+            'outer_diameter',
+            'height',
     )
 
 
 __all__ = [
-    'Tube',
+        'Tube',
 ]

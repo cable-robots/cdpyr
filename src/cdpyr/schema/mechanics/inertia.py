@@ -10,21 +10,21 @@ __email__ = "p.tempel@tudelft.nl"
 class InertiaSchema(Schema):
     angular = fields.Tuple(
             (
-                fields.Tuple((
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True)
-                )),
-                fields.Tuple((
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True)
-                )),
-                fields.Tuple((
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True)
-                ))
+                    fields.Tuple((
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True)
+                    )),
+                    fields.Tuple((
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True)
+                    )),
+                    fields.Tuple((
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True)
+                    ))
             ),
             required=False,
             default=[[np.inf, 0, 0], [0, np.inf, 0], [0, 0, np.inf]],
@@ -32,21 +32,21 @@ class InertiaSchema(Schema):
     )
     linear = fields.Tuple(
             (
-                fields.Tuple((
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True)
-                )),
-                fields.Tuple((
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True)
-                )),
-                fields.Tuple((
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True),
-                    fields.Float(allow_nan=True)
-                ))
+                    fields.Tuple((
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True)
+                    )),
+                    fields.Tuple((
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True)
+                    )),
+                    fields.Tuple((
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True),
+                            fields.Float(allow_nan=True)
+                    ))
             ),
             required=False,
             default=[[np.inf, 0, 0], [0, np.inf, 0], [0, 0, np.inf]],
@@ -61,5 +61,5 @@ class InertiaSchema(Schema):
 
 
 __all__ = [
-    'InertiaSchema'
+        'InertiaSchema'
 ]

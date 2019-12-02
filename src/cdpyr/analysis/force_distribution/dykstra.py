@@ -6,11 +6,7 @@ from cdpyr.analysis.force_distribution import force_distribution as _algorithm
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
-from cdpyr.typing import (
-    Matrix,
-    Num,
-    Vector,
-)
+from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -118,12 +114,12 @@ class Dykstra(_algorithm.Algorithm):
                 distribution = projection_a
 
         return {
-            'pose':   pose,
-            'wrench': wrench,
-            'forces': distribution,
+                'pose':   pose,
+                'wrench': wrench,
+                'forces': distribution,
         }
 
 
 __all__ = [
-    'Dykstra',
+        'Dykstra',
 ]

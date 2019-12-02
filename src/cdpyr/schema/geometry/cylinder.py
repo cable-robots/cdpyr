@@ -9,15 +9,15 @@ __email__ = "p.tempel@tudelft.nl"
 
 class CylinderSchema(_geometry.GeometrySchema):
     diameter = fields.Float(
-        required=True
+            required=True
     )
     height = fields.Float(
-        required=True
+            required=True
     )
 
     __model__ = _cylinder.Cylinder
 
 
 __all__ = [
-    'CylinderSchema',
+        'CylinderSchema',
 ]

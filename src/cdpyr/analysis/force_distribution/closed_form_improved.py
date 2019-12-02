@@ -3,10 +3,7 @@ import numpy as _np
 from cdpyr.analysis.force_distribution import force_distribution as _algorithm
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
-from cdpyr.typing import (
-    Matrix,
-    Vector,
-)
+from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -99,9 +96,9 @@ class ClosedFormImproved(_algorithm.Algorithm):
                                             wrench)
 
         return {
-            'pose':   pose,
-            'wrench': wrench,
-            'forces': distribution,
+                'pose':   pose,
+                'wrench': wrench,
+                'forces': distribution,
         }
 
     def _closed_form(self,
@@ -114,5 +111,5 @@ class ClosedFormImproved(_algorithm.Algorithm):
 
 
 __all__ = [
-    'ClosedFormImproved',
+        'ClosedFormImproved',
 ]

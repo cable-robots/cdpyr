@@ -9,10 +9,10 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 __all__ = [
-    'GeometrySchema',
-    'CuboidSchema',
-    'CylinderSchema',
-    'EllipticCylinderSchema',
-    'SphereSchema',
-    'TubeSchema',
+        'GeometrySchema',
+        'CuboidSchema',
+        'CylinderSchema',
+        'EllipticCylinderSchema',
+        'SphereSchema',
+        'TubeSchema',
 ]

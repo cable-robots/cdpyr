@@ -9,10 +9,10 @@ __email__ = "p.tempel@tudelft.nl"
 
 class FrameSchema(Schema):
     anchors = fields.Nested(
-        _frame_anchor.FrameAnchorSchema(
-            many=True
-        ),
-        required=True,
+            _frame_anchor.FrameAnchorSchema(
+                    many=True
+            ),
+            required=True,
     )
 
     __model__ = _frame.Frame
@@ -23,5 +23,5 @@ class FrameSchema(Schema):
 
 
 __all__ = [
-    'FrameSchema',
+        'FrameSchema',
 ]
