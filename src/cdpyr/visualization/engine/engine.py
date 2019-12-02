@@ -83,7 +83,7 @@ class Engine(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def draw(self):
+    def draw(self, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
@@ -94,7 +94,9 @@ class Engine(ABC):
     def show(self):
         raise NotImplementedError()
 
-    def render(self, o: Union['RobotComponent', 'PlottableResult'], *args,
+    def render(self, o: Union[
+        'RobotComponent', 'PlottableResult', '_geometry.Geometry'],
+               *args,
                **kwargs):
         self._RESOLVER[fcn(o)](o, *args, **kwargs)
 
