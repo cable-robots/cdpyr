@@ -307,7 +307,7 @@ class Polyhedron(_geometry.Primitive):
                      self._vertices.shape[0], self._faces.shape[0]))
 
     __repr__ = make_repr(
-            'centroid'
+            'centroid',
             'surface',
             'volume',
     )
