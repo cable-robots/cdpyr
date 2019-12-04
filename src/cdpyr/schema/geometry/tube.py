@@ -8,11 +8,11 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class TubeSchema(_geometry.GeometrySchema):
-    inner_diameter = fields.Float(
-            required=True
+    inner_radiu = fields.Tuple(
+            (fields.Float(), fields.Float()),
     )
-    outer_diameter = fields.Float(
-            required=True
+    outer_radius = fields.Tuple(
+            (fields.Float(), fields.Float()),
     )
     height = fields.Float(
             required=True

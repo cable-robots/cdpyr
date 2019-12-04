@@ -8,10 +8,11 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class CylinderSchema(_geometry.GeometrySchema):
-    diameter = fields.Float(
+    height = fields.Float(
             required=True
     )
-    height = fields.Float(
+    radius = fields.Tuple(
+            (fields.Float(), fields.Float()),
             required=True
     )
 

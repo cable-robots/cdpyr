@@ -1,13 +1,13 @@
 from marshmallow import Schema, fields, post_load
 
-from cdpyr.geometry import Cuboid, Cylinder, EllipticCylinder, Sphere, Tube
+from cdpyr.geometry import Cuboid, Cylinder, Ellipsoid, Polyhedron, Tube
 from cdpyr.robot import drum as _drum
 from cdpyr.schema import fields as custom_fields
 from cdpyr.schema.geometry import (
     CuboidSchema,
     CylinderSchema,
-    EllipticCylinderSchema,
-    SphereSchema,
+    EllipsoidSchema,
+    PolyhedronSchema,
     TubeSchema
 )
 from cdpyr.schema.mechanics import inertia as _inertia
@@ -20,9 +20,9 @@ class DrumSchema(Schema):
     geometry = custom_fields.Polymorphic(
             (
                     (Cuboid, CuboidSchema),
-                    (CylinderSchema, Cylinder),
-                    (EllipticCylinder, EllipticCylinderSchema),
-                    (Sphere, SphereSchema),
+                    (Cylinder, CylinderSchema),
+                    (Ellipsoid, EllipsoidSchema),
+                    (Polyhedron, PolyhedronSchema),
                     (Tube, TubeSchema),
             ),
             missing=None
