@@ -24,6 +24,7 @@ class Robot(RobotComponent):
     _gravity: _np.ndarray
     name: AnyStr
     _platforms: '_platform.PlatformList'
+    home_pose: '_pose.Pose'
 
     def __init__(self,
                  name: Optional[AnyStr] = None,
@@ -43,6 +44,7 @@ class Robot(RobotComponent):
                      Sequence[Dict[AnyStr, int]]
                  ]] = None,
                  gravity: Union[Num, Vector] = None,
+                 home_pose: '_pose.Pose' = None
                  **kwargs):
         super().__init__(**kwargs)
         self.name = name or 'default'
@@ -51,6 +53,7 @@ class Robot(RobotComponent):
         self.cables = cables or []
         self.kinematic_chains = kinematic_chains or {}
         self.gravity = gravity if gravity is not None else [0]
+        self.home_pose = home_pose if home_pose is not None else _pose.Pose()
 
     @property
     def ai(self):
