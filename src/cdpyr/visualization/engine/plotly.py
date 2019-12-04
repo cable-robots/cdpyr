@@ -96,20 +96,7 @@ class Plotly(_engine.Engine, ABC):
         pass
 
     def draw(self, *args, **kwargs):
-        self.figure.update_layout(
-                **update_recursive(
-                        dict(
-                                yaxis=dict(
-                                        scaleanchor="x",
-                                        scaleratio=1,
-                                ),
-                                scene=dict(
-                                        aspectmode='data',
-                                )
-                        ),
-                        kwargs
-                )
-        )
+        self.figure.update_layout(**kwargs)
 
     def reset(self):
         self.figure = go.Figure()
@@ -887,9 +874,11 @@ class Linear(Plotly):
                      **update_recursive(
                              dict(
                                      yaxis=dict(
+                                             scaleanchor="x",
+                                             scaleratio=1,
                                              showline=False,
                                              showticklabels=False,
-                                             showgrid=False
+                                             showgrid=False,
                                      )
                              ),
                              kwargs)
@@ -901,7 +890,16 @@ class Planar(Plotly):
     _NUMBER_OF_AXES = 2
 
     def draw(self, *args, **kwargs):
-        super().draw(*args, **kwargs)
+        super().draw(*args,
+                     **update_recursive(
+                             dict(
+                                     yaxis=dict(
+                                             scaleanchor="x",
+                                             scaleratio=1,
+                                     ),
+                             ),
+                             kwargs)
+                     )
 
 
 class Spatial(Plotly):
@@ -912,13 +910,16 @@ class Spatial(Plotly):
         super().draw(*args,
                      **update_recursive(
                              dict(
+                                     yaxis=dict(
+                                             scaleanchor="x",
+                                             scaleratio=1,
+                                     ),
                                      scene=dict(
-                                             aspectmode='data',
                                              camera=dict(
                                                      eye=dict(
                                                              x=-0.75,
                                                              y=-1.75,
-                                                             z=0.25
+                                                             z=0.25,
                                                      )
                                              ),
                                      )
