@@ -1,87 +1,73 @@
-from typing import Tuple
+from typing import Union
 
-from magic_repr import make_repr
+import numpy as _np
 
+from cdpyr.geometry import cylinder as _cylinder
 from cdpyr.geometry.geometry import Geometry
-from cdpyr.typing import Num
+from cdpyr.typing import Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class Tube(Geometry):
-    inner_diameter: float
-    outer_diameter: float
-    height: float
+    """
 
-    def __init__(self,
-                 inner_diameter: Num,
-                 outer_diameter: Num,
-                 height: Num,
-                 **kwargs):
-        super().__init__(**kwargs)
-        self.inner_diameter = inner_diameter
-        self.outer_diameter = outer_diameter
-        self.height = height
+    """
+
+    """
+    Inner cylinder describing the inside of the tube
+    """
+    _inner: '_cylinder.Cylinder'
+
+    """
+    Outert cylinder describing the ouytside of the tube
+    """
+    _outer: '_cylinder.Cylinder'
+
+    def __init__(self, inner_radius: Union[Num, Vector],
+                 outer_radius: Union[Num, Vector],
+                 height: float, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._inner = _cylinder.Cylinder(inner_radius, height)
+        self._outer = _cylinder.Cylinder(outer_radius, height)
 
     @property
-    def diameter(self):
-        return self.inner_diameter, self.outer_diameter
+    def height(self):
+        return self._inner.height
 
-    @diameter.setter
-    def diameter(self, diameter: Tuple[Num, Num]):
-        self.inner_diameter = diameter[0]
-        self.outer_diameter = diameter[1]
-
-    @diameter.deleter
-    def diameter(self):
-        del self.inner_diameter
-        del self.outer_diameter
+    @height.setter
+    def height(self, height: float):
+        self._inner.height = height
+        self._outer.height = height
 
     @property
     def inner_radius(self):
-        return self.inner_diameter / 2.0
+        return self._inner.radius
 
     @inner_radius.setter
-    def inner_radius(self, inner_radius: Num):
-        self.inner_diameter = 2.0 * inner_radius
-
-    @inner_radius.deleter
-    def inner_radius(self):
-        del self.inner_diameter
+    def inner_radius(self, radius: Union[Num, Vector]):
+        self._inner.radius = radius
 
     @property
     def outer_radius(self):
-        return self.outer_diameter / 2.0
+        return self._outer.radius
 
     @outer_radius.setter
-    def outer_radius(self, outer_radius: Num):
-        self.outer_diameter = 2.0 * outer_radius
+    def outer_radius(self, radius: Union[Num, Vector]):
+        self._outer.radius = radius
 
-    @outer_radius.deleter
-    def outer_radius(self):
-        del self.outer_diameter
+    def _calculate_centroid(self):
+        return _np.zeros((3,))
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            raise TypeError()
+    def _calculate_surface(self):
+        return self._inner.surface \
+               - 2 * _np.pi * (self._inner.radius[0] * self._inner.radius[1]) \
+               + self._outer.surface \
+               - 2 * _np.pi * (self._inner.radius[0] * self._inner.radius[1])
 
-        if self is other:
-            return True
-
-        return super().__eq__(other) \
-               and self.inner_diameter == other.inner_diameter \
-               and self.outer_diameter == other.outer_diameter \
-               and self.height == other.height
-
-    def __hash__(self):
-        return hash((self.height, self.inner_diameter, self.outer_diameter))
-
-    __repr__ = make_repr(
-            'inner_diameter',
-            'outer_diameter',
-            'height',
-    )
+    def _calculate_volume(self):
+        return self._outer.volume - self._inner.volume
 
 
 __all__ = [

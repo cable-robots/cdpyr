@@ -12,18 +12,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Polyhedron(_geometry.Geometry):
     """
-    (3,) vector denoting the centroid of the polyhedron given the weighted
-    center of mass of each triangle face
-    """
-    _centroid: Vector
-    """
     (N,3) matrix of faces of the polyhedron sorted in counter-clockwise manner
     """
     _faces: Matrix
-    """
-    Surface area of the polyhedron
-    """
-    _surface: float
     """
     (N,) array of surfaces of each triangle
     """
@@ -33,11 +24,6 @@ class Polyhedron(_geometry.Geometry):
     i.e., points
     """
     _vertices: Matrix
-    """
-    Geometric volume of the polyhedron i.e., the sum of each tetrahedron's
-    volume
-    """
-    _volume: float
     """
     (N, ) vector of the volumes per tetrahedron
     """
@@ -67,11 +53,8 @@ class Polyhedron(_geometry.Geometry):
         super().__init__(**kwargs)
         self._vertices = _np.asarray(vertices)
         self._faces = _np.asarray(faces)
-        self._surface = None
         self._surfaces = None
-        self._volume = None
         self._volumes = None
-        self._centroid = None
 
     @staticmethod
     def from_octahedron(depth: int = 0, center: Vector = None):
@@ -237,29 +220,6 @@ class Polyhedron(_geometry.Geometry):
         return Polyhedron(vertices + center[None, :], faces)
 
     @property
-    def centroid(self):
-        if self._centroid is None:
-            # shift vertices back into center
-            vertices = self._vertices[self._faces, :]
-            # split up corners
-            a = vertices[:, 0, :]
-            b = vertices[:, 1, :]
-            c = vertices[:, 2, :]
-
-            # calculate the triangles center of mass through its three vertices
-            triangle_centroids = _np.sum(vertices, axis=1) / 3
-            # surface of each triangle
-            triangle_surfaces = 0.5 * _np.linalg.norm(
-                    _np.cross(a - b, a - c, axis=1), axis=1)
-
-            # the final centroid will be located at the weighted triangles'
-            # centroids
-            self._centroid = _np.sum(
-                    triangle_surfaces[:, None] * triangle_centroids,
-                    axis=0) / _np.sum(triangle_surfaces, axis=0)
-        return self._centroid
-
-    @property
     def faces(self):
         return self._faces
 
@@ -270,14 +230,9 @@ class Polyhedron(_geometry.Geometry):
 
     @property
     def surfaces(self):
+        # no cached result yet
         if self._surfaces is None:
-            a = self.vertices[self.faces[:, 0], :]
-            b = self.vertices[self.faces[:, 1], :]
-            c = self.vertices[self.faces[:, 2], :]
-
-            # heron's formula
-            self._surfaces = 0.5 * _np.linalg.norm(
-                    _np.cross(a - b, a - c, axis=1), axis=1)
+            self._surfaces = self._calculate_surfaces()
         return self._surfaces
 
     @property
@@ -287,38 +242,67 @@ class Polyhedron(_geometry.Geometry):
 
     @property
     def volumes(self):
-        # cache result using
+        # no cached result yet
         if self._volumes is None:
-            a = self._vertices[self._faces[:, 0], :]
-            b = self._vertices[self._faces[:, 1], :]
-            c = self._vertices[self._faces[:, 2], :]
-            d = self.centroid
-
-            # Heron's formula
-            # | (a - d) . ( (b - d) x (c - d) ) |
-            # -----------------------------------
-            #                  6
-            return _np.abs(
-                    _np.sum((a - d) * _np.cross(b - d, c - d, axis=1),
-                            axis=1)) / 6
-
+            self._volumes = self._calculate_volumes()
         return self._volumes
 
     @property
     def vertices(self):
         return self._vertices
 
+    def _calculate_centroid(self):
+        # get vertices sorted by the faces
+        vertices = self._vertices[self._faces, :]
+        # split up corners
+        a = vertices[:, 0, :]
+        b = vertices[:, 1, :]
+        c = vertices[:, 2, :]
+
+        # calculate the triangles center of mass through its three vertices
+        triangle_centroids = _np.sum(vertices, axis=1) / 3
+        # surface of each triangle
+        triangle_surfaces = 0.5 * _np.linalg.norm(
+                _np.cross(a - b, a - c, axis=1), axis=1)
+
+        # the final centroid will be located at the weighted triangles'
+        # centroids
+        return _np.sum(triangle_surfaces[:, None] * triangle_centroids,
+                       axis=0) / _np.sum(triangle_surfaces, axis=0)
+
+    def _calculate_surface(self):
+        return _np.sum(self.surface, axis=0)
+
+    def _calculate_surfaces(self):
+        a = self.vertices[self.faces[:, 0], :]
+        b = self.vertices[self.faces[:, 1], :]
+        c = self.vertices[self.faces[:, 2], :]
+
+        # heron's formula
+        return 0.5 * _np.linalg.norm(_np.cross(a - b, a - c, axis=1), axis=1)
+
+    def _calculate_volume(self):
+        return _np.sum(self.volumes, axis=0)
+
+    def _calculate_volumes(self):
+        a = self._vertices[self._faces[:, 0], :]
+        b = self._vertices[self._faces[:, 1], :]
+        c = self._vertices[self._faces[:, 2], :]
+        d = self.centroid
+
+        # Heron's formula
+        # | (a - d) . ( (b - d) x (c - d) ) |
+        # -----------------------------------
+        #                  6
+        return _np.abs(
+                _np.sum((a - d) * _np.cross(b - d, c - d, axis=1), axis=1)) / 6
+
     def __eq__(self, other):
-        if not isinstance(other, type(self)):
-            raise TypeError()
-
-        if self is other:
-            return True
-
-        return _np.allclose(self._vertices, other._vertices) \
+        return super().__eq__(other) \
+               and _np.allclose(self._vertices, other._vertices) \
                and _np.allclose(self._faces, other._faces)
 
-    def __hash__(self, other):
+    def __hash__(self):
         return hash((self.centroid, self.surface, self.volume,
                      self._vertices.shape[0], self._faces.shape[0]))
 
