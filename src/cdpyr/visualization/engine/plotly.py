@@ -2,13 +2,16 @@ from abc import ABC
 from typing import Mapping, Sequence, Union
 
 import numpy as _np
+from plotly import graph_objects as go
+from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
+
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.geometry import (
     cuboid as _cuboid,
     cylinder as _cylinder,
-    elliptic_cylinder as _el_cylinder,
-    sphere as _sphere,
+    ellipsoid as _ellipsoid,
+    polyhedron as _polyhedron,
     tube as _tube,
 )
 from cdpyr.kinematics.transformation import Homogenous as \
@@ -30,8 +33,6 @@ from cdpyr.robot.anchor import (
 )
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
-from plotly import graph_objects as go
-from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -142,48 +143,48 @@ class Plotly(_engine.Engine, ABC):
 
         if self._NUMBER_OF_COORDINATES == 1:
             vertices = _np.asarray((
-                (-1.0, 0.0, 0.0),
-                (1.0, 0.0, 0.0),
+                    (-1.0, 0.0, 0.0),
+                    (1.0, 0.0, 0.0),
             ))
             edges = _np.asarray([
-                [0, 1, 0]
+                    [0, 1, 0]
             ])
             plotter = self._scatter
         elif self._NUMBER_OF_COORDINATES == 2:
             vertices = _np.asarray((
-                (-1.0, 1.0, 0.0),
-                (1.0, 1.0, 0.0),
-                (1.0, -1.0, 0.0),
-                (-1.0, -1.0, 0.0),
+                    (-1.0, 1.0, 0.0),
+                    (1.0, 1.0, 0.0),
+                    (1.0, -1.0, 0.0),
+                    (-1.0, -1.0, 0.0),
             ))
             edges = _np.asarray([
-                [0, 1, 2, 3, 0]
+                    [0, 1, 2, 3, 0]
             ])
             plotter = self._scatter
         elif self._NUMBER_OF_COORDINATES == 3:
             vertices = _np.asarray((
-                (-1.0, 1.0, 1.0),
-                (1.0, 1.0, 1.0),
-                (1.0, -1.0, 1.0),
-                (-1.0, -1.0, 1.0),
-                (-1.0, 1.0, -1.0),
-                (1.0, 1.0, -1.0),
-                (1.0, -1.0, -1.0),
-                (-1.0, -1.0, -1.0),
+                    (-1.0, 1.0, 1.0),
+                    (1.0, 1.0, 1.0),
+                    (1.0, -1.0, 1.0),
+                    (-1.0, -1.0, 1.0),
+                    (-1.0, 1.0, -1.0),
+                    (1.0, 1.0, -1.0),
+                    (1.0, -1.0, -1.0),
+                    (-1.0, -1.0, -1.0),
             ))
             edges = _np.asarray((
-                (2, 1, 0),
-                (6, 2, 1),
-                (4, 1, 0),
-                (3, 2, 0),
-                (6, 3, 2),
-                (3, 4, 0),
-                (5, 4, 1),
-                (6, 5, 1),
-                (6, 5, 4),
-                (7, 3, 4),
-                (6, 7, 4),
-                (6, 7, 3),
+                    (2, 1, 0),
+                    (6, 2, 1),
+                    (4, 1, 0),
+                    (3, 2, 0),
+                    (6, 3, 2),
+                    (3, 4, 0),
+                    (5, 4, 1),
+                    (6, 5, 1),
+                    (6, 5, 4),
+                    (7, 3, 4),
+                    (6, 7, 4),
+                    (6, 7, 3),
             ))
             plotter = self._mesh
 
@@ -273,9 +274,9 @@ class Plotly(_engine.Engine, ABC):
                     self._scatter(
                             **self._prepare_plot_coordinates(
                                     self._extract_coordinates(_np.hstack((
-                                        position, position + 0.25 * dcm.dot(
-                                                self.COORDINATE_DIRECTIONS[
-                                                    idx])
+                                            position, position + 0.25 * dcm.dot(
+                                                    self.COORDINATE_DIRECTIONS[
+                                                        idx])
                                     )))),
                             **update_recursive(dict(
                                     mode='lines',
@@ -307,10 +308,8 @@ class Plotly(_engine.Engine, ABC):
                     **kwargs):
         pass
 
-    def render_elliptic_cylinder(self,
-                                 cylinder: '_el_cylinder.EllipticCylinder',
-                                 *args,
-                                 **kwargs):
+    def render_ellipsoid(self, ellipsoid: '_ellipsoid.Ellipsoid', *args,
+                         **kwargs):
         pass
 
     def render_frame(self,
@@ -534,6 +533,10 @@ class Plotly(_engine.Engine, ABC):
                 )
         )
 
+    def render_polyhedron(self, polyhedron: '_polyhedron.Polyhedron', *args,
+                          **kwargs):
+        pass
+
     def render_pulley(self,
                       pulley: '_pulley.Pulley',
                       *args,
@@ -744,5 +747,5 @@ class Spatial(Plotly):
 
 
 __all__ = [
-    'Plotly',
+        'Plotly',
 ]

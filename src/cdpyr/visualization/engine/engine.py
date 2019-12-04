@@ -50,32 +50,32 @@ class Engine(ABC):
 
     def __init__(self, *args, **kwargs):
         self._RESOLVER = {
-                fcn(_cable.Cable):               self.render_cable,
-                fcn(_cable.CableList):           self.render_cable_list,
-                fcn(_drivetrain.DriveTrain):     self.render_drivetrain,
-                fcn(_drum.Drum):                 self.render_drum,
-                fcn(_frame.Frame):               self.render_frame,
-                fcn(_frame_anchor.FrameAnchor):  self.render_frame_anchor,
+                fcn(_cable.Cable):              self.render_cable,
+                fcn(_cable.CableList):          self.render_cable_list,
+                fcn(_drivetrain.DriveTrain):    self.render_drivetrain,
+                fcn(_drum.Drum):                self.render_drum,
+                fcn(_frame.Frame):              self.render_frame,
+                fcn(_frame_anchor.FrameAnchor): self.render_frame_anchor,
                 fcn(_frame_anchor.FrameAnchorList):
-                                                 self.render_frame_anchor_list,
-                fcn(_gearbox.Gearbox):           self.render_gearbox,
-                fcn(_geometry.Cuboid):           self.render_cuboid,
-                fcn(_geometry.Cylinder):         self.render_cylinder,
-                fcn(_geometry.EllipticCylinder): self.render_elliptic_cylinder,
-                fcn(_geometry.Sphere):           self.render_sphere,
-                fcn(_geometry.Tube):             self.render_tube,
-                fcn(_kinematics.Result):         self.render_kinematics,
-                fcn(_motor.Motor):               self.render_motor,
-                fcn(_platform.Platform):         self.render_platform,
-                fcn(_platform.PlatformList):     self.render_platform_list,
+                                                self.render_frame_anchor_list,
+                fcn(_gearbox.Gearbox):          self.render_gearbox,
+                fcn(_geometry.Cuboid):          self.render_cuboid,
+                fcn(_geometry.Cylinder):        self.render_cylinder,
+                fcn(_geometry.Ellipsoid):       self.render_ellipsoid,
+                fcn(_geometry.Polyhedron):      self.render_polyhedron,
+                fcn(_geometry.Tube):            self.render_tube,
+                fcn(_kinematics.Result):        self.render_kinematics,
+                fcn(_motor.Motor):              self.render_motor,
+                fcn(_platform.Platform):        self.render_platform,
+                fcn(_platform.PlatformList):    self.render_platform_list,
                 fcn(_platform_anchor.PlatformAnchor):
-                                                 self.render_platform_anchor,
+                                                self.render_platform_anchor,
                 fcn(_platform_anchor.PlatformAnchorList):
-                                                 self.render_platform_anchor_list,
-                fcn(_pulley.Pulley):             self.render_pulley,
-                fcn(_robot.Robot):               self.render_robot,
-                fcn(_grid.Result):               self.render_workspace_grid,
-                fcn(_hull.Result):               self.render_workspace_hull,
+                                                self.render_platform_anchor_list,
+                fcn(_pulley.Pulley):            self.render_pulley,
+                fcn(_robot.Robot):              self.render_robot,
+                fcn(_grid.Result):              self.render_workspace_grid,
+                fcn(_hull.Result):              self.render_workspace_hull,
         }
 
     @abstractmethod
@@ -127,10 +127,9 @@ class Engine(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_elliptic_cylinder(self,
-                                 elliptic_cylinder:
-                                 '_geometry.EllipticCylinder',
-                                 *args, **kwargs):
+    def render_ellipsoid(self,
+                         ellipsoid: '_geometry.Ellipsoid',
+                         *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
@@ -181,6 +180,11 @@ class Engine(ABC):
                              *args, **kwargs):
         for platform in platform_list:
             self.render(platform, *args, **kwargs)
+
+    @abstractmethod
+    def render_polyhedron(self, polyhedron: '_geometry.Polyhedron', *args,
+                          **kwargs):
+        raise NotImplementedError()
 
     @abstractmethod
     def render_pulley(self, pulley: '_pulley.Pulley', *args, **kwargs):
