@@ -23,8 +23,9 @@ class Dykstra(_algorithm.Algorithm):
                  force_maximum: Union[Num, Vector],
                  max_iterations: int = 5000,
                  eps_projection: float = 1e-3,
-                 eps_convergence: float = 1e-6):
-        super().__init__(kinematics, force_minimum, force_maximum)
+                 eps_convergence: float = 1e-6,
+                 **kwargs):
+        super().__init__(kinematics, force_minimum, force_maximum, **kwargs)
         self.maximum_iterations = max_iterations
         self.threshold_projection = eps_projection
         self.threshold_convergence = eps_convergence

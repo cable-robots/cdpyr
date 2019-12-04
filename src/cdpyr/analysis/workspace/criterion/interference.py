@@ -10,7 +10,8 @@ __email__ = "p.tempel@tudelft.nl"
 class Interference(_criterion.Criterion):
     kinematics: '_kinematics.Algorithm'
 
-    def __init__(self, kinematics: '_kinematics.Algorithm'):
+    def __init__(self, kinematics: '_kinematics.Algorithm', **kwargs):
+        super().__init__(**kwargs)
         self.kinematics = kinematics
 
     def _evaluate(self,

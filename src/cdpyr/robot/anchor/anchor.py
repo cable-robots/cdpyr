@@ -24,7 +24,7 @@ class Anchor(RobotComponent):
                  dcm: Optional[Matrix] = None,
                  linear: Optional['_linear.Linear'] = None,
                  angular: Optional['_angular.Angular'] = None,
-                 ):
+                 **kwargs):
         """
 
         Parameters
@@ -42,6 +42,8 @@ class Anchor(RobotComponent):
             Angular transformation object that is to be used instead of
             `rotation` if given.
         """
+        super().__init__(**kwargs)
+
         # initialize and set linear property if not given by the user
         if linear is None:
             linear = _linear.Linear(

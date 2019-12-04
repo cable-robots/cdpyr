@@ -16,8 +16,9 @@ class Gearbox(RobotComponent):
 
     def __init__(self,
                  ratio: Optional[Num] = None,
-                 inertia: Optional[Num] = None
-                 ):
+                 inertia: Optional[Num] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.ratio = ratio or 1
         self.inertia = inertia or np_.Inf
 

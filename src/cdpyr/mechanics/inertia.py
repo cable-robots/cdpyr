@@ -16,8 +16,9 @@ class Inertia(BaseObject):
 
     def __init__(self,
                  linear: Optional[Matrix] = None,
-                 angular: Optional[Matrix] = None
-                 ):
+                 angular: Optional[Matrix] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.linear = linear if linear is not None else np_.diag(
                 np_.full((3,), np_.inf))
         self.angular = angular if angular is not None else np_.diag(

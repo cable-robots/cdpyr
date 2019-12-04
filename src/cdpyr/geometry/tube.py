@@ -17,8 +17,9 @@ class Tube(Geometry):
     def __init__(self,
                  inner_diameter: Num,
                  outer_diameter: Num,
-                 height: Num
-                 ):
+                 height: Num,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.inner_diameter = inner_diameter
         self.outer_diameter = outer_diameter
         self.height = height

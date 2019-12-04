@@ -17,7 +17,9 @@ class Pattern(BaseObject):
 
     def __init__(self,
                  translation: Num,
-                 rotation: Num):
+                 rotation: Num,
+                 **kwargs):
+        super().__init__(**kwargs)
         self._dof_translation = translation
         self._dof_rotation = rotation
 

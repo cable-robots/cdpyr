@@ -3,7 +3,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class BaseObject(object):
-    pass
+
+    def __init__(self, **kwargs):
+        pass
 
 
 __all__ = [

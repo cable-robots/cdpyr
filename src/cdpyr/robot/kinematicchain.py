@@ -20,8 +20,9 @@ class KinematicChain(RobotComponent):
                  frame_anchor: int,
                  platform: int,
                  platform_anchor: int,
-                 cable: int
-                 ):
+                 cable: int,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.cable = cable
         self.frame_anchor = frame_anchor
         self.platform = platform

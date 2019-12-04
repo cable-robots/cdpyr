@@ -15,6 +15,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Algorithm(ABC):
 
+    def __init__(self, **kwargs):
+        pass
+
     def forward(self,
                 robot: '_robot.Robot',
                 joints: Matrix,
@@ -90,8 +93,9 @@ class Result(_result.PoseResult, _result.PlottableResult):
                  lengths: Union[Vector, Matrix],
                  directions: Matrix,
                  swivel: Vector = None,
-                 wrap: Vector = None):
-        super().__init__(pose)
+                 wrap: Vector = None,
+                 **kwargs):
+        super().__init__(pose, **kwargs)
         self._algorithm = copy.deepcopy(algorithm)
         lengths = _np.asarray(lengths)
         self._lengths = lengths if lengths.ndim == 2 else lengths[None, :]

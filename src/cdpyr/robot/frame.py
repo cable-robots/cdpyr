@@ -16,8 +16,8 @@ class Frame(RobotComponent):
     def __init__(self,
                  anchors: Optional[
                      Union['_frame_anchor.FrameAnchorList', Sequence[
-                         '_frame_anchor.FrameAnchor']]] = None
-                 ):
+                         '_frame_anchor.FrameAnchor']]] = None,
+                 **kwargs):
         """ A general cable robot frame object.
 
         For the time being, this object only collects all frame anchors and
@@ -26,6 +26,7 @@ class Frame(RobotComponent):
         :param Union[FrameAnchorList, Sequence[FrameAnchor]] anchors:
         Optional list of anchors or a `FrameAnchorList` available on the frame.
         """
+        super().__init__(**kwargs)
         self.anchors = anchors or []
 
     @property

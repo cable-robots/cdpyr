@@ -13,8 +13,9 @@ class Cylinder(Geometry):
 
     def __init__(self,
                  diameter: Num,
-                 height: Num
-                 ):
+                 height: Num,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.diameter = diameter
         self.height = height
 

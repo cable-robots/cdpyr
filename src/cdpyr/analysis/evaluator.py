@@ -9,6 +9,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Evaluator(ABC):
 
+    def __init__(self, **kwargs):
+        pass
+
     @abstractmethod
     def evaluate(self, *args, **kwargs):
         raise NotImplementedError()

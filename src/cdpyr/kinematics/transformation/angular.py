@@ -55,8 +55,8 @@ class Angular(BaseObject):
                  quaternion: Optional[Vector] = None,
                  rotvec: Optional[Vector] = None,
                  euler: Optional[Vector] = None,
-                 sequence: Optional[AnyStr] = None
-                 ):
+                 sequence: Optional[AnyStr] = None,
+                 **kwargs):
         """
         Parameters
         ----------
@@ -86,6 +86,8 @@ class Angular(BaseObject):
         scipy.spatial.transform.Rotation: Underlying implementation of the
         rotation object
         """
+
+        super().__init__(**kwargs)
 
         # by default, we will have an extrinsic rotation about [x,y,z] given
         # as [a,b,c] so that it is Rz(c) * Ry(b) * Rx(a)

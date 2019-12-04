@@ -16,7 +16,8 @@ class EllipticCylinder(Geometry):
                  major_diameter: Num,
                  minor_diameter: Num,
                  height: Num,
-                 ):
+                 **kwargs):
+        super().__init__(**kwargs)
         self.major_diameter = major_diameter
         self.minor_diameter = minor_diameter
         self.height = height

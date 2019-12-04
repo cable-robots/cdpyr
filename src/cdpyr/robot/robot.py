@@ -42,8 +42,9 @@ class Robot(RobotComponent):
                      Sequence[Tuple[int, int, int, int]],
                      Sequence[Dict[AnyStr, int]]
                  ]] = None,
-                 gravity: Union[Num, Vector] = None
-                 ):
+                 gravity: Union[Num, Vector] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.name = name or 'default'
         self.frame = frame or None
         self.platforms = platforms or []

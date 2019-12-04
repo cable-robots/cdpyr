@@ -10,7 +10,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Result(ABC):
-    pass
+
+    def __init__(self, **kwargs):
+        pass
 
 
 class PlottableResult(Result):
@@ -20,7 +22,8 @@ class PlottableResult(Result):
 class PoseResult(Result):
     _pose: '_pose.Pose'
 
-    def __init__(self, pose: '_pose.Pose'):
+    def __init__(self, pose: '_pose.Pose', **kwargs):
+        super().__init__(**kwargs)
         self._pose = copy.deepcopy(pose)
 
     @property

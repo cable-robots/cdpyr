@@ -28,7 +28,8 @@ class Calculator(_evaluator.PoseEvaluator):
 
     def __init__(self,
                  kinematics: '_kinematics.Algorithm',
-                 resolver: dict = None):
+                 resolver: dict = None,
+                 **kwargs):
         self.kinematics = kinematics
         if resolver is None:
             resolver = {

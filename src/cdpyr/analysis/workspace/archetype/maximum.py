@@ -17,9 +17,9 @@ class Maximum(_archetype_orientation.ArchetypeOrientation):
     In math terms this reads
     """
 
-    def __init__(self, steps: int = 10):
+    def __init__(self, steps: int = 10, **kwargs):
         euler = _np.pi * _np.asarray([1.0, 1.0, 1.0])
-        super().__init__(-euler, +euler, 'xyz', steps)
+        super().__init__(-euler, +euler, 'xyz', steps, **kwargs)
 
     @property
     def comparator(self):

@@ -12,7 +12,8 @@ class Singularities(_criterion.Criterion):
     _kinematics: '_kinematics.Algorithm'
     _structure_matrix: '_structure_matrix.Calculator'
 
-    def __init__(self, kinematics: '_kinematics.Algorithm'):
+    def __init__(self, kinematics: '_kinematics.Algorithm', **kwargs):
+        super().__init__(**kwargs)
         self._kinematics = kinematics
         self._structure_matrix = _structure_matrix.Calculator(self._kinematics)
 

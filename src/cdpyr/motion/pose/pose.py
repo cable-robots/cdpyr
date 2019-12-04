@@ -30,7 +30,8 @@ class Pose(BaseObject):
                  time: Optional[Num] = np_.NaN,
                  linear: Optional['_linear.Linear'] = None,
                  angular: Optional['_angular.Angular'] = None,
-                 ):
+                 **kwargs):
+        super().__init__(**kwargs)
         # no linear object given, then build it from the arguments and their
         # defaults
         if linear is None:

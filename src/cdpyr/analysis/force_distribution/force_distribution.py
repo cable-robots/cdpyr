@@ -25,7 +25,8 @@ class Algorithm(_evaluator.PoseEvaluator):
     def __init__(self,
                  kinematics: '_kinematics.Algorithm',
                  force_minimum: Union[Num, Vector],
-                 force_maximum: Union[Num, Vector]):
+                 force_maximum: Union[Num, Vector],
+                 **kwargs):
         self._structure_matrix = _structure_matrix.Calculator(kinematics)
         self.force_minimum = force_minimum
         self.force_maximum = force_maximum
@@ -150,7 +151,7 @@ class Result(_result.PoseResult):
                  forces: Vector,
                  wrench: Vector,
                  **kwargs):
-        super().__init__(pose)
+        super().__init__(pose, **kwargs)
         self._algorithm = copy.deepcopy(algorithm)
         self._forces = forces
         self._wrench = wrench

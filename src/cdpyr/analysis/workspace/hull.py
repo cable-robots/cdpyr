@@ -1,5 +1,4 @@
 from collections import abc
-from collections import abc
 from typing import Union
 
 import numpy as _np
@@ -30,8 +29,9 @@ class Algorithm(_workspace.Algorithm):
                  center: Union[Num, Vector] = None,
                  maximum_iterations: int = None,
                  maximum_halvings: int = None,
-                 depth: int = None):
-        super().__init__(archetype, criterion)
+                 depth: int = None,
+                 **kwargs):
+        super().__init__(archetype, criterion, **kwargs)
         self.center = center if center is not None else [0]
         self.maximum_iterations = maximum_iterations or 12
         self.maximum_halvings = maximum_halvings or 6
@@ -128,9 +128,11 @@ class Result(_polyhedron.Polyhedron, _workspace.Result, abc.Collection):
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  vertices: Matrix,
-                 faces: Matrix):
+                 faces: Matrix,
+                 **kwargs):
         super().__init__(algorithm=algorithm, archetype=archetype,
-                         criterion=criterion, vertices=vertices, faces=faces)
+                         criterion=criterion, vertices=vertices, faces=faces,
+                         **kwargs)
 
     def __iter__(self):
         return ((self._faces[idx, :], self._vertices[idx, :]) for idx in

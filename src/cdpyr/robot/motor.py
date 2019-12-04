@@ -20,7 +20,9 @@ class Motor(RobotComponent):
                  torques: Optional[Dict[AnyStr, float]] = None,
                  inertia: Optional[Num] = None,
                  rated_speed: Optional[Num] = None,
-                 rated_power: Optional[Num] = None):
+                 rated_power: Optional[Num] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.torques = {
                 'stall': None,
                 'peak':  None,

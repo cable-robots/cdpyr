@@ -26,7 +26,9 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
                  euler_min: Vector,
                  euler_max: Vector,
                  sequence: str,
-                 steps: Union[Num, Vector] = 10):
+                 steps: Union[Num, Vector] = 10,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.sequence = sequence
         self.euler_min = _np.asarray(euler_min)
         self.euler_max = _np.asarray(euler_max)

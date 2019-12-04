@@ -19,7 +19,8 @@ class Translation(_archetype.Archetype):
 
     dcm: Matrix
 
-    def __init__(self, dcm: Matrix = None):
+    def __init__(self, dcm: Matrix = None, **kwargs):
+        super().__init__(**kwargs)
         self.dcm = dcm if dcm is not None else _np.eye(3)
 
     @property

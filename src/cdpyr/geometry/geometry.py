@@ -15,7 +15,7 @@ class Geometry(ABC, BaseObject):
     def __ne__(self, other):
         return not self == other
 
-    def __hash__(self, other):
+    def __hash__(self):
         raise NotImplementedError()
 
 

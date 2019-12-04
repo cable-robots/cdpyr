@@ -20,8 +20,9 @@ class Homogenous(BaseObject):
 
     def __init__(self,
                  translation: Optional[Vector] = None,
-                 dcm: Optional[Matrix] = None
-                 ):
+                 dcm: Optional[Matrix] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         # init internal variables
         self.linear = _linear.Linear()
         self.angular = _angular.Angular()

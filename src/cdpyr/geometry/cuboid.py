@@ -15,8 +15,9 @@ class Cuboid(Geometry):
     def __init__(self,
                  width: Num,
                  depth: Num,
-                 height: Num
-                 ):
+                 height: Num,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.width = width
         self.height = height
         self.depth = depth

@@ -11,8 +11,9 @@ class Sphere(Geometry):
     diameter: float
 
     def __init__(self,
-                 diameter: Num
-                 ):
+                 diameter: Num,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.diameter = diameter
 
     @property

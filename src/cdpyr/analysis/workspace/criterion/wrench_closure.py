@@ -19,7 +19,9 @@ class WrenchClosure(_criterion.Criterion):
 
     def __init__(self,
                  force_distribution: '_force_distribution.Algorithm',
-                 wrench: Optional[Union[Num, Vector]] = None):
+                 wrench: Optional[Union[Num, Vector]] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         # update the force limits to be in the expected range of the wrench
         # closure algorithm
         force_distribution.force_minimum = [0]

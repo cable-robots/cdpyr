@@ -11,7 +11,7 @@ __email__ = "p.tempel@tudelft.nl"
 class Visualizer(object):
     _engine: '_engine.Engine'
 
-    def __init__(self, engine: '_engine.Engine'):
+    def __init__(self, engine: '_engine.Engine', **kwargs):
         self._engine = engine
 
     @property

@@ -26,29 +26,9 @@ class Cable(RobotComponent):
                  modulus: Optional[dict] = None,
                  diameter: Optional[Num] = None,
                  color: Optional[Union[AnyStr, Color]] = None,
-                 breaking_load: Optional[Num] = None
-                 ):
-        """ Base cable class that represents a rigid, elastic, viscous,
-        or viscoelastic cable object.
-
-        :rtype: Cable
-        :param AnyStr name: Optional string representing a human-readable
-        name of
-        the cable
-        :param AnyStr material: Optional string representing a human-readable
-        name of the cable's material
-        :param dict modulus: Optional dictionary mapping of elastic and viscous
-        modulus of the cable. Contains the case-sensitive fields `elasticities`
-        and `viscosities`
-        :param float diameter: Optional float representing the cable's
-        diameter in SI
-        unit [ m ] (Meter)
-        :param AnyStr|Color color: Optional string or Color object representing
-        the object's color. Used mostly for visualizing the cable correctly.
-        :param float|np_.Infinity breaking_load: Optional float or
-        np_.Infinity representing the cable's rated breaking load. Set to
-        `np_.Infinity` if the cable is like steel.
-        """
+                 breaking_load: Optional[Num] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.name = name or 'default'
         self.material = material or 'default'
         self.modulus = modulus or {}

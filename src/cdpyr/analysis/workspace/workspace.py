@@ -1,7 +1,7 @@
 import copy
 from abc import ABC, abstractmethod
 
-from cdpyr.analysis import result as _result
+from cdpyr.analysis import result as _result, evaluator as _evaluator
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.robot import robot as _robot
@@ -12,13 +12,15 @@ __copyright__ = "Copyright 2019, Philipp Tempel"
 __license__ = "EUPL v1.2"
 
 
-class Algorithm(ABC):
+class Algorithm(_evaluator.RobotEvaluator):
     _archetype: '_archetype.Archetype'
     _criterion: '_criterion.Criterion'
 
     def __init__(self,
                  archetype: '_archetype.Archetype',
-                 criterion: '_criterion.Criterion'):
+                 criterion: '_criterion.Criterion',
+                 **kwargs):
+        super().__init__(**kwargs)
         self._archetype = archetype
         self._criterion = criterion
 
@@ -30,7 +32,7 @@ class Algorithm(ABC):
     def criterion(self):
         return self._criterion
 
-    def evaluate(self, robot: '_robot.Robot') -> 'Result':
+    def evaluate(self, robot: '_robot.Robot', *args, **kwargs) -> 'Result':
         try:
             # now finally, evaluate the workspace
             return self._evaluate(robot)

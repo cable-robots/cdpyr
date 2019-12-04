@@ -19,7 +19,9 @@ class WrenchFeasible(_criterion.Criterion):
 
     def __init__(self,
                  force_distribution: '_force_distribution.Algorithm',
-                 wrench: Optional[Union[Num, Vector]] = None):
+                 wrench: Optional[Union[Num, Vector]] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.force_distribution = force_distribution
         self.wrench = wrench
 

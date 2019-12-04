@@ -18,8 +18,10 @@ class Linear(BaseObject):
     def __init__(self,
                  position: Optional[Vector] = None,
                  velocity: Optional[Vector] = None,
-                 acceleration: Optional[Vector] = None
+                 acceleration: Optional[Vector] = None,
+                 **kwargs
                  ):
+        super().__init__(**kwargs)
         self.position = position \
             if position is not None \
             else [0.0, 0.0, 0.0]

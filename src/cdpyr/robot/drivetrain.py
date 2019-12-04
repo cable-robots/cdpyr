@@ -17,8 +17,9 @@ class DriveTrain(RobotComponent):
     def __init__(self,
                  drum: Optional['__drum.Drum'] = None,
                  motor: Optional['__motor.Motor'] = None,
-                 gearbox: Optional['__gearbox.Gearbox'] = None
-                 ):
+                 gearbox: Optional['__gearbox.Gearbox'] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.drum = drum or None
         self.motor = motor or None
         self.gearbox = gearbox or None

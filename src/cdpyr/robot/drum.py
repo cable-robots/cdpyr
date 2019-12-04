@@ -16,8 +16,9 @@ class Drum(RobotComponent):
 
     def __init__(self,
                  geometry: Optional['_geometry.Geometry'] = None,
-                 inertia: Optional['_inertia.Inertia'] = None
-                 ):
+                 inertia: Optional['_inertia.Inertia'] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.geometry = geometry or _geometry.Geometry()
         self.inertia = inertia or _inertia.Inertia()
 

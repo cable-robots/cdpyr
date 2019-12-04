@@ -64,6 +64,7 @@ class Polyhedron(_geometry.Geometry):
     ]
 
     def __init__(self, vertices: Matrix, faces: Matrix, **kwargs):
+        super().__init__(**kwargs)
         self._vertices = _np.asarray(vertices)
         self._faces = _np.asarray(faces)
         self._surface = None

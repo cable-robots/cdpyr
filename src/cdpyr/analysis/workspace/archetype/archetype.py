@@ -10,6 +10,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Archetype(ABC):
 
+    def __init__(self, **kwargs):
+        pass
+
     @property
     @abstractmethod
     def comparator(self):

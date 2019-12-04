@@ -16,7 +16,9 @@ class CableLength(_criterion.Criterion):
 
     def __init__(self,
                  kinematics: '_kinematics.Algorithm',
-                 limits: Vector = None):
+                 limits: Vector = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.kinematics = kinematics
         self.limits = limits if limits is not None else [0, _np.inf]
 

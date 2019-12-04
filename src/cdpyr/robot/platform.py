@@ -42,8 +42,9 @@ class Platform(RobotComponent):
                  center_of_linkage: Optional[Vector] = None,
                  name: str = None,
                  pose: '_pose.Pose' = None,
-                 geometry: '_geometry.Geometry' = None
-                 ):
+                 geometry: '_geometry.Geometry' = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.anchors = anchors or []
         self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]
         self.center_of_linkage = center_of_linkage or [0.0, 0.0, 0.0]
