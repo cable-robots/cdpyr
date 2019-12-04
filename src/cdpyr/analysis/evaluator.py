@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion.pose import pose as _pose, poselist as _poselist
 from cdpyr.robot import robot as _robot
 
 __author__ = "Philipp Tempel"
@@ -32,8 +32,17 @@ class PoseEvaluator(RobotEvaluator):
         raise NotImplementedError()
 
 
+class PoseListEvaluator(RobotEvaluator):
+
+    @abstractmethod
+    def evaluate(self, robot: '_robot.Robot', poselist: '_poselist.PoseList',
+                 *args, **kwargs):
+        raise NotImplementedError()
+
+
 __all__ = [
         'Evaluator',
         'RobotEvaluator',
         'PoseEvaluator',
+        'PoseListEvaluator',
 ]

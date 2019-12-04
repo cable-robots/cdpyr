@@ -3,7 +3,7 @@ from abc import ABC
 
 from magic_repr import make_repr
 
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion.pose import pose as _pose, poselist as _poselist
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -35,8 +35,25 @@ class PoseResult(Result):
     )
 
 
+class PoseListResult(Result):
+    _pose_list: '_poselist.PoseList'
+
+    def __init__(self, pose_list: '_poselist.PoseList', **kwargs):
+        super().__init__(**kwargs)
+        self._pose_list = copy.deepcopy(pose_list)
+
+    @property
+    def pose_list(self):
+        return self._pose_list
+
+    __repr__ = make_repr(
+            'pose_list'
+    )
+
+
 __all__ = [
         'PlottableResult',
+        'PoseListResult',
         'PoseResult',
         'Result',
 ]
