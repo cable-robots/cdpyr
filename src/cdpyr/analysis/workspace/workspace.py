@@ -52,7 +52,8 @@ class Result(_result.PlottableResult):
     def __init__(self,
                  algorithm: 'Algorithm',
                  archetype: '_archetype.Archetype',
-                 criterion: '_criterion.Criterion'):
+                 criterion: '_criterion.Criterion',
+                 **kwargs):
         self._algorithm = copy.deepcopy(algorithm)
         self._archetype = copy.deepcopy(archetype)
         self._criterion = copy.deepcopy(criterion)

@@ -1,12 +1,13 @@
-import itertools
 from collections import abc
-from typing import Sequence, Union
+from collections import abc
+from typing import Union
 
 import numpy as _np
 
 from cdpyr.analysis.workspace import workspace as _workspace
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
+from cdpyr.geometry import polyhedron as _polyhedron
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
 
@@ -55,8 +56,13 @@ class Algorithm(_workspace.Algorithm):
         del self._center
 
     def _evaluate(self, robot: '_robot.Robot') -> 'Result':
+        # use our `Polyhedron` class and let it calculate the search
+        # directions and faces
+        polyhedron = _polyhedron.Polyhedron.from_octahedron(self.depth,
+                                                            self.center)
+
         # a coordinate generator to get the coordinates to evaluate
-        search_directions, faces = self.__split_octahedron()
+        search_directions, faces = polyhedron.vertices, polyhedron.faces
 
         # # termination conditions for each direction
         min_step = 0.5 ** self.maximum_halvings
@@ -75,8 +81,7 @@ class Algorithm(_workspace.Algorithm):
                       self._archetype,
                       self._criterion,
                       vertices,
-                      faces,
-                      self._center)
+                      faces)
 
     def __check_direction(self, robot, direction: Vector, min_step, max_iters):
         # step length along this coordinate
@@ -115,239 +120,17 @@ class Algorithm(_workspace.Algorithm):
         # append the last coordinate as the vertex
         return coordinate
 
-    def __split_octahedron(self):
-        # original corners of an octahedron
-        corners = [
-                [1.0, 0.0, 0.0],
-                [0.0, 1.0, 0.0],
-                [0.0, 0.0, 1.0],
-                [-1.0, 0.0, 0.0],
-                [0.0, -1.0, 0.0],
-                [0.0, 0.0, -1.0],
-        ]
-        # original faces of an octahedron
-        faces = [
-                [0, 1, 2],
-                [1, 3, 2],
-                [3, 4, 2],
-                [4, 0, 2],
-                [0, 1, 5],
-                [1, 3, 5],
-                [3, 4, 5],
-                [4, 0, 5],
-        ]
 
-        # subdivide triangles into smaller ones using LOOP-SUBDIVISION
-        # algorithm_old
-        for level in range(self.depth):
-            corners, faces = self.__subdivide(corners, faces)
-
-        # convert into numpy arrays
-        corners = _np.asarray(corners)
-        faces = _np.asarray(faces)
-
-        # normalise lengths of each corner to be unitary
-        corners /= _np.linalg.norm(corners, axis=1)[:, _np.newaxis]
-
-        # and return the search directions as well as the faces
-        return corners, faces
-
-    def __subdivide(self, vertices: Sequence, faces: Sequence):
-        new_faces = []
-        num_vertices = len(vertices)
-        dim_vertices = len(vertices[0])
-        new_vertices = dict(zip(range(num_vertices), vertices))
-        if self._index_vertex is None:
-            self._index_vertex = num_vertices
-
-        # matrix that holds which edges are adjacent to another
-        edge_vertices = [
-                [
-                        [
-                                -1 for kx in range(dim_vertices)
-                        ]
-                        for ky in range(num_vertices)
-                ]
-                for kz in range(num_vertices)
-        ]
-
-        # create matrix of edge-vertices and new vertices
-        for face in faces:
-            a, b, c = face
-            ab = self.__add_edge_vertex(a, b, c, edge_vertices)
-            bc = self.__add_edge_vertex(b, c, a, edge_vertices)
-            ac = self.__add_edge_vertex(a, c, b, edge_vertices)
-
-            new_faces.extend([
-                    [a, ab, ac],
-                    [ab, b, bc],
-                    [ac, bc, c],
-                    [ac, ab, bc],
-            ])
-
-        # position of new vertices
-        for v1, v2 in itertools.product(range(num_vertices),
-                                        range(num_vertices)):
-            vNIndex = edge_vertices[v1][v2][0]
-            if vNIndex != -1:
-                # catch boundary case
-                if edge_vertices[v1][v2][2] == -1:
-                    value = 1. / 2. * (vertices[v1][:] + vertices[v2][:])
-                else:
-                    value = [3 / 8 * (
-                            vertices[v1][idx] + vertices[v2][idx]) + 1 / 8 * (
-                                     vertices[edge_vertices[v1][v2][1]][idx] +
-                                     vertices[edge_vertices[v1][v2][2]][idx])
-                             for idx in range(dim_vertices)]
-
-                new_vertices[vNIndex] = value
-
-        # adjacent vertices
-        adjacent_vertices = []
-        for v, vTmp in itertools.product(range(num_vertices),
-                                         range(num_vertices)):
-            if v < vTmp and edge_vertices[v][vTmp][1] != -1 \
-                    or v > vTmp and edge_vertices[vTmp][v][1] != -1:
-                try:
-                    adjacent_vertices[v].append(vTmp)
-                except IndexError as IndexE:
-                    adjacent_vertices.insert(v, [vTmp])
-
-        for v in range(num_vertices):
-            try:
-                k = len(adjacent_vertices[v])
-            except IndexError as IndexE:
-                continue
-
-            adjacent_boundary_vertices = []
-            for i in range(k):
-                vi = adjacent_vertices[v][i]
-                if vi > v and edge_vertices[v][vi][2] == -1 \
-                        or vi < v and edge_vertices[vi][v][2] == -1:
-                    adjacent_boundary_vertices.append(vi)
-
-            # boundary case
-            if len(adjacent_boundary_vertices) == 2:
-                value = [6 / 8 * vertices[v][idx] + 1 / 8 * _np.sum(
-                        [vertices[k][idx] for k in adjacent_boundary_vertices],
-                        axis=0)
-                         for idx in range(dim_vertices)]
-            else:
-                beta = 1 / k * (
-                        5 / 8 - (3 / 8 + 1 / 4 * _np.cos(2 * _np.pi / k)) ** 2)
-                value = [(1 - k * beta) * vertices[v][idx] + beta * _np.sum(
-                        [vertices[k][idx] for k in adjacent_vertices[v]],
-                        axis=0)
-                         for
-                         idx in range(dim_vertices)]
-            new_vertices[v] = value
-
-        return _np.asarray(
-                [new_vertices[k] for k in range(len(new_vertices))]), new_faces
-
-    def __add_edge_vertex(self, a, b, c, edge_vertices):
-        # ensure right order of first two components
-        if a > b:
-            a, b = b, a
-
-        # new vertex?
-        if edge_vertices[a][b][0] == -1:
-            edge_vertices[a][b][0] = self._index_vertex
-            edge_vertices[a][b][1] = c
-            # advance vertex index counter
-            self._index_vertex += 1
-        # existing vertex
-        else:
-            edge_vertices[a][b][2] = c
-
-        # return values
-        return edge_vertices[a][b][0]
-
-
-class Result(_workspace.Result, abc.Collection):
-    _faces: Matrix
-    _vertices: Matrix
-    _centroid: Vector
-    _center: Vector
+class Result(_polyhedron.Polyhedron, _workspace.Result, abc.Collection):
 
     def __init__(self,
                  algorithm: 'Algorithm',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  vertices: Matrix,
-                 faces: Matrix,
-                 center: Vector):
-        super().__init__(algorithm, archetype, criterion)
-        self._faces = _np.asarray(faces)
-        self._vertices = _np.asarray(vertices)
-        self._center = center
-        self._centroid = None
-
-    @property
-    def centroid(self):
-        if self._centroid is None:
-            # get each vertex
-            a = self._vertices[self._faces[:, 0], :]
-            b = self._vertices[self._faces[:, 1], :]
-            c = self._vertices[self._faces[:, 2], :]
-            d = self._center
-
-            # | (a - d) . ( (b - d) x (c - d) ) |
-            # -----------------------------------
-            #                  6
-            volumes = _np.abs(
-                    _np.sum((a - d) * _np.cross(b - d, c - d, axis=1),
-                            axis=1)) / 6
-
-            # centroids as weighted surface-weighted volumes
-            self._centroid = _np.sum(volumes[:, None] * ((_np.sum(self._vertices[self._faces, :], axis=1) + d)/ 4), axis=0)
-        return self._centroid
-
-    @property
-    def faces(self):
-        return self._faces
-
-    @property
-    def surface(self):
-        if self._surface is None:
-            # get each vertex
-            f0 = self._vertices[self._faces[:, 0], :]
-            f1 = self._vertices[self._faces[:, 1], :]
-            f2 = self._vertices[self._faces[:, 2], :]
-
-            # length of each side
-            a = _np.linalg.norm(f0 - f1, axis=1)
-            b = _np.linalg.norm(f1 - f2, axis=1)
-            c = _np.linalg.norm(f2 - f0, axis=1)
-
-            # heron's formula
-            self._surface = _np.sum(1.0 / 4.0 * _np.sqrt(
-                    (a ** 2 + b ** 2 + c ** 2) ** 2 - 2 * (
-                            a ** 4 + b ** 4 + c ** 4)), axis=0)
-
-        return self._surface
-
-    @property
-    def vertices(self):
-        return self._vertices
-
-    @property
-    def volume(self):
-        if self._volume is None:
-            # get each vertex
-            a = self._vertices[self._faces[:, 0], :]
-            b = self._vertices[self._faces[:, 1], :]
-            c = self._vertices[self._faces[:, 2], :]
-            d = self.centroid
-
-            # | (a - d) . ( (b - d) x (c - d) ) |
-            # -----------------------------------
-            #                  6
-            self._volume = _np.sum(_np.abs(
-                    _np.sum((a - d) * _np.cross(b - d, c - d, axis=1),
-                            axis=1))) / 6
-
-        return self._volume
+                 faces: Matrix):
+        super().__init__(algorithm=algorithm, archetype=archetype,
+                         criterion=criterion, vertices=vertices, faces=faces)
 
     def __iter__(self):
         return ((self._faces[idx, :], self._vertices[idx, :]) for idx in
