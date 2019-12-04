@@ -44,7 +44,7 @@ class Robot(RobotComponent):
                      Sequence[Dict[AnyStr, int]]
                  ]] = None,
                  gravity: Union[Num, Vector] = None,
-                 home_pose: '_pose.Pose' = None
+                 home_pose: '_pose.Pose' = None,
                  **kwargs):
         super().__init__(**kwargs)
         self.name = name or 'default'
