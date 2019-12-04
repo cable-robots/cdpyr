@@ -1,4 +1,5 @@
 import itertools
+from collections import abc
 
 import numpy as _np
 from magic_repr import make_repr
@@ -10,7 +11,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Polyhedron(_geometry.Primitive):
+class Polyhedron(_geometry.Primitive, abc.Collection):
     """
     (N,3) matrix of faces of the polyhedron sorted in counter-clockwise manner
     """
@@ -224,6 +225,14 @@ class Polyhedron(_geometry.Primitive):
         return self._faces
 
     @property
+    def num_vertices(self):
+        return self._vertices.shape[0]
+
+    @property
+    def num_faces(self):
+        return self._faces.shape[0]
+
+    @property
     def surface(self):
         # just sum up over each tetrahedron's surface
         return _np.sum(self.surfaces, axis=0)
@@ -297,6 +306,51 @@ class Polyhedron(_geometry.Primitive):
         return _np.abs(
                 _np.sum((a - d) * _np.cross(b - d, c - d, axis=1), axis=1)) / 6
 
+    def __iter__(self):
+        return zip(self.faces, self.vertices[self.faces,:])
+
+    def __getitem__(self, idx: int):
+        return self.vertices[idx,:]
+
+    def __len__(self) -> int:
+        try:
+            # TODO fix this since it can be that all vertices are the same
+            # if any vertex is unequal to zero, we have a length
+            return _np.unique(self._vertices, axis=1).shape[0]
+        except (IndexError, AttributeError):
+            return 0
+
+    def __contains__(self, coordinate: object):
+        # if there are no coordinates stored, then return `False` right away
+        if not len(self):
+            return False
+
+        # consistent arguments
+        coordinate = _np.asarray(coordinate)
+
+        if coordinate.ndim == 1:
+            coordinate = coordinate[_np.newaxis, :]
+
+        try:
+            # vector from the coordinate given to each vertex
+            diff = self._vertices - coordinate
+
+            # calculate angle between all these differences
+            cosine_angles = _np.sum(diff * self._vertices, axis=1) \
+                            / _np.linalg.norm(self._vertices, axis=1) \
+                            / _np.linalg.norm(diff, axis=1)
+
+            # just in case we divided zero by zero yielding NaN in numpy
+            cosine_angles[_np.isnan(cosine_angles)] = 1
+        except BaseException as BaseE:
+            flag = False
+        else:
+            # all differences are pointing in the same direction as the
+            # vertices, if the cosines of the angles are all positive
+            flag = (cosine_angles >= 0).all()
+        finally:
+            return
+
     def __eq__(self, other):
         return super().__eq__(other) \
                and _np.allclose(self._vertices, other._vertices) \
@@ -310,6 +364,8 @@ class Polyhedron(_geometry.Primitive):
             'centroid',
             'surface',
             'volume',
+            'num_vertices',
+            'num_faces',
     )
 
 

@@ -121,7 +121,7 @@ class Algorithm(_workspace.Algorithm):
         return coordinate
 
 
-class Result(_polyhedron.Polyhedron, _workspace.Result, abc.Collection):
+class Result(_polyhedron.Polyhedron, _workspace.Result):
 
     def __init__(self,
                  algorithm: 'Algorithm',
@@ -133,52 +133,6 @@ class Result(_polyhedron.Polyhedron, _workspace.Result, abc.Collection):
         super().__init__(algorithm=algorithm, archetype=archetype,
                          criterion=criterion, vertices=vertices, faces=faces,
                          **kwargs)
-
-    def __iter__(self):
-        return ((self._faces[idx, :], self._vertices[idx, :]) for idx in
-                range(len(self)))
-
-    def __getitem__(self, idx: int):
-        return self._faces[idx, :], self._vertices[idx, :]
-
-    def __len__(self) -> int:
-        try:
-            # TODO fix this since it can be that all vertices are the same
-            # if any vertex is unequal to zero, we have a length
-            return _np.unique(self._vertices, axis=1).shape[0]
-        except (IndexError, AttributeError):
-            return 0
-
-    def __contains__(self, coordinate: object):
-        # if there are no coordinates stored, then return `False` right away
-        if not len(self):
-            return False
-
-        # consistent arguments
-        coordinate = _np.asarray(coordinate)
-
-        if coordinate.ndim == 1:
-            coordinate = coordinate[_np.newaxis, :]
-
-        try:
-            # vector from the coordinate given to each vertex
-            diff = self._vertices - coordinate
-
-            # calculate angle between all these differences
-            cosine_angles = _np.sum(diff * self._vertices, axis=1) \
-                            / _np.linalg.norm(self._vertices, axis=1) \
-                            / _np.linalg.norm(diff, axis=1)
-
-            # just in case we divided zero by zero yielding NaN in numpy
-            cosine_angles[_np.isnan(cosine_angles)] = 1
-        except BaseException as BaseE:
-            flag = False
-        else:
-            # all differences are pointing in the same direction as the
-            # vertices, if the cosines of the angles are all positive
-            flag = (cosine_angles >= 0).all()
-        finally:
-            return flag
 
 
 __all__ = [
