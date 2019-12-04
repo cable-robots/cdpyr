@@ -85,6 +85,13 @@ class Plotly(_engine.Engine, ABC):
         else:
             raise NotImplementedError()
 
+    @property
+    def _surface(self):
+        if self._NUMBER_OF_AXES == 3:
+            return go.Surface
+        else:
+            raise NotImplementedError()
+
     def close(self, *args, **kwargs):
         pass
 
@@ -92,13 +99,12 @@ class Plotly(_engine.Engine, ABC):
         self.figure.update_layout(
                 **update_recursive(
                         dict(
+                                yaxis=dict(
+                                        scaleanchor="x",
+                                        scaleratio=1,
+                                ),
                                 scene=dict(
                                         aspectmode='data',
-                                        aspectratio=dict(
-                                                x=1.00,
-                                                y=1.00,
-                                                z=1.00
-                                        )
                                 )
                         ),
                         kwargs
@@ -146,10 +152,9 @@ class Plotly(_engine.Engine, ABC):
                     (-1.0, 0.0, 0.0),
                     (1.0, 0.0, 0.0),
             ))
-            edges = _np.asarray([
+            faces = _np.asarray(
                     [0, 1, 0]
-            ])
-            plotter = self._scatter
+            )
         elif self._NUMBER_OF_COORDINATES == 2:
             vertices = _np.asarray((
                     (-1.0, 1.0, 0.0),
@@ -157,10 +162,9 @@ class Plotly(_engine.Engine, ABC):
                     (1.0, -1.0, 0.0),
                     (-1.0, -1.0, 0.0),
             ))
-            edges = _np.asarray([
+            faces = _np.asarray(
                     [0, 1, 2, 3, 0]
-            ])
-            plotter = self._scatter
+            )
         elif self._NUMBER_OF_COORDINATES == 3:
             vertices = _np.asarray((
                     (-1.0, 1.0, 1.0),
@@ -172,7 +176,7 @@ class Plotly(_engine.Engine, ABC):
                     (1.0, -1.0, -1.0),
                     (-1.0, -1.0, -1.0),
             ))
-            edges = _np.asarray((
+            faces = _np.asarray((
                     (2, 1, 0),
                     (6, 2, 1),
                     (4, 1, 0),
@@ -186,46 +190,66 @@ class Plotly(_engine.Engine, ABC):
                     (6, 7, 4),
                     (6, 7, 3),
             ))
-            plotter = self._mesh
 
         # scale vertices to account for the dimensions
-        vertices = transform.apply((vertices * dimensions).T)
+        vertices = transform.apply((vertices * dimensions).T).T
 
         if self._NUMBER_OF_AXES == 3:
-            vertices = vertices.T
-            plot_args = dict(
-                    **self._prepare_plot_coordinates(
-                            self._extract_coordinates(vertices.T)),
-                    **self._prepare_plot_coordinates(edges.T,
-                                                     ('i', 'j', 'k')),
-                    facecolor=['rgb(178, 178, 178)'] * edges.shape[0],
-                    vertexcolor=['rgb(0, 0, 0)'] * vertices.shape[0],
-                    flatshading=True,
-                    opacity=0.75,
-                    showscale=False,
-            )
-        else:
-            plot_args = dict(
-                    **self._prepare_plot_coordinates(
-                            self._extract_coordinates(vertices[:, edges])),
-                    mode='lines',
-                    fill='toself',
-                    line=dict(
-                            color='rgb(13, 13, 13)'
-                    ),
-                    fillcolor='rgb(178, 178, 178)',
-                    showlegend=False
+            self.figure.add_trace(
+                    self._mesh(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(vertices.T)),
+                            **self._prepare_plot_coordinates(faces.T,
+                                                             ('i', 'j', 'k')),
+                            facecolor=['rgb(178, 178, 178)'] * faces.shape[0],
+                            vertexcolor=['rgb(0, 0, 0)'] * vertices.shape[0],
+                            flatshading=True,
+                            opacity=0.75,
+                            showscale=False,
+                            name='cuboid',
+                            hoverinfo='skip',
+                            hovertext='',
+                    )
             )
 
-        # off to plotting
-        self.figure.add_trace(
-                plotter(
-                        **plot_args,
-                        name='cuboid',
-                        hoverinfo='skip',
-                        hovertext='',
+            # close faces
+            faces = _np.append(faces, faces[:, 0, _np.newaxis], axis=1)
+
+            # draw each edge separately
+            for face in faces:
+                self.figure.add_trace(
+                        self._scatter(
+                                **self._prepare_plot_coordinates(
+                                        self._extract_coordinates(
+                                                vertices[face, :].T)),
+                                mode='lines',
+                                line=dict(
+                                        color='rgb(0, 0, 0)',
+                                ),
+                                name='cuboid face',
+                                hoverinfo='skip',
+                                hovertext='',
+                                showlegend=False,
+                        )
                 )
-        )
+        else:
+            self.figure.add_trace(
+                    self._scatter(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(
+                                            vertices.T[:, faces])),
+                            mode='lines',
+                            fill='toself',
+                            line=dict(
+                                    color='rgb(13, 13, 13)'
+                            ),
+                            fillcolor='rgb(178, 178, 178)',
+                            showlegend=False,
+                            name='cuboid',
+                            hoverinfo='skip',
+                            hovertext='',
+                    )
+            )
 
     def render_coordinate_system(self,
                                  position: Vector = None,
@@ -294,7 +318,90 @@ class Plotly(_engine.Engine, ABC):
     def render_cylinder(self,
                         cylinder: '_cylinder.Cylinder',
                         *args, **kwargs):
-        pass
+        # get transformation to apply
+        transform = kwargs.get('transformation', _HomogenousTransformation())
+
+        # quicker access to width, depth, and height of cuboid
+        radii = cylinder.radius
+        height = cylinder.height
+
+        if self._NUMBER_OF_COORDINATES == 1:
+            x = [-radii[0], radii[0]]
+            y = [0, 0]
+            z = [0, 0]
+        elif self._NUMBER_OF_COORDINATES == 2:
+            theta = _np.linspace(0, 2 * _np.pi, num=36, endpoint=True)
+            x = radii[0] * _np.cos(theta)
+            y = radii[1] * _np.sin(theta)
+            z = _np.zeros_like(x)
+        elif self._NUMBER_OF_COORDINATES == 3:
+            theta = _np.linspace(0, 2 * _np.pi, num=36, endpoint=True)
+            z = _np.linspace(-height / 2, height / 2, num=2, endpoint=True)
+            theta, z = _np.meshgrid(theta, z)
+            x = radii[0] * _np.cos(theta)
+            y = radii[1] * _np.sin(theta)
+
+        vertices = _np.stack((x, y, z), axis=1).T
+
+        # apply transformation to the vertices
+        try:
+            vertices = transform.apply(vertices)
+        except ValueError:
+            vertices = _np.stack([transform.apply(page) for page in vertices.T],
+                                 axis=0)
+
+        if self._NUMBER_OF_AXES == 3:
+            # outside surface
+            self.figure.add_trace(
+                    self._surface(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(
+                                            _np.swapaxes(vertices, 0, 1))),
+                            opacity=0.75,
+                            colorscale=[[0, 'rgb(178, 178, 178)'],
+                                        [1, 'rgb(178, 178, 178)']],
+                            showscale=False,
+                            cmin=0,
+                            cmax=1,
+                            name='cylinder',
+                            hoverinfo='skip',
+                            hovertext='',
+                    )
+            )
+            # # top and bottom caps
+            for ring in vertices:
+                self.figure.add_trace(
+                        self._scatter(
+                                **self._prepare_plot_coordinates(
+                                        self._extract_coordinates(ring)
+                                ),
+                                mode='lines',
+                                line=dict(
+                                        color='rgb(0, 0, 0)',
+                                ),
+                                name='cylinder caps',
+                                hoverinfo='skip',
+                                hovertext='',
+                                showlegend=False,
+                        )
+                )
+        else:
+            self.figure.add_trace(
+                    self._scatter(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(vertices)),
+                            mode='lines',
+                            fill='toself',
+                            line=dict(
+                                    color='rgb(13, 13, 13)'
+                            ),
+                            fillcolor='rgb(178, 178, 178)',
+                            showlegend=False,
+                            name='cuboid',
+                            hoverinfo='skip',
+                            hovertext='',
+                    )
+            )
 
     def render_drivetrain(self,
                           drivetrain: '_drivetrain.DriveTrain',
@@ -310,7 +417,114 @@ class Plotly(_engine.Engine, ABC):
 
     def render_ellipsoid(self, ellipsoid: '_ellipsoid.Ellipsoid', *args,
                          **kwargs):
-        pass
+        # get transformation to apply
+        transform = kwargs.get('transformation', _HomogenousTransformation())
+
+        # quicker access to width, depth, and height of cuboid
+        radii = ellipsoid.radius
+
+        if self._NUMBER_OF_COORDINATES == 1:
+            x = [-radii[0], radii[0]]
+            y = [0, 0]
+            z = [0, 0]
+        elif self._NUMBER_OF_COORDINATES == 2:
+            theta = _np.linspace(0, 2 * _np.pi, num=36, endpoint=True)
+            x = radii[0] * _np.cos(theta)
+            y = radii[1] * _np.sin(theta)
+            z = _np.zeros_like(x)
+        elif self._NUMBER_OF_COORDINATES == 3:
+            az_ = _np.linspace(-_np.pi, _np.pi, num=36, endpoint=True)
+            el_ = _np.linspace(-_np.pi / 2, _np.pi / 2, num=18, endpoint=True)
+            az, el = _np.meshgrid(az_, el_)
+            x = radii[0] * _np.cos(el) * _np.cos(az)
+            y = radii[1] * _np.cos(el) * _np.sin(az)
+            z = radii[2] * _np.sin(el)
+
+        vertices = _np.stack((x, y, z), axis=1).T
+
+        # apply transformation to the vertices
+        try:
+            vertices = transform.apply(vertices)
+        except ValueError:
+            vertices = _np.stack([transform.apply(page) for page in vertices.T],
+                                 axis=0)
+
+        if self._NUMBER_OF_AXES == 3:
+            # outside surface
+            self.figure.add_trace(
+                    self._surface(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(
+                                            _np.swapaxes(vertices, 0, 1))),
+                            opacity=0.75,
+                            colorscale=[[0, 'rgb(178, 178, 178)'],
+                                        [1, 'rgb(178, 178, 178)']],
+                            showscale=False,
+                            cmin=0,
+                            cmax=1,
+                            name='cylinder',
+                            hoverinfo='skip',
+                            hovertext='',
+                    )
+            )
+
+            # create a new linearly spaced elevation vector which spans from
+            # all the way the south pole to the north pole
+            el_ = _np.linspace(-_np.pi, _np.pi, num=36, endpoint=True)
+
+            # calculate the circles of the principal planes (XY, YZ, XZ)
+            circles = [
+                    (_np.vstack((
+                            radii[0] * _np.cos(az_),
+                            radii[1] * _np.sin(az_),
+                            _np.zeros_like(az_),
+                    )), 'rgb(0, 0, 255)'),
+                    (_np.vstack((
+                            _np.zeros_like(el_),
+                            radii[1] * _np.cos(el_),
+                            radii[2] * _np.sin(el_),
+                    )), 'rgb(255, 0, 0)'),
+                    (_np.vstack((
+                            radii[0] * _np.cos(el_),
+                            _np.zeros_like(el_),
+                            radii[2] * _np.sin(el_),
+                    )), 'rgb(0, 255, 0)')
+            ]
+
+            for circle, color in circles:
+                self.figure.add_trace(
+                        self._scatter(
+                                **self._prepare_plot_coordinates(
+                                        self._extract_coordinates(
+                                                transform.apply(circle))
+                                ),
+                                mode='lines',
+                                line=dict(
+                                        color=color,
+                                ),
+                                name='cylinder caps',
+                                hoverinfo='skip',
+                                hovertext='',
+                                showlegend=False,
+                        )
+                )
+        else:
+            self.figure.add_trace(
+                    self._scatter(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(vertices)),
+                            mode='lines',
+                            fill='toself',
+                            line=dict(
+                                    color='rgb(13, 13, 13)'
+                            ),
+                            fillcolor='rgb(178, 178, 178)',
+                            showlegend=False,
+                            name='cuboid',
+                            hoverinfo='skip',
+                            hovertext='',
+                    )
+            )
 
     def render_frame(self,
                      frame: '_frame.Frame',
@@ -565,7 +779,8 @@ class Plotly(_engine.Engine, ABC):
                     tube: '_tube.Tube',
                     *args,
                     **kwargs):
-        pass
+        self.render(tube._inner, *args, **kwargs)
+        self.render(tube._outer, *args, **kwargs)
 
     def render_workspace_grid(self,
                               workspace: '_grid.Result',
@@ -650,7 +865,7 @@ class Plotly(_engine.Engine, ABC):
 
         # check if we are dealing with single arrays i.e., (AxC) arrays where
         # A is the number of plot axes and C the number of coordinates
-        is_single = coordinates.shape[1] == 1 and coordinates.ndim == 3
+        is_single = coordinates.shape[1] == 1 and coordinates.ndim == 2
 
         # prepare data using parent method
         prepared = _engine.Engine._prepare_plot_coordinates(self, coordinates)
@@ -668,21 +883,17 @@ class Linear(Plotly):
     _NUMBER_OF_AXES = 2
 
     def draw(self, *args, **kwargs):
-        super().draw()
-        self.figure.update_layout(
-                **update_recursive(
-                        dict(
-                                yaxis=dict(
-                                        scaleanchor="x",
-                                        scaleratio=1,
-                                        showline=False,
-                                        showticklabels=False,
-                                        showgrid=False
-                                )
-                        ),
-                        kwargs
-                )
-        )
+        super().draw(*args,
+                     **update_recursive(
+                             dict(
+                                     yaxis=dict(
+                                             showline=False,
+                                             showticklabels=False,
+                                             showgrid=False
+                                     )
+                             ),
+                             kwargs)
+                     )
 
 
 class Planar(Plotly):
@@ -690,26 +901,7 @@ class Planar(Plotly):
     _NUMBER_OF_AXES = 2
 
     def draw(self, *args, **kwargs):
-        super().draw()
-        self.figure.update_layout(
-                **update_recursive(
-                        dict(
-                                yaxis=dict(
-                                        scaleanchor="x",
-                                        scaleratio=1,
-                                ),
-                                scene=dict(
-                                        aspectmode='data',
-                                        aspectratio=dict(
-                                                x=1.00,
-                                                y=1.00,
-                                                z=1.00
-                                        )
-                                ),
-                        ),
-                        kwargs
-                )
-        )
+        super().draw(*args, **kwargs)
 
 
 class Spatial(Plotly):
@@ -717,33 +909,22 @@ class Spatial(Plotly):
     _NUMBER_OF_AXES = 3
 
     def draw(self, *args, **kwargs):
-        super().draw()
-        self.figure.update_layout(
-                **update_recursive(
-                        dict(
-                                yaxis=dict(
-                                        scaleanchor="x",
-                                        scaleratio=1,
-                                ),
-                                scene=dict(
-                                        aspectmode='cube',
-                                        aspectratio=dict(
-                                                x=1.00,
-                                                y=1.00,
-                                                z=1.00
-                                        ),
-                                ),
-                                scene_camera=dict(
-                                        eye=dict(
-                                                x=-0.75,
-                                                y=-1.75,
-                                                z=0.25
-                                        )
-                                ),
-                        ),
-                        kwargs
-                ),
-        )
+        super().draw(*args,
+                     **update_recursive(
+                             dict(
+                                     scene=dict(
+                                             aspectmode='data',
+                                             camera=dict(
+                                                     eye=dict(
+                                                             x=-0.75,
+                                                             y=-1.75,
+                                                             z=0.25
+                                                     )
+                                             ),
+                                     )
+                             ),
+                             kwargs)
+                     )
 
 
 __all__ = [
