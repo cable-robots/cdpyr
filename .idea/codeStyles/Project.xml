@@ -1,6 +1,9 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
     <option name="FORMATTER_TAGS_ENABLED" value="true" />
+    <MarkdownNavigatorCodeStyleSettings>
+      <option name="RIGHT_MARGIN" value="80" />
+    </MarkdownNavigatorCodeStyleSettings>
     <Python>
       <option name="BLANK_LINES_BEFORE_FIRST_METHOD" value="1" />
       <option name="NEW_LINE_AFTER_COLON" value="true" />
