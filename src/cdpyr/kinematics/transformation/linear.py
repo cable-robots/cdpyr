@@ -1,16 +1,17 @@
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np_
 from magic_repr import make_repr
 
+from cdpyr.kinematics.transformation import transformation as _transformation
 from cdpyr.mixin.base_object import BaseObject
-from cdpyr.typing import Vector
+from cdpyr.typing import Vector, Matrix
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Linear(BaseObject):
+class Linear(_transformation.Transformation):
     _position: np_.ndarray = np_.asarray((0., 0., 0.))
     _velocity: np_.ndarray = np_.asarray((0., 0., 0.))
     _acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
@@ -31,6 +32,23 @@ class Linear(BaseObject):
         self.acceleration = acceleration \
             if acceleration is not None \
             else [0.0, 0.0, 0.0]
+
+    def apply(self, coordinates: Union[Vector, Matrix]):
+        # deal only with numpy arrays
+        coordinates = np_.asarray(coordinates)
+
+        # check if we have a single coordinate
+        single = coordinates.ndim == 1
+
+        # ensure coordinates is a 3xM array
+        if single:
+            coordinates = coordinates[:, np_.newaxis]
+
+        # first, apply the transformation
+        transformed = self.position + coordinates
+
+        # return a single transformed coordinate, or all
+        return transformed[:, 0] if single else transformed
 
     @property
     def position(self):

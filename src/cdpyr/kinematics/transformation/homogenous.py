@@ -5,16 +5,16 @@ from magic_repr import make_repr
 
 from cdpyr.kinematics.transformation import (
     angular as _angular,
-    linear as _linear
+    linear as _linear,
+    transformation as _transformation
 )
-from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Homogenous(BaseObject):
+class Homogenous(_transformation.Transformation):
     linear: '_linear.Linear'
     angular: '_angular.Angular'
 
@@ -29,49 +29,6 @@ class Homogenous(BaseObject):
         # and set values
         self.translation = translation if translation is not None else [0, 0, 0]
         self.dcm = dcm if dcm is not None else np_.eye(3)
-
-    @property
-    def translation(self):
-        return self.linear.position
-
-    @translation.setter
-    def translation(self, translation: Vector):
-        self.linear.position = np_.asarray(translation)
-
-    @translation.deleter
-    def translation(self):
-        del self.linear
-
-    @property
-    def dcm(self):
-        return self.angular.dcm
-
-    @dcm.setter
-    def dcm(self, dcm: Matrix):
-        self.angular.dcm = np_.asarray(dcm)
-
-    @dcm.deleter
-    def dcm(self):
-        del self.angular
-
-    @property
-    def matrix(self):
-        return np_.vstack(
-                (
-                        np_.hstack(
-                                (
-                                        self.dcm,
-                                        self.translation[:, np_.newaxis]
-                                ),
-                        ),
-                        np_.hstack(
-                                (
-                                        np_.zeros((3,)),
-                                        1
-                                ),
-                        )
-                ),
-        )
 
     def apply(self, coordinates: Union[Vector, Matrix]):
         # deal only with numpy arrays
@@ -93,6 +50,43 @@ class Homogenous(BaseObject):
 
         # return whatever we have
         return transformed[0:3, 0] if single else transformed[0:3, :]
+
+    @property
+    def dcm(self):
+        return self.angular.dcm
+
+    @dcm.setter
+    def dcm(self, dcm: Matrix):
+        self.angular.dcm = np_.asarray(dcm)
+
+    @dcm.deleter
+    def dcm(self):
+        del self.angular
+
+    @property
+    def matrix(self):
+        return np_.vstack((
+                np_.hstack((
+                        self.dcm,
+                        self.translation[:, np_.newaxis]),
+                ),
+                np_.hstack((
+                        np_.zeros((3,)),
+                        1),
+                )),
+        )
+
+    @property
+    def translation(self):
+        return self.linear.position
+
+    @translation.setter
+    def translation(self, translation: Vector):
+        self.linear.position = np_.asarray(translation)
+
+    @translation.deleter
+    def translation(self):
+        del self.linear
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

@@ -6,13 +6,14 @@ from magic_repr import make_repr
 
 from cdpyr import validator as _validator
 from cdpyr.mixin.base_object import BaseObject
+from cdpyr.kinematics.transformation import transformation as _transformation
 from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Angular(BaseObject):
+class Angular(_transformation.Transformation):
     """
     A kinematic angular transformation object.
 
@@ -189,6 +190,23 @@ class Angular(BaseObject):
         else:
             # create a generator object
             return (Angular(sequence='z', euler=[a]) for a in angle)
+
+    def apply(self, coordinates: Union[Vector, Matrix]):
+        # deal only with numpy arrays
+        coordinates = np_.asarray(coordinates)
+
+        # check if we have a single coordinate
+        single = coordinates.ndim == 1
+
+        # ensure coordinates is a 3xM array
+        if single:
+            coordinates = coordinates[:, np_.newaxis]
+
+        # first, apply the transformation
+        transformed = self.dcm.dot(coordinates)
+
+        # return a single transformed coordinate, or all
+        return transformed[:, 0] if single else transformed
 
     @property
     def euler(self):
