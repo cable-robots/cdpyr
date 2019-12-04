@@ -2,7 +2,7 @@ import numpy as _np
 import pytest
 
 from cdpyr import geometry
-from cdpyr.geometry.geometry import Geometry
+from cdpyr.geometry.primitive import Primitive
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -56,7 +56,7 @@ class GeometryTestSuite(object):
                                         31.415926535898}),
             )
     )
-    def test_surfaces(self, geometry: Geometry, expected: dict):
+    def test_surfaces(self, geometry: Primitive, expected: dict):
         assert geometry.centroid == pytest.approx(_np.zeros((3,)))
         assert geometry.surface == pytest.approx(expected['surface'], rel=1e-2)
         assert geometry.volume == pytest.approx(expected['volume'], rel=1e-2)
