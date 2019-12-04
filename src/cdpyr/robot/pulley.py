@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.geometry import geometry as _geometry
+from cdpyr.geometry import primitive as _geometry
 from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.robot.robot_component import RobotComponent
@@ -15,13 +15,13 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Pulley(RobotComponent):
     angular: '_angular.Angular'
-    geometry: '_geometry.Geometry'
+    geometry: '_geometry.Primitive'
     inertia: '_inertia.Inertia'
     radius: Num
 
     def __init__(self,
                  radius: Num,
-                 geometry: Optional['_geometry.Geometry'] = None,
+                 geometry: Optional['_geometry.Primitive'] = None,
                  inertia: Optional['_inertia.Inertia'] = None,
                  dcm: Optional[Matrix] = None,
                  angular: Optional['_angular.Angular'] = None,

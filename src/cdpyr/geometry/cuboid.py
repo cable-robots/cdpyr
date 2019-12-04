@@ -1,14 +1,14 @@
 import numpy as _np
 from magic_repr import make_repr
 
-from cdpyr.geometry.geometry import Geometry
+from cdpyr.geometry.primitive import Primitive
 from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Cuboid(Geometry):
+class Cuboid(Primitive):
     width: float
     height: float
     depth: float

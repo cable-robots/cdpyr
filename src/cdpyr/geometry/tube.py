@@ -3,14 +3,14 @@ from typing import Union
 import numpy as _np
 
 from cdpyr.geometry import cylinder as _cylinder
-from cdpyr.geometry.geometry import Geometry
+from cdpyr.geometry.primitive import Primitive
 from cdpyr.typing import Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Tube(Geometry):
+class Tube(Primitive):
     """
 
     """

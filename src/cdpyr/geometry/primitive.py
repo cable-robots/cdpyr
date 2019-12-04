@@ -11,7 +11,7 @@ __email__ = "p.tempel@tudelft.nl"
 from cdpyr.typing import Vector
 
 
-class Geometry(ABC, BaseObject):
+class Primitive(ABC, BaseObject):
     """
 
     """
@@ -89,5 +89,5 @@ class Geometry(ABC, BaseObject):
 
 
 __all__ = [
-        'Geometry',
+        'Primitive',
 ]

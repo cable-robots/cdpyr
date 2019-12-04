@@ -2,7 +2,7 @@ from typing import Optional
 
 from magic_repr import make_repr
 
-from cdpyr.geometry import geometry as _geometry
+from cdpyr.geometry import primitive as _geometry
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.robot.robot_component import RobotComponent
 
@@ -11,15 +11,15 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Drum(RobotComponent):
-    geometry: '_geometry.Geometry'
+    geometry: '_geometry.Primitive'
     inertia: '_inertia.Inertia'
 
     def __init__(self,
-                 geometry: Optional['_geometry.Geometry'] = None,
+                 geometry: Optional['_geometry.Primitive'] = None,
                  inertia: Optional['_inertia.Inertia'] = None,
                  **kwargs):
         super().__init__(**kwargs)
-        self.geometry = geometry or _geometry.Geometry()
+        self.geometry = geometry or _geometry.Primitive()
         self.inertia = inertia or _inertia.Inertia()
 
     def __eq__(self, other):

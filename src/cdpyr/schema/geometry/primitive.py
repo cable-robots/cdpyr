@@ -1,12 +1,13 @@
 from abc import abstractmethod
 
-from marshmallow import Schema, fields, post_load
+from marshmallow import Schema, post_load
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class GeometrySchema(Schema):
+class PrimitiveSchema(Schema):
+
     @property
     @abstractmethod
     def __model__(self):
@@ -18,5 +19,5 @@ class GeometrySchema(Schema):
 
 
 __all__ = [
-        'GeometrySchema',
+        'PrimitiveSchema',
 ]

@@ -95,7 +95,7 @@ class Engine(ABC):
         raise NotImplementedError()
 
     def render(self, o: Union[
-        'RobotComponent', 'PlottableResult', '_geometry.Geometry'],
+        'RobotComponent', 'PlottableResult', '_geometry.Primitive'],
                *args,
                **kwargs):
         self._RESOLVER[fcn(o)](o, *args, **kwargs)

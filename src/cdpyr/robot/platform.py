@@ -5,7 +5,7 @@ from typing import Optional, Sequence, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.geometry import geometry as _geometry
+from cdpyr.geometry import primitive as _geometry
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.motion.pattern import pattern as _motion_pattern
 from cdpyr.motion.pose import pose as _pose
@@ -25,7 +25,7 @@ class Platform(RobotComponent):
     _anchors: '_platform_anchor.PlatformAnchorList'
     _center_of_gravity: np_.ndarray
     _center_of_linkage: np_.ndarray
-    geometry: '_geometry.Geometry'
+    geometry: '_geometry.Primitive'
     inertia: '_inertia.Inertia'
     motion_pattern: '_motion_pattern.Pattern'
     name: str
@@ -42,7 +42,7 @@ class Platform(RobotComponent):
                  center_of_linkage: Optional[Vector] = None,
                  name: str = None,
                  pose: '_pose.Pose' = None,
-                 geometry: '_geometry.Geometry' = None,
+                 geometry: '_geometry.Primitive' = None,
                  **kwargs):
         super().__init__(**kwargs)
         self.anchors = anchors or []

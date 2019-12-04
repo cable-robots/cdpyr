@@ -1,13 +1,13 @@
 from marshmallow import fields
 
 from cdpyr.geometry import polyhedron as _polyhedron
-from cdpyr.schema.geometry import geometry as _geometry
+from cdpyr.schema.geometry import primitive as _geometry
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class PolyhedronSchema(_geometry.GeometrySchema):
+class PolyhedronSchema(_geometry.PrimitiveSchema):
     vertices = fields.List(
             fields.Tuple(
                     (fields.Float(required=True),

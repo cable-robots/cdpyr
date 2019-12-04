@@ -3,14 +3,14 @@ import itertools
 import numpy as _np
 from magic_repr import make_repr
 
-from cdpyr.geometry import geometry as _geometry
+from cdpyr.geometry import primitive as _geometry
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Polyhedron(_geometry.Geometry):
+class Polyhedron(_geometry.Primitive):
     """
     (N,3) matrix of faces of the polyhedron sorted in counter-clockwise manner
     """
