@@ -1,8 +1,9 @@
-from marshmallow import Schema, fields, post_load
+from marshmallow import fields, post_load
 
 from cdpyr.geometry import Cuboid, Cylinder, Ellipsoid, Polyhedron, Tube
 from cdpyr.robot import drum as _drum
 from cdpyr.schema import fields as custom_fields
+from cdpyr.schema.cdpyr_schema import CdpyrSchema
 from cdpyr.schema.geometry import (
     CuboidSchema,
     CylinderSchema,
@@ -16,7 +17,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class DrumSchema(Schema):
+class DrumSchema(CdpyrSchema):
     geometry = custom_fields.Polymorphic(
             (
                     (Cuboid, CuboidSchema),

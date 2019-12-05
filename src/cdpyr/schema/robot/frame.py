@@ -1,13 +1,14 @@
-from marshmallow import Schema, fields, post_load
+from marshmallow import fields, post_load
 
 from cdpyr.robot import frame as _frame
+from cdpyr.schema.cdpyr_schema import CdpyrSchema
 from cdpyr.schema.robot.anchor import frame_anchor as _frame_anchor
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class FrameSchema(Schema):
+class FrameSchema(CdpyrSchema):
     anchors = fields.Nested(
             _frame_anchor.FrameAnchorSchema(
                     many=True

@@ -1,6 +1,7 @@
-from marshmallow import Schema, fields, post_load
+from marshmallow import fields, post_load
 
 from cdpyr.robot import robot as _robot
+from cdpyr.schema.cdpyr_schema import CdpyrSchema
 from cdpyr.schema.robot import (
     cable as _cable,
     frame as _frame,
@@ -12,7 +13,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class RobotSchema(Schema):
+class RobotSchema(CdpyrSchema):
     name = fields.Str()
     frame = fields.Nested(
             _frame.FrameSchema,

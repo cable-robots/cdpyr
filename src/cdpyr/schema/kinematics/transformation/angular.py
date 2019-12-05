@@ -1,12 +1,13 @@
-from marshmallow import Schema, fields, post_load
+from marshmallow import fields, post_load
 
 from cdpyr.kinematics.transformation import angular as _angular
+from cdpyr.schema.cdpyr_schema import CdpyrSchema
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class AngularSchema(Schema):
+class AngularSchema(CdpyrSchema):
     dcm = fields.Tuple(
             (
                     fields.Tuple(

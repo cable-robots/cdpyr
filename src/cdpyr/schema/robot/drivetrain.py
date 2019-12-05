@@ -1,5 +1,6 @@
-from marshmallow import Schema, fields
+from marshmallow import fields
 
+from cdpyr.schema.cdpyr_schema import CdpyrSchema
 from cdpyr.schema.robot import (
     drum as _drum,
     gearbox as _gearbox,
@@ -10,7 +11,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class DriveTrainSchema(Schema):
+class DriveTrainSchema(CdpyrSchema):
     motor = fields.Nested(
             _motor.MotorSchema,
             missing=None

@@ -1,12 +1,13 @@
-from marshmallow import Schema, fields, post_load
+from marshmallow import fields, post_load
 
 from cdpyr.robot import kinematicchain as _kinematicchain
+from cdpyr.schema.cdpyr_schema import CdpyrSchema
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class KinematicChainSchema(Schema):
+class KinematicChainSchema(CdpyrSchema):
     frame_anchor = fields.Integer(
             required=True
     )
