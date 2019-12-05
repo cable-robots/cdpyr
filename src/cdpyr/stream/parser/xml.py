@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import AnyStr, Sequence, Tuple, Union
+from typing import AnyStr, Sequence, Tuple, Union, Mapping
 
 import xmltodict
 
@@ -12,12 +12,12 @@ class Xml(_parser.Parser):
     def kwargs(self, o: RobotComponent, **kwargs):
         return super().kwargs(o, root=o.__class__.__name__.lower(), **kwargs)
 
-    def dumps(self, d: Union[OrderedDict, dict],
+    def dumps(self, d: Union[OrderedDict, Mapping],
               *args,
               **kwargs) -> AnyStr:
         return xmltodict.unparse({kwargs.get('root', 'root'): d}, pretty=True)
 
-    def loads(self, s: AnyStr, *args, **kwargs) -> Union[OrderedDict, dict]:
+    def loads(self, s: AnyStr, *args, **kwargs) -> Union[OrderedDict, Mapping]:
         # first, parse from XML to dictionary
         d = xmltodict.parse(s, force_list=('dcm'),
                             postprocessor=self._postprocessing)

@@ -1,12 +1,11 @@
-from collections import UserList
-from typing import AnyStr, Optional, Sequence, Union
+from collections import ChainMap, UserList
+from typing import AnyStr, Optional, Sequence, Union, Dict
 
 import numpy as np_
+from cdpyr.robot.robot_component import RobotComponent
+from cdpyr.typing import Num, Vector
 from colour import Color
 from magic_repr import make_repr
-
-from cdpyr.robot.robot_component import RobotComponent
-from cdpyr.typing import Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -17,13 +16,13 @@ class Cable(RobotComponent):
     _color: Color
     diameter: Num
     material: AnyStr
-    _modulus: dict
+    _modulus: Dict[AnyStr, Vector]
     name: AnyStr
 
     def __init__(self,
                  name: Optional[AnyStr] = None,
                  material: Optional[AnyStr] = None,
-                 modulus: Optional[dict] = None,
+                 modulus: Optional[Dict[AnyStr, Vector]] = None,
                  diameter: Optional[Num] = None,
                  color: Optional[Union[AnyStr, Color]] = None,
                  breaking_load: Optional[Num] = None,
@@ -56,14 +55,9 @@ class Cable(RobotComponent):
         return self._modulus
 
     @modulus.setter
-    def modulus(self, modulus: dict):
-        default = {
-                'elasticities': None,
-                'viscosities':  None
-        }
-        modulus = modulus or {}
-
-        self._modulus = {**default, **modulus}
+    def modulus(self, modulus: Dict[AnyStr, Vector]):
+        self._modulus = ChainMap(modulus,
+                                 {'elasticities': None, 'viscosities': None})
 
     @modulus.deleter
     def modulus(self):
@@ -71,13 +65,12 @@ class Cable(RobotComponent):
 
     @property
     def elasticities(self):
-        try:
-            return self._modulus['elasticities']
-        except KeyError:
-            return None
+        return self._modulus['elasticities']
 
     @elasticities.setter
-    def elasticities(self, elasticities: Sequence[Num]):
+    def elasticities(self, elasticities: Vector):
+        if elasticities is not None:
+            elasticities = _np.asarray(elasticities)
         self.modulus['elasticities'] = elasticities
 
     @elasticities.deleter
@@ -86,13 +79,12 @@ class Cable(RobotComponent):
 
     @property
     def viscosities(self):
-        try:
-            return self._modulus['viscosities']
-        except KeyError:
-            return None
+        return self._modulus['viscosities']
 
     @viscosities.setter
-    def viscosities(self, viscosities: Sequence[Num]):
+    def viscosities(self, viscosities: Vector):
+        if viscosities is not None:
+            viscosities = _np.asarray(viscosities)
         self.modulus['viscosities'] = viscosities
 
     @viscosities.deleter

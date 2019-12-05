@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import AnyStr, Union
+from typing import AnyStr, Union, Mapping
 
 from cdpyr import motion as _motion, robot as _robot, schema as _schema
 from cdpyr.helpers import full_classname as fcn
@@ -112,7 +112,7 @@ class Stream(object):
 
         Returns
         -------
-        d : dict
+        d : Mapping
             Dictionary representation of the CDPyR component
 
         """
@@ -146,12 +146,12 @@ class Stream(object):
         # format
         return self.parser.dumps(self.dump(o), *args, **kwargs)
 
-    def load(self, d: Union[OrderedDict, dict], *args, **kwargs):
+    def load(self, d: Union[OrderedDict, Mapping], *args, **kwargs):
         """
         Load dictionary into the CDPyR compatible objects
         Parameters
         ----------
-        d : OrderedDict | dict
+        d : OrderedDict | Mapping
             Dictionary representing the CDPyR component
 
         Returns

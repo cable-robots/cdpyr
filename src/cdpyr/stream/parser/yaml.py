@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import AnyStr, Union
+from typing import AnyStr, Union, Mapping
 
 import yaml
 
@@ -22,8 +22,8 @@ yaml.Loader.add_constructor(_mapping_tag, ordered_dict_constructor)
 
 class Yaml(_parser.Parser):
 
-    def dumps(self, d: Union[OrderedDict, dict], *args, **kwargs) -> AnyStr:
+    def dumps(self, d: Union[OrderedDict, Mapping], *args, **kwargs) -> AnyStr:
         return yaml.dump(d, **kwargs)
 
-    def loads(self, s: AnyStr, *args, **kwargs) -> Union[OrderedDict, dict]:
+    def loads(self, s: AnyStr, *args, **kwargs) -> Union[OrderedDict, Mapping]:
         return yaml.load(s, **kwargs)

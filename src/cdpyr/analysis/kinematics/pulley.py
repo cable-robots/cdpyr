@@ -1,3 +1,5 @@
+from typing import Mapping
+
 import numpy as _np
 
 from cdpyr.analysis.kinematics import kinematics as _algorithm
@@ -24,13 +26,13 @@ class Pulley(_algorithm.Algorithm):
     def _forward(self,
                  robot: '_robot.Robot',
                  joints: Vector,
-                 **kwargs) -> dict:
+                 **kwargs) -> Mapping:
         raise NotImplementedError()
 
     def _backward(self,
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
-                  **kwargs) -> dict:
+                  **kwargs) -> Mapping:
         # init results
         swivel = []
         wrap = []

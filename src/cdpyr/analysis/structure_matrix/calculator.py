@@ -1,4 +1,4 @@
-from typing import AnyStr, Dict
+from typing import AnyStr, Dict, Mapping
 
 import numpy as _np
 
@@ -28,7 +28,7 @@ class Calculator(_evaluator.PoseEvaluator):
 
     def __init__(self,
                  kinematics: '_kinematics.Algorithm',
-                 resolver: dict = None,
+                 resolver: Dict[AnyStr, '_structure_matrix.Algorithm'] = None,
                  **kwargs):
         self.kinematics = kinematics
         if resolver is None:

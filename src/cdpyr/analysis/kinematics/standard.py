@@ -1,3 +1,5 @@
+from typing import Mapping
+
 import numpy as _np
 from scipy import optimize
 
@@ -16,7 +18,7 @@ class Standard(_algorithm.Algorithm):
     def _forward(self,
                  robot: '_robot.Robot',
                  lengths: Vector,
-                 **kwargs) -> dict:
+                 **kwargs) -> Mapping:
         # for now, this is the inner-loop code for the first platform
         index_platform = 0
 
@@ -175,7 +177,7 @@ class Standard(_algorithm.Algorithm):
     def _backward(self,
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
-                  **kwargs) -> dict:
+                  **kwargs) -> Mapping:
         # for now, this is the inner-loop code for the first platform
         index_platform = 0
         # quicker and shorter access to platform object

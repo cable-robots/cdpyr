@@ -1,4 +1,4 @@
-from typing import AnyStr, Dict, Iterable, Optional, Sequence, Tuple, Union
+from typing import AnyStr, Dict, Iterable, Optional, Sequence, Tuple, Union, Mapping
 
 import numpy as _np
 from magic_repr import make_repr
@@ -110,7 +110,7 @@ class Robot(RobotComponent):
             # loop over each chain
             for idx, chain in enumerate(chains):
                 # deal with chain as dictionary
-                if isinstance(chain, dict):
+                if isinstance(chain, Mapping):
                     cable = chain['cable']
                     frame_anchor = chain['frame_anchor']
                     platform_anchor = chain['platform_anchor']

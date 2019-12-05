@@ -1,6 +1,6 @@
 import copy
 from abc import ABC, abstractmethod
-from typing import Union
+from typing import Union, Mapping
 
 import numpy as _np
 
@@ -50,14 +50,14 @@ class Algorithm(ABC):
     def _forward(self,
                  robot: '_robot.Robot',
                  joints: Matrix,
-                 **kwargs) -> dict:
+                 **kwargs) -> Mapping:
         raise NotImplementedError()
 
     @abstractmethod
     def _backward(self,
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
-                  **kwargs) -> dict:
+                  **kwargs) -> Mapping:
         raise NotImplementedError()
 
 

@@ -1,6 +1,6 @@
 import copy
 from abc import abstractmethod
-from typing import Union
+from typing import Union, Mapping
 
 import numpy as _np
 from magic_repr import make_repr
@@ -102,7 +102,7 @@ class Algorithm(_evaluator.PoseEvaluator):
                   wrench: Vector,
                   force_min: Vector,
                   force_max: Vector,
-                  **kwargs) -> dict:
+                  **kwargs) -> Mapping:
         raise NotImplementedError()
 
     def _parse_force_limits(self, robot: '_robot.Robot'):

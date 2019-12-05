@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Union
+from typing import Union, Mapping, Dict
 
 import numpy as _np
 from magic_repr import make_repr
@@ -26,7 +26,7 @@ class Algorithm(_evaluator.Evaluator):
     def _evaluate(self,
                   platform_anchors: Vector,
                   pose: '_pose.Pose',
-                  directions: Matrix) -> dict:
+                  directions: Matrix) -> Mapping:
         raise NotImplementedError()
 
 

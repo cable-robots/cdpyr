@@ -1,3 +1,4 @@
+from collections import ChainMap
 from typing import AnyStr, Dict, Optional
 
 import numpy as np_
@@ -14,10 +15,10 @@ class Motor(RobotComponent):
     inertia: Num
     rated_power: Num
     rated_speed: Num
-    _torques: dict
+    _torques: Dict[AnyStr, Num]
 
     def __init__(self,
-                 torques: Optional[Dict[AnyStr, float]] = None,
+                 torques: Optional[Dict[AnyStr, Num]] = None,
                  inertia: Optional[Num] = None,
                  rated_speed: Optional[Num] = None,
                  rated_power: Optional[Num] = None,
@@ -40,16 +41,12 @@ class Motor(RobotComponent):
         return self._torques
 
     @torques.setter
-    def torques(self, torques: dict):
-        default = {
+    def torques(self, torques: Dict[AnyStr, Num]):
+        self._torques = ChainMap(torques, {
                 'stall': None,
                 'peak':  None,
                 'rated': None,
-                'rms':   None
-        }
-        torques = torques or {}
-
-        self._torques = {**default, **torques}
+                'rms':   None})
 
     @torques.deleter
     def torques(self):
