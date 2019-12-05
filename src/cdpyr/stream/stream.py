@@ -99,7 +99,7 @@ class Stream(object):
             ),
     }
 
-    def __init__(self, parser: '_parser.Parser' = None, **kwargs):
+    def __init__(self, parser: '_parser.Parser', **kwargs):
         self.parser = parser
 
     def dump(self, o: RobotComponent, *args, **kwargs):
