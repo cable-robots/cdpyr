@@ -1,3 +1,5 @@
+from typing import Mapping
+
 import numpy as _np
 import pytest
 
@@ -56,7 +58,7 @@ class GeometryTestSuite(object):
                                         31.415926535898}),
             )
     )
-    def test_surfaces(self, geometry: Primitive, expected: dict):
+    def test_surfaces(self, geometry: Primitive, expected: Mapping):
         assert geometry.centroid == pytest.approx(_np.zeros((3,)))
         assert geometry.surface == pytest.approx(expected['surface'], rel=1e-2)
         assert geometry.volume == pytest.approx(expected['volume'], rel=1e-2)
