@@ -1,4 +1,3 @@
-
 import pathlib as pl
 
 import pytest
@@ -13,12 +12,12 @@ __email__ = "p.tempel@tudelft.nl"
 class StreamTestSuite(object):
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_pose(self,
                          rand_pose_3r3t: cdpyr.motion.pose.Pose,
@@ -46,12 +45,12 @@ class StreamTestSuite(object):
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_motion_pattern(self,
                                    robot_3r3t: cdpyr.robot.Robot,
@@ -74,18 +73,18 @@ class StreamTestSuite(object):
         # decode the file
         with open(tmpfile, 'r') as f:
             resto: cdpyr.motion.pattern.Pattern = stream.loads(
-                ''.join(f.readlines()))
+                    ''.join(f.readlines()))
 
         assert isinstance(resto, cdpyr.motion.pattern.Pattern)
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_cable(self,
                           robot_3r3t: cdpyr.robot.Robot,
@@ -103,6 +102,7 @@ class StreamTestSuite(object):
         # write file with opening the stream first
         with open(tmpfile, 'w') as f:
             f.writelines(stream.dumps(orig))
+        print(tmpfile)
 
         # decode the file
         with open(tmpfile, 'r') as f:
@@ -112,12 +112,12 @@ class StreamTestSuite(object):
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_cables(self,
                            robot_3r3t: cdpyr.robot.Robot,
@@ -135,6 +135,7 @@ class StreamTestSuite(object):
         # write file with opening the stream first
         with open(tmpfile, 'w') as f:
             f.writelines(stream.dumps(orig))
+        print(tmpfile)
 
         # decode the file
         with open(tmpfile, 'r') as f:
@@ -144,12 +145,12 @@ class StreamTestSuite(object):
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_platform_anchor(self,
                                     robot_3r3t: cdpyr.robot.Robot,
@@ -167,22 +168,23 @@ class StreamTestSuite(object):
         # write file with opening the stream first
         with open(tmpfile, 'w') as f:
             f.writelines(stream.dumps(orig))
+        print(tmpfile)
 
         # decode the file
         with open(tmpfile, 'r') as f:
             resto: cdpyr.robot.PlatformAnchor = stream.loads(
-                ''.join(f.readlines()))
+                    ''.join(f.readlines()))
 
         assert isinstance(resto, cdpyr.robot.PlatformAnchor)
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_platform_anchors(self,
                                      robot_3r3t: cdpyr.robot.Robot,
@@ -204,18 +206,18 @@ class StreamTestSuite(object):
         # decode the file
         with open(tmpfile, 'r') as f:
             resto: cdpyr.robot.PlatformAnchorList = stream.loads(
-                ''.join(f.readlines()))
+                    ''.join(f.readlines()))
 
         assert isinstance(resto, cdpyr.robot.PlatformAnchorList)
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_frame_anchor(self,
                                  robot_3r3t: cdpyr.robot.Robot,
@@ -233,22 +235,23 @@ class StreamTestSuite(object):
         # write file with opening the stream first
         with open(tmpfile, 'w') as f:
             f.writelines(stream.dumps(orig))
+        print(tmpfile)
 
         # decode the file
         with open(tmpfile, 'r') as f:
             resto: cdpyr.robot.FrameAnchor = stream.loads(
-                ''.join(f.readlines()))
+                    ''.join(f.readlines()))
 
         assert isinstance(resto, cdpyr.robot.FrameAnchor)
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_frame_anchors(self,
                                   robot_3r3t: cdpyr.robot.Robot,
@@ -270,18 +273,18 @@ class StreamTestSuite(object):
         # decode the file
         with open(tmpfile, 'r') as f:
             resto: cdpyr.robot.FrameAnchorList = stream.loads(
-                ''.join(f.readlines()))
+                    ''.join(f.readlines()))
 
         assert isinstance(resto, cdpyr.robot.FrameAnchorList)
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_frame(self,
                           robot_3r3t: cdpyr.robot.Robot,
@@ -308,12 +311,12 @@ class StreamTestSuite(object):
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_platform(self,
                              robot_3r3t: cdpyr.robot.Robot,
@@ -340,12 +343,12 @@ class StreamTestSuite(object):
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_platforms(self,
                               robot_3r3t: cdpyr.robot.Robot,
@@ -367,18 +370,18 @@ class StreamTestSuite(object):
         # decode the file
         with open(tmpfile, 'r') as f:
             resto: cdpyr.robot.PlatformList = stream.loads(
-                ''.join(f.readlines()))
+                    ''.join(f.readlines()))
 
         assert isinstance(resto, cdpyr.robot.PlatformList)
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_kinematic_chain(self,
                                     robot_3r3t: cdpyr.robot.Robot,
@@ -400,18 +403,18 @@ class StreamTestSuite(object):
         # decode the file
         with open(tmpfile, 'r') as f:
             resto: cdpyr.robot.KinematicChain = stream.loads(
-                ''.join(f.readlines()))
+                    ''.join(f.readlines()))
 
         assert isinstance(resto, cdpyr.robot.KinematicChain)
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_kinematic_chains(self,
                                      robot_3r3t: cdpyr.robot.Robot,
@@ -433,18 +436,19 @@ class StreamTestSuite(object):
         # decode the file
         with open(tmpfile, 'r') as f:
             resto: cdpyr.robot.KinematicChainList = stream.loads(
-                ''.join(f.readlines()))
+                    ''.join(f.readlines()))
 
         assert isinstance(resto, cdpyr.robot.KinematicChainList)
         assert resto == orig
 
     @pytest.mark.parametrize(
-        ('parser', 'ext'),
-        (
-            (cdpyr.stream.parser.Json(), 'json'),
-            (cdpyr.stream.parser.Xml(), 'xml'),
-            (cdpyr.stream.parser.Yaml(), 'yaml')
-        )
+            ('parser', 'ext'),
+            (
+                    (cdpyr.stream.parser.Json(), 'json'),
+                    (cdpyr.stream.parser.Xml(), 'xml'),
+                    (cdpyr.stream.parser.Wcrfx(), 'wcrfx'),
+                    (cdpyr.stream.parser.Yaml(), 'yaml'),
+            )
     )
     def test_stream_robot(self,
                           robot_3r3t: cdpyr.robot.Robot,
