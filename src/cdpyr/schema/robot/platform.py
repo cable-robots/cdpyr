@@ -12,6 +12,10 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class PlatformSchema(CdpyrSchema):
+    name = fields.String(
+            required=False,
+            missing='default',
+    )
     anchors = fields.Nested(
             _platform_anchor.PlatformAnchorSchema(
                     many=True,
@@ -25,6 +29,16 @@ class PlatformSchema(CdpyrSchema):
     motion_pattern = fields.Nested(
             _motion_pattern.PatternSchema,
             required=True,
+    )
+    center_of_gravity = fields.Tuple(
+            (fields.Float(), fields.Float(), fields.Float()),
+            required=False,
+            missing=(0.0, 0.0, 0.0),
+    )
+    center_of_linkage = fields.Tuple(
+            (fields.Float(), fields.Float(), fields.Float()),
+            required=False,
+            missing=(0.0, 0.0, 0.0),
     )
     inertia = fields.Nested(
             _inertia.InertiaSchema,
