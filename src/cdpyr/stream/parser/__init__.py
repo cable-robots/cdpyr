@@ -1,5 +1,4 @@
 from cdpyr.stream.parser.json import Json
-from cdpyr.stream.parser.parser import Parser
 from cdpyr.stream.parser.xml import Xml
 from cdpyr.stream.parser.yaml import Yaml
 
@@ -10,5 +9,4 @@ __all__ = [
         'Json',
         'Xml',
         'Yaml',
-        'Parser',
 ]

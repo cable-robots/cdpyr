@@ -4,6 +4,7 @@ import pathlib as pl
 import pytest
 
 import cdpyr
+import cdpyr.stream.parser.parser
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -21,7 +22,7 @@ class StreamTestSuite(object):
     )
     def test_stream_pose(self,
                          rand_pose_3r3t: cdpyr.motion.pose.Pose,
-                         parser: cdpyr.stream.parser.Parser,
+                         parser: cdpyr.stream.parser.parser.Parser,
                          ext: str,
                          tmpdir: pl.Path):
         orig: cdpyr.motion.pose.Pose = rand_pose_3r3t
@@ -54,7 +55,7 @@ class StreamTestSuite(object):
     )
     def test_stream_motion_pattern(self,
                                    robot_3r3t: cdpyr.robot.Robot,
-                                   parser: cdpyr.stream.parser.Parser,
+                                   parser: cdpyr.stream.parser.parser.Parser,
                                    ext: str,
                                    tmpdir: pl.Path):
         orig: cdpyr.motion.pattern.Pattern = robot_3r3t.platforms[
@@ -88,7 +89,7 @@ class StreamTestSuite(object):
     )
     def test_stream_cable(self,
                           robot_3r3t: cdpyr.robot.Robot,
-                          parser: cdpyr.stream.parser.Parser,
+                          parser: cdpyr.stream.parser.parser.Parser,
                           ext: str,
                           tmpdir: pl.Path):
         orig: cdpyr.robot.Cable = robot_3r3t.cables[0]
@@ -120,7 +121,7 @@ class StreamTestSuite(object):
     )
     def test_stream_cables(self,
                            robot_3r3t: cdpyr.robot.Robot,
-                           parser: cdpyr.stream.parser.Parser,
+                           parser: cdpyr.stream.parser.parser.Parser,
                            ext: str,
                            tmpdir: pl.Path):
         orig: cdpyr.robot.CableList = robot_3r3t.cables
@@ -152,7 +153,7 @@ class StreamTestSuite(object):
     )
     def test_stream_platform_anchor(self,
                                     robot_3r3t: cdpyr.robot.Robot,
-                                    parser: cdpyr.stream.parser.Parser,
+                                    parser: cdpyr.stream.parser.parser.Parser,
                                     ext: str,
                                     tmpdir: pl.Path):
         orig: cdpyr.robot.PlatformAnchor = robot_3r3t.platforms[0].anchors[0]
@@ -185,7 +186,7 @@ class StreamTestSuite(object):
     )
     def test_stream_platform_anchors(self,
                                      robot_3r3t: cdpyr.robot.Robot,
-                                     parser: cdpyr.stream.parser.Parser,
+                                     parser: cdpyr.stream.parser.parser.Parser,
                                      ext: str,
                                      tmpdir: pl.Path):
         orig: cdpyr.robot.PlatformAnchorList = robot_3r3t.platforms[0].anchors
@@ -218,7 +219,7 @@ class StreamTestSuite(object):
     )
     def test_stream_frame_anchor(self,
                                  robot_3r3t: cdpyr.robot.Robot,
-                                 parser: cdpyr.stream.parser.Parser,
+                                 parser: cdpyr.stream.parser.parser.Parser,
                                  ext: str,
                                  tmpdir: pl.Path):
         orig: cdpyr.robot.FrameAnchor = robot_3r3t.frame.anchors[0]
@@ -251,7 +252,7 @@ class StreamTestSuite(object):
     )
     def test_stream_frame_anchors(self,
                                   robot_3r3t: cdpyr.robot.Robot,
-                                  parser: cdpyr.stream.parser.Parser,
+                                  parser: cdpyr.stream.parser.parser.Parser,
                                   ext: str,
                                   tmpdir: pl.Path):
         orig: cdpyr.robot.FrameAnchorList = robot_3r3t.frame.anchors
@@ -284,7 +285,7 @@ class StreamTestSuite(object):
     )
     def test_stream_frame(self,
                           robot_3r3t: cdpyr.robot.Robot,
-                          parser: cdpyr.stream.parser.Parser,
+                          parser: cdpyr.stream.parser.parser.Parser,
                           ext: str,
                           tmpdir: pl.Path):
         orig: cdpyr.robot.Frame = robot_3r3t.frame
@@ -316,7 +317,7 @@ class StreamTestSuite(object):
     )
     def test_stream_platform(self,
                              robot_3r3t: cdpyr.robot.Robot,
-                             parser: cdpyr.stream.parser.Parser,
+                             parser: cdpyr.stream.parser.parser.Parser,
                              ext: str,
                              tmpdir: pl.Path):
         orig: cdpyr.robot.Platform = robot_3r3t.platforms[0]
@@ -348,7 +349,7 @@ class StreamTestSuite(object):
     )
     def test_stream_platforms(self,
                               robot_3r3t: cdpyr.robot.Robot,
-                              parser: cdpyr.stream.parser.Parser,
+                              parser: cdpyr.stream.parser.parser.Parser,
                               ext: str,
                               tmpdir: pl.Path):
         orig: cdpyr.robot.PlatformList = robot_3r3t.platforms
@@ -381,7 +382,7 @@ class StreamTestSuite(object):
     )
     def test_stream_kinematic_chain(self,
                                     robot_3r3t: cdpyr.robot.Robot,
-                                    parser: cdpyr.stream.parser.Parser,
+                                    parser: cdpyr.stream.parser.parser.Parser,
                                     ext: str,
                                     tmpdir: pl.Path):
         orig: cdpyr.robot.KinematicChain = robot_3r3t.kinematic_chains[0]
@@ -414,7 +415,7 @@ class StreamTestSuite(object):
     )
     def test_stream_kinematic_chains(self,
                                      robot_3r3t: cdpyr.robot.Robot,
-                                     parser: cdpyr.stream.parser.Parser,
+                                     parser: cdpyr.stream.parser.parser.Parser,
                                      ext: str,
                                      tmpdir: pl.Path):
         orig: cdpyr.robot.KinematicChainList = robot_3r3t.kinematic_chains
@@ -447,7 +448,7 @@ class StreamTestSuite(object):
     )
     def test_stream_robot(self,
                           robot_3r3t: cdpyr.robot.Robot,
-                          parser: cdpyr.stream.parser.Parser,
+                          parser: cdpyr.stream.parser.parser.Parser,
                           ext: str,
                           tmpdir: pl.Path):
         orig: cdpyr.robot.Robot = robot_3r3t
