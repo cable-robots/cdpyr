@@ -5,7 +5,10 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class RobotComponent(BaseObject):
-    pass
+
+    @property
+    def VERSION(self):
+        return '1.0.0'
 
 
 __all__ = [
