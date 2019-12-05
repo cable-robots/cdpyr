@@ -1,11 +1,12 @@
 from collections import ChainMap, UserList
-from typing import AnyStr, Optional, Sequence, Union, Dict
+from typing import AnyStr, Dict, Optional, Union
 
 import numpy as np_
-from cdpyr.robot.robot_component import RobotComponent
-from cdpyr.typing import Num, Vector
 from colour import Color
 from magic_repr import make_repr
+
+from cdpyr.robot.robot_component import RobotComponent
+from cdpyr.typing import Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -14,7 +15,9 @@ __email__ = "p.tempel@tudelft.nl"
 class Cable(RobotComponent):
     breaking_load: Num
     _color: Color
+    density: Num
     diameter: Num
+    _lengths: Dict[AnyStr, Num]
     material: AnyStr
     _modulus: Dict[AnyStr, Vector]
     name: AnyStr
@@ -26,6 +29,8 @@ class Cable(RobotComponent):
                  diameter: Optional[Num] = None,
                  color: Optional[Union[AnyStr, Color]] = None,
                  breaking_load: Optional[Num] = None,
+                 density: Num = None,
+                 lengths: Dict[AnyStr, Num] = None,
                  **kwargs):
         super().__init__(**kwargs)
         self.name = name or 'default'
@@ -34,6 +39,8 @@ class Cable(RobotComponent):
         self.diameter = diameter or 0
         self.color = color or 'red'
         self.breaking_load = breaking_load or np_.Infinity
+        self.density = density or np_.Infinity
+        self.lengths = lengths or {}
 
     @property
     def color(self):
@@ -49,6 +56,14 @@ class Cable(RobotComponent):
     @color.deleter
     def color(self):
         del self._color
+
+    @property
+    def lengths(self):
+        return self._lengths
+
+    @lengths.setter
+    def lengths(self, lengths: Dict[AnyStr, Num]):
+        self._lengths = ChainMap(lengths, {'min': 0, 'max': np_.Infinity})
 
     @property
     def modulus(self):
@@ -120,6 +135,7 @@ class Cable(RobotComponent):
             'name',
             'material',
             'diameter',
+            'lengths',
             'modulus',
             'color',
             'breaking_load',

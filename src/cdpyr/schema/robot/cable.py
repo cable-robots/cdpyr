@@ -1,3 +1,4 @@
+import numpy as _np
 from marshmallow import fields, post_load
 
 from cdpyr.robot import cable as _cable
@@ -31,6 +32,17 @@ class CableSchema(CdpyrSchema):
     breaking_load = fields.Float(
             missing=None,
             allow_nan=True
+    )
+    density = fields.Float(
+            missing=_np.Infinity,
+    )
+    max_length = fields.Float(
+            missing=_np.Infinity,
+            attribute='lengths.1',
+    )
+    min_length = fields.Float(
+            missing=0,
+            attribute='lengths.0',
     )
 
     __model__ = _cable.Cable
