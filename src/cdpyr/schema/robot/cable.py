@@ -35,14 +35,7 @@ class CableSchema(CdpyrSchema):
     )
     density = fields.Float(
             missing=_np.Infinity,
-    )
-    max_length = fields.Float(
-            missing=_np.Infinity,
-            attribute='lengths.1',
-    )
-    min_length = fields.Float(
-            missing=0,
-            attribute='lengths.0',
+            allow_nan=True,
     )
 
     __model__ = _cable.Cable
