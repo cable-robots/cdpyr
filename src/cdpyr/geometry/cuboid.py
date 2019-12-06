@@ -2,7 +2,7 @@ import numpy as _np
 from magic_repr import make_repr
 
 from cdpyr.geometry.primitive import Primitive
-from cdpyr.typing import Num
+from cdpyr.typing import Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -13,8 +13,9 @@ class Cuboid(Primitive):
     height: float
     depth: float
 
-    def __init__(self, width: Num, depth: Num, height: Num, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, width: Num, depth: Num, height: Num,
+                 center: Vector = None, **kwargs):
+        super().__init__(center, **kwargs)
         self.width = width
         self.height = height
         self.depth = depth

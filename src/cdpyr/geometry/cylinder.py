@@ -25,9 +25,9 @@ class Cylinder(Primitive):
     """
     _radius: Vector
 
-    def __init__(self, radius: Union[Num, Vector], height: float, *args,
-                 **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, radius: Union[Num, Vector], height: float,
+                 center: Vector = None, **kwargs):
+        super().__init__(center, **kwargs)
         self.radius = radius
         self.height = height
 

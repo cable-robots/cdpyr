@@ -19,9 +19,9 @@ class Orientation(_archetype_orientation.ArchetypeOrientation):
     """
 
     def __init__(self, position: Vector, steps: int = 10, **kwargs):
-        self.position = position
         euler = _np.pi * _np.asarray([+1.0, +1.0, +1.0])
         super().__init__(-euler, +euler, 'xyz', steps, **kwargs)
+        self.position = position
 
     @property
     def comparator(self):

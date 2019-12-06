@@ -2,12 +2,14 @@ from abc import ABC, abstractmethod
 from collections import OrderedDict
 from typing import AnyStr, Union, Mapping
 
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot.robot_component import RobotComponent
 
 
-class Parser(ABC):
+class Parser(ABC, BaseObject):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         pass
 
     def kwargs(self, o: RobotComponent, **kwargs):

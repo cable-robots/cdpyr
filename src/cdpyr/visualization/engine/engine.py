@@ -9,6 +9,7 @@ from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.result import PlottableResult
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.helpers import full_classname as fcn
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot import (
     cable as _cable,
     drivetrain as _drivetrain,
@@ -31,7 +32,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Engine(ABC):
+class Engine(ABC, BaseObject):
     AXES_NAMES = ('x', 'y', 'z')
     COORDINATE_DIRECTIONS = (
             (1.0, 0.0, 0.0),
@@ -48,7 +49,8 @@ class Engine(ABC):
 
     _RESOLVER: Dict[AnyStr, Callable]
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self._RESOLVER = {
                 fcn(_cable.Cable):              self.render_cable,
                 fcn(_cable.CableList):          self.render_cable_list,

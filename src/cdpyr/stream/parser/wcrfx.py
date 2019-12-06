@@ -31,8 +31,8 @@ def dict_get(m: Mapping, k: Iterable, *args):
 class Wcrfx(parser.Parser):
     VERSION = '0.31'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self._PROCESSORS = {
                 'robot':       {'dump': self._process_dump_robot, },
                 'models':      {'load': self._process_load_models, },

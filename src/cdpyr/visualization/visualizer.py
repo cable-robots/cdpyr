@@ -1,6 +1,7 @@
 from typing import Union
 
 from cdpyr.analysis.result import PlottableResult
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.visualization.engine import engine as _engine
 
@@ -8,10 +9,11 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Visualizer(object):
+class Visualizer(BaseObject):
     _engine: '_engine.Engine'
 
     def __init__(self, engine: '_engine.Engine', **kwargs):
+        super().__init__(**kwargs)
         self._engine = engine
 
     @property

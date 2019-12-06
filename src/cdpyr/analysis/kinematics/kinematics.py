@@ -89,7 +89,9 @@ class Result(_result.PoseResult, _result.PlottableResult):
     """
     _lengths: Matrix
 
-    def __init__(self, algorithm: 'Algorithm', pose: '_pose.Pose',
+    def __init__(self,
+                 algorithm: 'Algorithm',
+                 pose: '_pose.Pose',
                  lengths: Union[Vector, Matrix],
                  directions: Matrix,
                  swivel: Vector = None,

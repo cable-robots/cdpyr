@@ -30,6 +30,7 @@ class Calculator(_evaluator.PoseEvaluator):
                  kinematics: '_kinematics.Algorithm',
                  resolver: Dict[AnyStr, '_structure_matrix.Algorithm'] = None,
                  **kwargs):
+        super().__init__(**kwargs)
         self.kinematics = kinematics
         if resolver is None:
             resolver = {

@@ -3,6 +3,7 @@ from typing import AnyStr, Union, Mapping
 
 from cdpyr import motion as _motion, robot as _robot, schema as _schema
 from cdpyr.helpers import full_classname as fcn
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser as _parser
 
@@ -10,7 +11,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Stream(object):
+class Stream(BaseObject):
     parser: '_parser.Parser'
 
     # define the mapping of object type and marshmallow schemes
@@ -100,6 +101,7 @@ class Stream(object):
     }
 
     def __init__(self, parser: '_parser.Parser', **kwargs):
+        super().__init__(**kwrags)
         self.parser = parser
 
     def dump(self, o: RobotComponent, *args, **kwargs):

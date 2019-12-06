@@ -20,8 +20,8 @@ class Ellipsoid(_geometry.Primitive):
     """
     _radius: Vector
 
-    def __init__(self, radius: Union[Num, Vector], *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, radius: Union[Num, Vector], center: Vector = None,**kwargs):
+        super().__init__(center, **kwargs)
         self.radius = radius
 
     @property

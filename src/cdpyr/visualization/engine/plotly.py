@@ -52,8 +52,8 @@ class Plotly(_engine.Engine, ABC):
 
     COORDINATE_NAMES = ['x', 'y', 'z']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self._figure = None
 
     @property

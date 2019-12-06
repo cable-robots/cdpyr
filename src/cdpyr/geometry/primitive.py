@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 import numpy as _np
 from magic_repr import make_repr
@@ -29,8 +29,8 @@ class Primitive(ABC, BaseObject):
     """
     _volume: float
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, center: Vector = None, **kwargs):
+        super().__init__(**kwargs)
         self._centroid = None
         self._surface = None
         self._volume = None
