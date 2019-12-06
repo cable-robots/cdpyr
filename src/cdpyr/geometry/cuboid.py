@@ -1,4 +1,3 @@
-import numpy as _np
 from magic_repr import make_repr
 
 from cdpyr.geometry.primitive import Primitive

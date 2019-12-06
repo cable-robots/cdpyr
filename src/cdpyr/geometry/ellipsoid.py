@@ -16,13 +16,21 @@ class Ellipsoid(_geometry.Primitive):
     """
 
     """
-    (3,) vector of radii of the ellipsoid along the (X, Y, Z) axes
+    (3,) vector of radii of the ellipsoid along the (X, Y, Z) axes.
     """
     _radius: Vector
 
-    def __init__(self, radius: Union[Num, Vector], center: Vector = None,**kwargs):
+    """
+    Axis of revolution of the ellipsoid. Allows to also form torus objects
+    using the same class. Defaults to `0` i.e., a proper ellipsoid.
+    """
+    axis: Num
+
+    def __init__(self, radius: Union[Num, Vector], center: Vector = None,
+                 axis: Num = 0, **kwargs):
         super().__init__(center, **kwargs)
         self.radius = radius
+        self.axis = axis or 0
 
     @property
     def diameters(self):
@@ -59,6 +67,13 @@ class Ellipsoid(_geometry.Primitive):
         del self._radius
 
     def _calculate_surface(self):
+        # currently, I do not have a solution for a generally ellipsoidal
+        # torus, so we will just raise an error
+        # TODO find a proper math implementation without the complete
+        #  elliptic integral of the first kind
+        if self.axis:
+            raise NotImplementedError()
+
         # we use Knud Thomsen's formula which requires the power parameter,
         # we set that to this value for a good approximation
         p = 1.6075
@@ -71,6 +86,13 @@ class Ellipsoid(_geometry.Primitive):
                        1.0 / p)
 
     def _calculate_volume(self):
+        # currently, I do not have a solution for a generally ellipsoidal
+        # torus, so we will just raise an error
+        # TODO find a proper math implementation without the complete
+        #  elliptic integral of the first kind
+        if self.axis:
+            raise NotImplementedError()
+
         return 4.0 / 3.0 * _np.pi * _np.product(self._radius)
 
     def __hash__(self):
@@ -81,6 +103,7 @@ class Ellipsoid(_geometry.Primitive):
 
     __repr__ = make_repr(
             'radii',
+            'axis',
             'centroid',
             'surface',
             'volume',
