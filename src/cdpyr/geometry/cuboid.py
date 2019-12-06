@@ -20,9 +20,6 @@ class Cuboid(Primitive):
         self.height = height
         self.depth = depth
 
-    def _calculate_centroid(self):
-        return _np.zeros((3,))
-
     def _calculate_surface(self):
         # more readable access to often used variables
         w, d, h = self.width, self.depth, self.height

@@ -58,9 +58,6 @@ class Ellipsoid(_geometry.Primitive):
     def radius(self):
         del self._radius
 
-    def _calculate_centroid(self):
-        return _np.zeros((3,))
-
     def _calculate_surface(self):
         # we use Knud Thomsen's formula which requires the power parameter,
         # we set that to this value for a good approximation
@@ -72,7 +69,6 @@ class Ellipsoid(_geometry.Primitive):
         return 4.0 * _np.pi * (
                 ((a * b) ** p + (a * c) ** p + (b * c) ** p) / 3.0) ** (
                        1.0 / p)
-        _np.sqrt()
 
     def _calculate_volume(self):
         return 4.0 / 3.0 * _np.pi * _np.product(self._radius)

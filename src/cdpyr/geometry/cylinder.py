@@ -51,9 +51,6 @@ class Cylinder(Primitive):
     def radius(self):
         del self._radius
 
-    def _calculate_centroid(self):
-        return _np.zeros((3,))
-
     def _calculate_surface(self):
         # extract semi-major and semi-minor axis lengths
         a, b = self._radius

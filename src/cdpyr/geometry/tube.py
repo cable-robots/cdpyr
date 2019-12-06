@@ -25,10 +25,13 @@ class Tube(Primitive):
     """
     _outer: '_cylinder.Cylinder'
 
-    def __init__(self, inner_radius: Union[Num, Vector],
+    def __init__(self,
+                 inner_radius: Union[Num, Vector],
                  outer_radius: Union[Num, Vector],
-                 height: float, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+                 height: float,
+                 center: Vector = None,
+                 **kwargs):
+        super().__init__(center, **kwargs)
         self._inner = _cylinder.Cylinder(inner_radius, height)
         self._outer = _cylinder.Cylinder(outer_radius, height)
 
@@ -56,9 +59,6 @@ class Tube(Primitive):
     @outer_radius.setter
     def outer_radius(self, radius: Union[Num, Vector]):
         self._outer.radius = radius
-
-    def _calculate_centroid(self):
-        return _np.zeros((3,))
 
     def _calculate_surface(self):
         return self._inner.surface \

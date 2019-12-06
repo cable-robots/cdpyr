@@ -11,11 +11,15 @@ __email__ = "p.tempel@tudelft.nl"
 from cdpyr.typing import Vector
 
 
-class Primitive(ABC, BaseObject):
+class Primitive(BaseObject, ABC):
     """
 
     """
 
+    """
+    (3,) vector denoting the point where the geometry primitive is centered around
+    """
+    _center: Vector
     """
     (3,) vector denoting the centroid of the geometry
     """
@@ -31,9 +35,22 @@ class Primitive(ABC, BaseObject):
 
     def __init__(self, center: Vector = None, **kwargs):
         super().__init__(**kwargs)
+        self.center = center if center is not None else [0.0, 0.0, 0.]
         self._centroid = None
         self._surface = None
         self._volume = None
+
+    @property
+    def center(self):
+        return self._center
+
+    @center.setter
+    def center(self, center: Vector):
+        self._center = _np.asarray(center)
+
+    @center.deleter
+    def center(self):
+        del self._center
 
     @property
     def centroid(self):
@@ -54,11 +71,13 @@ class Primitive(ABC, BaseObject):
         return self._volume
 
     def _calculate_centroid(self):
-        raise NotImplementedError()
+        return self._center
 
+    @abstractmethod
     def _calculate_surface(self):
         raise NotImplementedError()
 
+    @abstractmethod
     def _calculate_volume(self):
         raise NotImplementedError()
 
