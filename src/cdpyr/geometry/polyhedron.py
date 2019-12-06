@@ -50,7 +50,8 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
             [4, 0, 5],
     ]
 
-    def __init__(self, vertices: Matrix, faces: Matrix, center: Vector = None, **kwargs):
+    def __init__(self, vertices: Matrix, faces: Matrix, center: Vector = None,
+                 **kwargs):
         super().__init__(center, **kwargs)
         self._vertices = _np.asarray(vertices)
         self._faces = _np.asarray(faces)
@@ -307,10 +308,10 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
                 _np.sum((a - d) * _np.cross(b - d, c - d, axis=1), axis=1)) / 6
 
     def __iter__(self):
-        return zip(self.faces, self.vertices[self.faces,:])
+        return zip(self.faces, self.vertices[self.faces, :])
 
     def __getitem__(self, idx: int):
-        return self.vertices[idx,:]
+        return self.vertices[idx, :]
 
     def __len__(self) -> int:
         try:

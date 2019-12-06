@@ -17,7 +17,8 @@ class Primitive(BaseObject, ABC):
     """
 
     """
-    (3,) vector denoting the point where the geometry primitive is centered around
+    (3,) vector denoting the point where the geometry primitive is centered
+    around
     """
     _center: Vector
     """
