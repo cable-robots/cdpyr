@@ -35,23 +35,26 @@ If you are proposing a feature:
 Development
 ===========
 
-To set up `cdpyr` for local development:
+**Note** this project uses the `git flow`_ branching model.
 
-1. Fork `cdpyr <https://github.com/cable-robots/cdpyr>`_ (look for the "Fork" button).
+To set up CDPyR_ for local development:
+
+1. Fork cdpyr_ (look for the "Fork" button).
 #. Clone your fork locally:
 
    .. code-block:: bash
 
-      $ git clone git@github.com:cable-robots/cdpyr.git
+      $ git clone git@github.com:your-username-or-organization/cdpyr.git
 
-#. Set up your local development environment by installing tox and creating the dev environment:
+#. Set up your local development environment by installing tox, creating the dev environment, and setting up git flow
 
    .. code-block:: bash
 
       $ pip install tox
       $ tox -e dev
+      $ git flow init
 
-#. Activate the environment:
+#. Activate the python environment:
 
    1. Windows:
 
@@ -67,9 +70,17 @@ To set up `cdpyr` for local development:
 
 #. Create a branch for local development to make your changes locally:
 
+   1. For new features:
+
    .. code-block:: shell
 
-      $ git checkout -b name-of-your-bugfix-or-feature
+      $ git flow feature start name-of-your-feature
+
+   2. For hotfixes:
+
+   .. code-block:: shell
+
+      $ git flow hotfix start name-of-your-hotfix
 
 #. When you're done making changes, run all the checks, doc builder and spell checker with `tox <https://tox.readthedocs.io/en/latest/install.html>`_ one command:
 
@@ -83,12 +94,12 @@ To set up `cdpyr` for local development:
 
       $ git add .
       $ git commit -m "Your detailed description of your changes."
-      $ git push origin name-of-your-bugfix-or-feature
+      $ git push origin name-of-your-hotfix-or-feature
 
 #. Submit a pull request through the GitHub website.
 
-If your change requires changes to the dependencies of ``cdpyr``, then add these in ``setup.py`` under ``install_requires``.
-However, if you make changes to the dependencies of tests or the development environment, then add these dependencies in ``tox.ini`` in either ``deps`` of either the ``[testenv]`` or ``[testenv:dev]`` section.
+If your change requires changes to the dependencies of :code:`cdpyr`, then add these in :code:`setup.py` under :code:`install_requires`.
+However, if you make changes to the dependencies of tests or the development environment, then add these dependencies in :code:`tox.ini` in the :code:`deps` of either the :code:`[testenv]` or :code:`[testenv:dev]` section.
 
 Pull Request Guidelines
 -----------------------
@@ -97,15 +108,10 @@ If you need some code review or feedback while you're developing the code just m
 
 For merging, you should:
 
-1. Include passing tests (run ``tox``) [1]_.
+1. Include passing tests (run :code:`tox`) [1]_.
 #. Update documentation when there's new API, functionality etc.
-#. Add a note to ``CHANGELOG.rst`` about the changes.
-#. Add yourself to ``AUTHORS.rst``.
-
-.. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will
-       `run the tests <https://travis-ci.org/cable-robots/cdpyr/pull_requests>`_ for each change you add in the pull request.
-
-       It will be slower though ...
+#. Add a note to :code:`CHANGELOG.rst` about the changes.
+#. Add yourself to :code:`AUTHORS.rst`.
 
 Tips
 ----
@@ -116,14 +122,23 @@ To run a subset of tests:
 
    tox -e envname -- pytest -k test_myfeature
 
-To run all the test environments in *parallel* (you need to ``pip install detox``):
+To run all the test environments in *parallel* (you need to :code:`pip install detox`):
 
 .. code-block:: shell
 
    detox
 
-To build the docs locally to ``dist/docs``:
+To build the docs locally to :code:`dist/docs`:
 
 .. code-block:: shell
 
    tox -e docs
+
+
+.. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will `run the tests <https://travis-ci.org/cable-robots/cdpyr/pull_requests>`_ for each change you add in the pull request.
+
+       It will be slower though ...
+
+
+.. _cdpyr: https://github.com/cable-robots/cdpyr
+.. _`git flow`: https://nvie.com/posts/a-successful-git-branching-model/
