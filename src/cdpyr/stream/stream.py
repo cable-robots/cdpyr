@@ -101,7 +101,7 @@ class Stream(BaseObject):
     }
 
     def __init__(self, parser: '_parser.Parser', **kwargs):
-        super().__init__(**kwrags)
+        super().__init__(**kwargs)
         self.parser = parser
 
     def dump(self, o: RobotComponent, *args, **kwargs):
