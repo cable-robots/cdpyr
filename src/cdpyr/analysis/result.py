@@ -1,4 +1,3 @@
-import copy
 from abc import ABC
 
 from magic_repr import make_repr
@@ -25,7 +24,7 @@ class RobotResult(Result):
 
     def __init__(self, robot: '_robot.Robot', **kwargs):
         super().__init__(**kwargs)
-        self._robot = copy.deepcopy(robot)
+        self._robot = robot
 
     @property
     def robot(self):
@@ -37,7 +36,7 @@ class PoseResult(Result):
 
     def __init__(self, pose: '_pose.Pose', **kwargs):
         super().__init__(**kwargs)
-        self._pose = copy.deepcopy(pose)
+        self._pose = pose
 
     @property
     def pose(self):
@@ -53,7 +52,7 @@ class PoseListResult(Result):
 
     def __init__(self, pose_list: '_poselist.PoseList', **kwargs):
         super().__init__(**kwargs)
-        self._pose_list = copy.deepcopy(pose_list)
+        self._pose_list = pose_list
 
     @property
     def pose_list(self):
