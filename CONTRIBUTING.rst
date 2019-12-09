@@ -101,8 +101,10 @@ To set up CDPyR_ for local development:
 If your change requires changes to the dependencies of :code:`cdpyr`, then add these in :code:`setup.py` under :code:`install_requires`.
 However, if you make changes to the dependencies of tests or the development environment, then add these dependencies in :code:`tox.ini` in the :code:`deps` of either the :code:`[testenv]` or :code:`[testenv:dev]` section.
 
-Git Flow Configuration
+Git Flow
 ----------------------
+
+See this `fancy cheat sheet <https://danielkummer.github.io/git-flow-cheatsheet/>`_ on the git flow commands, and when to use each.
 
 * Branch name for production releases: :code:`master`
 * Branch name for "next release" development: :code:`develop`
