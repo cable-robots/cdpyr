@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from typing import AnyStr, Callable, Dict, Union
 
 import numpy as _np
+
 from cdpyr import geometry as _geometry
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.result import PlottableResult
@@ -117,8 +118,8 @@ class Engine(ABC, BaseObject):
         # if we got here, then the object could not be rendered in any way,
         # so we will explain that to the user
         raise KeyError(
-            f'Unable to render object. Expected it to be any of '
-            f'{", ".join(self._RESOLVER.keys())} but received {fcn(o)}.')
+                f'Unable to render object. Expected it to be any of '
+                f'{", ".join(self._RESOLVER.keys())} but received {fcn(o)}.')
 
     @abstractmethod
     def render_cable(self, cable: '_cable.Cable', *args, **kwargs):
@@ -172,7 +173,8 @@ class Engine(ABC, BaseObject):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_kinematics(self, kinematics: '_kinematics.Result', *args, **kwargs):
+    def render_kinematics(self, kinematics: '_kinematics.Result', *args,
+                          **kwargs):
         raise NotImplementedError()
 
     @abstractmethod

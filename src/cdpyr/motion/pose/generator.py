@@ -244,4 +244,4 @@ def orientation(start: Union[Num, Vector],
                     sequence=sequence,
                     euler=start + delta * step
             )) for step in
-    itertools.product(*(range(k + 1) for k in iterations)))
+            itertools.product(*(range(k + 1) for k in iterations)))

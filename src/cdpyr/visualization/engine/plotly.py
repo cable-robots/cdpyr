@@ -2,6 +2,9 @@ from abc import ABC
 from typing import Mapping, Sequence, Union
 
 import numpy as _np
+from plotly import graph_objects as go
+from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
+
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.geometry import (
@@ -30,8 +33,6 @@ from cdpyr.robot.anchor import (
 )
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
-from plotly import graph_objects as go
-from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -557,7 +558,7 @@ class Plotly(_engine.Engine, ABC):
                     self._scatter(
                             **self._prepare_plot_coordinates(
                                     self._extract_coordinates(
-                                            cable_shapes[:,index_chain,:])),
+                                            cable_shapes[:, index_chain, :])),
                             mode='lines',
                             line_color='rgb(255, 0, 0)',
                             name='',
@@ -566,7 +567,6 @@ class Plotly(_engine.Engine, ABC):
                             showlegend=False
                     )
             )
-
 
     def render_motor(self,
                      motor: '_motor.Motor',

@@ -169,7 +169,8 @@ def portrait(value: Union[Sequence[Num], Vector, Matrix],
 
     if value.shape[0] < value.shape[1]:
         raise ValueError(
-                'Expected `{}` for be rectangular of portrait shape, but received '
+                'Expected `{}` for be rectangular of portrait shape, '
+                'but received '
                 'a {} matrix.'.format(
                         name if name is not None else 'value',
                         value.shape

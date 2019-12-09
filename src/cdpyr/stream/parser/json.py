@@ -1,6 +1,6 @@
 import json
 from collections import OrderedDict
-from typing import AnyStr, Union, Mapping
+from typing import AnyStr, Mapping, Union
 
 from cdpyr.stream.parser import parser as _parser
 

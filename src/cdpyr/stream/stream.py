@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import AnyStr, Union, Mapping
+from typing import AnyStr, Mapping, Union
 
 from cdpyr import motion as _motion, robot as _robot, schema as _schema
 from cdpyr.helpers import full_classname as fcn
@@ -93,11 +93,11 @@ class Stream(BaseObject):
                     partial=False
             ),
             fcn(
-                _motion.pattern.Pattern):
-                _schema.motion.pattern.PatternSchema(
-                    many=False,
-                    partial=False
-            ),
+                    _motion.pattern.Pattern):
+                                            _schema.motion.pattern.PatternSchema(
+                                                    many=False,
+                                                    partial=False
+                                            ),
     }
 
     def __init__(self, parser: '_parser.Parser', **kwargs):

@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import AnyStr, Union, Mapping
+from typing import AnyStr, Mapping, Union
 
 import yaml
 

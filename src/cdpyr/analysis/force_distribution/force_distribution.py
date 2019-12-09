@@ -1,6 +1,6 @@
 import copy
 from abc import abstractmethod
-from typing import Union, Mapping
+from typing import Mapping, Union
 
 import numpy as _np
 from magic_repr import make_repr

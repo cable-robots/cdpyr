@@ -1,4 +1,13 @@
-from typing import AnyStr, Dict, Iterable, Optional, Sequence, Tuple, Union, Mapping
+from typing import (
+    AnyStr,
+    Dict,
+    Iterable,
+    Mapping,
+    Optional,
+    Sequence,
+    Tuple,
+    Union
+)
 
 import numpy as _np
 from magic_repr import make_repr

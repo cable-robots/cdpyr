@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from collections import OrderedDict
-from typing import AnyStr, Union, Mapping
+from typing import AnyStr, Mapping, Union
 
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot.robot_component import RobotComponent

@@ -4,8 +4,7 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.kinematics.transformation import transformation as _transformation
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.typing import Vector, Matrix
+from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"

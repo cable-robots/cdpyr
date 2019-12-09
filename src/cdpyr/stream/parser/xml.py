@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import AnyStr, Sequence, Tuple, Union, Mapping
+from typing import AnyStr, Mapping, Sequence, Tuple, Union
 
 import xmltodict
 

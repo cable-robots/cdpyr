@@ -1,4 +1,4 @@
-from typing import AnyStr, Dict, Mapping
+from typing import AnyStr, Dict
 
 import numpy as _np
 
@@ -75,7 +75,7 @@ class Calculator(_evaluator.PoseEvaluator):
                                 [platform.anchors[anchor_index].linear.position
                                  for anchor_index in
                                  robot.kinematic_chains.with_platform(
-                                     platform_index).platform_anchor]).T,
+                                         platform_index).platform_anchor]).T,
                         pose,
                         kinematics.directions)
         )

@@ -5,7 +5,6 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class CdpyrSchema(Schema):
-
     class Meta:
         # ensures the order of fields is kept when exporting
         ordered = True

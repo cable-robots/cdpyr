@@ -112,7 +112,7 @@ def robot_2t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_2T,
                             inertia=cdpyr.mechanics.Inertia(
-                                np.diag((1, 1, 1)) * 1),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(),
                                     cdpyr.robot.PlatformAnchor(),
@@ -199,7 +199,7 @@ def robot_3t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_3T,
                             inertia=cdpyr.mechanics.Inertia(
-                                np.diag((1, 1, 1)) * 1),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(),
                                     cdpyr.robot.PlatformAnchor(),
@@ -294,7 +294,7 @@ def robot_1r2t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_1R2T,
                             inertia=cdpyr.mechanics.Inertia(
-                                np.diag((1, 1, 1)) * 1),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(
                                             position=[-0.1, 0.1, 0.],
@@ -442,7 +442,7 @@ def robot_2r3t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_2R3T,
                             inertia=cdpyr.mechanics.Inertia(
-                                np.diag((1, 1, 1)) * 1),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(
                                             position=[-0.01, 0.01, 0.1],
@@ -650,7 +650,7 @@ def robot_3r3t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_3R3T,
                             inertia=cdpyr.mechanics.Inertia(
-                                np.diag((1, 1, 1)) * 1),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(
                                             position=[-0.1, 0.1, 0.1]
@@ -858,10 +858,10 @@ def ipanema_3():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_3R3T,
                             inertia=cdpyr.mechanics.Inertia(
-                                np.diag((1, 1, 1)) * 30,
-                                np.diag((5.226154,
-                                         0.637352,
-                                         4.723802))),
+                                    np.diag((1, 1, 1)) * 30,
+                                    np.diag((5.226154,
+                                             0.637352,
+                                             4.723802))),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(
                                             position=[-0.085, 0.748, 0.261],

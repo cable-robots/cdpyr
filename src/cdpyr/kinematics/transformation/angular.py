@@ -5,7 +5,6 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
 from cdpyr.kinematics.transformation import transformation as _transformation
 from cdpyr.typing import Matrix, Num, Vector
 
