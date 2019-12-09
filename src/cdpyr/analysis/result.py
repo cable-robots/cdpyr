@@ -32,11 +32,11 @@ class RobotResult(Result):
         return self._robot
 
 
-class PoseResult(RobotResult):
+class PoseResult(Result):
     _pose: '_pose.Pose'
 
-    def __init__(self, robot: '_robot.Robot', pose: '_pose.Pose', **kwargs):
-        super().__init__(robot=robot, **kwargs)
+    def __init__(self, pose: '_pose.Pose', **kwargs):
+        super().__init__(**kwargs)
         self._pose = copy.deepcopy(pose)
 
     @property
@@ -48,12 +48,11 @@ class PoseResult(RobotResult):
     )
 
 
-class PoseListResult(RobotResult):
+class PoseListResult(Result):
     _pose_list: '_poselist.PoseList'
 
-    def __init__(self, robot: '_robot.Robot', pose_list: '_poselist.PoseList',
-                 **kwargs):
-        super().__init__(robot=robot, **kwargs)
+    def __init__(self, pose_list: '_poselist.PoseList', **kwargs):
+        super().__init__(**kwargs)
         self._pose_list = copy.deepcopy(pose_list)
 
     @property
