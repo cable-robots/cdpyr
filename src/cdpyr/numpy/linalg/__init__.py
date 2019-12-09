@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Sequence, Union
 
 import numpy as np_
 
@@ -12,6 +12,83 @@ def issquare(value: Union[Num, Vector, Matrix]):
     value = np_.asarray(value)
 
     return value.shape[0] == value.shape[1]
+
+
+def kronecker(size: Sequence, ij: Union[slice, int]):
+    """
+    Return a Kronecker vector or matrix of a given size with a single entry 1
+    and all others zero
+
+    Parameters
+    ----------
+    size : Sequence
+        A numpy valid sequence to create a new array of zeries
+    ij : slice | int
+        Slice or integer where to place the 1 in the returning kronecker array
+
+    Returns
+    -------
+    k : numpy.ndarray
+        Kronecker array of size `size` with entry/entries at `k[ij] == 1`
+    """
+    e = np_.zeros(size)
+    e[ij] = 1
+    return e
+
+
+def evec_1():
+    """
+    Unit vector in 2D along the `x`-axis
+
+    Returns
+    -------
+
+    """
+    return kronecker((2,), 0)
+
+
+def evec_2():
+    """
+    Unit vector in 2D along the `y`-axis
+
+    Returns
+    -------
+
+    """
+    return kronecker((2,), 1)
+
+
+def evec3_1():
+    """
+    Unit vector in 3D along the `x`-axis
+
+    Returns
+    -------
+
+    """
+    return kronecker((3,), 0)
+
+
+def evec3_2():
+    """
+    Unit vector in 3D along the `y`-axis
+
+    Returns
+    -------
+
+    """
+    return kronecker((3,), 1)
+
+
+def evec3_3():
+    """
+    Unit vector in 3D along the `3`-axis
+
+    Returns
+    -------
+
+    """
+    return kronecker((3,), 2)
 
 
 def cart2pol(x: Union[Num, Vector, Matrix], y: Union[Num, Vector, Matrix]):
