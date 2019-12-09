@@ -1,10 +1,12 @@
 import copy
 from abc import ABC, abstractmethod
-from typing import Union, Mapping
+from typing import Union
 
 import numpy as _np
 
+import cdpyr.numpy.linalg
 from cdpyr.analysis import result as _result
+from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
@@ -21,28 +23,28 @@ class Algorithm(ABC):
     def forward(self,
                 robot: '_robot.Robot',
                 joints: Matrix,
-                **kwargs):
+                **kwargs) -> 'Result':
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Kinematics are currently not implemented for robots with '
                     'more than one platform.'
             )
 
-        return Result(self, **self._forward(robot, joints, **kwargs))
+        return self._forward(robot, joints, **kwargs)
 
     direct = forward
 
     def backward(self,
                  robot: '_robot.Robot',
                  pose: '_pose.Pose',
-                 **kwargs):
+                 **kwargs) -> 'Result':
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Kinematics are currently not implemented for robots with '
                     'more than one platform.'
             )
 
-        return Result(self, **self._backward(robot, pose, **kwargs))
+        return self._backward(robot, pose, **kwargs)
 
     inverse = backward
 
@@ -50,14 +52,14 @@ class Algorithm(ABC):
     def _forward(self,
                  robot: '_robot.Robot',
                  joints: Matrix,
-                 **kwargs) -> Mapping:
+                 **kwargs) -> 'Result':
         raise NotImplementedError()
 
     @abstractmethod
     def _backward(self,
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
-                  **kwargs) -> Mapping:
+                  **kwargs) -> 'Result':
         raise NotImplementedError()
 
 

@@ -1,5 +1,3 @@
-from typing import Mapping
-
 import numpy as _np
 from scipy import optimize
 
@@ -18,7 +16,7 @@ class Standard(_algorithm.Algorithm):
     def _forward(self,
                  robot: '_robot.Robot',
                  lengths: Vector,
-                 **kwargs) -> Mapping:
+                 **kwargs) -> '_algorithm.Result':
         # for now, this is the inner-loop code for the first platform
         index_platform = 0
 
@@ -165,19 +163,18 @@ class Standard(_algorithm.Algorithm):
         else:
             final = result.x / scaling
 
-            return {
-                    'pose':       _pose.Pose(
-                            final[0:3],
-                            angular=_angular.Angular(quaternion=final[3:7])
-                    ),
-                    'lengths':    lengths,
-                    'directions': last_direction[0]
-            }
+            pose = _pose.Pose(
+                    final[0:3],
+                    angular=_angular.Angular(quaternion=final[3:7])
+            )
+
+            return _algorithm.Result(self, robot, pose, lengths=lengths,
+                                     directions=last_direction[0])
 
     def _backward(self,
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
-                  **kwargs) -> Mapping:
+                  **kwargs) -> '_algorithm.Result':
         # for now, this is the inner-loop code for the first platform
         index_platform = 0
         # quicker and shorter access to platform object
@@ -220,12 +217,8 @@ class Standard(_algorithm.Algorithm):
         # in this case
         directions[:, _np.isclose(lengths, 0)] = 0
 
-        return {
-                'pose':       pose,
-                'lengths':    lengths,
-                'directions': directions,
-                'swivel':     swivel
-        }
+        return _algorithm.Result(self, robot, pose, lengths=lengths,
+                                 directions=directions, swivel=swivel)
 
     def _vector_loop(self,
                      position: Matrix,

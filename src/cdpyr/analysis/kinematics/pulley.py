@@ -1,5 +1,3 @@
-from typing import Mapping
-
 import numpy as _np
 
 from cdpyr.analysis.kinematics import kinematics as _algorithm
@@ -9,11 +7,11 @@ from cdpyr.robot import (
     cable as _cable,
     kinematicchain as _kinematicchain,
     pulley as _pulley,
-    robot as _robot
+    robot as _robot,
 )
 from cdpyr.robot.anchor import (
     frame_anchor as _frame_anchor,
-    platform_anchor as _platform_anchor
+    platform_anchor as _platform_anchor,
 )
 from cdpyr.typing import Vector
 
@@ -26,13 +24,13 @@ class Pulley(_algorithm.Algorithm):
     def _forward(self,
                  robot: '_robot.Robot',
                  joints: Vector,
-                 **kwargs) -> Mapping:
+                 **kwargs) -> '_algorithm.Result':
         raise NotImplementedError()
 
     def _backward(self,
                   robot: '_robot.Robot',
                   pose: '_pose.Pose',
-                  **kwargs) -> Mapping:
+                  **kwargs) -> '_algorithm.Result':
         # init results
         swivel = []
         wrap = []
@@ -118,13 +116,14 @@ class Pulley(_algorithm.Algorithm):
                               0:platform.motion_pattern.dof_translation] /
                               length_workspace)
 
-        return {
-                'pose':       pose,
-                'lengths':    _np.asarray(lengths).T,
-                'directions': _np.asarray(directions).T,
-                'swivel':     _np.asarray(swivel),
-                'wrap':       _np.asarray(wrap),
-        }
+        lengths = _np.asarray(lengths).T
+        directions = _np.asarray(directions).T
+        swivel = _np.asarray(swivel)
+        wrap = _np.asarray(wrap)
+
+        return _algorithm.Result(self, robot, pose, lengths=lengths,
+                                 directions=directions, swivel=swivel,
+                                 wrap=wrap)
 
 
 __all__ = [
