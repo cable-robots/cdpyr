@@ -47,12 +47,11 @@ class Calculator(_evaluator.PoseEvaluator):
                     _motion_pattern.MP_3R3T:
                         _structure_matrix_3r3t.MotionPattern3R3T(),
             }
-
         self.resolver = resolver
 
     def evaluate(self,
                  robot: '_robot.Robot',
-                 pose: '_pose.Pose'):
+                 pose: '_pose.Pose') -> '_structure_matrix.Result':
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Structure matrices are currently not implemented for '
@@ -68,17 +67,14 @@ class Calculator(_evaluator.PoseEvaluator):
         # get the current  platform
         platform = robot.platforms[platform_index]
 
-        return _structure_matrix.Result(
+        return self.resolver[platform.motion_pattern].evaluate(
                 pose,
-                self.resolver[platform.motion_pattern].evaluate(
-                        _np.asarray(
-                                [platform.anchors[anchor_index].linear.position
-                                 for anchor_index in
-                                 robot.kinematic_chains.with_platform(
-                                         platform_index).platform_anchor]).T,
-                        pose,
-                        kinematics.directions)
-        )
+                _np.stack(
+                        [platform.anchors[anchor_index].linear.position
+                         for anchor_index in
+                         robot.kinematic_chains.with_platform(
+                                 platform_index).platform_anchor], 0).T,
+                kinematics.directions)
 
 
 __all__ = [

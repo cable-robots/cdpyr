@@ -16,17 +16,16 @@ __email__ = "p.tempel@tudelft.nl"
 class Algorithm(_evaluator.Evaluator):
 
     def evaluate(self,
-                 platform_anchors: Vector,
                  pose: '_pose.Pose',
-                 directions: Matrix) -> '_result.StructureMatrixResult':
-        return Result(pose,
-                      **self._evaluate(platform_anchors, pose, directions))
+                 platform_anchors: Vector,
+                 directions: Matrix) -> 'Result':
+        return self._evaluate(pose, platform_anchors, directions)
 
     @abstractmethod
     def _evaluate(self,
-                  platform_anchors: Vector,
                   pose: '_pose.Pose',
-                  directions: Matrix) -> Mapping:
+                  platform_anchors: Vector,
+                  directions: Matrix) -> 'Result':
         raise NotImplementedError()
 
 
