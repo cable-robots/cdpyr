@@ -109,6 +109,9 @@ class KinematicChainList(UserList, RobotComponent):
     def __ne__(self, other):
         return not self == other
 
+    def __hash__(self):
+        return hash(tuple(self.data))
+
     __repr__ = make_repr(
             'data'
     )
