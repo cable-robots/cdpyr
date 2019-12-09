@@ -95,11 +95,7 @@ class ClosedFormImproved(_algorithm.Algorithm):
                                             force_max,
                                             wrench)
 
-        return {
-                'pose':   pose,
-                'wrench': wrench,
-                'forces': distribution,
-        }
+        return _algorithm.Result(self, pose, distribution, wrench)
 
     def _closed_form(self,
                      structure_matrix: Matrix,

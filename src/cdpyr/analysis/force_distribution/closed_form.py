@@ -30,11 +30,7 @@ class ClosedForm(_algorithm.Algorithm):
             distribution = force_mean - _np.linalg.pinv(structure_matrix).dot(
                     wrench + structure_matrix.dot(force_mean))
 
-        return {
-                'pose':   pose,
-                'wrench': wrench,
-                'forces': distribution,
-        }
+        return _algorithm.Result(self, pose, distribution, wrench)
 
 
 __all__ = [

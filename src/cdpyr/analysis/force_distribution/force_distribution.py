@@ -1,6 +1,6 @@
-import copy
 from abc import abstractmethod
-from typing import Mapping, Union
+from abc import abstractmethod
+from typing import Union
 
 import numpy as _np
 from magic_repr import make_repr
@@ -71,7 +71,7 @@ class Algorithm(_evaluator.PoseEvaluator):
                  robot: '_robot.Robot',
                  pose: '_pose.Pose',
                  wrench: Vector,
-                 **kwargs):
+                 **kwargs) -> 'Result':
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Force distributions are currently not implemented for '
@@ -86,13 +86,13 @@ class Algorithm(_evaluator.PoseEvaluator):
         structure_matrix = self._structure_matrix.evaluate(robot, pose)
 
         # pass down to actual implementation
-        return Result(self, **self._evaluate(robot,
-                                             pose,
-                                             structure_matrix.matrix,
-                                             wrench,
-                                             force_min,
-                                             force_max,
-                                             **kwargs))
+        return self._evaluate(robot,
+                              pose,
+                              structure_matrix.matrix,
+                              wrench,
+                              force_min,
+                              force_max,
+                              **kwargs)
 
     @abstractmethod
     def _evaluate(self,
@@ -102,7 +102,7 @@ class Algorithm(_evaluator.PoseEvaluator):
                   wrench: Vector,
                   force_min: Vector,
                   force_max: Vector,
-                  **kwargs) -> Mapping:
+                  **kwargs) -> 'Result':
         raise NotImplementedError()
 
     def _parse_force_limits(self, robot: '_robot.Robot'):
@@ -151,7 +151,7 @@ class Result(_result.PoseResult):
                  forces: Vector,
                  wrench: Vector,
                  **kwargs):
-        super().__init__(pose, **kwargs)
+        super().__init__(pose=pose, **kwargs)
         self._algorithm = algorithm
         self._forces = forces
         self._wrench = wrench

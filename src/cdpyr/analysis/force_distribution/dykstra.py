@@ -106,19 +106,13 @@ class Dykstra(_algorithm.Algorithm):
                 if kiter >= max_iter:
                     raise ArithmeticError(
                             'Could not find a valid force distribution using '
-                            'the '
-                            'current algorithm. Please check your arguments or '
-                            'try another algorithm if you are sure there must '
-                            'be '
-                            'a valid force distribution.')
+                            'the current algorithm. Please check your '
+                            'arguments or try another algorithm if you are '
+                            'sure there must be a valid force distribution.')
 
                 distribution = projection_a
 
-        return {
-                'pose':   pose,
-                'wrench': wrench,
-                'forces': distribution,
-        }
+        return _algorithm.Result(self, pose, distribution, wrench)
 
 
 __all__ = [
