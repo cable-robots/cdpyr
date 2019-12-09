@@ -172,10 +172,10 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
                                                  num=num - 1, endpoint=True)
 
                     # calculate shape on the pulley
-                    pulley_shape = _np.stack([frame_anchor.pulley.radius * (
+                    pulley_shape = _np.asarray([frame_anchor.pulley.radius * (
                             eye - transform.dcm).dot(evec_x) for transform in
                                               _angular.Angular.rotation_y(
-                                                      linspace_wrap)], axis=1)
+                                                      linspace_wrap)]).T
 
                     # pre-calculate and pre-gather some rotation matrices
                     cable_dcm = _angular.Angular.rotation_z(

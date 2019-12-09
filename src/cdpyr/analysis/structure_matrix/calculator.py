@@ -69,11 +69,11 @@ class Calculator(_evaluator.PoseEvaluator):
 
         return self.resolver[platform.motion_pattern].evaluate(
                 pose,
-                _np.stack(
+                _np.asarray(
                         [platform.anchors[anchor_index].linear.position
                          for anchor_index in
                          robot.kinematic_chains.with_platform(
-                                 platform_index).platform_anchor], 0).T,
+                                 platform_index).platform_anchor]).T,
                 kinematics.directions)
 
 
