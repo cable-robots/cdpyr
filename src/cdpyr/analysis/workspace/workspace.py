@@ -56,9 +56,9 @@ class Result(_result.PlottableResult):
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  **kwargs):
-        self._algorithm = copy.deepcopy(algorithm)
-        self._archetype = copy.deepcopy(archetype)
-        self._criterion = copy.deepcopy(criterion)
+        self._algorithm = algorithm
+        self._archetype = archetype
+        self._criterion = criterion
         self._surface = None
         self._volume = None
 

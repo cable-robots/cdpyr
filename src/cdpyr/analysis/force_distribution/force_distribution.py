@@ -152,7 +152,7 @@ class Result(_result.PoseResult):
                  wrench: Vector,
                  **kwargs):
         super().__init__(pose, **kwargs)
-        self._algorithm = copy.deepcopy(algorithm)
+        self._algorithm = algorithm
         self._forces = forces
         self._wrench = wrench
 

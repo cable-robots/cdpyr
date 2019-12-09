@@ -117,7 +117,7 @@ class Result(_result.PoseResult, _result.PlottableResult):
                  wrap: Vector = None,
                  **kwargs):
         super().__init__(robot=robot, pose=pose, **kwargs)
-        self._algorithm = copy.deepcopy(algorithm)
+        self._algorithm = algorithm
         lengths = _np.asarray(lengths)
         self._lengths = lengths if lengths.ndim == 2 else lengths[None, :]
         self._directions = _np.asarray(directions)
