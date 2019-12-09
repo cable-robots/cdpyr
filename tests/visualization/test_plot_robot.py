@@ -2,6 +2,7 @@ import pytest
 
 from cdpyr import robot, visualization
 from cdpyr.motion.pose import pose
+from cdpyr.analysis.kinematics.standard import Standard
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -18,9 +19,16 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_1t(self, engine: visualization.engine.Engine,
+                       ik_standard: Standard,
+                       empty_pose: pose.Pose,
                        robot_1t: robot.Robot):
+        robot = robot_1t
+        pose = empty_pose
+
+        kinematics = ik_standard.backward(robot, pose)
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_1t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -32,11 +40,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_1t_random(self, engine: visualization.engine.Engine,
+                              ik_standard: Standard,
                               rand_pose_1t: pose.Pose,
                               robot_1t: robot.Robot):
-        robot_1t.platforms[0].pose = rand_pose_1t
+        robot = robot_1t
+        pose = rand_pose_1t
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_1t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -48,9 +62,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_2t(self, engine: visualization.engine.Engine,
+                       ik_standard: Standard,
+                       empty_pose: pose.Pose,
                        robot_2t: robot.Robot):
+        robot = robot_2t
+        pose = empty_pose
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_2t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -62,11 +84,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_2t_random(self, engine: visualization.engine.Engine,
+                              ik_standard: Standard,
                               rand_pose_2t: pose.Pose,
                               robot_2t: robot.Robot):
-        robot_2t.platforms[0].pose = rand_pose_2t
+        robot = robot_2t
+        pose = rand_pose_2t
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_2t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -78,9 +106,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_3t(self, engine: visualization.engine.Engine,
+                       ik_standard: Standard,
+                       empty_pose: pose.Pose,
                        robot_3t: robot.Robot):
+        robot = robot_3t
+        pose = empty_pose
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_3t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -92,11 +128,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_3t_random(self, engine: visualization.engine.Engine,
+                              ik_standard: Standard,
                               rand_pose_3t: pose.Pose,
                               robot_3t: robot.Robot):
-        robot_3t.platforms[0].pose = rand_pose_3t
+        robot = robot_3t
+        pose = rand_pose_3t
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_3t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -108,9 +150,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_1r2t(self, engine: visualization.engine.Engine,
+                         ik_standard: Standard,
+                         empty_pose: pose.Pose,
                          robot_1r2t: robot.Robot):
+        robot = robot_1r2t
+        pose = empty_pose
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_1r2t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -122,11 +172,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_1r2t_random(self, engine: visualization.engine.Engine,
+                                ik_standard: Standard,
                                 rand_pose_1r2t: pose.Pose,
                                 robot_1r2t: robot.Robot):
-        robot_1r2t.platforms[0].pose = rand_pose_1r2t
+        robot = robot_1r2t
+        pose = rand_pose_1r2t
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_1r2t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -138,9 +194,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_2r3t(self, engine: visualization.engine.Engine,
+                         ik_standard: Standard,
+                         empty_pose: pose.Pose,
                          robot_2r3t: robot.Robot):
+        robot = robot_2r3t
+        pose = empty_pose
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_2r3t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -152,11 +216,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_2r3t_random(self, engine: visualization.engine.Engine,
+                                ik_standard: Standard,
                                 rand_pose_2r3t: pose.Pose,
                                 robot_2r3t: robot.Robot):
-        robot_2r3t.platforms[0].pose = rand_pose_2r3t
+        robot = robot_2r3t
+        pose = rand_pose_2r3t
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_2r3t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -168,9 +238,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_3r3t(self, engine: visualization.engine.Engine,
+                         ik_standard: Standard,
+                         empty_pose: pose.Pose,
                          robot_3r3t: robot.Robot):
+        robot = robot_3r3t
+        pose = empty_pose
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_3r3t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -182,11 +260,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_3r3t_random(self, engine: visualization.engine.Engine,
+                                ik_standard: Standard,
                                 rand_pose_3r3t: pose.Pose,
                                 robot_3r3t: robot.Robot):
-        robot_3r3t.platforms[0].pose = rand_pose_3r3t
+        robot = robot_3r3t
+        pose = rand_pose_3r3t
+
+        kinematics = ik_standard.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(robot_3r3t)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -198,9 +282,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_ipanema3(self, engine: visualization.engine.Engine,
+                             ik_pulley: Standard,
+                             empty_pose: pose.Pose,
                              ipanema_3: robot.Robot):
+        robot = ipanema_3
+        pose = empty_pose
+
+        kinematics = ik_pulley.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(ipanema_3)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
@@ -212,11 +304,17 @@ class PlotRobotTestSuite(object):
             ]
     )
     def test_render_ipanema3_random(self, engine: visualization.engine.Engine,
+                                    ik_pulley: Standard,
                                     rand_pose_3r3t: pose.Pose,
                                     ipanema_3: robot.Robot):
-        ipanema_3.platforms[0].pose = rand_pose_3r3t
+        robot = ipanema_3
+        pose = rand_pose_3r3t
+
+        kinematics = ik_pulley.backward(robot, pose)
+        robot.platforms[0].pose = pose
         wizard = visualization.Visualizer(engine)
-        wizard.render(ipanema_3)
+        wizard.render(robot)
+        wizard.render(kinematics)
         wizard.draw()
         wizard.show()
         wizard.close()
