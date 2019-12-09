@@ -32,6 +32,9 @@ class PulleyKinematicsBackwardTestSuite(object):
         assert not np.allclose(sol.swivel_angles, 0)
         # all wrap angles should be non-zeros
         assert not np.allclose(sol.wrap_angles, 0)
+        # get the cable shape
+        cable_shapes = sol.cable_shapes
+        assert not np.allclose(cable_shapes, 0)
 
         # loop over each kinematic chain and close the loop ensuring that
         # getting to the cable leave via the frame anchor is the same as via the
@@ -50,6 +53,8 @@ class PulleyKinematicsBackwardTestSuite(object):
                             [pulley.radius, 0, 0] + wrap_dcm.dot(
                                     [-pulley.radius, 0, 0]))))
             assert np.allclose(a, b[0:1])
+            assert np.allclose(cable_shapes[:,chain_index,0], frame_anchor.linear.position)
+            assert np.allclose(cable_shapes[:,chain_index,-1], platform_position)
 
     def test_motion_pattern_2t(self,
                                robot_2t: Robot,
@@ -74,6 +79,9 @@ class PulleyKinematicsBackwardTestSuite(object):
         assert not np.allclose(sol.swivel_angles, 0)
         # all wrap angles should be non-zeros
         assert not np.allclose(sol.wrap_angles, 0)
+        # get the cable shape
+        cable_shapes = sol.cable_shapes
+        assert not np.allclose(cable_shapes, 0)
 
         # loop over each kinematic chain and close the loop ensuring that
         # getting to the cable leave via the frame anchor is the same as via the
@@ -92,6 +100,8 @@ class PulleyKinematicsBackwardTestSuite(object):
                             [pulley.radius, 0, 0] + wrap_dcm.dot(
                                     [-pulley.radius, 0, 0]))))
             assert np.allclose(a, b[0:2])
+            assert np.allclose(cable_shapes[:,chain_index,0], frame_anchor.linear.position)
+            assert np.allclose(cable_shapes[:,chain_index,-1], platform_position)
 
     def test_motion_pattern_3t(self,
                                robot_3t: Robot,
@@ -116,6 +126,9 @@ class PulleyKinematicsBackwardTestSuite(object):
         assert not np.allclose(sol.swivel_angles, 0)
         # all wrap angles should be non-zeros
         assert not np.allclose(sol.wrap_angles, 0)
+        # get the cable shape
+        cable_shapes = sol.cable_shapes
+        assert not np.allclose(cable_shapes, 0)
 
         # loop over each kinematic chain and close the loop ensuring that
         # getting to the cable leave via the frame anchor is the same as via the
@@ -139,6 +152,8 @@ class PulleyKinematicsBackwardTestSuite(object):
                             [pulley.radius, 0, 0] + wrap_dcm.dot(
                                     [-pulley.radius, 0, 0]))))
             assert np.allclose(a, b)
+            assert np.allclose(cable_shapes[:,chain_index,0], frame_anchor.linear.position)
+            assert np.allclose(cable_shapes[:,chain_index,-1], platform_position)
 
     def test_motion_pattern_1r2t(self,
                                  robot_1r2t: Robot,
@@ -163,6 +178,9 @@ class PulleyKinematicsBackwardTestSuite(object):
         assert not np.allclose(sol.swivel_angles, 0)
         # all wrap angles should be non-zeros
         assert not np.allclose(sol.wrap_angles, 0)
+        # get the cable shape
+        cable_shapes = sol.cable_shapes
+        assert not np.allclose(cable_shapes, 0)
 
         # loop over each kinematic chain and close the loop ensuring that
         # getting to the cable leave via the frame anchor is the same as via the
@@ -186,6 +204,9 @@ class PulleyKinematicsBackwardTestSuite(object):
                             [pulley.radius, 0, 0] + wrap_dcm.dot(
                                     [-pulley.radius, 0, 0]))))
             assert np.allclose(a, b[0:2])
+            assert np.allclose(cable_shapes[:,chain_index,0], frame_anchor.linear.position)
+            assert np.allclose(cable_shapes[:,chain_index,-1], platform_position + platform_dcm.dot(
+                    platform_anchor.linear.position))
 
     def test_motion_pattern_2r3t(self,
                                  robot_2r3t: Robot,
@@ -210,6 +231,9 @@ class PulleyKinematicsBackwardTestSuite(object):
         assert not np.allclose(sol.swivel_angles, 0)
         # all wrap angles should be non-zeros
         assert not np.allclose(sol.wrap_angles, 0)
+        # get the cable shape
+        cable_shapes = sol.cable_shapes
+        assert not np.allclose(cable_shapes, 0)
 
         # loop over each kinematic chain and close the loop ensuring that
         # getting to the cable leave via the frame anchor is the same as via the
@@ -233,6 +257,9 @@ class PulleyKinematicsBackwardTestSuite(object):
                             [pulley.radius, 0, 0] + wrap_dcm.dot(
                                     [-pulley.radius, 0, 0]))))
             assert np.allclose(a, b)
+            assert np.allclose(cable_shapes[:,chain_index,0], frame_anchor.linear.position)
+            assert np.allclose(cable_shapes[:,chain_index,-1], platform_position + platform_dcm.dot(
+                    platform_anchor.linear.position))
 
     def test_motion_pattern_3r3t(self,
                                  robot_3r3t: Robot,
@@ -257,6 +284,9 @@ class PulleyKinematicsBackwardTestSuite(object):
         assert not np.allclose(sol.swivel_angles, 0)
         # all wrap angles should be non-zeros
         assert not np.allclose(sol.wrap_angles, 0)
+        # get the cable shape
+        cable_shapes = sol.cable_shapes
+        assert not np.allclose(cable_shapes, 0)
 
         # loop over each kinematic chain and close the loop ensuring that
         # getting to the cable leave via the frame anchor is the same as via the
@@ -280,6 +310,9 @@ class PulleyKinematicsBackwardTestSuite(object):
                             [pulley.radius, 0, 0] + wrap_dcm.dot(
                                     [-pulley.radius, 0, 0]))))
             assert np.allclose(a, b)
+            assert np.allclose(cable_shapes[:,chain_index,0], frame_anchor.linear.position)
+            assert np.allclose(cable_shapes[:,chain_index,-1], platform_position + platform_dcm.dot(
+                    platform_anchor.linear.position))
 
 
 if __name__ == "__main__":

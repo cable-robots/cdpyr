@@ -31,6 +31,7 @@ class StandardKinematicsBackwardTestSuite(object):
         assert (0 <= res_backward.lengths).all()
         assert res_backward.directions.shape == (
             1, robot.num_kinematic_chains)
+        assert res_backward.leave_points == pytest.approx(frame_anchor)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
                 np.ones(robot.num_kinematic_chains, ))
         assert pose.linear.position[0:1,
@@ -61,6 +62,7 @@ class StandardKinematicsBackwardTestSuite(object):
         assert (0 <= res_backward.lengths).all()
         assert res_backward.directions.shape == (
             2, robot.num_kinematic_chains)
+        assert res_backward.leave_points == pytest.approx(frame_anchor)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
                 np.ones(robot.num_kinematic_chains, ))
         assert pose.linear.position[0:2, np.newaxis] \
@@ -91,6 +93,7 @@ class StandardKinematicsBackwardTestSuite(object):
         assert (0 <= res_backward.lengths).all()
         assert res_backward.directions.shape == (
             3, robot.num_kinematic_chains)
+        assert res_backward.leave_points == pytest.approx(frame_anchor)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
                 np.ones(robot.num_kinematic_chains, ))
         assert pose.linear.position[0:3,
@@ -121,6 +124,7 @@ class StandardKinematicsBackwardTestSuite(object):
         assert (0 <= res_backward.lengths).all()
         assert res_backward.directions.shape == (
             2, robot.num_kinematic_chains)
+        assert res_backward.leave_points == pytest.approx(frame_anchor)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
                 np.ones(robot.num_kinematic_chains, ))
         assert pose.linear.position[0:2,
@@ -154,6 +158,7 @@ class StandardKinematicsBackwardTestSuite(object):
         assert (0 <= res_backward.lengths).all()
         assert res_backward.directions.shape == (
             3, robot.num_kinematic_chains)
+        assert res_backward.leave_points == pytest.approx(frame_anchor)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
                 np.ones(robot.num_kinematic_chains, ))
         assert pose.linear.position[:, np.newaxis] \
@@ -186,6 +191,7 @@ class StandardKinematicsBackwardTestSuite(object):
         assert (0 <= res_backward.lengths).all()
         assert res_backward.directions.shape == (
             3, robot.num_kinematic_chains)
+        assert res_backward.leave_points == pytest.approx(frame_anchor)
         assert np.linalg.norm(res_backward.directions, axis=0) == pytest.approx(
                 np.ones(robot.num_kinematic_chains, ))
         assert pose.linear.position[:, np.newaxis] \
