@@ -95,6 +95,10 @@ class Robot(RobotComponent):
         del self._gravity
 
     @property
+    def is_redundant(self):
+        return self.num_redundancy > 0
+
+    @property
     def kinematic_chains(self):
         return self._chains
 
@@ -171,6 +175,10 @@ class Robot(RobotComponent):
     @property
     def num_platforms(self):
         return len(self.platforms)
+
+    @property
+    def num_redundancy(self):
+        return self.num_kinematic_chains - self.num_dof
 
     @property
     def platforms(self):
