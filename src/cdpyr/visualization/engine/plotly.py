@@ -2,9 +2,6 @@ from abc import ABC
 from typing import Mapping, Sequence, Union
 
 import numpy as _np
-from plotly import graph_objects as go
-from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
-
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.geometry import (
@@ -33,6 +30,8 @@ from cdpyr.robot.anchor import (
 )
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
+from plotly import graph_objects as go
+from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -267,15 +266,11 @@ class Plotly(_engine.Engine, ABC):
                 )
         )
 
+        # scaling of coordiante axis length
+        scale = kwargs.pop('scale', 0.25)
+
         # plot each coordinate axis i.e., x, y, z or which of them are available
         for idx in range(self._NUMBER_OF_COORDINATES):
-            # plotdata = self._build_plotdata_kwargs(_np.hstack((
-            #     # where to place the point
-            #     position,
-            #     # and where to point it to
-            #     position + 0.25 * dcm.dot(
-            #         self._parse_coordinate(self.COORDINATE_DIRECTIONS[idx]))
-            # )))
             # convert rgb in range of [0...1] to RGB in range of [0...255]
             rgb = self._rgb2RGB(self.COORDINATE_DIRECTIONS[idx])
 
@@ -284,15 +279,20 @@ class Plotly(_engine.Engine, ABC):
             self.figure.add_trace(
                     self._scatter(
                             **self._prepare_plot_coordinates(
-                                    self._extract_coordinates(_np.hstack((
-                                            position, position + 0.25 * dcm.dot(
-                                                    self.COORDINATE_DIRECTIONS[
-                                                        idx])
-                                    )))),
+                                    self._extract_coordinates(
+                                            _np.vstack((position,
+                                                        position + scale *
+                                                        dcm.dot(
+                                                                self.COORDINATE_DIRECTIONS[
+                                                                    idx]))).T)),
                             **update_recursive(dict(
                                     mode='lines',
-                                    line_color=f'rgb({rgb[0]},{rgb[1]},'
-                                               f'{rgb[2]})',
+                                    line=dict(
+                                            color=f'rgb({rgb[0]},{rgb[1]},'
+                                                  f'{rgb[2]})',
+                                            width=4 if self._NUMBER_OF_AXES
+                                                       == 3 else 2,
+                                    ),
                                     name=f'{kwargs.get("name")}: axis {idx}',
                                     hoverinfo='text',
                                     hovertext=f'{kwargs.get("name")}: axis '
@@ -547,9 +547,26 @@ class Plotly(_engine.Engine, ABC):
         pass
 
     def render_kinematics(self, kinematics: '_kinematics.Result',
-                          robot: '_robot.Robot', *args, **kwargs):
+                          *args, **kwargs):
         # ask the kinematics result object to calculate the cable shape
-        shape = kinematics.shape(robot)
+        cable_shapes = kinematics.cable_shapes
+
+        # and plot each kinematic chain
+        for index_chain in range(cable_shapes.shape[1]):
+            self.figure.add_trace(
+                    self._scatter(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(
+                                            cable_shapes[:,index_chain,:])),
+                            mode='lines',
+                            line_color='rgb(255, 0, 0)',
+                            name='',
+                            hoverinfo='skip',
+                            hovertext='',
+                            showlegend=False
+                    )
+            )
+
 
     def render_motor(self,
                      motor: '_motor.Motor',
@@ -682,7 +699,7 @@ class Plotly(_engine.Engine, ABC):
                                       hovertext=f'platform {pidx}: center',
                                       line=dict(
                                               dash='dash' if platform.can_rotate
-                                              else 'solid'
+                                              else 'solid',
                                       )
                                       )
 
@@ -852,7 +869,7 @@ class Plotly(_engine.Engine, ABC):
 
         # check if we are dealing with single arrays i.e., (AxC) arrays where
         # A is the number of plot axes and C the number of coordinates
-        is_single = coordinates.shape[1] == 1 and coordinates.ndim == 2
+        is_single = coordinates.ndim == 3 and coordinates.shape[1] == 1
 
         # prepare data using parent method
         prepared = _engine.Engine._prepare_plot_coordinates(self, coordinates)
