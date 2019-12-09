@@ -169,7 +169,8 @@ class Standard(_algorithm.Algorithm):
             )
 
             return _algorithm.Result(self, robot, pose, lengths=lengths,
-                                     directions=last_direction[0])
+                                     directions=last_direction[0],
+                                     leave_points=frame_anchors)
 
     def _backward(self,
                   robot: '_robot.Robot',
@@ -218,7 +219,8 @@ class Standard(_algorithm.Algorithm):
         directions[:, _np.isclose(lengths, 0)] = 0
 
         return _algorithm.Result(self, robot, pose, lengths=lengths,
-                                 directions=directions, swivel=swivel)
+                                 directions=directions, swivel=swivel,
+                                 leave_points=frame_anchors)
 
     def _vector_loop(self,
                      position: Matrix,

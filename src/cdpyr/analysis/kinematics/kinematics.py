@@ -63,7 +63,7 @@ class Algorithm(ABC):
         raise NotImplementedError()
 
 
-class Result(_result.PoseResult, _result.PlottableResult):
+class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
     """
 
     """
@@ -115,6 +115,7 @@ class Result(_result.PoseResult, _result.PlottableResult):
                  directions: Matrix,
                  swivel: Vector = None,
                  wrap: Vector = None,
+                 leave_points: Matrix = None,
                  **kwargs):
         super().__init__(robot=robot, pose=pose, **kwargs)
         self._algorithm = algorithm
@@ -123,8 +124,8 @@ class Result(_result.PoseResult, _result.PlottableResult):
         self._directions = _np.asarray(directions)
         self._swivel = _np.asarray(swivel) if swivel is not None else None
         self._wrap = _np.asarray(wrap) if wrap is not None else None
+        self._leave_points = leave_points
         self._cable_shapes = None
-        self._leave_points = None
 
     @property
     def directions(self):

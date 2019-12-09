@@ -36,6 +36,7 @@ class Pulley(_algorithm.Algorithm):
         wrap = []
         lengths = []
         directions = []
+        cable_leave_points = []
 
         # extract platform position and orientation
         platform_position, platform_dcm = pose.position
@@ -88,12 +89,12 @@ class Pulley(_algorithm.Algorithm):
             ))
             # position of the cable leave point in coordinates of the roller
             # center
-            cable_leave_point = _np.linalg.solve(leave_dcm,
+            cable_leave_points.append(_np.linalg.solve(leave_dcm,
                                                  roller_center_to_platform[
-                                                     [0, 2]])
+                                                     [0, 2]]))
 
             # "unwrapped angle"
-            unwrapped = _np.arctan2(cable_leave_point[1], cable_leave_point[0])
+            unwrapped = _np.arctan2(cable_leave_points[-1][1], cable_leave_points[-1][0])
 
             # append the angle of wrap
             wrap_ = _np.pi - unwrapped
@@ -120,10 +121,11 @@ class Pulley(_algorithm.Algorithm):
         directions = _np.asarray(directions).T
         swivel = _np.asarray(swivel)
         wrap = _np.asarray(wrap)
+        leave_points = _np.asarray(cable_leave_points).T
 
         return _algorithm.Result(self, robot, pose, lengths=lengths,
                                  directions=directions, swivel=swivel,
-                                 wrap=wrap)
+                                 wrap=wrap, leave_points=leave_points)
 
 
 __all__ = [
