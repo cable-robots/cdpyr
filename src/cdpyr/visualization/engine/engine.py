@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from typing import AnyStr, Callable, Dict, Union
 
 import numpy as _np
-
 from cdpyr import geometry as _geometry
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.result import PlottableResult
@@ -19,11 +18,11 @@ from cdpyr.robot import (
     motor as _motor,
     platform as _platform,
     pulley as _pulley,
-    robot as _robot
+    robot as _robot,
 )
 from cdpyr.robot.anchor import (
     frame_anchor as _frame_anchor,
-    platform_anchor as _platform_anchor
+    platform_anchor as _platform_anchor,
 )
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Matrix, Vector
@@ -100,7 +99,26 @@ class Engine(ABC, BaseObject):
         'RobotComponent', 'PlottableResult', '_geometry.Primitive'],
                *args,
                **kwargs):
-        self._RESOLVER[fcn(o)](o, *args, **kwargs)
+        KeyE1 = None
+        # first, try to render the object with its designated renderer
+        try:
+            return self._RESOLVER[fcn(o)](o, *args, **kwargs)
+        # failure, so let's see if the object can render with any of its
+        # parent classes
+        except KeyError as KeyE1:
+            pass
+
+        for parent in o.__mro__:
+            try:
+                return self._RESOLVER[fcn(parent)](o, *args, **kwargs)
+            except KeyError as KeyE2:
+                pass
+
+        # if we got here, then the object could not be rendered in any way,
+        # so we will explain that to the user
+        raise KeyError(
+            f'Unable to render object. Expected it to be any of '
+            f'{", ".join(self._RESOLVER.keys())} but received {fcn(o)}.')
 
     @abstractmethod
     def render_cable(self, cable: '_cable.Cable', *args, **kwargs):
@@ -154,8 +172,7 @@ class Engine(ABC, BaseObject):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_kinematics(self, kinematics: '_kinematics.Result',
-                          robot: '_robot.Robot', *args, **kwargs):
+    def render_kinematics(self, kinematics: '_kinematics.Result', *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
