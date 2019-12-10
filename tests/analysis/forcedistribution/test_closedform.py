@@ -34,8 +34,7 @@ class ClosedFormForceDistributionTestSuite(object):
         # assertion
         assert distribution.pose == empty_pose
         assert distribution.forces.ndim == 1
-        assert distribution.forces.shape == (
-            robot_1t.num_kinematic_chains,)
+        assert distribution.forces.shape == (robot_1t.num_kinematic_chains,)
         assert (distribution.forces > 0).all()
 
     def test_2t(self,
@@ -64,8 +63,7 @@ class ClosedFormForceDistributionTestSuite(object):
         # assertion
         assert distribution.pose == empty_pose
         assert distribution.forces.ndim == 1
-        assert distribution.forces.shape == (
-            robot_2t.num_kinematic_chains,)
+        assert distribution.forces.shape == (robot_2t.num_kinematic_chains,)
         assert (distribution.forces > 0).all()
 
     def test_3t(self,
@@ -94,8 +92,7 @@ class ClosedFormForceDistributionTestSuite(object):
         # assertion
         assert distribution.pose == empty_pose
         assert distribution.forces.ndim == 1
-        assert distribution.forces.shape == (
-            robot_3t.num_kinematic_chains,)
+        assert distribution.forces.shape == (robot_3t.num_kinematic_chains,)
         assert (distribution.forces > 0).all()
 
     def test_1r2t(self,
@@ -124,8 +121,7 @@ class ClosedFormForceDistributionTestSuite(object):
         # assertion
         assert distribution.pose == empty_pose
         assert distribution.forces.ndim == 1
-        assert distribution.forces.shape == (
-            robot_1r2t.num_kinematic_chains,)
+        assert distribution.forces.shape == (robot_1r2t.num_kinematic_chains,)
         assert (distribution.forces > 0).all()
 
     def test_2r3t(self,
@@ -154,8 +150,7 @@ class ClosedFormForceDistributionTestSuite(object):
         # assertion
         assert distribution.pose == empty_pose
         assert distribution.forces.ndim == 1
-        assert distribution.forces.shape == (
-            robot_2r3t.num_kinematic_chains,)
+        assert distribution.forces.shape == (robot_2r3t.num_kinematic_chains,)
         assert (distribution.forces > 0).all()
 
     def test_3r3t(self,
@@ -184,8 +179,7 @@ class ClosedFormForceDistributionTestSuite(object):
         # assertion
         assert distribution.pose == empty_pose
         assert distribution.forces.ndim == 1
-        assert distribution.forces.shape == (
-            robot_3r3t.num_kinematic_chains,)
+        assert distribution.forces.shape == (robot_3r3t.num_kinematic_chains,)
         assert (distribution.forces > 0).all()
 
 

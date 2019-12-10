@@ -90,11 +90,12 @@ class Pulley(_algorithm.Algorithm):
             # position of the cable leave point in coordinates of the roller
             # center
             cable_leave_points.append(_np.linalg.solve(leave_dcm,
-                                                 roller_center_to_platform[
-                                                     [0, 2]]))
+                                                       roller_center_to_platform[
+                                                           [0, 2]]))
 
             # "unwrapped angle"
-            unwrapped = _np.arctan2(cable_leave_points[-1][1], cable_leave_points[-1][0])
+            unwrapped = _np.arctan2(cable_leave_points[-1][1],
+                                    cable_leave_points[-1][0])
 
             # append the angle of wrap
             wrap_ = _np.pi - unwrapped

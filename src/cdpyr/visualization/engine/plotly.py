@@ -335,7 +335,8 @@ class Plotly(_engine.Engine, ABC):
         try:
             vertices = transform.apply(vertices)
         except ValueError:
-            vertices = _np.asarray([transform.apply(page) for page in vertices.T]).T
+            vertices = _np.asarray(
+                    [transform.apply(page) for page in vertices.T]).T
             vertices = _np.stack([transform.apply(page) for page in vertices.T],
                                  axis=0)
 
@@ -435,7 +436,8 @@ class Plotly(_engine.Engine, ABC):
         try:
             vertices = transform.apply(vertices)
         except ValueError:
-            vertices = _np.asarray([transform.apply(page) for page in vertices.T]).T
+            vertices = _np.asarray(
+                    [transform.apply(page) for page in vertices.T]).T
             vertices = _np.stack([transform.apply(page) for page in vertices.T],
                                  axis=0)
 

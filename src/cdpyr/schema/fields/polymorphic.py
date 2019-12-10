@@ -37,6 +37,7 @@ class Polymorphic(fields.Field):
         self.unknown = unknown
         self._schemas = None  # Cached Schema instance
         super().__init__(default=default, **kwargs)
+
     @property
     def schemas(self):
         if not self._schemas:

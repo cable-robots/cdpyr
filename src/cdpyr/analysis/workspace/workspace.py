@@ -1,4 +1,3 @@
-import copy
 from abc import abstractmethod
 
 from cdpyr.analysis import evaluator as _evaluator, result as _result

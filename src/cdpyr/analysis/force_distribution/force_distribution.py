@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from abc import abstractmethod
 from typing import Union
 
 import numpy as _np

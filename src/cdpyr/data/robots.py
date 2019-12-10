@@ -247,7 +247,8 @@ def robot_1r2t():
                                     cdpyr.robot.PlatformAnchor(
                                             position=pos,
                                             angular=cdpyr.kinematics.transformation.Angular.rotation_z(
-                                                    np.arctan2(-pos[1], -pos[0])),
+                                                    np.arctan2(-pos[1],
+                                                               -pos[0])),
                                     ) for pos in (
                                             (-0.095, 0.105, 0.00),
                                             (0.105, 0.095, 0.00),
@@ -346,7 +347,8 @@ def robot_2r3t():
                                     cdpyr.robot.PlatformAnchor(
                                             position=pos,
                                             angular=cdpyr.kinematics.transformation.Angular.rotation_z(
-                                                    np.arctan2(-pos[1], -pos[0])),
+                                                    np.arctan2(-pos[1],
+                                                               -pos[0])),
                                     ) for pos in (
                                             (-0.095, 0.105, 0.100),
                                             (0.105, 0.095, 0.100),
@@ -497,7 +499,8 @@ def robot_3r3t():
                                     cdpyr.robot.PlatformAnchor(
                                             position=pos,
                                             angular=cdpyr.kinematics.transformation.Angular.rotation_z(
-                                                    np.arctan2(-pos[1], -pos[0])),
+                                                    np.arctan2(-pos[1],
+                                                               -pos[0])),
                                     ) for pos in (
                                             (-0.095, 0.105, 0.100),
                                             (0.105, 0.095, 0.100),
@@ -651,7 +654,8 @@ def ipanema_3():
                                     cdpyr.robot.PlatformAnchor(
                                             position=pos,
                                             angular=cdpyr.kinematics.transformation.Angular.rotation_z(
-                                                    np.arctan2(-pos[1], -pos[0])),
+                                                    np.arctan2(-pos[1],
+                                                               -pos[0])),
                                     ) for pos in (
                                             (-0.085, 0.748, 0.261),
                                             (0.095, 0.749, 0.26),

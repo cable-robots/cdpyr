@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Mapping, Union
+from typing import Union
 
 import numpy as _np
 from magic_repr import make_repr
@@ -34,7 +34,8 @@ class Result(_result.PoseResult):
     _kernel: Matrix
     _pinv: Matrix
 
-    def __init__(self, pose: '_pose.Pose', matrix: Union[Matrix, 'Result'], **kwargs):
+    def __init__(self, pose: '_pose.Pose', matrix: Union[Matrix, 'Result'],
+                 **kwargs):
         super().__init__(pose, **kwargs)
         self._matrix = matrix.matrix if isinstance(matrix, Result) else matrix
         self._kernel = None

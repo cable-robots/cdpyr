@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 
-from cdpyr.mixin.base_object import BaseObject
-
 import numpy as _np
 
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Vector
 
 __author__ = "Philipp Tempel"
