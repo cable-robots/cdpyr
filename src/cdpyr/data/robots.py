@@ -29,7 +29,7 @@ def robot_1t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_1T,
                             inertia=cdpyr.mechanics.Inertia(
-                                    np.diag((1, 1, 1)) * 5),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(),
                                     cdpyr.robot.PlatformAnchor(),
@@ -91,7 +91,7 @@ def robot_2t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_2T,
                             inertia=cdpyr.mechanics.Inertia(
-                                    np.diag((1, 1, 1)) * 5),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(),
                                     cdpyr.robot.PlatformAnchor(),
@@ -166,7 +166,7 @@ def robot_3t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_3T,
                             inertia=cdpyr.mechanics.Inertia(
-                                    np.diag((1, 1, 1)) * 5),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(),
                                     cdpyr.robot.PlatformAnchor(),
@@ -287,26 +287,26 @@ def robot_1r2t():
                     {
                             'frame_anchor':    0,
                             # 'platform':        0,  # implied
-                            'platform_anchor': 0,
-                            'cable':           0
+                            'platform_anchor': 3,
+                            'cable':           3
                     },
                     {
                             'frame_anchor':    1,
-                            # 'platform':        0,  # implied
-                            'platform_anchor': 1,
-                            'cable':           1
-                    },
-                    {
-                            'frame_anchor':    2,
                             # 'platform':        0,  # implied
                             'platform_anchor': 2,
                             'cable':           2
                     },
                     {
+                            'frame_anchor':    2,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 1,
+                            'cable':           1
+                    },
+                    {
                             'frame_anchor':    3,
                             # 'platform':        0,  # implied
-                            'platform_anchor': 3,
-                            'cable':           3
+                            'platform_anchor': 0,
+                            'cable':           0
                     },
             ],
     )
@@ -341,7 +341,7 @@ def robot_2r3t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_2R3T,
                             inertia=cdpyr.mechanics.Inertia(
-                                    np.diag((1, 1, 1)) * 10),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(
                                             position=pos,
@@ -492,7 +492,7 @@ def robot_3r3t():
                     cdpyr.robot.Platform(
                             motion_pattern=cdpyr.motion.pattern.MP_3R3T,
                             inertia=cdpyr.mechanics.Inertia(
-                                    np.diag((1, 1, 1)) * 10),
+                                    np.diag((1, 1, 1)) * 1),
                             anchors=[
                                     cdpyr.robot.PlatformAnchor(
                                             position=pos,
@@ -565,50 +565,50 @@ def robot_3r3t():
                     {
                             'frame_anchor':    0,
                             # 'platform':        0,  # implied
-                            'platform_anchor': 0,
-                            'cable':           0
-                    },
-                    {
-                            'frame_anchor':    1,
-                            # 'platform':        0,  # implied
-                            'platform_anchor': 1,
-                            'cable':           1
-                    },
-                    {
-                            'frame_anchor':    2,
-                            # 'platform':        0,  # implied
-                            'platform_anchor': 2,
-                            'cable':           2
-                    },
-                    {
-                            'frame_anchor':    3,
-                            # 'platform':        0,  # implied
-                            'platform_anchor': 3,
-                            'cable':           3
-                    },
-                    {
-                            'frame_anchor':    4,
-                            # 'platform':        0,  # implied
                             'platform_anchor': 4,
                             'cable':           4
                     },
                     {
-                            'frame_anchor':    5,
+                            'frame_anchor':    1,
                             # 'platform':        0,  # implied
                             'platform_anchor': 5,
                             'cable':           5
                     },
                     {
-                            'frame_anchor':    6,
+                            'frame_anchor':    2,
                             # 'platform':        0,  # implied
                             'platform_anchor': 6,
                             'cable':           6
                     },
                     {
-                            'frame_anchor':    7,
+                            'frame_anchor':    3,
                             # 'platform':        0,  # implied
                             'platform_anchor': 7,
                             'cable':           7
+                    },
+                    {
+                            'frame_anchor':    4,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 0,
+                            'cable':           0
+                    },
+                    {
+                            'frame_anchor':    5,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 1,
+                            'cable':           1
+                    },
+                    {
+                            'frame_anchor':    6,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 2,
+                            'cable':           2
+                    },
+                    {
+                            'frame_anchor':    7,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 3,
+                            'cable':           3
                     },
             ],
     )
