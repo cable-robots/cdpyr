@@ -19,8 +19,7 @@ class Linear(_transformation.Transformation):
                  position: Optional[Vector] = None,
                  velocity: Optional[Vector] = None,
                  acceleration: Optional[Vector] = None,
-                 **kwargs
-                 ):
+                 **kwargs):
         super().__init__(**kwargs)
         self.position = position \
             if position is not None \

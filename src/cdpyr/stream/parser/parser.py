@@ -8,10 +8,6 @@ from cdpyr.robot.robot_component import RobotComponent
 
 class Parser(ABC, BaseObject):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        pass
-
     def kwargs(self, o: RobotComponent, **kwargs):
         return kwargs
 

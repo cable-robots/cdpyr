@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from cdpyr.mixin.base_object import BaseObject
+
 import numpy as _np
 
 from cdpyr.typing import Vector
@@ -8,10 +10,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Archetype(ABC):
-
-    def __init__(self, **kwargs):
-        pass
+class Archetype(BaseObject, ABC):
 
     @property
     @abstractmethod

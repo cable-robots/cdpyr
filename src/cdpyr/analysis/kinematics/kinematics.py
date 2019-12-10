@@ -1,4 +1,3 @@
-import copy
 from abc import ABC, abstractmethod
 from typing import Union
 
@@ -17,7 +16,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Algorithm(ABC):
 
-    def __init__(self, **kwargs):
+    def __init__(self):
         pass
 
     def forward(self,
@@ -117,7 +116,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
                  wrap: Vector = None,
                  leave_points: Matrix = None,
                  **kwargs):
-        super().__init__(robot=robot, pose=pose, **kwargs)
+        super().__init__(pose, robot=robot, **kwargs)
         self._algorithm = algorithm
         lengths = _np.asarray(lengths)
         self._lengths = lengths if lengths.ndim == 2 else lengths[None, :]
@@ -174,8 +173,8 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
                     # calculate shape on the pulley
                     pulley_shape = _np.asarray([frame_anchor.pulley.radius * (
                             eye - transform.dcm).dot(evec_x) for transform in
-                                              _angular.Angular.rotation_y(
-                                                      linspace_wrap)]).T
+                                                _angular.Angular.rotation_y(
+                                                        linspace_wrap)]).T
 
                     # pre-calculate and pre-gather some rotation matrices
                     cable_dcm = _angular.Angular.rotation_z(

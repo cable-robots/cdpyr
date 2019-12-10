@@ -27,8 +27,7 @@ class FrameAnchor(_anchor.Anchor):
                  pulley: Optional['_pulley.Pulley'] = None,
                  drivetrain: Optional['_drivetrain.DriveTrain'] = None,
                  **kwargs):
-        super().__init__(position=position, dcm=dcm, linear=linear,
-                         angular=angular, **kwargs)
+        super().__init__(position, dcm, linear, angular, **kwargs)
         self.pulley = pulley or None
         self.drivetrain = drivetrain or None
 

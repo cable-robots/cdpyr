@@ -129,9 +129,8 @@ class Result(_polyhedron.Polyhedron, _workspace.Result):
                  vertices: Matrix,
                  faces: Matrix,
                  **kwargs):
-        super().__init__(algorithm=algorithm, archetype=archetype,
-                         criterion=criterion, vertices=vertices, faces=faces,
-                         **kwargs)
+        _polyhedron.Polyhedron.__init__(self, vertices, faces)
+        _workspace.Result.__init__(self, algorithm, archetype, criterion)
 
 
 __all__ = [

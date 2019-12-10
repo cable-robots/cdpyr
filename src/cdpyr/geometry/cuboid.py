@@ -13,8 +13,9 @@ class Cuboid(Primitive):
     depth: float
 
     def __init__(self, width: Num, depth: Num, height: Num,
-                 center: Vector = None, **kwargs):
-        super().__init__(center, **kwargs)
+                 center: Vector = None,
+                 **kwargs):
+        super().__init__(center,**kwargs)
         self.width = width
         self.height = height
         self.depth = depth

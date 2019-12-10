@@ -22,8 +22,7 @@ class PlatformAnchor(_anchor.Anchor):
                  linear: Optional['_linear.Linear'] = None,
                  angular: Optional['_angular.Angular'] = None,
                  **kwargs):
-        super().__init__(position=position, dcm=dcm, linear=linear,
-                         angular=angular, **kwargs)
+        super().__init__(position, dcm, linear, angular, **kwargs)
 
     __repr__ = make_repr(
             'position',
