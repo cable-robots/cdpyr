@@ -153,6 +153,7 @@ class Wcrfx(parser.Parser):
                                          c in [1, 2, 3]), itertools.chain(
                                             *dict_get(frame_anchor, ('dcm',),
                                                       _np.eye(3)))),
+                                    zip(('@radius', ), (dict_get(frame_anchor, ('pulley', 'radius'), 0.0), ))
                             ))),
                             ('platform', OrderedDict(itertools.chain(
                                     zip((f'@{c}' for c in 'xyz'),
