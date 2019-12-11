@@ -16,6 +16,10 @@ class Archetype(BaseObject, ABC):
     def comparator(self):
         raise NotImplementedError()
 
+    @property
+    def name(self):
+        return self.__class__.__name__
+
     def poses(self, coordinate: Vector):
         return self._poses(_np.pad(coordinate, (0, 3 - coordinate.size)))
 

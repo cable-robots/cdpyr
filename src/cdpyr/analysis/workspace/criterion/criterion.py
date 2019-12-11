@@ -21,6 +21,10 @@ class Criterion(_evaluator.PoseEvaluator):
         # pass down to the criterion's actual evaluation implementation
         return self._evaluate(robot, pose, **kwargs)
 
+    @property
+    def name(self):
+        return self.__class__.__name__
+
     @abstractmethod
     def _evaluate(self, robot: '_robot.Robot', pose: '_pose.Pose', **kwargs):
         raise NotImplementedError()
