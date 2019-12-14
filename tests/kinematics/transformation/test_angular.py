@@ -1,275 +1,164 @@
-from typing import (
-    AnyStr,
-    Sequence
-)
 import itertools
 
 import numpy as np
 import pytest
-import scipy.linalg
 from scipy.spatial.transform import Rotation
 
 from cdpyr.kinematics.transformation import Angular
+from cdpyr.typing import Matrix, Vector
 
 
 class AngularTransformationTestSuite(object):
 
-    def test_empty_object(self):
-        angular = Angular()
+    @pytest.mark.parametrize(
+            ('dcm', 'ang_vel', 'ang_acc'),
+            (
+                    itertools.product(
+                            (None, np.eye(3)) + tuple(dcm for dcm in
+                                                      Rotation.random(
+                                                              25).as_dcm()),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                    )
+            )
+    )
+    def test_init_with_dcm(self, dcm: Matrix, ang_vel: Vector, ang_acc: Vector):
+        angular = Angular(dcm, angular_velocity=ang_vel,
+                          angular_acceleration=ang_acc)
 
-        assert isinstance(angular, Angular)
+        dcm = np.asarray(dcm if dcm is not None else np.eye(3))
+        ang_vel = np.asarray(
+                ang_vel if ang_vel is not None else [0.0, 0.0, 0.0])
+        ang_acc = np.asarray(
+                ang_acc if ang_acc is not None else [0.0, 0.0, 0.0])
 
-        assert angular.euler.shape == (3,)
-        assert angular.euler == pytest.approx([0., 0., 0.])
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
+        assert angular.dcm.shape == dcm.shape
+        assert angular.angular_velocity.shape == ang_vel.shape
+        assert angular.angular_acceleration.shape == ang_acc.shape
+        assert angular.dcm == pytest.approx(dcm)
+        assert angular.angular_velocity == pytest.approx(ang_vel)
+        assert angular.angular_acceleration == pytest.approx(ang_acc)
 
     @pytest.mark.parametrize(
-        ("eul", "seq"),
-        [
-            (np.pi * (np.random.random((3,)) - 0.5), ''.join(seq)) for seq in
-            itertools.chain(itertools.permutations(('x', 'y', 'z'), 3),
-                            itertools.permutations(('X', 'Y', 'Z'), 3))
-        ]
+            ('euler_seq', 'ang_vel', 'ang_acc'),
+            (
+                    itertools.product(
+                            ((np.pi * (np.random.random((3,)) - 0.5),
+                              ''.join(seq)) for seq in itertools.chain(
+                                    itertools.permutations(('x', 'y', 'z'), 3),
+                                    itertools.permutations(('X', 'Y', 'Z'),
+                                                           3))),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                    )
+            )
     )
-    def test_with_euler_from_list_as_keyword_argument(self, eul: Sequence,
-                                                      seq: AnyStr):
-        angular = Angular(
-            sequence=seq,
-            euler=eul
-        )
+    def test_init_with_euler(self, euler_seq, ang_vel: Vector, ang_acc: Vector):
+        euler, seq = euler_seq
+        angular = Angular(euler=euler, sequence=seq, angular_velocity=ang_vel,
+                          angular_acceleration=ang_acc)
 
-        rot: Rotation = Rotation.from_euler(seq, eul)
+        euler = np.asarray(euler if euler is not None else [0.0, 0.0, 0.0])
+        ang_vel = np.asarray(
+                ang_vel if ang_vel is not None else [0.0, 0.0, 0.0])
+        ang_acc = np.asarray(
+                ang_acc if ang_acc is not None else [0.0, 0.0, 0.0])
 
-        assert angular.euler.shape == (len(eul),)
-        assert angular.euler == pytest.approx(eul)
-        assert angular.dcm == pytest.approx(rot.as_dcm())
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
+        dcm = Rotation.from_euler(seq, euler).as_dcm()
+
+        assert angular.dcm.shape == dcm.shape
+        assert angular.angular_velocity.shape == ang_vel.shape
+        assert angular.angular_acceleration.shape == ang_acc.shape
+        assert angular.dcm == pytest.approx(dcm)
+        assert angular.euler == pytest.approx(euler)
+        assert angular.angular_velocity == pytest.approx(ang_vel)
+        assert angular.angular_acceleration == pytest.approx(ang_acc)
 
     @pytest.mark.parametrize(
-        ("eul", "seq"),
-        [
-            (np.pi * (np.random.random((3,)) - 0.5), ''.join(seq)) for seq in
-            itertools.chain(itertools.permutations(('x', 'y', 'z'), 3),
-                            itertools.permutations(('X', 'Y', 'Z'), 3))
-        ]
+            ('quaternion', 'ang_vel', 'ang_acc'),
+            (
+                    itertools.product(
+                            ([0.0, 0.0, 0.0, 1.0], np.random.random((4,))),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                    )
+            )
     )
-    def test_with_euler_from_numpyarray_as_keyword_argument(self,
-                                                            eul: np.ndarray,
-                                                            seq: AnyStr):
-        angular = Angular(
-            sequence=seq,
-            euler=eul
-        )
+    def test_init_with_quaternion(self, quaternion: Vector, ang_vel: Vector,
+                                  ang_acc: Vector):
+        angular = Angular(quaternion=quaternion, angular_velocity=ang_vel,
+                          angular_acceleration=ang_acc)
 
-        rot: Rotation = Rotation.from_euler(seq, eul)
+        quaternion = np.asarray(quaternion)
+        ang_vel = np.asarray(
+                ang_vel if ang_vel is not None else [0.0, 0.0, 0.0])
+        ang_acc = np.asarray(
+                ang_acc if ang_acc is not None else [0.0, 0.0, 0.0])
 
-        assert angular.euler.shape == eul.shape
-        assert angular.euler == pytest.approx(eul)
-        assert angular.dcm == pytest.approx(rot.as_dcm())
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
+        dcm = Rotation.from_quat(quaternion).as_dcm()
+        quaternion /= np.linalg.norm(quaternion)
+
+        assert angular.dcm.shape == dcm.shape
+        assert angular.angular_velocity.shape == ang_vel.shape
+        assert angular.angular_acceleration.shape == ang_acc.shape
+        assert angular.dcm == pytest.approx(dcm)
+        assert angular.quaternion == pytest.approx(quaternion)
+        assert angular.angular_velocity == pytest.approx(ang_vel)
+        assert angular.angular_acceleration == pytest.approx(ang_acc)
 
     @pytest.mark.parametrize(
-        "quat",
-        [quat.tolist() for quat in Rotation.random(25).as_quat()]
+            ('rotvec', 'ang_vel', 'ang_acc'),
+            (
+                    itertools.product(
+                            np.pi * (np.random.random((10, 3)) - 0.5),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                    )
+            )
     )
-    def test_with_quaternion_from_list_as_keyword_argument(self,
-                                                           quat: Sequence):
-        angular = Angular(
-            quaternion=quat
-        )
-
-        rot: Rotation = Rotation.from_quat(quat)
-        quat = np.asarray(quat)
-
-        assert angular.quaternion.shape == quat.shape
-        assert angular.quaternion == pytest.approx(
-            quat / scipy.linalg.norm(quat))
-        assert angular.dcm == pytest.approx(rot.as_dcm())
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "quat",
-        [quat for quat in Rotation.random(25).as_quat()]
-    )
-    def test_with_quaternion_from_numpyarray_as_keyword_argument(self,
-                                                                 quat:
-                                                                 np.ndarray):
-        angular = Angular(
-            quaternion=quat
-        )
-
-        rot: Rotation = Rotation.from_quat(quat)
-
-        assert angular.quaternion.shape == quat.shape
-        assert angular.quaternion == pytest.approx(
-            quat / scipy.linalg.norm(quat))
-        assert angular.dcm == pytest.approx(rot.as_dcm())
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "rotvec",
-        [rotvec.tolist() for rotvec in Rotation.random(25).as_rotvec()]
-    )
-    def test_with_rotationvector_from_list_as_keyword_argument(self,
-                                                               rotvec:
-                                                               Sequence):
-        angular = Angular(
-            rotvec=rotvec
-        )
-
-        rot: Rotation = Rotation.from_rotvec(rotvec)
+    def test_init_with_rotvec(self, rotvec: Vector, ang_vel: Vector,
+                              ang_acc: Vector):
+        angular = Angular(rotvec=rotvec, angular_velocity=ang_vel,
+                          angular_acceleration=ang_acc)
 
         rotvec = np.asarray(rotvec)
+        ang_vel = np.asarray(
+                ang_vel if ang_vel is not None else [0.0, 0.0, 0.0])
+        ang_acc = np.asarray(
+                ang_acc if ang_acc is not None else [0.0, 0.0, 0.0])
 
-        assert angular.rotvec.shape == rotvec.shape
-        assert angular.rotvec == pytest.approx(rotvec)
-        assert angular.dcm == pytest.approx(rot.as_dcm())
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "rotvec",
-        [rotvec for rotvec in Rotation.random(25).as_rotvec()]
-    )
-    def test_with_rotationvector_from_numpyarray_as_keyword_argument(self,
-                                                                     rotvec:
-                                                                     np.ndarray):
-        angular = Angular(
-            rotvec=rotvec
-        )
-
-        rot: Rotation = Rotation.from_rotvec(rotvec)
-
-        assert angular.rotvec.shape == rotvec.shape
-        assert angular.rotvec == pytest.approx(rotvec)
-        assert angular.dcm == pytest.approx(rot.as_dcm())
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "dcm",
-        [dcm for dcm in Rotation.random(25).as_dcm()]
-    )
-    def test_with_dcm_from_list_as_keyword_argument(self,
-                                                    dcm:
-                                                    Sequence[Sequence]):
-        angular = Angular(
-            dcm=dcm
-        )
-
-        dcm = np.asarray(dcm)
+        dcm = Rotation.from_rotvec(rotvec).as_dcm()
 
         assert angular.dcm.shape == dcm.shape
+        assert angular.angular_velocity.shape == ang_vel.shape
+        assert angular.angular_acceleration.shape == ang_acc.shape
         assert angular.dcm == pytest.approx(dcm)
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
+        assert angular.rotvec == pytest.approx(rotvec)
+        assert angular.angular_velocity == pytest.approx(ang_vel)
+        assert angular.angular_acceleration == pytest.approx(ang_acc)
 
     @pytest.mark.parametrize(
-        "dcm",
-        [dcm for dcm in Rotation.random(25).as_dcm()]
+            ('dcm', 'coordinate'),
+            (
+                    itertools.product(
+                            (None, np.eye(3)) + tuple(dcm for dcm in
+                                                      Rotation.random(
+                                                              25).as_dcm()),
+                            (np.zeros((3,)), np.random.random((3,)),
+                             np.random.random((3, 5))),
+                    )
+            )
     )
-    def test_with_dcm_from_numpyarray_as_keyword_argument(self,
-                                                          dcm:
-                                                          np.ndarray):
-        angular = Angular(
-            dcm=dcm
-        )
+    def test_apply_transformation(self, dcm: Matrix, coordinate: Vector):
+        angular = Angular(dcm)
 
-        assert angular.dcm.shape == dcm.shape
-        assert angular.dcm == pytest.approx(dcm)
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
+        dcm = np.asarray(dcm if dcm is not None else np.eye(3))
 
-    @pytest.mark.parametrize(
-        "vel",
-        [vel.tolist() for vel in np.random.random((25, 3))]
-    )
-    def test_with_velocity_from_list_as_keyword_argument(self, vel: Sequence):
-        angular = Angular(
-            angular_velocity=vel
-        )
+        expected_transformed = dcm.dot(coordinate)
+        transformed = angular.apply(coordinate)
 
-        assert angular.quaternion.shape == (4,)
-        assert angular.quaternion == pytest.approx([0., 0., 0., 1.])
-        assert angular.angular_velocity.shape == (len(vel),)
-        assert angular.angular_velocity == pytest.approx(vel)
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "vel",
-        [vel for vel in np.random.random((25, 3))]
-    )
-    def test_with_velocity_from_numpyarray_as_keyword_argument(self,
-                                                               vel: np.ndarray):
-        angular = Angular(
-            angular_velocity=vel
-        )
-
-        assert angular.quaternion.shape == (4,)
-        assert angular.quaternion == pytest.approx([0., 0., 0., 1.])
-        assert angular.angular_velocity.shape == vel.shape
-        assert angular.angular_velocity == pytest.approx(vel)
-        assert angular.angular_acceleration.shape == (3,)
-        assert angular.angular_acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "acc",
-        [acc.tolist() for acc in np.random.random((25, 3))]
-    )
-    def test_with_acceleration_from_list_as_keyword_argument(self,
-                                                             acc: Sequence):
-        angular = Angular(
-            angular_acceleration=acc
-        )
-
-        assert angular.quaternion.shape == (4,)
-        assert angular.quaternion == pytest.approx([0., 0., 0., 1.])
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == (len(acc),)
-        assert angular.angular_acceleration == pytest.approx(acc)
-
-    @pytest.mark.parametrize(
-        "acc",
-        [acc for acc in np.random.random((25, 3))]
-    )
-    def test_with_acceleration_from_numpyarray_as_keyword_argument(self,
-                                                                   acc:
-                                                                   np.ndarray):
-        angular = Angular(
-            angular_acceleration=acc
-        )
-
-        assert angular.quaternion.shape == (4,)
-        assert angular.quaternion == pytest.approx([0., 0., 0., 1.])
-        assert angular.angular_velocity.shape == (3,)
-        assert angular.angular_velocity == pytest.approx([0., 0., 0.])
-        assert angular.angular_acceleration.shape == acc.shape
-        assert angular.angular_acceleration == pytest.approx(acc)
+        assert transformed.shape == expected_transformed.shape
+        assert transformed == pytest.approx(expected_transformed)
 
 
 if __name__ == "__main__":
