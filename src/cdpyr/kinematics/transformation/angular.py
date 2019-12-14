@@ -191,21 +191,8 @@ class Angular(_transformation.Transformation):
             return (Angular(sequence='z', euler=[a]) for a in angle)
 
     def apply(self, coordinates: Union[Vector, Matrix]):
-        # deal only with numpy arrays
-        coordinates = np_.asarray(coordinates)
-
-        # check if we have a single coordinate
-        single = coordinates.ndim == 1
-
-        # ensure coordinates is a 3xM array
-        if single:
-            coordinates = coordinates[:, np_.newaxis]
-
-        # first, apply the transformation
-        transformed = self.dcm.dot(coordinates)
-
         # return a single transformed coordinate, or all
-        return transformed[:, 0] if single else transformed
+        return self.dcm.dot(coordinates)
 
     @property
     def euler(self):
