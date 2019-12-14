@@ -38,15 +38,8 @@ class Linear(_transformation.Transformation):
         # check if we have a single coordinate
         single = coordinates.ndim == 1
 
-        # ensure coordinates is a 3xM array
-        if single:
-            coordinates = coordinates[:, np_.newaxis]
-
-        # first, apply the transformation
-        transformed = self.position + coordinates
-
         # return a single transformed coordinate, or all
-        return transformed[:, 0] if single else transformed
+        return self.position + coordinates if single else self.position[:,None] + coordinates
 
     @property
     def position(self):
