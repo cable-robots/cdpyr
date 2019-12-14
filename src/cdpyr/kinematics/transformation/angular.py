@@ -97,20 +97,20 @@ class Angular(_transformation.Transformation):
                 and dcm is None \
                 and rotvec is None:
             self.euler = euler
-        elif euler is None \
-                and quaternion is not None \
+        elif quaternion is not None \
+                and euler is None \
                 and dcm is None \
                 and rotvec is None:
             self.quaternion = quaternion
-        elif euler is None \
+        elif dcm is not None \
+                and euler is None \
                 and quaternion is None \
-                and dcm is not None \
                 and rotvec is None:
             self.dcm = dcm
-        elif euler is None \
+        elif rotvec is not None \
+                and euler is None \
                 and quaternion is None \
-                and dcm is None \
-                and rotvec is not None:
+                and dcm is None:
             self.rotvec = rotvec
         else:
             self.quaternion = [0.0, 0.0, 0.0, 1.0]
