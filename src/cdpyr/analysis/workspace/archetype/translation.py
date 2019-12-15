@@ -1,6 +1,7 @@
 import numpy as _np
 
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
+from cdpyr.kinematics.transformation import Angular
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.typing import Matrix, Vector
 
@@ -17,11 +18,19 @@ class Translation(_archetype.Archetype):
     and the observed criterion is valid
     """
 
+    angular: Angular
     dcm: Matrix
 
-    def __init__(self, dcm: Matrix = None, **kwargs):
+    def __init__(self, dcm: Matrix = None, angular: Angular = None, **kwargs):
         super().__init__(**kwargs)
-        self.dcm = dcm if dcm is not None else _np.eye(3)
+
+        if dcm is not None and angular is None:
+            angular = Angular(dcm)
+        elif dcm is None and angular is None:
+            angular = Angular(_np.eye(3))
+
+        self.dcm = angular.dcm
+        self.angular = angular
 
     @property
     def comparator(self):
