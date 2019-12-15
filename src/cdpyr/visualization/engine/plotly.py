@@ -934,15 +934,6 @@ class Spatial(Plotly):
                                      yaxis=dict(
                                              scaleanchor="x",
                                              scaleratio=1,
-                                     ),
-                                     scene=dict(
-                                             camera=dict(
-                                                     eye=dict(
-                                                             x=-0.75,
-                                                             y=-1.75,
-                                                             z=0.25,
-                                                     )
-                                             ),
                                      )
                              ),
                              kwargs)
