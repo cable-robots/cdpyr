@@ -109,7 +109,7 @@ class Engine(ABC, BaseObject):
         except KeyError as KeyE1:
             pass
 
-        for parent in o.__mro__:
+        for parent in o.__class__.__mro__:
             try:
                 return self._RESOLVER[fcn(parent)](o, *args, **kwargs)
             except KeyError as KeyE2:
