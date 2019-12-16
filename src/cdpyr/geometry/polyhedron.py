@@ -350,7 +350,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
             # vertices, if the cosines of the angles are all positive
             flag = (cosine_angles >= 0).all()
         finally:
-            return
+            return flag
 
     def __eq__(self, other):
         return super().__eq__(other) \
