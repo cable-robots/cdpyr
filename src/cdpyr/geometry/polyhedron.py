@@ -177,7 +177,8 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         self._volumes = None
 
     @staticmethod
-    def from_octahedron(depth: int = 0, center: Vector = None):
+    def from_octahedron(depth: int = 0, center: Vector = None,
+                        fresh: bool = False):
         """
         This function takes the unit octahedron and splits it as many times
         as the user wants to return a polyhedron with unit vertices
@@ -189,6 +190,9 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
             zero, the unit octahedron will be returned.
         center : Vector
             Center of the initial octahedron if not `(0.0, 0.0, 0.0)`.
+        fresh : bool
+            Whether to calculate the values fresh or use possibly
+            pre-calculated values from `DATADIR`
 
         Returns
         -------
@@ -202,7 +206,17 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         if center.ndim == 0:
             center = _np.asarray([center])
 
+        # load data?
+        if not fresh:
+            # pass
+            try:
+                # load the data created with `numpy.savez_compressed`
+                data = _np.load(helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz')
 
+                # instantiate object
+                return Polyhedron(data['vertices'] + center[None, :], data['faces'])
+            except IOError:
+                pass
 
         # initial corners and faces from the global constant
         vertices = Polyhedron.VERTICES_OCTAHEDRON
