@@ -211,10 +211,12 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
             # pass
             try:
                 # load the data created with `numpy.savez_compressed`
-                data = _np.load(helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz')
+                data = _np.load(
+                        helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz')
 
                 # instantiate object
-                return Polyhedron(data['vertices'] + center[None, :], data['faces'])
+                return Polyhedron(data['vertices'] + center[None, :],
+                                  data['faces'])
             except IOError:
                 pass
 
@@ -235,14 +237,12 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
 
         # convert into numpy arrays
         vertices = _np.asarray(vertices)
-        faces = _np.asarray(faces, dtype=_np.int64)
-
-        # normalise lengths of each corner to be unitary
-        vertices /= _np.linalg.norm(vertices, axis=1)[:, _np.newaxis]
 
         # return a Polyhedron object with the corners shifted by the center
         # given through the user
-        return Polyhedron(vertices + center[None, :], faces)
+        return Polyhedron(vertices / _np.linalg.norm(vertices, axis=1)[:,
+                                     _np.newaxis] + center[None, :],
+                          _np.asarray(faces, dtype=_np.int64))
 
     @property
     def faces(self):
@@ -286,14 +286,10 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
 
         # convert into numpy arrays
         vertices = _np.asarray(vertices)
-        faces = _np.asarray(faces, dtype=_np.int64)
-
-        # normalise lengths of each corner to be unitary
-        vertices /= _np.linalg.norm(vertices, axis=1)[:, _np.newaxis]
 
         # update vertices and faces
-        self._vertices = vertices + self.center[None, :]
-        self._faces = faces
+        self._vertices = vertices / _np.linalg.norm(vertices, axis=1)[:, _np.newaxis] + self.center[None, :]
+        self._faces = _np.asarray(faces, dtype=_np.int64)
 
     @property
     def surface(self):
