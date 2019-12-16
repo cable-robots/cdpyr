@@ -72,8 +72,7 @@ def _subdivide(vrtcs, fcs):
     adjacent_vertices = []
     for v, vTmp in itertools.product(num_vertices_range,
                                      num_vertices_range):
-        if v < vTmp and edge_vertices[v][vTmp][1] != -1 \
-                or v > vTmp and edge_vertices[vTmp][v][1] != -1:
+        if edge_vertices[v][vTmp][1] != -1 and (v < vTmp or v > vTmp):
             try:
                 adjacent_vertices[v].append(vTmp)
             except IndexError as IndexE:
@@ -88,8 +87,7 @@ def _subdivide(vrtcs, fcs):
         adjacent_boundary_vertices = []
         for i in range(k):
             vi = adjacent_vertices[v][i]
-            if vi > v and edge_vertices[v][vi][2] == -1 \
-                    or vi < v and edge_vertices[vi][v][2] == -1:
+            if edge_vertices[vi][v][2] == -1 and ( vi > v or vi < v):
                 adjacent_boundary_vertices.append(vi)
 
         # boundary case
