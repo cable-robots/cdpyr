@@ -242,6 +242,45 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
     def num_faces(self):
         return self._faces.shape[0]
 
+    def split(self, depth: int = None):
+        """
+        Split the current polyhedron into a higher dimensional polyhedron
+
+        Returns
+        -------
+
+        """
+
+        # default argument
+        if depth is None:
+            depth = 1
+
+        # initial corners and faces from the global constant
+        vertices = self._vertices - self.center[None, :]
+        faces = self.faces
+
+        # initialize the subdivision algorithm
+        _subdivide.index_vertex = len(vertices)
+
+        # subdivide triangles into smaller ones using LOOP-SUBDIVISION
+        # algorithm_old
+        for level in range(depth):
+            vertices, faces = _subdivide(vertices, faces)
+
+        # reset subdivsion internal variable
+        _subdivide.index_vertex = None
+
+        # convert into numpy arrays
+        vertices = _np.asarray(vertices)
+        faces = _np.asarray(faces, dtype=_np.int64)
+
+        # normalise lengths of each corner to be unitary
+        vertices /= _np.linalg.norm(vertices, axis=1)[:, _np.newaxis]
+
+        # update vertices and faces
+        self._vertices = vertices + self.center[None, :]
+        self._faces = faces
+
     @property
     def surface(self):
         # just sum up over each tetrahedron's surface
