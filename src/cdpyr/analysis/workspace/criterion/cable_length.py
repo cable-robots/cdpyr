@@ -48,7 +48,7 @@ class CableLength(_criterion.Criterion):
                   **kwargs):
         try:
             kinematics = self.kinematics.backward(robot, pose)
-        except BaseException:
+        except Exception:
             return False
         else:
             return (_np.logical_and(self._limits[0, :] <= kinematics.lengths,

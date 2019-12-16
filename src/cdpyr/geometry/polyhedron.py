@@ -343,7 +343,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
 
             # just in case we divided zero by zero yielding NaN in numpy
             cosine_angles[_np.isnan(cosine_angles)] = 1
-        except BaseException as BaseE:
+        except Exception as e:
             flag = False
         else:
             # all differences are pointing in the same direction as the

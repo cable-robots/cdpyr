@@ -35,8 +35,8 @@ class Algorithm(_evaluator.RobotEvaluator):
         try:
             # now finally, evaluate the workspace
             return self._evaluate(robot)
-        except BaseException as BaseE:
-            raise RuntimeError('Could not determine workspace.') from BaseE
+        except Exception as e:
+            raise RuntimeError('Could not determine workspace.') from e
 
     @abstractmethod
     def _evaluate(self, robot: '_robot.Robot') -> 'Result':
