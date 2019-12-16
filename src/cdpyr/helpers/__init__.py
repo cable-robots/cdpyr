@@ -1,5 +1,7 @@
 from typing import AnyStr, Iterable, Optional
 
+import pathlib as pl
+
 from hurry.filesize import size as filesize
 
 __author__ = "Philipp Tempel"
@@ -51,8 +53,13 @@ def full_classname(o: object):
         return ".".join([o.__class__.__module__, o.__class__.__name__])
 
 
+# data directory
+DATADIR: pl.Path = (pl.Path(__file__).parent / '..' / 'data').resolve()
+
+
 __all__ = [
         'format_time',
         'filesize',
         'full_classname',
+        'DATADIR',
 ]
