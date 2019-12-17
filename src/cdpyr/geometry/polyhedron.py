@@ -1,122 +1,15 @@
-import itertools
 from collections import abc
-from typing import Sequence
 
 import numpy as _np
 from magic_repr import make_repr
 
 from cdpyr import helpers
 from cdpyr.geometry import primitive as _geometry
+from cdpyr.geometry._subdivision import subdivide
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-
-
-# internal callback methods
-def _subdivide(vertices: Sequence, faces: Sequence):
-    new_faces = []
-    dim_vertices = len(vertices[0])
-    num_vertices = len(vertices)
-    new_vertices = dict(zip(range(num_vertices), vertices))
-    index_vertex = num_vertices
-
-    edge_vertices = [
-            [
-                    [
-                            -1 for kx in range(dim_vertices)
-                    ] for ky in range(num_vertices)
-            ]
-            for kz in range(num_vertices)
-    ]
-
-    # create matrix of edge-vertices and new vertices
-    for face in faces:
-        a, b, c = face
-        ab = _add_edge_vertex(a, b, c, edge_vertices)
-        bc = _add_edge_vertex(b, c, a, edge_vertices)
-        ac = _add_edge_vertex(a, c, b, edge_vertices)
-
-        new_faces.extend([
-                [a, ab, ac],
-                [ab, b, bc],
-                [ac, bc, c],
-                [ac, ab, bc],
-        ])
-
-    # position of new vertices
-    for v1, v2 in itertools.product(range(num_vertices), range(num_vertices)):
-        vNIndex = edge_vertices[v1][v2][0]
-        if vNIndex != -1:
-            # catch boundary case
-            if edge_vertices[v1][v2][2] == -1:
-                value = 1. / 2. * (vertices[v1][:] + vertices[v2][:])
-            else:
-                value = [3 / 8 * (
-                        vertices[v1][idx] + vertices[v2][idx]) + 1 / 8 * (
-                                 vertices[edge_vertices[v1][v2][1]][idx] +
-                                 vertices[edge_vertices[v1][v2][2]][idx])
-                         for idx in range(dim_vertices)]
-
-            new_vertices[vNIndex] = value
-
-    # adjacent vertices
-    adjacent_vertices = []
-    for v, vTmp in itertools.product(range(num_vertices), range(num_vertices)):
-        if v < vTmp and edge_vertices[v][vTmp][1] != -1 \
-                or v > vTmp and edge_vertices[vTmp][v][1] != -1:
-            try:
-                adjacent_vertices[v].append(vTmp)
-            except IndexError as IndexE:
-                adjacent_vertices.insert(v, [vTmp])
-
-    for v in range(num_vertices):
-        try:
-            k = len(adjacent_vertices[v])
-        except IndexError as IndexE:
-            continue
-
-        adjacent_boundary_vertices = []
-        for i in range(k):
-            vi = adjacent_vertices[v][i]
-            if vi > v and edge_vertices[v][vi][2] == -1 \
-                    or vi < v and edge_vertices[vi][v][2] == -1:
-                adjacent_boundary_vertices.append(vi)
-
-        # boundary case
-        if len(adjacent_boundary_vertices) == 2:
-            value = [6 / 8 * vertices[v][idx] + 1 / 8 * sum(
-                    vertices[k][idx] for k in adjacent_boundary_vertices)
-                     for idx in range(dim_vertices)]
-        else:
-            beta = 1 / k * (
-                    5 / 8 - (3 / 8 + 1 / 4 * _np.cos(2 * _np.pi / k)) ** 2)
-            value = [(1 - k * beta) * vertices[v][idx] + beta * sum(
-                    vertices[k][idx] for k in adjacent_vertices[v])
-                     for
-                     idx in range(dim_vertices)]
-        new_vertices[v] = value
-
-    return [new_vertices[k] for k in range(len(new_vertices))], new_faces
-
-
-def _add_edge_vertex(a, b, c, edge_vertices):
-    # ensure right order of first two components
-    if a > b:
-        a, b = b, a
-
-    # new vertex?
-    if edge_vertices[a][b][0] == -1:
-        edge_vertices[a][b][0] = _subdivide.index_vertex
-        edge_vertices[a][b][1] = c
-        # advance vertex index counter
-        _subdivide.index_vertex += 1
-    # existing vertex
-    else:
-        edge_vertices[a][b][2] = c
-
-    # return values
-    return edge_vertices[a][b][0]
 
 
 class Polyhedron(_geometry.Primitive, abc.Collection):
@@ -214,16 +107,10 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         vertices = Polyhedron.VERTICES_OCTAHEDRON
         faces = Polyhedron.FACES_OCTAHEDRON
 
-        # initialize the subdivision algorithm
-        _subdivide.index_vertex = len(vertices)
-
         # subdivide triangles into smaller ones using LOOP-SUBDIVISION
         # algorithm_old
         for level in range(depth):
-            vertices, faces = _subdivide(vertices, faces)
-
-        # reset subdivsion internal variable
-        _subdivide.index_vertex = None
+            vertices, faces = subdivide(vertices, faces)
 
         # convert into numpy arrays
         vertices = _np.asarray(vertices)
@@ -263,16 +150,10 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         vertices = self._vertices - self.center[None, :]
         faces = self.faces
 
-        # initialize the subdivision algorithm
-        _subdivide.index_vertex = len(vertices)
-
         # subdivide triangles into smaller ones using LOOP-SUBDIVISION
         # algorithm_old
         for level in range(depth):
-            vertices, faces = _subdivide(vertices, faces)
-
-        # reset subdivsion internal variable
-        _subdivide.index_vertex = None
+            vertices, faces = subdivide(vertices, faces)
 
         # convert into numpy arrays
         vertices = _np.asarray(vertices)
