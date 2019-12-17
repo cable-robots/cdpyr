@@ -758,7 +758,7 @@ class Plotly(_engine.Engine, ABC):
     def render_polyhedron(self, polyhedron: '_polyhedron.Polyhedron', *args,
                           **kwargs):
 
-        # as simple as that
+        # render the polyehedron as mesh
         self.figure.add_trace(
                 self._mesh(
                         **self._prepare_plot_coordinates(
@@ -766,22 +766,39 @@ class Plotly(_engine.Engine, ABC):
                                         polyhedron.vertices.T)),
                         **self._prepare_plot_coordinates(polyhedron.faces.T,
                                                          ('i', 'j', 'k')),
-                        facecolor=['rgb(178, 178, 178)'] * polyhedron.faces.shape[0],
+                        # facecolor=['rgb(178, 178, 178)'] * polyhedron.faces.shape[0],
                         # vertexcolor=['black'] * polyhedron.vertices.shape[0],
-                        vertexcolor=['rgb(255, 0, 0)'] * polyhedron.vertices.shape[
-                            0],
+                        # vertexcolor=['rgb(255, 0, 0)'] * polyhedron.vertices.shape[
+                        #     0],
                         # flatshading=True,
                         # opacity=0.75,
                         contour=dict(
                                 show=True,
                                 color='rgb(0, 0, 0)',
                         ),
-                        name='workspace',
+                        name='polyhedron',
                         hoverinfo='skip',
                         hovertext='',
-                        **kwargs,
+                        **kwargs.pop('mesh', {})
                 )
         )
+        # and render each edge
+        for face, vertices in polyhedron:
+            self.figure.add_trace(
+                    self._scatter(
+                            **self._prepare_plot_coordinates(
+                                    self._extract_coordinates(vertices.T)),
+                            mode='lines',
+                            line=dict(
+                                    color='rgb(0, 0, 0)',
+                            ),
+                            name='polyhedron face',
+                            hoverinfo='skip',
+                            hovertext='',
+                            showlegend=False,
+                            **kwargs.pop('lines', {})
+                    )
+            )
 
     def render_pulley(self,
                       pulley: '_pulley.Pulley',
