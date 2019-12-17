@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 import cdpyr
-from cdpyr.data import robots
+from cdpyr.robot import sample as robots
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"

@@ -8,7 +8,7 @@ from cdpyr import (
 )
 from cdpyr.analysis import workspace
 from cdpyr.analysis.kinematics import Standard
-from cdpyr.data import robots
+from cdpyr.robot import sample as robots
 from cdpyr.robot import Robot
 
 __author__ = "Philipp Tempel"
