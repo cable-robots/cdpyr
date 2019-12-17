@@ -636,7 +636,7 @@ class Plotly(_engine.Engine, ABC):
                 if self._NUMBER_OF_AXES == 3:
                     # first, plot the mesh of the platform i.e., its volume
                     self.figure.add_trace(
-                            go.Mesh3d(
+                            self._mesh(
                                     **self._prepare_plot_coordinates(
                                             self._extract_coordinates(
                                                     vertices.T)),
@@ -757,7 +757,31 @@ class Plotly(_engine.Engine, ABC):
 
     def render_polyhedron(self, polyhedron: '_polyhedron.Polyhedron', *args,
                           **kwargs):
-        pass
+
+        # as simple as that
+        self.figure.add_trace(
+                self._mesh(
+                        **self._prepare_plot_coordinates(
+                                self._extract_coordinates(
+                                        polyhedron.vertices.T)),
+                        **self._prepare_plot_coordinates(polyhedron.faces.T,
+                                                         ('i', 'j', 'k')),
+                        facecolor=['rgb(178, 178, 178)'] * polyhedron.faces.shape[0],
+                        # vertexcolor=['black'] * polyhedron.vertices.shape[0],
+                        vertexcolor=['rgb(255, 0, 0)'] * polyhedron.vertices.shape[
+                            0],
+                        # flatshading=True,
+                        # opacity=0.75,
+                        contour=dict(
+                                show=True,
+                                color='rgb(0, 0, 0)',
+                        ),
+                        name='workspace',
+                        hoverinfo='skip',
+                        hovertext='',
+                        **kwargs,
+                )
+        )
 
     def render_pulley(self,
                       pulley: '_pulley.Pulley',
@@ -842,28 +866,7 @@ class Plotly(_engine.Engine, ABC):
             raise NotImplementedError()
 
         # as simple as that
-        self.figure.add_trace(
-                go.Mesh3d(
-                        **self._prepare_plot_coordinates(
-                                self._extract_coordinates(
-                                        workspace.vertices.T)),
-                        **self._prepare_plot_coordinates(workspace.faces.T,
-                                                         ('i', 'j', 'k')),
-                        facecolor=['rgb(255, 0, 0)'] * workspace.faces.shape[0],
-                        vertexcolor=['rgb(0, 0, 0)'] * workspace.vertices.shape[
-                            0],
-                        flatshading=True,
-                        opacity=0.75,
-                        contour=dict(
-                                show=True,
-                                color='rgb(0, 0, 0)',
-                        ),
-                        name='workspace',
-                        hoverinfo='skip',
-                        hovertext='',
-                        **kwargs,
-                )
-        )
+        self.render_polyhedron(workspace, *args, **kwargs)
 
     def _prepare_plot_coordinates(self, coordinates: Union[Vector, Matrix],
                                   axes: Sequence = None):
