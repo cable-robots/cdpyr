@@ -2,9 +2,6 @@ from abc import ABC
 from typing import Mapping, Sequence, Union
 
 import numpy as _np
-from plotly import graph_objects as go
-from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
-
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.geometry import (
@@ -33,6 +30,8 @@ from cdpyr.robot.anchor import (
 )
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
+from plotly import graph_objects as go
+from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -757,7 +756,6 @@ class Plotly(_engine.Engine, ABC):
 
     def render_polyhedron(self, polyhedron: '_polyhedron.Polyhedron', *args,
                           **kwargs):
-
         # render the polyehedron as mesh
         self.figure.add_trace(
                 self._mesh(
@@ -766,37 +764,47 @@ class Plotly(_engine.Engine, ABC):
                                         polyhedron.vertices.T)),
                         **self._prepare_plot_coordinates(polyhedron.faces.T,
                                                          ('i', 'j', 'k')),
-                        # facecolor=['rgb(178, 178, 178)'] * polyhedron.faces.shape[0],
-                        # vertexcolor=['black'] * polyhedron.vertices.shape[0],
-                        # vertexcolor=['rgb(255, 0, 0)'] * polyhedron.vertices.shape[
-                        #     0],
-                        # flatshading=True,
-                        # opacity=0.75,
-                        contour=dict(
-                                show=True,
-                                color='rgb(0, 0, 0)',
-                        ),
-                        name='polyhedron',
-                        hoverinfo='skip',
-                        hovertext='',
-                        **kwargs.pop('mesh', {})
+                        **update_recursive(
+                                dict(
+                                        facecolor=['rgb(178, 178, 178)'] *
+                                                  polyhedron.faces.shape[0],
+                                        vertexcolor=['rgb(255, 0, 0)'] *
+                                                    polyhedron.vertices.shape[
+                                                        0],
+                                        flatshading=True,
+                                        opacity=0.75,
+                                        contour=dict(
+                                                show=True,
+                                                color='rgb(0, 0, 0)',
+                                        ),
+                                        name='polyhedron',
+                                        hoverinfo='skip',
+                                        hovertext='',
+                                ),
+                                kwargs.pop('mesh', {})
+                        )
                 )
         )
+
         # and render each edge
         for face, vertices in polyhedron:
             self.figure.add_trace(
                     self._scatter(
                             **self._prepare_plot_coordinates(
                                     self._extract_coordinates(vertices.T)),
-                            mode='lines',
-                            line=dict(
-                                    color='rgb(0, 0, 0)',
-                            ),
-                            name='polyhedron face',
-                            hoverinfo='skip',
-                            hovertext='',
-                            showlegend=False,
-                            **kwargs.pop('lines', {})
+                            **update_recursive(
+                                    dict(
+                                            mode='lines',
+                                            line=dict(
+                                                    color='rgb(0, 0, 0)',
+                                            ),
+                                            name='polyhedron face',
+                                            hoverinfo='skip',
+                                            hovertext='',
+                                            showlegend=False,
+                                    ),
+                                    **kwargs.pop('lines', {})
+                            )
                     )
             )
 
@@ -883,7 +891,13 @@ class Plotly(_engine.Engine, ABC):
             raise NotImplementedError()
 
         # as simple as that
-        self.render_polyhedron(workspace, *args, **kwargs)
+        self.render_polyhedron(workspace,
+                               *args,
+                               facecolor=['rgb(178, 178, 178)'] *
+                                         workspace.faces.shape[0],
+                               vertexcolor=['rgb(255, 0, 0)'] *
+                                           workspace.vertices.shape[0],
+                               **kwargs)
 
     def _prepare_plot_coordinates(self, coordinates: Union[Vector, Matrix],
                                   axes: Sequence = None):
