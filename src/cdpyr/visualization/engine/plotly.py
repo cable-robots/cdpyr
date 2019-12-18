@@ -803,7 +803,7 @@ class Plotly(_engine.Engine, ABC):
                                             hovertext='',
                                             showlegend=False,
                                     ),
-                                    **kwargs.pop('lines', {})
+                                    kwargs.pop('lines', {})
                             )
                     )
             )
