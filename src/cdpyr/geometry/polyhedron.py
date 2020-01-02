@@ -95,11 +95,16 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
             try:
                 # load the data created with `numpy.savez_compressed`
                 data = _np.load(
-                        helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz')
+                        helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz',
+                        allow_pickle=False)
 
                 # instantiate object
                 return Polyhedron(data['vertices'] + center[None, :],
                                   data['faces'])
+            except KeyError:
+                pass
+            except ValueError:
+                pass
             except IOError:
                 pass
 
@@ -114,6 +119,12 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
 
         # convert into numpy arrays
         vertices = _np.asarray(vertices)
+
+        # save data to file so we can reload later
+        if not fresh:
+            _np.savez_compressed(
+                helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz', vertices=vertices,
+                faces=faces)
 
         # return a Polyhedron object with the corners shifted by the center
         # given through the user
