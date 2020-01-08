@@ -62,6 +62,14 @@ class Primitive(BaseObject, ABC):
         del self._center
 
     @property
+    def faces(self):
+        raise NotImplementedError()
+
+    @property
+    def vertices(self):
+        raise NotImplementedError()
+
+    @property
     @abstractmethod
     def centroid(self):
         """
