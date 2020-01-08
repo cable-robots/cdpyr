@@ -75,6 +75,7 @@ setup(
                 'hurry.filesize',
                 'tabulate',
                 'fastnumbers',
+                'cached-property',
         ],
         extras_require={
                 'visualization': [
