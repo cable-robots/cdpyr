@@ -130,55 +130,22 @@ class Plotly(_engine.Engine, ABC):
         # get transformation to apply
         transform = kwargs.get('transformation', _HomogenousTransformation())
 
-        # quicker access to width, depth, and height of cuboid
-        dimensions = _np.asarray((cuboid.width, cuboid.depth, cuboid.height))
-
         if self._NUMBER_OF_COORDINATES == 1:
-            vertices = _np.asarray((
-                    (-0.5, 0.0, 0.0),
-                    (0.5, 0.0, 0.0),
-            ))
             faces = _np.asarray(
                     [0, 1, 0]
             )
         elif self._NUMBER_OF_COORDINATES == 2:
-            vertices = _np.asarray((
-                    (-0.5, 0.5, 0.0),
-                    (0.5, 0.5, 0.0),
-                    (0.5, -0.5, 0.0),
-                    (-0.5, -0.5, 0.0),
-            ))
             faces = _np.asarray(
                     [0, 1, 2, 3, 0]
             )
-        elif self._NUMBER_OF_COORDINATES == 3:
-            vertices = _np.asarray((
-                    (-0.5, 0.5, 0.5),
-                    (0.5, 0.5, 0.5),
-                    (0.5, -0.5, 0.5),
-                    (-0.5, -0.5, 0.5),
-                    (-0.5, 0.5, -0.5),
-                    (0.5, 0.5, -0.5),
-                    (0.5, -0.5, -0.5),
-                    (-0.5, -0.5, -0.5),
-            ))
-            faces = _np.asarray((
-                    (2, 1, 0),
-                    (6, 2, 1),
-                    (4, 1, 0),
-                    (3, 2, 0),
-                    (6, 3, 2),
-                    (3, 4, 0),
-                    (5, 4, 1),
-                    (6, 5, 1),
-                    (6, 5, 4),
-                    (7, 3, 4),
-                    (6, 7, 4),
-                    (6, 7, 3),
-            ))
+        else:
+            pass
+
+        faces = cuboid.faces
+        vertices = cuboid.vertices
 
         # scale vertices to account for the dimensions
-        vertices = transform.apply((vertices * dimensions).T).T
+        vertices = transform.apply((vertices).T).T
 
         if self._NUMBER_OF_AXES == 3:
             self.figure.add_trace(
