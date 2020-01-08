@@ -93,6 +93,11 @@ class Algorithm(_workspace.Algorithm):
         # init the current coordinate
         coordinate = self._center
 
+        # quicker look ups
+        _archetype = self._archetype
+        _comparator = self._archetype.comparator
+        _evaluator = self._criterion.evaluate
+
         # as long as the step size isn't too small
         while step_length >= min_step and kiter <= max_iters:
             # calculate a trial coordinate along the search direction with
@@ -101,9 +106,8 @@ class Algorithm(_workspace.Algorithm):
 
             # all poses are valid, so store the trial coordinate as
             # successful coordinate for the next loop
-            if self._archetype.comparator(
-                    self._criterion.evaluate(robot, pose) for pose in
-                    self._archetype.poses(coordinate_trial)):
+            if _comparator(_evaluator(robot, pose) for pose in
+                           _archetype.poses(coordinate_trial)):
                 # advance the pose
                 coordinate = coordinate_trial
             # any pose is invalid at this coordinate, then we will reduce the

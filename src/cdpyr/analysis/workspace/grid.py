@@ -135,7 +135,7 @@ class Result(_workspace.Result, abc.Collection):
     _outside: Matrix
 
     def __init__(self,
-                 algorithm: '_calculator.GridCalculator',
+                 algorithm: 'Algorithm',
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  coordinates: Matrix,
