@@ -180,7 +180,7 @@ class Result(_workspace.Result, abc.Collection):
         return self._outside
 
     @property
-    def surface(self):
+    def surface_area(self):
         if self._surface is None:
             try:
                 # triangulate all points that are inside the workspace
