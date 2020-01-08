@@ -1,7 +1,11 @@
 from magic_repr import make_repr
 
+import numpy as _np
+
 from cdpyr.geometry.primitive import Primitive
 from cdpyr.typing import Num, Vector
+
+from scipy.spatial import Delaunay as _Delaunay
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -23,6 +27,27 @@ class Cuboid(Primitive):
     @property
     def centroid(self):
         return self.center
+
+    @property
+    def corners(self):
+        return _np.asarray((
+                (-0.5, 0.5, 0.5),
+                (0.5, 0.5, 0.5),
+                (0.5, -0.5, 0.5),
+                (-0.5, -0.5, 0.5),
+                (-0.5, 0.5, -0.5),
+                (0.5, 0.5, -0.5),
+                (0.5, -0.5, -0.5),
+                (-0.5, -0.5, -0.5),
+        )) * (self.width, self.depth, self.height) + self._center
+
+    @property
+    def faces(self):
+        return _Delaunay(self.corners.T).convex_hull
+
+    @property
+    def vertices(self):
+        return _Delaunay(self.corners.T).points
 
     @property
     def surface_area(self):
