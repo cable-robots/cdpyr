@@ -20,13 +20,19 @@ class Cuboid(Primitive):
         self.height = height
         self.depth = depth
 
-    def _calculate_surface(self):
+    @property
+    def centroid(self):
+        return self.center
+
+    @property
+    def surface_area(self):
         # more readable access to often used variables
         w, d, h = self.width, self.depth, self.height
 
         return 2 * (w * d + d * h + w * h)
 
-    def _calculate_volume(self):
+    @property
+    def volume(self):
         return self.width * self.depth * self.height
 
     __repr__ = make_repr(

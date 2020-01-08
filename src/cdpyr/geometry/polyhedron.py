@@ -20,7 +20,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
     """
     (N,) array of surfaces of each triangle
     """
-    _surfaces: Vector
+    _surface_areas: Vector
     """
     (N,3) array of spatial absolute coordinates of the polyhedron vertices
     i.e., points
@@ -56,7 +56,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         super().__init__(center, **kwargs)
         self._vertices = _np.asarray(vertices)
         self._faces = _np.asarray(faces)
-        self._surfaces = None
+        self._surface_areas = None
         self._volumes = None
 
     @staticmethod
@@ -175,34 +175,11 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         self._faces = _np.asarray(faces, dtype=_np.int64)
 
     @property
-    def surface(self):
-        # just sum up over each tetrahedron's surface
-        return _np.sum(self.surfaces, axis=0)
-
-    @property
-    def surfaces(self):
-        # no cached result yet
-        if self._surfaces is None:
-            self._surfaces = self._calculate_surfaces()
-        return self._surfaces
-
-    @property
-    def volume(self):
-        # just sum up over each tetrahedron's volume
-        return _np.sum(self.volumes, axis=0)
-
-    @property
-    def volumes(self):
-        # no cached result yet
-        if self._volumes is None:
-            self._volumes = self._calculate_volumes()
-        return self._volumes
-
-    @property
     def vertices(self):
         return self._vertices
 
-    def _calculate_centroid(self):
+    @property
+    def centroid(self):
         # get vertices sorted by the faces
         vertices = self._vertices[self._faces, :]
         # split up corners
@@ -221,10 +198,13 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         return _np.sum(triangle_surfaces[:, None] * triangle_centroids,
                        axis=0) / _np.sum(triangle_surfaces, axis=0)
 
-    def _calculate_surface(self):
-        return _np.sum(self.surface, axis=0)
+    @property
+    def surface_area(self):
+        # just sum up over each tetrahedron's surface
+        return _np.sum(self.surface_areas, axis=0)
 
-    def _calculate_surfaces(self):
+    @property
+    def surface_areas(self):
         a = self.vertices[self.faces[:, 0], :]
         b = self.vertices[self.faces[:, 1], :]
         c = self.vertices[self.faces[:, 2], :]
@@ -232,10 +212,12 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         # heron's formula
         return 0.5 * _np.linalg.norm(_np.cross(a - b, a - c, axis=1), axis=1)
 
-    def _calculate_volume(self):
+    @property
+    def volume(self):
         return _np.sum(self.volumes, axis=0)
 
-    def _calculate_volumes(self):
+    @property
+    def volumes(self):
         a = self._vertices[self._faces[:, 0], :]
         b = self._vertices[self._faces[:, 1], :]
         c = self._vertices[self._faces[:, 2], :]
@@ -299,7 +281,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
                and _np.allclose(self._faces, other._faces)
 
     def __hash__(self):
-        return hash((self.centroid, self.surface, self.volume,
+        return hash((self.centroid, self.surface_area, self.volume,
                      self._vertices.shape[0], self._faces.shape[0]))
 
     __repr__ = make_repr(

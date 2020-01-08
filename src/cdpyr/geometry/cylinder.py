@@ -52,7 +52,12 @@ class Cylinder(Primitive):
     def radius(self):
         del self._radius
 
-    def _calculate_surface(self):
+    @property
+    def centroid(self):
+        return self.center
+
+    @property
+    def surface_area(self):
         # extract semi-major and semi-minor axis lengths
         a, b = self._radius
         # ensure a is the semi-major axis
@@ -71,7 +76,8 @@ class Cylinder(Primitive):
         # surface
         return 2 * _np.pi * (a * b) + c * self.height
 
-    def _calculate_volume(self):
+    @property
+    def volume(self):
         # simple as that
         return _np.pi * _np.product(self._radius) * self.height
 

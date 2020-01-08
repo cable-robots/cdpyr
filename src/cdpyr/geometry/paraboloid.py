@@ -85,10 +85,12 @@ class Paraboloid(primitive.Primitive):
         return _np.stack((x, y, ((x / a) ** 2 + (y / b) ** 2) * self.height),
                          axis=0)
 
-    def _calculate_surface(self):
+    @property
+    def surface_area(self):
         raise NotImplementedError()
 
-    def _calculate_volume(self):
+    @property
+    def volume(self):
         raise NotImplementedError()
 
     __repr__ = make_repr(
