@@ -43,11 +43,11 @@ class Cuboid(Primitive):
 
     @property
     def faces(self):
-        return _Delaunay(self.corners.T).convex_hull
+        return _Delaunay(self.corners).convex_hull
 
     @property
     def vertices(self):
-        return _Delaunay(self.corners.T).points
+        return _Delaunay(self.corners).points
 
     @property
     def surface_area(self):
