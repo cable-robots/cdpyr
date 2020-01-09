@@ -55,7 +55,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
                  **kwargs):
         super().__init__(center, **kwargs)
         self._vertices = _np.asarray(vertices)
-        self._faces = _np.asarray(faces)
+        self._faces = _np.asarray(faces, dtype=_np.uint)
         self._surface_areas = None
         self._volumes = None
 
@@ -123,14 +123,14 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         # save data to file so we can reload later
         if not fresh:
             _np.savez_compressed(
-                helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz', vertices=vertices,
-                faces=faces)
+                    helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz',
+                    vertices=vertices, faces=faces)
 
         # return a Polyhedron object with the corners shifted by the center
         # given through the user
-        return Polyhedron(vertices / _np.linalg.norm(vertices, axis=1)[:,
-                                     _np.newaxis] + center[None, :],
-                          _np.asarray(faces, dtype=_np.int64))
+        return Polyhedron(vertices
+                          / _np.linalg.norm(vertices, axis=1)[:, _np.newaxis]
+                          + center[None, :], faces)
 
     @property
     def faces(self):
