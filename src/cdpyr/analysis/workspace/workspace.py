@@ -47,7 +47,7 @@ class Result(_result.PlottableResult):
     _algorithm: 'Algorithm'
     _archetype: '_archetype.Archetype'
     _criterion: '_criterion.Criterion'
-    _surface: float
+    _surface_area: float
     _volume: float
 
     def __init__(self,
@@ -58,7 +58,7 @@ class Result(_result.PlottableResult):
         self._algorithm = algorithm
         self._archetype = archetype
         self._criterion = criterion
-        self._surface = None
+        self._surface_area = None
         self._volume = None
 
     @property
@@ -75,7 +75,7 @@ class Result(_result.PlottableResult):
 
     @property
     @abstractmethod
-    def surface(self):
+    def surface_area(self):
         raise NotImplementedError()
 
     @property

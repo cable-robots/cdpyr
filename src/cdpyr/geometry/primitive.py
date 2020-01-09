@@ -43,6 +43,14 @@ class Primitive(BaseObject, ABC):
 
     @property
     def center(self):
+        """
+        (3,) vector denoting the point where the geometry primitive is
+        centered around
+
+        Returns
+        -------
+
+        """
         return self._center
 
     @center.setter
@@ -54,32 +62,47 @@ class Primitive(BaseObject, ABC):
         del self._center
 
     @property
-    def centroid(self):
-        if self._centroid is None:
-            self._centroid = self._calculate_centroid()
-        return self._centroid
-
-    @property
-    def surface(self):
-        if self._surface is None:
-            self._surface = self._calculate_surface()
-        return self._surface
-
-    @property
-    def volume(self):
-        if self._volume is None:
-            self._volume = self._calculate_volume()
-        return self._volume
-
-    def _calculate_centroid(self):
-        return self._center
-
-    @abstractmethod
-    def _calculate_surface(self):
+    def faces(self):
         raise NotImplementedError()
 
+    @property
+    def vertices(self):
+        raise NotImplementedError()
+
+    @property
     @abstractmethod
-    def _calculate_volume(self):
+    def centroid(self):
+        """
+        (3,) vector denoting the centroid of the geometry
+
+        Returns
+        -------
+
+        """
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def surface_area(self):
+        """
+        Surface area of the geometry
+
+        Returns
+        -------
+
+        """
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def volume(self):
+        """
+        Geometric volume of the geometry
+
+        Returns
+        -------
+
+        """
         raise NotImplementedError()
 
     def __eq__(self, other):
@@ -90,7 +113,7 @@ class Primitive(BaseObject, ABC):
             return True
 
         return _np.allclose(self.centroid, other.centroid) \
-               and _np.isclose(self.surface, other.surface) \
+               and _np.isclose(self.surface_area, other.surface_area) \
                and _np.isclose(self.volume, other.volume)
 
     def __ne__(self, other):
@@ -98,7 +121,7 @@ class Primitive(BaseObject, ABC):
 
     def __hash__(self):
         centroid = self.centroid
-        return hash((centroid[0], centroid[1], centroid[2], self.surface,
+        return hash((centroid[0], centroid[1], centroid[2], self.surface_area,
                      self.volume))
 
     __repr__ = make_repr(

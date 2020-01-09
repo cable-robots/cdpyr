@@ -3,8 +3,12 @@ from cached_property import cached_property
 from magic_repr import make_repr
 from scipy.spatial import Delaunay as _Delaunay
 
+import numpy as _np
+
 from cdpyr.geometry.primitive import Primitive
 from cdpyr.typing import Num, Vector
+
+from scipy.spatial import Delaunay as _Delaunay
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -23,7 +27,11 @@ class Cuboid(Primitive):
         self.height = height
         self.depth = depth
 
-    @cached_property
+    @property
+    def centroid(self):
+        return self.center
+
+    @property
     def corners(self):
         return _np.asarray((
                 (-0.5, 0.5, 0.5),
@@ -34,23 +42,25 @@ class Cuboid(Primitive):
                 (0.5, 0.5, -0.5),
                 (0.5, -0.5, -0.5),
                 (-0.5, -0.5, -0.5),
-        )) * _np.asarray((self.width, self.depth, self.height)) + self.center
+        )) * (self.width, self.depth, self.height) + self._center
 
-    @cached_property
+    @property
     def faces(self):
         return _Delaunay(self.corners).convex_hull
 
-    @cached_property
+    @property
     def vertices(self):
         return _Delaunay(self.corners).points
 
-    def _calculate_surface(self):
+    @property
+    def surface_area(self):
         # more readable access to often used variables
         w, d, h = self.width, self.depth, self.height
 
         return 2 * (w * d + d * h + w * h)
 
-    def _calculate_volume(self):
+    @property
+    def volume(self):
         return self.width * self.depth * self.height
 
     __repr__ = make_repr(

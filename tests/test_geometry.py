@@ -116,7 +116,7 @@ class GeometryTestSuite(object):
     def test_surfaces(self, geometry: Primitive, expected: Mapping):
         assert geometry.center == pytest.approx(expected['center'])
         assert geometry.centroid == pytest.approx(expected['centroid'])
-        assert geometry.surface == pytest.approx(expected['surface'], rel=1e-2)
+        assert geometry.surface_area == pytest.approx(expected['surface'], rel=1e-2)
         assert geometry.volume == pytest.approx(expected['volume'], rel=1e-2)
 
 

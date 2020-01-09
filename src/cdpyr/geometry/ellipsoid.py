@@ -66,7 +66,12 @@ class Ellipsoid(_geometry.Primitive):
     def radius(self):
         del self._radius
 
-    def _calculate_surface(self):
+    @property
+    def centroid(self):
+        return self.center
+
+    @property
+    def surface_area(self):
         # currently, I do not have a solution for a generally ellipsoidal
         # torus, so we will just raise an error
         # TODO find a proper math implementation without the complete
@@ -85,11 +90,10 @@ class Ellipsoid(_geometry.Primitive):
                 ((a * b) ** p + (a * c) ** p + (b * c) ** p) / 3.0) ** (
                        1.0 / p)
 
-    def _calculate_volume(self):
+    @property
+    def volume(self):
         # currently, I do not have a solution for a generally ellipsoidal
         # torus, so we will just raise an error
-        # TODO find a proper math implementation without the complete
-        #  elliptic integral of the first kind
         if self.axis:
             raise NotImplementedError()
 

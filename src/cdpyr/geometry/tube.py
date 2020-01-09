@@ -60,13 +60,18 @@ class Tube(Primitive):
     def outer_radius(self, radius: Union[Num, Vector]):
         self._outer.radius = radius
 
-    def _calculate_surface(self):
-        return self._inner.surface \
-               - 2 * _np.pi * (self._inner.radius[0] * self._inner.radius[1]) \
-               + self._outer.surface \
-               - 2 * _np.pi * (self._inner.radius[0] * self._inner.radius[1])
+    @property
+    def centroid(self):
+        return self._center
 
-    def _calculate_volume(self):
+    @property
+    def surface_area(self):
+        return self._inner.surface_area \
+               - 2 * _np.pi * (self._inner.radius[0] * self._inner.radius[1]) \
+               + self._outer.surface_area \
+               - 2 * _np.pi * (self._inner.radius[0] * self._inner.radius[1])
+    @property
+    def volume(self):
         return self._outer.volume - self._inner.volume
 
 
