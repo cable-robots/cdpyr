@@ -214,5 +214,15 @@ def cart2sph(x: Union[Num, Vector, Matrix], y: Union[Num, Vector, Matrix],
 
 
 __all__ = [
-        'issquare'
+        'cart2pol',
+        'cart2sph',
+        'evec_1',
+        'evec_2',
+        'evec3_1',
+        'evec3_2',
+        'evec3_3',
+        'issquare',
+        'kronecker',
+        'pol2cart',
+        'sph2cart',
 ]
