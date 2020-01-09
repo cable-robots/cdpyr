@@ -1,6 +1,6 @@
 from typing import Sequence, Union
 
-import numpy as np_
+import numpy as _np
 
 from cdpyr.typing import Matrix, Num, Vector
 
@@ -9,7 +9,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 def issquare(value: Union[Num, Vector, Matrix]):
-    value = np_.asarray(value)
+    value = _np.asarray(value)
 
     return value.shape[0] == value.shape[1]
 
@@ -31,7 +31,7 @@ def kronecker(size: Sequence, ij: Union[slice, int]):
     k : numpy.ndarray
         Kronecker array of size `size` with entry/entries at `k[ij] == 1`
     """
-    e = np_.zeros(size)
+    e = _np.zeros(size)
     e[ij] = 1
     return e
 
@@ -116,7 +116,7 @@ def cart2pol(x: Union[Num, Vector, Matrix], y: Union[Num, Vector, Matrix]):
         `x-y` plane measured.
 
     """
-    return np_.arctan2(y, x), np_.hypot(x, y)
+    return _np.arctan2(y, x), _np.hypot(x, y)
 
 
 def pol2cart(theta: Union[Num, Vector, Matrix],
@@ -133,7 +133,7 @@ def pol2cart(theta: Union[Num, Vector, Matrix],
     az : Num | Vector | Matrix
     el : Num | Vector | Matrix
     """
-    return rho * np_.cos(theta), rho * np_.sin(theta)
+    return rho * _np.cos(theta), rho * _np.sin(theta)
 
 
 def sph2cart(az: Union[Num, Vector, Matrix], el: Union[Num, Vector, Matrix],
@@ -167,9 +167,9 @@ def sph2cart(az: Union[Num, Vector, Matrix], el: Union[Num, Vector, Matrix],
     z : Num | Vector | Matrix
         Spherical coordinate(s) along the z-axis (or third axis).
     """
-    return r * np_.cos(el) * np_.sin(az), \
-           r * np_.sin(el) * np_.cos(az), \
-           r * np_.sin(el)
+    return r * _np.cos(el) * _np.cos(az), \
+           r * _np.cos(el) * _np.sin(az), \
+           r * _np.sin(el)
 
 
 def cart2sph(x: Union[Num, Vector, Matrix], y: Union[Num, Vector, Matrix],
@@ -208,9 +208,9 @@ def cart2sph(x: Union[Num, Vector, Matrix], y: Union[Num, Vector, Matrix],
         of `radius`` are arbitrary, matching the units of the input arrays
         `x`, `y`, and `z`.
     """
-    return np_.arctan2(y, x), \
-           np_.arctan2(z, np_.sqrt(x ** 2 + y ** 2)), \
-           np_.sqrt(x ** 2 + y ** 2 + z ** 2)
+    return _np.arctan2(y, x), \
+           _np.arctan2(z, _np.sqrt(x ** 2 + y ** 2)), \
+           _np.sqrt(x ** 2 + y ** 2 + z ** 2)
 
 
 __all__ = [
