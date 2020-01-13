@@ -1,14 +1,9 @@
 import numpy as _np
-from cached_property import cached_property
 from magic_repr import make_repr
 from scipy.spatial import Delaunay as _Delaunay
 
-import numpy as _np
-
 from cdpyr.geometry.primitive import Primitive
 from cdpyr.typing import Num, Vector
-
-from scipy.spatial import Delaunay as _Delaunay
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"

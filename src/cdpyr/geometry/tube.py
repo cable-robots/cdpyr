@@ -70,6 +70,7 @@ class Tube(Primitive):
                - 2 * _np.pi * (self._inner.radius[0] * self._inner.radius[1]) \
                + self._outer.surface_area \
                - 2 * _np.pi * (self._inner.radius[0] * self._inner.radius[1])
+
     @property
     def volume(self):
         return self._outer.volume - self._inner.volume

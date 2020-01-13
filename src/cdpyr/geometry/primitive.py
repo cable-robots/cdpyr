@@ -4,11 +4,10 @@ import numpy as _np
 from magic_repr import make_repr
 
 from cdpyr.mixin.base_object import BaseObject
+from cdpyr.typing import Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-
-from cdpyr.typing import Vector
 
 
 class Primitive(BaseObject, ABC):
@@ -38,8 +37,6 @@ class Primitive(BaseObject, ABC):
         super().__init__(**kwargs)
         self.center = center if center is not None else [0.0, 0.0, 0.]
         self._centroid = None
-        self._surface = None
-        self._volume = None
 
     @property
     def center(self):
