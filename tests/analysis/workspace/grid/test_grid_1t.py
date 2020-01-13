@@ -50,7 +50,7 @@ class GridWorkspace1TTestSuite(object):
                                               steps)
 
         # evaluate workspace
-        workspace_grid = calculator.evaluate(robot)
+        workspace_grid = calculator.evaluate(robot, parallel=False)
 
     @pytest.mark.parametrize(
             ['archetype', 'lower_bound', 'upper_bound', 'steps'],
@@ -82,39 +82,7 @@ class GridWorkspace1TTestSuite(object):
                                               steps)
 
         # evaluate workspace
-        workspace_grid = calculator.evaluate(robot)
-
-    @pytest.mark.parametrize(
-            ['archetype', 'lower_bound', 'upper_bound', 'steps'],
-            (
-                    (
-                            workspace.archetype.Translation(dcm),
-                            [-1.0],
-                            [1.0],
-                            9,
-                    ) for dcm in (np.eye(3), Angular.random().dcm)
-            )
-    )
-    def test_1t_singularities(self,
-                              robot_1t: Robot,
-                              ik_standard: Kinematics,
-                              archetype: Archetype,
-                              lower_bound: Union[Num, Vector],
-                              upper_bound: Union[Num, Vector],
-                              steps: Union[Num, Vector]):
-        robot = robot_1t
-        # create the criterion
-        criterion = workspace.criterion.Singularities(ik_standard)
-
-        # create the grid calculator object
-        calculator = workspace.grid.Algorithm(archetype,
-                                              criterion,
-                                              lower_bound,
-                                              upper_bound,
-                                              steps)
-
-        # evaluate workspace
-        workspace_grid = calculator.evaluate(robot)
+        workspace_grid = calculator.evaluate(robot, parallel=False)
 
     @pytest.mark.parametrize(
             ['archetype', 'lower_bound', 'upper_bound', 'steps'],
@@ -147,7 +115,7 @@ class GridWorkspace1TTestSuite(object):
                                               steps)
 
         # evaluate workspace
-        workspace_grid = calculator.evaluate(robot)
+        workspace_grid = calculator.evaluate(robot, parallel=False)
 
 
 if __name__ == "__main__":

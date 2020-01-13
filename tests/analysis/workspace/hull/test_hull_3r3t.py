@@ -34,10 +34,10 @@ class HullWorkspace3R3TTestSuite(object):
         # create the hull calculator object
         calculator = workspace.hull.Algorithm(archetype,
                                               criterion,
-                                              center=[0.0, 0.0, 0.0])
+                                      center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_hull = calculator.evaluate(robot)
+        workspace_hull = calculator.evaluate(robot, parallel=False)
 
     @pytest.mark.parametrize(
             ['archetype'],
@@ -62,7 +62,7 @@ class HullWorkspace3R3TTestSuite(object):
                                               center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_hull = calculator.evaluate(robot)
+        workspace_hull = calculator.evaluate(robot, parallel=False)
 
     @pytest.mark.parametrize(
             ['archetype'],
@@ -88,7 +88,7 @@ class HullWorkspace3R3TTestSuite(object):
                                               center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_hull = calculator.evaluate(robot)
+        workspace_hull = calculator.evaluate(robot, parallel=False)
 
 
 if __name__ == "__main__":
