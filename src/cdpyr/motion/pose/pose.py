@@ -188,6 +188,10 @@ class Pose(BaseObject):
     )
 
 
+ZeroPose = Pose([0.0, 0.0, 0.0],
+                [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+
 __all__ = [
         'Pose',
+        'ZeroPose',
 ]
