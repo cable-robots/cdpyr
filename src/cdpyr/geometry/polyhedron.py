@@ -3,7 +3,6 @@ from collections import abc
 import numpy as _np
 from magic_repr import make_repr
 
-from cdpyr import helpers
 from cdpyr.geometry import primitive as _geometry
 from cdpyr.geometry._subdivision import subdivide
 from cdpyr.typing import Matrix, Vector
@@ -89,28 +88,10 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         if center.ndim == 0:
             center = _np.asarray([center])
 
-        # load data?
-        if not fresh:
-            # pass
-            try:
-                # load the data created with `numpy.savez_compressed`
-                data = _np.load(
-                        helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz',
-                        allow_pickle=False)
-
-                # instantiate object
-                return Polyhedron(data['vertices'] + center[None, :],
-                                  data['faces'])
-            except KeyError:
-                pass
-            except ValueError:
-                pass
-            except IOError:
-                pass
-
         # initial corners and faces from the global constant
-        vertices = Polyhedron.VERTICES_OCTAHEDRON
-        faces = Polyhedron.FACES_OCTAHEDRON
+        vertices = tuple(
+                tuple(vertex) for vertex in Polyhedron.VERTICES_OCTAHEDRON)
+        faces = tuple(tuple(face) for face in Polyhedron.FACES_OCTAHEDRON)
 
         # subdivide triangles into smaller ones using LOOP-SUBDIVISION
         # algorithm_old
@@ -119,12 +100,6 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
 
         # convert into numpy arrays
         vertices = _np.asarray(vertices)
-
-        # save data to file so we can reload later
-        if not fresh:
-            _np.savez_compressed(
-                    helpers.DATADIR / 'polyhedron' / f'depth_{depth}.npz',
-                    vertices=vertices, faces=faces)
 
         # return a Polyhedron object with the corners shifted by the center
         # given through the user

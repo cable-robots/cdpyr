@@ -1,13 +1,16 @@
+import functools
 import itertools
-from typing import Sequence
 
 import numpy as _np
+
+from cdpyr.typing import Faces, Vertices
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-def subdivide(vertices: Sequence, faces: Sequence):
+@functools.lru_cache(128)
+def subdivide(vertices: Vertices, faces: Faces):
     dim_vertices = len(vertices[0])
     num_vertices = len(vertices)
 
@@ -28,10 +31,11 @@ def subdivide(vertices: Sequence, faces: Sequence):
 
     subdivide.index_vertex = None
 
-    return [new_vertices[k] for k in range(len(new_vertices))], new_faces
+    return tuple(tuple(new_vertices[k]) for k in range(len(new_vertices))), \
+           tuple(tuple(face) for face in new_faces)
 
 
-def add_edge_vertex(a, b, c, edge_vertices):
+def add_edge_vertex(a: int, b: int, c: int, edge_vertices):
     # ensure right order of first two components
     if a > b:
         a, b = b, a
