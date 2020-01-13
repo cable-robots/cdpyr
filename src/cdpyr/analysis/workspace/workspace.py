@@ -31,15 +31,17 @@ class Algorithm(_evaluator.RobotEvaluator):
     def criterion(self):
         return self._criterion
 
-    def evaluate(self, robot: '_robot.Robot', *args, **kwargs) -> 'Result':
+    def evaluate(self, robot: '_robot.Robot', *args, parallel=None, **kwargs) -> 'Result':
         try:
-            # now finally, evaluate the workspace
-            return self._evaluate(robot)
+            # update keyword arguments with the `parallel` keyword
+            kwargs.update({'parallel': parallel})
+            # evaluate the workspace
+            return self._evaluate(robot, *args, **kwargs)
         except Exception as e:
             raise RuntimeError('Could not determine workspace.') from e
 
     @abstractmethod
-    def _evaluate(self, robot: '_robot.Robot') -> 'Result':
+    def _evaluate(self, robot: '_robot.Robot', *args, **kwargs) -> 'Result':
         raise NotImplementedError()
 
 

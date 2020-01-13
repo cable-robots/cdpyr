@@ -71,6 +71,7 @@ setup(
                 'repr',
                 'xmltodict',
                 'marshmallow',
+                'joblib',
                 'watchdog',
                 'hurry.filesize',
                 'tabulate',
