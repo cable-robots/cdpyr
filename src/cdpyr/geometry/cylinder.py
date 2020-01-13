@@ -69,8 +69,6 @@ class Cylinder(Primitive):
         h = (amb ** 2) / (apb ** 2)
         # circumference of the ellipse
         c = _np.pi * apb * (1 + 3 * h / (10 + _np.sqrt(4 - 3 * h)))
-        # c = _np.pi * apb * (3 * amb ** 2 / (apb ** 2 + (
-        #         _np.sqrt(-3 * (amb ** 2) / (apb ** 2) + 4) + 10)) + 1)
 
         # sum of surface of upper and lower ellipsis and of shell are the total
         # surface

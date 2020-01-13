@@ -36,6 +36,10 @@ class Tube(Primitive):
         self._outer = _cylinder.Cylinder(outer_radius, height)
 
     @property
+    def centroid(self):
+        return self._center
+
+    @property
     def height(self):
         return self._inner.height
 
@@ -59,10 +63,6 @@ class Tube(Primitive):
     @outer_radius.setter
     def outer_radius(self, radius: Union[Num, Vector]):
         self._outer.radius = radius
-
-    @property
-    def centroid(self):
-        return self._center
 
     @property
     def surface_area(self):

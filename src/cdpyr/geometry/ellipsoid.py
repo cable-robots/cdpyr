@@ -33,6 +33,10 @@ class Ellipsoid(_geometry.Primitive):
         self.axis = axis or 0
 
     @property
+    def centroid(self):
+        return self.center
+
+    @property
     def diameters(self):
         return 2 * self._radius
 
@@ -65,10 +69,6 @@ class Ellipsoid(_geometry.Primitive):
     @radius.deleter
     def radius(self):
         del self._radius
-
-    @property
-    def centroid(self):
-        return self.center
 
     @property
     def surface_area(self):

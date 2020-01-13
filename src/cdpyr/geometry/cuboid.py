@@ -1,6 +1,5 @@
 import numpy as _np
 from magic_repr import make_repr
-from scipy.spatial import Delaunay as _Delaunay
 
 from cdpyr.geometry.primitive import Primitive
 from cdpyr.typing import Num, Vector
@@ -27,7 +26,30 @@ class Cuboid(Primitive):
         return self.center
 
     @property
-    def corners(self):
+    def faces(self):
+        return ((2, 1, 0),
+                (6, 2, 1),
+                (4, 1, 0),
+                (3, 2, 0),
+                (6, 3, 2),
+                (3, 4, 0),
+                (5, 4, 1),
+                (6, 5, 1),
+                (6, 5, 4),
+                (7, 3, 4),
+                (6, 7, 4),
+                (6, 7, 3),
+                )
+
+    @property
+    def surface_area(self):
+        # more readable access to often used variables
+        w, d, h = self.width, self.depth, self.height
+
+        return 2 * (w * d + d * h + w * h)
+
+    @property
+    def vertices(self):
         return _np.asarray((
                 (-0.5, 0.5, 0.5),
                 (0.5, 0.5, 0.5),
@@ -38,21 +60,6 @@ class Cuboid(Primitive):
                 (0.5, -0.5, -0.5),
                 (-0.5, -0.5, -0.5),
         )) * (self.width, self.depth, self.height) + self._center
-
-    @property
-    def faces(self):
-        return _Delaunay(self.corners).convex_hull
-
-    @property
-    def vertices(self):
-        return _Delaunay(self.corners).points
-
-    @property
-    def surface_area(self):
-        # more readable access to often used variables
-        w, d, h = self.width, self.depth, self.height
-
-        return 2 * (w * d + d * h + w * h)
 
     @property
     def volume(self):

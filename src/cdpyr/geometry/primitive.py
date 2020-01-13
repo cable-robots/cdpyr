@@ -39,34 +39,6 @@ class Primitive(BaseObject, ABC):
         self._centroid = None
 
     @property
-    def center(self):
-        """
-        (3,) vector denoting the point where the geometry primitive is
-        centered around
-
-        Returns
-        -------
-
-        """
-        return self._center
-
-    @center.setter
-    def center(self, center: Vector):
-        self._center = _np.asarray(center)
-
-    @center.deleter
-    def center(self):
-        del self._center
-
-    @property
-    def faces(self):
-        raise NotImplementedError()
-
-    @property
-    def vertices(self):
-        raise NotImplementedError()
-
-    @property
     @abstractmethod
     def centroid(self):
         """
@@ -100,6 +72,42 @@ class Primitive(BaseObject, ABC):
         -------
 
         """
+        raise NotImplementedError()
+
+    @property
+    def center(self):
+        """
+        (3,) vector denoting the point where the geometry primitive is
+        centered around
+
+        Returns
+        -------
+
+        """
+        return self._center
+
+    @center.setter
+    def center(self, center: Vector):
+        self._center = _np.asarray(center)
+
+    @center.deleter
+    def center(self):
+        del self._center
+
+    @property
+    def faces(self):
+        raise NotImplementedError()
+
+    @property
+    def num_faces(self):
+        return len(self.faces)
+
+    @property
+    def num_vertices(self):
+        return len(self.vertices)
+
+    @property
+    def vertices(self):
         raise NotImplementedError()
 
     def __eq__(self, other):

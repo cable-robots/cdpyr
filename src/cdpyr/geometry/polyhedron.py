@@ -1,4 +1,5 @@
 from collections import abc
+from typing import Union
 
 import numpy as _np
 from magic_repr import make_repr
@@ -104,20 +105,68 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         # return a Polyhedron object with the corners shifted by the center
         # given through the user
         return Polyhedron(vertices
-                          / _np.linalg.norm(vertices, axis=1)[:, _np.newaxis]
+                          / _np.linalg.norm(vertices, axis=1)[:, None]
                           + center[None, :], faces)
+
+    @property
+    def centroid(self):
+        # get vertices sorted by the faces
+        vertices = self._vertices[self._faces, :]
+        # split up corners
+        a = vertices[:, 0, :]
+        b = vertices[:, 1, :]
+        c = vertices[:, 2, :]
+
+        # calculate the triangles center of mass through its three vertices
+        triangle_centroids = _np.sum(vertices, axis=1) / 3
+        # surface of each triangle
+        triangle_surfaces = 0.5 * _np.linalg.norm(
+                _np.cross(a - b, a - c, axis=1), axis=1)
+
+        # the final centroid will be located at the weighted triangles'
+        # centroids
+        return _np.sum(triangle_surfaces[:, None] * triangle_centroids,
+                       axis=0) / _np.sum(triangle_surfaces, axis=0)
 
     @property
     def faces(self):
         return self._faces
 
     @property
-    def num_vertices(self):
-        return self._vertices.shape[0]
+    def surface_area(self):
+        # just sum up over each tetrahedron's surface
+        return _np.sum(self.surface_areas, axis=0)
 
     @property
-    def num_faces(self):
-        return self._faces.shape[0]
+    def surface_areas(self):
+        a = self.vertices[self.faces[:, 0], :]
+        b = self.vertices[self.faces[:, 1], :]
+        c = self.vertices[self.faces[:, 2], :]
+
+        # heron's formula
+        return 0.5 * _np.linalg.norm(_np.cross(a - b, a - c, axis=1), axis=1)
+
+    @property
+    def vertices(self):
+        return self._vertices
+
+    @property
+    def volume(self):
+        return _np.sum(self.volumes, axis=0)
+
+    @property
+    def volumes(self):
+        a = self._vertices[self._faces[:, 0], :]
+        b = self._vertices[self._faces[:, 1], :]
+        c = self._vertices[self._faces[:, 2], :]
+        d = self.centroid
+
+        # Heron's formula
+        # | (a - d) . ( (b - d) x (c - d) ) |
+        # -----------------------------------
+        #                  6
+        return _np.abs(
+                _np.sum((a - d) * _np.cross(b - d, c - d, axis=1), axis=1)) / 6
 
     def split(self, depth: int = None):
         """
@@ -146,64 +195,8 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
 
         # update vertices and faces
         self._vertices = vertices / _np.linalg.norm(vertices, axis=1)[:,
-                                    _np.newaxis] + self.center[None, :]
+                                    None] + self.center[None, :]
         self._faces = _np.asarray(faces, dtype=_np.int64)
-
-    @property
-    def vertices(self):
-        return self._vertices
-
-    @property
-    def centroid(self):
-        # get vertices sorted by the faces
-        vertices = self._vertices[self._faces, :]
-        # split up corners
-        a = vertices[:, 0, :]
-        b = vertices[:, 1, :]
-        c = vertices[:, 2, :]
-
-        # calculate the triangles center of mass through its three vertices
-        triangle_centroids = _np.sum(vertices, axis=1) / 3
-        # surface of each triangle
-        triangle_surfaces = 0.5 * _np.linalg.norm(
-                _np.cross(a - b, a - c, axis=1), axis=1)
-
-        # the final centroid will be located at the weighted triangles'
-        # centroids
-        return _np.sum(triangle_surfaces[:, None] * triangle_centroids,
-                       axis=0) / _np.sum(triangle_surfaces, axis=0)
-
-    @property
-    def surface_area(self):
-        # just sum up over each tetrahedron's surface
-        return _np.sum(self.surface_areas, axis=0)
-
-    @property
-    def surface_areas(self):
-        a = self.vertices[self.faces[:, 0], :]
-        b = self.vertices[self.faces[:, 1], :]
-        c = self.vertices[self.faces[:, 2], :]
-
-        # heron's formula
-        return 0.5 * _np.linalg.norm(_np.cross(a - b, a - c, axis=1), axis=1)
-
-    @property
-    def volume(self):
-        return _np.sum(self.volumes, axis=0)
-
-    @property
-    def volumes(self):
-        a = self._vertices[self._faces[:, 0], :]
-        b = self._vertices[self._faces[:, 1], :]
-        c = self._vertices[self._faces[:, 2], :]
-        d = self.centroid
-
-        # Heron's formula
-        # | (a - d) . ( (b - d) x (c - d) ) |
-        # -----------------------------------
-        #                  6
-        return _np.abs(
-                _np.sum((a - d) * _np.cross(b - d, c - d, axis=1), axis=1)) / 6
 
     def __iter__(self):
         return zip(self.faces, self.vertices[self.faces, :])
@@ -219,7 +212,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         except (IndexError, AttributeError):
             return 0
 
-    def __contains__(self, coordinate: object):
+    def __contains__(self, coordinate: Union[Vector, Matrix]):
         # if there are no coordinates stored, then return `False` right away
         if not len(self):
             return False
@@ -228,7 +221,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
         coordinate = _np.asarray(coordinate)
 
         if coordinate.ndim == 1:
-            coordinate = coordinate[_np.newaxis, :]
+            coordinate = coordinate[None, :]
 
         try:
             # vector from the coordinate given to each vertex

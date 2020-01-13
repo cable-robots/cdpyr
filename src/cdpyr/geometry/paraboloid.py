@@ -62,26 +62,6 @@ class Paraboloid(primitive.Primitive):
         del self._radii
 
     @property
-    def shape(self):
-        theta = _np.linspace(0, 2 * _np.pi, num=36, endpoint=True)
-
-        # get both radii
-        a, b = self._radii
-
-        # linearly space the radii
-        ra = _np.linspace(0, a, num=10, endpoint=True)
-        rb = _np.linspace(0, b, num=10, endpoint=True)
-        # linearly space the rotation
-        theta = _np.linspace(0, 2 * _np.pi, num=36, endpoint=True)
-        # calculate `x` and `y` coordinates from polar coordinates
-        x = _np.outer(ra, _np.cos(theta))
-        y = _np.outer(rb, _np.sin(theta))
-
-        # right off, create the result by in-place calculating the height
-        return _np.stack((x, y, ((x / a) ** 2 + (y / b) ** 2) * self.height),
-                         axis=0)
-
-    @property
     def surface_area(self):
         raise NotImplementedError()
 
