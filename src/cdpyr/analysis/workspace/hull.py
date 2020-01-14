@@ -71,7 +71,8 @@ class Algorithm(_workspace.Algorithm):
 
         # parallelized code of hull method
         if kwargs.pop('parallel', False):
-            vertices = Parallel(n_jobs=multiprocessing.cpu_count(), verbose=8)(
+            n_jobs = kwargs.pop('n_jobs', multiprocessing.cpu_count())
+            vertices = Parallel(n_jobs=n_jobs, **kwargs)(
                     delayed(self.__check_direction)(robot, direction, min_step,
                                                     max_iters) for direction in
                     search_directions)

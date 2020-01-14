@@ -104,8 +104,9 @@ class Algorithm(_workspace.Algorithm):
     def _evaluate(self, robot: '_robot.Robot', *args, **kwargs) -> 'Result':
         # parallelized evaluation
         if kwargs.pop('parallel', False):
-                coordinates, flags = zip(
-                *Parallel(n_jobs=multiprocessing.cpu_count(), verbose=8)(
+            n_jobs = kwargs.pop('n_jobs', multiprocessing.cpu_count())
+            coordinates, flags = zip(
+                *Parallel(n_jobs=n_jobs, **kwargs)(
                         delayed(self.__check__coordinate)(robot, coordinate) for
                         coordinate in self.coordinates()))
         # non-parallelized, fancy list comprehension
