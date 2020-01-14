@@ -1,6 +1,8 @@
+import multiprocessing
 from typing import Union
 
 import numpy as _np
+from joblib import Parallel, delayed
 
 from cdpyr.analysis.workspace import workspace as _workspace
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
@@ -54,7 +56,7 @@ class Algorithm(_workspace.Algorithm):
     def center(self):
         del self._center
 
-    def _evaluate(self, robot: '_robot.Robot') -> 'Result':
+    def _evaluate(self, robot: '_robot.Robot', *args, **kwargs) -> 'Result':
         # use our `Polyhedron` class and let it calculate the search
         # directions and faces
         polyhedron = _polyhedron.Polyhedron.from_octahedron(self.depth,
@@ -67,13 +69,21 @@ class Algorithm(_workspace.Algorithm):
         min_step = 0.5 ** self.maximum_halvings
         max_iters = self.maximum_iterations
 
-        # calculate all vertices
-        vertices = list(
-                self.__check_direction(robot,
-                                       direction,
-                                       min_step,
-                                       max_iters)
-                for direction in search_directions)
+        # parallelized code of hull method
+        if kwargs.pop('parallel', False):
+            n_jobs = kwargs.pop('n_jobs', multiprocessing.cpu_count())
+            vertices = Parallel(n_jobs=n_jobs, **kwargs)(
+                    delayed(self.__check_direction)(robot, direction, min_step,
+                                                    max_iters) for direction in
+                    search_directions)
+        # non-parallelized, list-comprehension code of hull method
+        else:
+            vertices = list(
+                    self.__check_direction(robot,
+                                           direction,
+                                           min_step,
+                                           max_iters)
+                    for direction in search_directions)
 
         # return the hull result object
         return Result(self,

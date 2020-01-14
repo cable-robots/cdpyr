@@ -1,8 +1,10 @@
 import itertools
+import multiprocessing
 from collections import abc
 from typing import Union
 
 import numpy as _np
+from joblib import Parallel, delayed
 from scipy.spatial import Delaunay as _Delaunay
 
 from cdpyr.analysis.workspace import workspace as _workspace
@@ -99,19 +101,19 @@ class Algorithm(_workspace.Algorithm):
                   range(0, len(iterations)))
         ))
 
-    def _evaluate(self, robot: '_robot.Robot') -> 'Result':
-        # temporarily store the robot as local property so it won't be passed
-        # as method argument on every coordinate evaluation
-        self.__robot = robot
-
-        # fancy list comprehension
-        coordinates, flags = list(zip(
+    def _evaluate(self, robot: '_robot.Robot', *args, **kwargs) -> 'Result':
+        # parallelized evaluation
+        if kwargs.pop('parallel', False):
+            n_jobs = kwargs.pop('n_jobs', multiprocessing.cpu_count())
+            coordinates, flags = zip(
+                *Parallel(n_jobs=n_jobs, **kwargs)(
+                        delayed(self.__check__coordinate)(robot, coordinate) for
+                        coordinate in self.coordinates()))
+        # non-parallelized, fancy list comprehension
+        else:
+            coordinates, flags = list(zip(
                 *((coordinate, self.__check__coordinate(robot, coordinate)) for
-                  coordinate in
-                  self.coordinates())))
-
-        # remove the temporary object
-        del self.__robot
+                  coordinate in self.coordinates())))
 
         # return the tuple of poses that were evaluated
         return Result(
@@ -123,9 +125,15 @@ class Algorithm(_workspace.Algorithm):
         )
 
     def __check__coordinate(self, robot, coordinate: _np.ndarray):
-        return self._archetype.comparator(self._criterion.evaluate(robot, pose)
-                                          for pose in
-                                          self._archetype.poses(coordinate))
+        # we don't want to loose too much type looking up variables inside
+        # this object, so we will store them as local variables here
+        criterion_evaluator = self._criterion.evaluate
+        poses = self._archetype.poses
+
+        # and compare
+        return coordinate, self._archetype.comparator(
+                criterion_evaluator(robot, pose)
+                for pose in poses(coordinate))
 
 
 class Result(_workspace.Result, abc.Collection):

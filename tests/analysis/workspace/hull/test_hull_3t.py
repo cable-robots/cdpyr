@@ -13,15 +13,19 @@ from cdpyr.robot import Robot
 class HullWorkspace3TTestSuite(object):
 
     @pytest.mark.parametrize(
-            ['archetype'],
-            [
-                [workspace.archetype.Translation(np.eye(3))]
-            ]
+            ['archetype', 'parallel'],
+            (
+                    (
+                            workspace.archetype.Translation(np.eye(3)),
+                            parallel,
+                    ) for parallel in (False, True)
+            )
     )
     def test_3t_cable_length(self,
                              robot_3t: Robot,
                              ik_standard: Kinematics,
-                             archetype: Archetype):
+                             archetype: Archetype,
+                             parallel: bool):
         robot = robot_3t
         # create the criterion
         criterion = workspace.criterion.CableLength(ik_standard, np.asarray(
@@ -33,18 +37,23 @@ class HullWorkspace3TTestSuite(object):
                                               center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_hull = calculator.evaluate(robot)
+        workspace_hull = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
     @pytest.mark.parametrize(
-            ['archetype'],
-            [
-                [workspace.archetype.Translation(np.eye(3))]
-            ]
+            ['archetype', 'parallel'],
+            (
+                    (
+                            workspace.archetype.Translation(np.eye(3)),
+                            parallel,
+                    ) for parallel in (False, True)
+            )
     )
     def test_3t_singularities(self,
                               robot_3t: Robot,
                               ik_standard: Kinematics,
-                              archetype: Archetype):
+                              archetype: Archetype,
+                              parallel: bool):
         robot = robot_3t
         # create the criterion
         criterion = workspace.criterion.Singularities(ik_standard)
@@ -55,18 +64,23 @@ class HullWorkspace3TTestSuite(object):
                                               center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_hull = calculator.evaluate(robot)
+        workspace_hull = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
     @pytest.mark.parametrize(
-            ['archetype'],
-            [
-                [workspace.archetype.Translation(np.eye(3))]
-            ]
+            ['archetype', 'parallel'],
+            (
+                    (
+                            workspace.archetype.Translation(np.eye(3)),
+                            parallel,
+                    ) for parallel in (False, True)
+            )
     )
     def test_3t_wrench_feasible(self,
                                 robot_3t: Robot,
                                 ik_standard: Kinematics,
-                                archetype: Archetype):
+                                archetype: Archetype,
+                                parallel: bool):
         robot = robot_3t
         # create the criterion
         criterion = workspace.criterion.WrenchFeasible(
@@ -78,7 +92,8 @@ class HullWorkspace3TTestSuite(object):
                                               center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_hull = calculator.evaluate(robot)
+        workspace_hull = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
 
 if __name__ == "__main__":

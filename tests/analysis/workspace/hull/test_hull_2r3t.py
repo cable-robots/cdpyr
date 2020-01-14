@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 import pytest
 
@@ -14,17 +16,21 @@ from cdpyr.robot import Robot
 class HullWorkspace2R3TTestSuite(object):
 
     @pytest.mark.parametrize(
-            ['archetype'],
+            ['archetype', 'parallel'],
             (
                     (
-                            [workspace.archetype.Translation(dcm)]
-                    ) for dcm in (np.eye(3), Angular.random().dcm)
+                            workspace.archetype.Translation(dcm),
+                            parallel,
+                    ) for dcm, parallel in
+                    itertools.product((np.eye(3), Angular.random().dcm),
+                                      (False, True))
             )
     )
     def test_2r3t_cable_length(self,
                                robot_2r3t: Robot,
                                ik_standard: Kinematics,
-                               archetype: Archetype):
+                               archetype: Archetype,
+                               parallel: bool):
         robot = robot_2r3t
         # create the criterion
         criterion = workspace.criterion.CableLength(ik_standard, np.asarray(
@@ -36,20 +42,25 @@ class HullWorkspace2R3TTestSuite(object):
                                               center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_hull = calculator.evaluate(robot)
+        workspace_hull = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
     @pytest.mark.parametrize(
-            ['archetype'],
+            ['archetype', 'parallel'],
             (
                     (
-                            [workspace.archetype.Translation(dcm)]
-                    ) for dcm in (np.eye(3), Angular.random().dcm)
+                            workspace.archetype.Translation(dcm),
+                            parallel,
+                    ) for dcm, parallel in
+                    itertools.product((np.eye(3), Angular.random().dcm),
+                                      (False, True))
             )
     )
     def test_2r3t_singularities(self,
                                 robot_2r3t: Robot,
                                 ik_standard: Kinematics,
-                                archetype: Archetype):
+                                archetype: Archetype,
+                                parallel: bool):
         robot = robot_2r3t
         # create the criterion
         criterion = workspace.criterion.Singularities(ik_standard)
@@ -60,20 +71,25 @@ class HullWorkspace2R3TTestSuite(object):
                                               center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_hull = calculator.evaluate(robot)
+        workspace_hull = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
     @pytest.mark.parametrize(
-            ['archetype'],
+            ['archetype', 'parallel'],
             (
                     (
-                            [workspace.archetype.Translation(dcm)]
-                    ) for dcm in (np.eye(3), Angular.random().dcm)
+                            workspace.archetype.Translation(dcm),
+                            parallel,
+                    ) for dcm, parallel in
+                    itertools.product((np.eye(3), Angular.random().dcm),
+                                      (False, True))
             )
     )
     def test_2r3t_wrench_feasible(self,
                                   robot_2r3t: Robot,
                                   ik_standard: Kinematics,
-                                  archetype: Archetype):
+                                  archetype: Archetype,
+                                  parallel: bool):
         robot = robot_2r3t
         # create the criterion
         criterion = workspace.criterion.WrenchFeasible(
@@ -85,7 +101,8 @@ class HullWorkspace2R3TTestSuite(object):
                                               center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_hull = calculator.evaluate(robot)
+        workspace_hull = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
 
 if __name__ == "__main__":
