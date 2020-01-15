@@ -77,6 +77,8 @@ setup(
                 'tabulate',
                 'fastnumbers',
                 'cached-property',
+                'python-string-utils',
+                'more-itertools',
         ],
         extras_require={
                 'visualization': [
