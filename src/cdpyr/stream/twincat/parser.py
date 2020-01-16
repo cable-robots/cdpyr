@@ -159,10 +159,10 @@ class Parser(object):
                 self._data['signals'][idx]['time'].append(key)
                 self._data['signals'][idx]['values'].append(value)
             except AttributeError:
-                self._data['signals'][idx] = {'time': [key], 'value': [value]}
+                self._data['signals'][idx] = {'time': [key], 'values': [value]}
             except KeyError:
                 self._data['signals'][idx]['time'] = [key]
-                self._data['signals'][idx]['value'] = [value]
+                self._data['signals'][idx]['values'] = [value]
 
     def _prepare_cell_key(self, k: str):
         # remove dashes/hyphens and turn camel case into snake case
