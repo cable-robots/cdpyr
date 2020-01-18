@@ -1,19 +1,25 @@
 import _datetime as _datetime
 import pathlib as _pl
-import re
-from enum import Enum, auto
-from typing import Any, AnyStr, List, Union
+from collections import OrderedDict
+from typing import Any, AnyStr, Dict, List, Union
 
 import more_itertools
+import numpy as _np
 import pint as _pint
+import re
 import string_utils
+from enum import Enum, auto
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
+# registrar of SI units
 _ureg = _pint.UnitRegistry()
 
-re_name_unit = re.compile('^(?P<key>[A-Za-z\-]+)(\[(?P<unit>[a-z]+)\])?$')
+# regular expression object to match a symbol name and its unit
+reg_name_unit = re.compile('^(?P<key>[A-Za-z\-]+)(\[(?P<unit>[a-z]+)\])?$')
+# regular expression object to match vector-like names
+reg_signal_name = re.compile('^(?P<name>[a-zA-Z\_\.]+)(\[(?P<index>\d+)\])?$')
 
 
 def process_header_time_record(values):
@@ -68,35 +74,43 @@ class Parser(object):
         self._data = {}
 
     def parse(self):
-        # read file
-        csv = self.file.read_text().split("\n")
-
         # store processed scope meta data and signals
-        self._data = {'meta': {}, 'signals': {}}
+        self._data = {'meta': {}, 'signals': OrderedDict({})}
 
+        # change the state from ready to the first state
         self._state = next(self._states)
 
         # loop over the file lines while looking forward into the file
-        for current_line, next_line in more_itertools.pairwise(csv):
-            # completely skip empty lines
-            if current_line == '':
-                continue
+        with open(self.file, 'r') as f:
+            for current_line, next_line in more_itertools.pairwise(f):
+                # strip newline breaks from current and next line
+                current_line = current_line.rstrip("\n")
+                next_line = next_line.rstrip("\n")
 
-            if self._state == ParsingState.HEADER:
-                self._parse_header(current_line)
-            elif self._state == ParsingState.SIGNAL_META:
-                self._parse_signal_meta(current_line)
-            elif self._state == ParsingState.SIGNAL_DATA:
-                self._parse_signal_data(current_line)
+                # completely skip empty lines
+                if current_line == '':
+                    continue
 
-            if current_line != '' and next_line == '':
-                self._state = next(self._states)
+                if self._state == ParsingState.HEADER:
+                    self._parse_header(current_line)
+                elif self._state == ParsingState.SIGNAL_META:
+                    self._parse_signal_meta(current_line)
+                elif self._state == ParsingState.SIGNAL_DATA:
+                    self._parse_signal_data(current_line)
 
-            # we reached the implemented file end, so it's safe to bail out here
-            if current_line == 'EOF':
-                break
+                if current_line != '' and next_line == '':
+                    self._state = next(self._states)
 
+                # we reached the implemented file end, so it's safe to bail
+                # out here
+                if current_line == 'EOF':
+                    break
+
+        # turn dict of signals into a list
         self._data['signals'] = tuple(self._data['signals'].values())
+        # merge signals with a vector-like name
+        self._data['signals'] = self._merge_signals(self._data['signals'])
+        # and return the result
         return self._data
 
     def _parse_header(self, line: str):
@@ -112,7 +126,7 @@ class Parser(object):
         line_data = line.split(self.delimiter)
         key = self._prepare_cell_key(line_data[0])
         values = (v for v in line_data[1:-1:2])
-        re_match = re_name_unit.match(key)
+        re_match = reg_name_unit.match(key)
         try:
             key = self._prepare_cell_key(re_match.group('key'))
             unit = re_match.group('unit')
@@ -164,6 +178,42 @@ class Parser(object):
                 self._data['signals'][idx]['time'] = [key]
                 self._data['signals'][idx]['values'] = [value]
 
-    def _prepare_cell_key(self, k: str):
+    @staticmethod
+    def _prepare_cell_key(k: str):
         # remove dashes/hyphens and turn camel case into snake case
         return string_utils.camel_case_to_snake(k.strip().replace('-', ''))
+
+    @staticmethod
+    def _merge_signals(signals: List[Dict[AnyStr, Any]]):
+        # new signals stored in a dict
+        new_signals = {}
+        # loop over every signal
+        for signal in signals:
+            # see if signal matches a 'vector'-name identifier
+            reg_match = reg_signal_name.match(signal['meta']['name'])
+            # get name and index
+            name, index = reg_match.group('name'), reg_match.group('index')
+            # append
+            try:
+                new_signals[name]['values'][index] = signal['values']
+            except KeyError:
+                # change signal's original `Name` attribute
+                signal['meta']['name'] = name
+                # also change signal's original `SymbolName` attribute
+                signal['meta']['symbol_name'] = signal['meta'][
+                    'symbol_name'].replace(f'{name}[{index}]', name)
+                # and create a new signal dict
+                new_signals[name] = {
+                        'time':   signal['time'],
+                        'values': OrderedDict({index: signal['values']}),
+                        'meta':   signal['meta']
+                }
+
+        # sort vector signals by index
+        for key, signal in new_signals.items():
+            new_signals[key]['values'] = _np.asarray(
+                    [signal['values'][index] for index in
+                     sorted(signal['values'].keys())])
+
+        # return the squeezed data
+        return tuple(new_signals.values())

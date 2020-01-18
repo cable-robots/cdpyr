@@ -16,13 +16,18 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Scope(object):
     _meta: '_meta.ScopeMeta'
-    _signals: Tuple['_signal.Signal']
+    _signals: '_signal.SignalList'
 
-    def __init__(self, signals: Tuple['_signal.Signal'],
+    def __init__(self,
+                 signals: Union[
+                     '_signal.SignalList',
+                     Tuple['_signal.Signal'],
+                     Tuple[Dict[AnyStr, Any]]],
                  meta: Union['_meta.ScopeMeta', Dict[AnyStr, Any]]):
-        self._signals = signals \
-            if isinstance(signals[0], _signal.Signal) \
-            else [_signal.Signal(**signal) for signal in signals]
+        self._signals = _signal.SignalList(
+                [_signal.Signal(**signal) for signal in signals] \
+                    if isinstance(signals[0], Dict) \
+                    else signals)
         self._meta = meta \
             if isinstance(meta, _meta.ScopeMeta) \
             else _meta.ScopeMeta(**meta)
@@ -60,11 +65,8 @@ class Scope(object):
         return _np.asarray([signal.time for signal in self._signals])
 
     @property
-    def value(self):
-        return _np.asarray([signal.value for signal in self._signals])
-
-    def __iter__(self):
-        return iter(self._signals)
+    def values(self):
+        return _np.asarray([signal.values for signal in self._signals])
 
     __repr__ = make_repr(
             'signals',

@@ -1,10 +1,11 @@
-from typing import Any, AnyStr, Dict, Union
+from collections import UserList
+from typing import Any, AnyStr, Dict, Iterable, List, Optional, Union
 
 import numpy as _np
 from magic_repr import make_repr
 
 from cdpyr.stream.twincat import meta as _meta
-from cdpyr.typing import Vector, Matrix
+from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -85,7 +86,7 @@ class Signal(object):
 
     @property
     def values(self):
-        return self._data[:, 1]
+        return self._data[:, 1:-1]
 
     @property
     def variable_size(self):
@@ -114,6 +115,29 @@ class Signal(object):
     )
 
 
+class SignalList(UserList):
+    data: List['Signal']
+
+    def __init__(self, initlist: Optional[Iterable[Any]] = None):
+        super().__init__(initlist)
+
+    def __getattr__(self, item, *args, **kwargs):
+
+        try:
+            # filter signals by name
+            signals = [signal for signal in self.data if signal.name == item]
+
+            # if there are signals matching the name, we will return them as a
+            # new `SignalList`
+            if signals:
+                return SignalList(signals)
+        except BaseException:
+            pass
+
+        raise AttributeError(f"'SignalList' object has no attribute '{item}'")
+
+
 __all__ = [
         'Signal',
+        'SignalList',
 ]
