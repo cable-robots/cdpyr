@@ -617,6 +617,200 @@ def robot_3r3t():
     )
 
 
+def segesta():
+    return cdpyr.robot.Robot(
+            name="SeGeSTA",
+            gravity=(0, 0, -9.81),
+            frame=cdpyr.robot.Frame(
+                    anchors=[
+                            cdpyr.robot.FrameAnchor(
+                                    position=pos,
+                                    angular=cdpyr.kinematics.transformation.Angular.rotation_z(
+                                            np.arctan2(-pos[1], -pos[0])),
+                                    pulley=cdpyr.robot.Pulley(
+                                            radius=0.10,
+                                    )
+                            ) for pos in (
+                                    (-0.415, -0.315, -0.5),
+                                    (-0.415, -0.315, 0.5),
+                                    (0.415, -0.315, 0.5),
+                                    (0.415, -0.315, -0.5),
+                                    (0.415, 0.315, -0.5),
+                                    (-0.415, 0.315, 0.5),
+                                    (-0.415, 0.315, -0.5),
+                                    (0.415, 0.315, 0.5),
+                            )
+                    ]
+            ),
+            platforms=[
+                    cdpyr.robot.Platform(
+                            motion_pattern=cdpyr.motion.pattern.MP_3R3T,
+                            inertia=cdpyr.mechanics.Inertia(
+                                    np.diag((1, 1, 1)) * 1,
+                                    cdpyr.mechanics.Inertia.cuboid(1, 0.0525,
+                                                                   0.2, 0.02)),
+                            anchors=[
+                                    cdpyr.robot.PlatformAnchor(
+                                            position=pos,
+                                            angular=cdpyr.kinematics.transformation.Angular.rotation_z(
+                                                    np.arctan2(-pos[1],
+                                                               -pos[0])),
+                                    ) for pos in (
+                                            (-0.0525, -0.0760, 0.01),
+                                            (-0.0525, -0.0760, 0.01),
+                                            (0.0525, -0.0760, 0.01),
+                                            (0.0525, -0.0760, 0.01),
+                                            (0.0000, 0.1240, -0.01),
+                                            (0.0000, 0.1240, -0.01),
+                                            (0.0000, 0.1240, -0.01),
+                                            (0.0000, 0.1240, -0.01),
+                                    )
+                            ]
+                    )
+            ],
+            cables=(
+                    cdpyr.robot.Cable(
+                            name="Dyneema",
+                            material="Liros D-Pro SK78",
+                            diameter=1.5 / 1000,
+                            color="red",
+                            density=0.00073565,
+                            modulus={
+                                    'elasticities': (12.2 * 1e9,),
+                                    'viscosities':  (0.46,),
+                            }
+                    ),
+                    cdpyr.robot.Cable(
+                            name="Dyneema",
+                            material="Liros D-Pro SK78",
+                            diameter=1.5 / 1000,
+                            color="red",
+                            density=0.00073565,
+                            modulus={
+                                    'elasticities': (12.2 * 1e9,),
+                                    'viscosities':  (0.46,),
+                            }
+                    ),
+                    cdpyr.robot.Cable(
+                            name="Dyneema",
+                            material="Liros D-Pro SK78",
+                            diameter=1.5 / 1000,
+                            color="red",
+                            density=0.00073565,
+                            modulus={
+                                    'elasticities': (12.2 * 1e9,),
+                                    'viscosities':  (0.46,),
+                            }
+                    ),
+                    cdpyr.robot.Cable(
+                            name="Dyneema",
+                            material="Liros D-Pro SK78",
+                            diameter=1.5 / 1000,
+                            color="red",
+                            density=0.00073565,
+                            modulus={
+                                    'elasticities': (12.2 * 1e9,),
+                                    'viscosities':  (0.46,),
+                            }
+                    ),
+                    cdpyr.robot.Cable(
+                            name="Dyneema",
+                            material="Liros D-Pro SK78",
+                            diameter=1.5 / 1000,
+                            color="red",
+                            density=0.00073565,
+                            modulus={
+                                    'elasticities': (12.2 * 1e9,),
+                                    'viscosities':  (0.46,),
+                            }
+                    ),
+                    cdpyr.robot.Cable(
+                            name="Dyneema",
+                            material="Liros D-Pro SK78",
+                            diameter=1.5 / 1000,
+                            color="red",
+                            density=0.00073565,
+                            modulus={
+                                    'elasticities': (12.2 * 1e9,),
+                                    'viscosities':  (0.46,),
+                            }
+                    ),
+                    cdpyr.robot.Cable(
+                            name="Dyneema",
+                            material="Liros D-Pro SK78",
+                            diameter=1.5 / 1000,
+                            color="red",
+                            density=0.00073565,
+                            modulus={
+                                    'elasticities': (12.2 * 1e9,),
+                                    'viscosities':  (0.46,),
+                            }
+                    ),
+                    cdpyr.robot.Cable(
+                            name="Dyneema",
+                            material="Liros D-Pro SK78",
+                            diameter=1.5 / 1000,
+                            color="red",
+                            density=0.00073565,
+                            modulus={
+                                    'elasticities': (12.2 * 1e9,),
+                                    'viscosities':  (0.46,),
+                            }
+                    ),
+            ),
+            kinematic_chains=(
+                    {
+                            'frame_anchor':    0,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 0,
+                            'cable':           0
+                    },
+                    {
+                            'frame_anchor':    1,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 1,
+                            'cable':           1
+                    },
+                    {
+                            'frame_anchor':    2,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 2,
+                            'cable':           2
+                    },
+                    {
+                            'frame_anchor':    3,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 3,
+                            'cable':           3
+                    },
+                    {
+                            'frame_anchor':    4,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 4,
+                            'cable':           4
+                    },
+                    {
+                            'frame_anchor':    5,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 5,
+                            'cable':           5
+                    },
+                    {
+                            'frame_anchor':    6,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 6,
+                            'cable':           6
+                    },
+                    {
+                            'frame_anchor':    7,
+                            # 'platform':        0,  # implied
+                            'platform_anchor': 7,
+                            'cable':           7
+                    },
+            ),
+    )
+
+
 def ipanema_3():
     return cdpyr.robot.Robot(
             name="Sample IPAnema 3",
@@ -945,4 +1139,5 @@ __all__ = [
         'robot_2r3t',
         'robot_3r3t',
         'ipanema_3',
+        'segesta',
 ]
