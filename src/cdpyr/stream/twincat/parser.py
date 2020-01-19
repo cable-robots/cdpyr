@@ -1,7 +1,7 @@
 import _datetime as _datetime
 import pathlib as _pl
 from collections import OrderedDict
-from typing import Any, AnyStr, Dict, List, Union
+from typing import Any, AnyStr, Dict, List, Tuple, Union
 
 import more_itertools
 import numpy as _np
@@ -10,10 +10,12 @@ import re
 import string_utils
 from enum import Enum, auto
 
+from cdpyr.typing import Num, Vector
+
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
-# registrar of SI units
+# registry of SI units
 _ureg = _pint.UnitRegistry()
 
 # regular expression object to match a symbol name and its unit
@@ -22,6 +24,7 @@ reg_name_unit = re.compile('^(?P<key>[A-Za-z\-]+)(\[(?P<unit>[a-z]+)\])?$')
 reg_signal_name = re.compile('^(?P<name>[a-zA-Z\_\.]+)(\[(?P<index>\d+)\])?$')
 
 
+# callback to parse the "StartRecord" and "EndRecord" header fields
 def process_header_time_record(values):
     try:
         dt = _datetime.datetime.strptime(' '.join(values[1:]),
@@ -32,6 +35,7 @@ def process_header_time_record(values):
     return {'timestamp': values[0], 'datetime': dt}
 
 
+# callback to parse the "File" header field
 def process_header_file(v: List[Any]):
     try:
         return _pl.Path(v[0])
@@ -48,6 +52,11 @@ class ParsingState(Enum):
 
 
 class Parser(object):
+    """
+
+    """
+
+    # handlers for differnet header fields
     HANDLERS = {
             'start_record':  process_header_time_record,
             'file':          process_header_file,
@@ -63,25 +72,41 @@ class Parser(object):
             'bit_mask':      lambda x: int(x, base=16) + 0x200,
     }
 
+    # list of sequential states this parser can be in
+    STATES = (ParsingState.HEADER,
+              ParsingState.SIGNAL_META,
+              ParsingState.SIGNAL_DATA,
+              ParsingState.EOF,)
+
     def __init__(self, file: Union[AnyStr, _pl.Path], delimiter="\t"):
-        self.file = file if isinstance(file, _pl.Path) else _pl.Path(
-                file).resolve()
+        # file path
+        self.file = file \
+            if isinstance(file, _pl.Path) \
+            else _pl.Path(file).resolve()
+        # file delimiter to use
         self.delimiter = delimiter
-        self._states = iter((ParsingState.READY, ParsingState.HEADER,
-                             ParsingState.SIGNAL_META, ParsingState.SIGNAL_DATA,
-                             ParsingState.EOF))
-        self._state = next(self._states)
+        # parse data
         self._data = {}
 
     def parse(self):
-        # store processed scope meta data and signals
-        self._data = {'meta': {}, 'signals': OrderedDict({})}
+        """
 
-        # change the state from ready to the first state
-        self._state = next(self._states)
+        Returns
+        -------
+
+        """
+
+        # store processed scope meta data and signals
+        self._data = {'meta': dict(), 'signals': OrderedDict()}
+
+        # iterator over all possible states
+        states = iter(self.STATES)
+        # and the current state is the first/next of all possible states
+        state = next(states)
 
         # loop over the file lines while looking forward into the file
         with open(self.file, 'r') as f:
+            # get current and next line for lookahead of changing state
             for current_line, next_line in more_itertools.pairwise(f):
                 # strip newline breaks from current and next line
                 current_line = current_line.rstrip("\n")
@@ -91,26 +116,28 @@ class Parser(object):
                 if current_line == '':
                     continue
 
-                if self._state == ParsingState.HEADER:
+                # process the current line depending on what state we are in
+                if state == ParsingState.HEADER:
                     self._parse_header(current_line)
-                elif self._state == ParsingState.SIGNAL_META:
+                elif state == ParsingState.SIGNAL_META:
                     self._parse_signal_meta(current_line)
-                elif self._state == ParsingState.SIGNAL_DATA:
+                elif state == ParsingState.SIGNAL_DATA:
                     self._parse_signal_data(current_line)
 
-                if current_line != '' and next_line == '':
-                    self._state = next(self._states)
+                # if the next line is empty and the current is not,
+                # we advance to the next state
+                if next_line == '' and current_line != '':
+                    state = next(states)
 
                 # we reached the implemented file end, so it's safe to bail
                 # out here
                 if current_line == 'EOF':
                     break
 
-        # turn dict of signals into a list
-        self._data['signals'] = tuple(self._data['signals'].values())
         # merge signals with a vector-like name
-        self._data['signals'] = self._merge_signals(self._data['signals'])
-        # and return the result
+        self._data['signals'] = self._merge_signals(
+                tuple(self._data['signals'].values()))
+
         return self._data
 
     def _parse_header(self, line: str):
@@ -125,23 +152,31 @@ class Parser(object):
     def _parse_signal_meta(self, line: str):
         line_data = line.split(self.delimiter)
         key = self._prepare_cell_key(line_data[0])
-        values = (v for v in line_data[1:-1:2])
-        re_match = reg_name_unit.match(key)
+        values = line_data[1:-1:2]
+
+        # some keys are given as "name[unit]" which we will split into here
         try:
+            re_match = reg_name_unit.match(key)
             key = self._prepare_cell_key(re_match.group('key'))
             unit = re_match.group('unit')
         except AttributeError:
             unit = None
 
         for idx, value in enumerate(values):
+            # apply data handler for the field if it exists
             try:
                 value = self.HANDLERS[key](value)
             except KeyError:
                 pass
+
+            # try to parse the string as a unit, if possible
             try:
                 value = _ureg.parse_expression(f'{value} {unit}')
             except _pint.UndefinedUnitError:
                 pass
+
+            # assign to existing 'meta' dict or create a new one on the first
+            # key
             try:
                 self._data['signals'][idx]['meta'][key] = value
             except KeyError:
@@ -156,11 +191,15 @@ class Parser(object):
         if line_data[0].strip() == '':
             return
 
+        # get every data key and (stripped) value
         keys = (self._prepare_cell_key(k) for k in line_data[0:-1:2])
         values = (k.strip() for k in line_data[1:-1:2])
 
+        # loop over each signal
         for idx, key_value in enumerate(zip(keys, values)):
             key, value = key_value
+
+            # try converting into float or integer
             try:
                 value = float(value)
             except ValueError:
@@ -169,11 +208,12 @@ class Parser(object):
                 key = int(key)
             except ValueError:
                 pass
+
+            # append the time and value to the list of existing times and
+            # values, or create a new dictionary of lists if it doesn't exist
             try:
                 self._data['signals'][idx]['time'].append(key)
                 self._data['signals'][idx]['values'].append(value)
-            except AttributeError:
-                self._data['signals'][idx] = {'time': [key], 'values': [value]}
             except KeyError:
                 self._data['signals'][idx]['time'] = [key]
                 self._data['signals'][idx]['values'] = [value]
@@ -184,7 +224,10 @@ class Parser(object):
         return string_utils.camel_case_to_snake(k.strip().replace('-', ''))
 
     @staticmethod
-    def _merge_signals(signals: List[Dict[AnyStr, Any]]):
+    def _merge_signals(signals: Tuple[
+        Dict[AnyStr, Union[
+            Dict[AnyStr, Union[AnyStr, _ureg.Quantity, Num]],
+            Vector]]]):
         # new signals stored in a dict
         new_signals = {}
         # loop over every signal
