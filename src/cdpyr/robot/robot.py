@@ -120,6 +120,7 @@ class Robot(RobotComponent):
                              Sequence[Dict[AnyStr, int]]]):
         if isinstance(chains, Iterable) \
                 and not isinstance(chains, _kinematicchain.KinematicChainList):
+            chains = list(chains)
             # loop over each chain
             for idx, chain in enumerate(chains):
                 # deal with chain as dictionary
