@@ -19,6 +19,9 @@
       <option name="FROM_IMPORT_NEW_LINE_BEFORE_RIGHT_PARENTHESIS" value="true" />
       <option name="FROM_IMPORT_PARENTHESES_FORCE_IF_MULTILINE" value="true" />
     </Python>
+    <codeStyleSettings language="Markdown">
+      <option name="RIGHT_MARGIN" value="80" />
+    </codeStyleSettings>
     <codeStyleSettings language="Python">
       <option name="RIGHT_MARGIN" value="80" />
       <option name="WRAP_LONG_LINES" value="true" />
