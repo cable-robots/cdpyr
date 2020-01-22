@@ -1,5 +1,6 @@
 from abc import ABC
 from typing import Mapping, Sequence, Union
+import warnings
 
 import numpy as _np
 from cdpyr.analysis.kinematics import kinematics as _kinematics
@@ -32,6 +33,7 @@ from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
 from plotly import graph_objects as go
 from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
+from scipy.spatial.qhull import QhullError
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -580,7 +582,11 @@ class Plotly(_engine.Engine, ABC):
                 # in 3D, we perform delaunay triangulation of the corners and
                 # retrieve the convex hull from there
                 if self._NUMBER_OF_AXES == 3:
-                    delau = _Delaunay(anchors.T)
+                    try:
+                        delau = _Delaunay(anchors.T)
+                    except QhullError as e:
+                        warnings.warn(RuntimeWarning(e))
+                        return
 
                     edges = delau.convex_hull
                     vertices = delau.points

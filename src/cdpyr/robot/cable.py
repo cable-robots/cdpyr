@@ -1,7 +1,7 @@
 from collections import ChainMap, UserList
 from typing import AnyStr, Dict, Optional, Union
 
-import numpy as np_
+import numpy as _np
 from colour import Color
 from magic_repr import make_repr
 
@@ -38,8 +38,8 @@ class Cable(RobotComponent):
         self.modulus = modulus or {}
         self.diameter = diameter or 0
         self.color = color or 'red'
-        self.breaking_load = breaking_load or np_.Infinity
-        self.density = density or np_.Infinity
+        self.breaking_load = breaking_load or _np.Infinity
+        self.density = density or _np.Infinity
         self.lengths = lengths or {}
 
     @property
@@ -63,7 +63,7 @@ class Cable(RobotComponent):
 
     @lengths.setter
     def lengths(self, lengths: Dict[AnyStr, Num]):
-        self._lengths = ChainMap(lengths, {'min': 0, 'max': np_.Infinity})
+        self._lengths = ChainMap(lengths, {'min': 0, 'max': _np.Infinity})
 
     @property
     def modulus(self):
