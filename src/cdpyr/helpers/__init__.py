@@ -4,8 +4,12 @@ import pathlib as pl
 
 from hurry.filesize import size as filesize
 
+from cdpyr.helpers import conversion
+
+
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+
 units = {"nsec": 1e-9, "usec": 1e-6, "msec": 1e-3, "sec": 1.0}
 
 
@@ -58,6 +62,7 @@ DATADIR: pl.Path = (pl.Path(__file__).parent / '..' / 'data').resolve()
 
 
 __all__ = [
+        'conversion',
         'format_time',
         'filesize',
         'full_classname',
