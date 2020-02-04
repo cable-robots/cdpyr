@@ -1,4 +1,3 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -26,63 +25,76 @@ export PRINT_HELP_PYSCRIPT
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
+.PHONY: help
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
+.PHONY: clean
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
+.PHONY: clean-build
 clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
+	rm -rf build/
+	rm -rf dist/
+	rm -rf .eggs/
+	find . -name '*.egg-info' -exec rm -rf {} +
 	find . -name '*.egg' -exec rm -f {} +
 
+.PHONY: clean-pyc
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
+	find . -name '__pycache__' -exec rm -rf {} +
 
+.PHONY: clean-test
 clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/
-	rm -f .coverage
-	rm -fr htmlcov/
-	rm -fr .pytest_cache
+	tox -e clean
+	rm -rf .tox/
+	rm -ff .coverage
+	rm -rf htmlcov/
+	rm -rf .pytest_cache
 
-lint: ## check style with flake8
-	flake8 cdpyr tests
+PHONY: clean clean-test clean-pyc clean-build docs help
+check: ## check style with flake8
+	tox -e check
 
+.PHONY: dev
+dev: ## set up the local development environment
+	pip	install --upgrade tox
+	tox -re dev
+
+.PHONY: spell
+spell: ##
+	tox -e spell
+
+.PHONY: test
 test: ## run tests quickly with the default Python
 	pytest
 
+.PHONY: test-all
 test-all: ## run tests on every Python version with tox
 	tox
 
+.PHONY: coverage
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source cdpyr -m pytest
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
+	tox -r report
 
+.PHONY: docs
 docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/cdpyr.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ src/cdpyr
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
+	tox -e docs
 
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
-
+.PHONY: release
 release: dist ## package and upload a release
-	twine upload dist/*
+	twine upload --skip-existing dist/*.whl dist/*.gz dist/*.zip
 
-dist: clean ## builds source and wheel package
+.PHONY: dist
+dist: clean check ## builds source and wheel package
+	python setup.py clean --all
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
 
+.PHONY: install
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install

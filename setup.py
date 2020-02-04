@@ -69,6 +69,7 @@ setup(
                 'scipy',
                 'colour',
                 'repr',
+                'pyyaml',
                 'xmltodict',
                 'marshmallow',
                 'joblib',
