@@ -9,7 +9,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class StreamTestSuite(object):
+class StreamParserTestSuite(object):
 
     @pytest.mark.parametrize(
             ('parser', 'ext'),
