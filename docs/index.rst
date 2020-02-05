@@ -3,7 +3,7 @@ Contents
 ========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    readme
    installation
@@ -11,6 +11,7 @@ Contents
    reference/index
    contributing
    authors
+   modules
    changelog
 
 Indices and tables
