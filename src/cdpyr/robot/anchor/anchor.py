@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import UserList
 from typing import Optional, Sequence
 
@@ -16,14 +18,14 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Anchor(RobotComponent):
-    linear: '_linear.Linear'
-    angular: '_angular.Angular'
+    linear: _linear.Linear
+    angular: _angular.Angular
 
     def __init__(self,
                  position: Optional[Vector] = None,
                  dcm: Optional[Matrix] = None,
-                 linear: Optional['_linear.Linear'] = None,
-                 angular: Optional['_angular.Angular'] = None,
+                 linear: Optional[_linear.Linear] = None,
+                 angular: Optional[_angular.Angular] = None,
                  **kwargs):
         """
 

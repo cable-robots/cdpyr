@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional, Sequence, Union
 
 import numpy as np_
@@ -11,12 +13,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Frame(RobotComponent):
-    _anchors: '_frame_anchor.FrameAnchorList'
+    _anchors: _frame_anchor.FrameAnchorList
 
     def __init__(self,
                  anchors: Optional[
-                     Union['_frame_anchor.FrameAnchorList', Sequence[
-                         '_frame_anchor.FrameAnchor']]] = None,
+                     Union[_frame_anchor.FrameAnchorList, Sequence[
+                         _frame_anchor.FrameAnchor]]] = None,
                  **kwargs):
         """ A general cable robot frame object.
 
@@ -35,8 +37,8 @@ class Frame(RobotComponent):
 
     @anchors.setter
     def anchors(self, anchors: Union[
-        '_frame_anchor.FrameAnchorList', Sequence[
-            '_frame_anchor.FrameAnchor']]):
+        _frame_anchor.FrameAnchorList, Sequence[
+            _frame_anchor.FrameAnchor]]):
         self._anchors = _frame_anchor.FrameAnchorList(anchors)
 
     @anchors.deleter

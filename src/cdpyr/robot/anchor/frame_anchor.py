@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional, Sequence
 
 from magic_repr import make_repr
@@ -16,16 +18,16 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class FrameAnchor(_anchor.Anchor):
-    pulley: '_pulley.Pulley'
-    drivetrain: '_drivetrain.DriveTrain'
+    pulley: _pulley.Pulley
+    drivetrain: _drivetrain.DriveTrain
 
     def __init__(self,
                  position: Optional[Vector] = None,
                  dcm: Optional[Matrix] = None,
-                 linear: Optional['_linear.Linear'] = None,
-                 angular: Optional['_angular.Angular'] = None,
-                 pulley: Optional['_pulley.Pulley'] = None,
-                 drivetrain: Optional['_drivetrain.DriveTrain'] = None,
+                 linear: Optional[_linear.Linear] = None,
+                 angular: Optional[_angular.Angular] = None,
+                 pulley: Optional[_pulley.Pulley] = None,
+                 drivetrain: Optional[_drivetrain.DriveTrain] = None,
                  **kwargs):
         super().__init__(position, dcm, linear, angular, **kwargs)
         self.pulley = pulley or None

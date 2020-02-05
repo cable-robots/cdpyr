@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import AnyStr, Dict
 
 import numpy as _np
@@ -5,8 +7,7 @@ import numpy as _np
 from cdpyr.analysis import evaluator as _evaluator
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.structure_matrix import (
-    motion_pattern_1r2t as \
-        _structure_matrix_1r2t,
+    motion_pattern_1r2t as _structure_matrix_1r2t,
     motion_pattern_1t as _structure_matrix_1t,
     motion_pattern_2r3t as _structure_matrix_2r3t,
     motion_pattern_2t as _structure_matrix_2t,
@@ -23,12 +24,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Calculator(_evaluator.PoseEvaluator):
-    kinematics: '_kinematics.Algorithm'
-    resolver: Dict[AnyStr, '_structure_matrix.Algorithm']
+    kinematics: _kinematics.Algorithm
+    resolver: Dict[AnyStr, _structure_matrix.Algorithm]
 
     def __init__(self,
-                 kinematics: '_kinematics.Algorithm',
-                 resolver: Dict[AnyStr, '_structure_matrix.Algorithm'] = None,
+                 kinematics: _kinematics.Algorithm,
+                 resolver: Dict[AnyStr, _structure_matrix.Algorithm] = None,
                  **kwargs):
         super().__init__(**kwargs)
         self.kinematics = kinematics
@@ -50,8 +51,8 @@ class Calculator(_evaluator.PoseEvaluator):
         self.resolver = resolver
 
     def evaluate(self,
-                 robot: '_robot.Robot',
-                 pose: '_pose.Pose') -> '_structure_matrix.Result':
+                 robot: _robot.Robot,
+                 pose: _pose.Pose) -> _structure_matrix.Result:
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Structure matrices are currently not implemented for '

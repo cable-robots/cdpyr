@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import itertools
 import multiprocessing
 from collections import abc
@@ -23,8 +25,8 @@ class Algorithm(_workspace.Algorithm):
     _steps: Vector
 
     def __init__(self,
-                 archetype: '_archetype.Archetype',
-                 criterion: '_criterion.Criterion',
+                 archetype: _archetype.Archetype,
+                 criterion: _criterion.Criterion,
                  lower_bound: Union[Num, Vector] = None,
                  upper_bound: Union[Num, Vector] = None,
                  steps: Union[Num, Vector] = None,
@@ -101,7 +103,7 @@ class Algorithm(_workspace.Algorithm):
                   range(0, len(iterations)))
         ))
 
-    def _evaluate(self, robot: '_robot.Robot', *args, **kwargs) -> 'Result':
+    def _evaluate(self, robot: _robot.Robot, *args, **kwargs) -> 'Result':
         # parallelized evaluation
         if kwargs.pop('parallel', False):
             n_jobs = kwargs.pop('n_jobs', multiprocessing.cpu_count())
@@ -143,9 +145,9 @@ class Result(_workspace.Result, abc.Collection):
     _outside: Matrix
 
     def __init__(self,
-                 algorithm: 'Algorithm',
-                 archetype: '_archetype.Archetype',
-                 criterion: '_criterion.Criterion',
+                 algorithm: Algorithm,
+                 archetype: _archetype.Archetype,
+                 criterion: _criterion.Criterion,
                  coordinates: Matrix,
                  flags: Vector,
                  **kwargs):

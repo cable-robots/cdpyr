@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as _np
 
 from cdpyr.analysis.kinematics import kinematics as _kinematics
@@ -11,11 +13,11 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class CableLength(_criterion.Criterion):
-    kinematics: '_kinematics.Algorithm'
+    kinematics: _kinematics.Algorithm
     _limits: Vector
 
     def __init__(self,
-                 kinematics: '_kinematics.Algorithm',
+                 kinematics: _kinematics.Algorithm,
                  limits: Vector = None,
                  **kwargs):
         super().__init__(**kwargs)
@@ -43,8 +45,8 @@ class CableLength(_criterion.Criterion):
         del self._limits
 
     def _evaluate(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
                   **kwargs):
         try:
             kinematics = self.kinematics.backward(robot, pose)

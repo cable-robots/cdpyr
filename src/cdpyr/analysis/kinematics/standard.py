@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as _np
 from scipy import optimize
 
@@ -14,9 +16,9 @@ __email__ = "p.tempel@tudelft.nl"
 class Standard(_algorithm.Algorithm):
 
     def _forward(self,
-                 robot: '_robot.Robot',
+                 robot: _robot.Robot,
                  lengths: Vector,
-                 **kwargs) -> '_algorithm.Result':
+                 **kwargs) -> _algorithm.Result:
         # for now, this is the inner-loop code for the first platform
         index_platform = 0
 
@@ -173,9 +175,9 @@ class Standard(_algorithm.Algorithm):
                                      leave_points=frame_anchors)
 
     def _backward(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
-                  **kwargs) -> '_algorithm.Result':
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
+                  **kwargs) -> _algorithm.Result:
         # for now, this is the inner-loop code for the first platform
         index_platform = 0
         # quicker and shorter access to platform object
@@ -231,7 +233,7 @@ class Standard(_algorithm.Algorithm):
                 position[:, _np.newaxis] + dcm.dot(platform_anchor)
         )
 
-    def _pose_estimate(self, robot: '_robot.Robot', lengths: Vector):
+    def _pose_estimate(self, robot: _robot.Robot, lengths: Vector):
         # consistent arguments
         lengths = _np.asarray(lengths)
 

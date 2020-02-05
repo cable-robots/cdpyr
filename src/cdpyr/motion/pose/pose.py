@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional, Tuple, Union
 
 import numpy as np_
@@ -16,8 +18,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Pose(BaseObject):
-    linear: '_linear.Linear'
-    angular: '_angular.Angular'
+    linear: _linear.Linear
+    angular: _angular.Angular
     _time: Num
 
     def __init__(self,
@@ -28,8 +30,8 @@ class Pose(BaseObject):
                  acceleration: Optional[Vector] = None,
                  angular_acceleration: Optional[Vector] = None,
                  time: Optional[Num] = np_.NaN,
-                 linear: Optional['_linear.Linear'] = None,
-                 angular: Optional['_angular.Angular'] = None,
+                 linear: Optional[_linear.Linear] = None,
+                 angular: Optional[_angular.Angular] = None,
                  **kwargs):
         super().__init__(**kwargs)
         # no linear object given, then build it from the arguments and their

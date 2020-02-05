@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as _np
 
 from cdpyr.analysis.force_distribution import force_distribution as _algorithm
@@ -12,8 +14,8 @@ __email__ = "p.tempel@tudelft.nl"
 class ClosedForm(_algorithm.Algorithm):
 
     def _evaluate(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
                   structure_matrix: Matrix,
                   wrench: Vector,
                   force_min: Vector,

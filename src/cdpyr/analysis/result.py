@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC
 
 from magic_repr import make_repr
@@ -20,9 +22,9 @@ class PlottableResult(Result):
 
 
 class RobotResult(Result):
-    _robot: '_robot.Robot'
+    _robot: _robot.Robot
 
-    def __init__(self, robot: '_robot.Robot', **kwargs):
+    def __init__(self, robot: _robot.Robot, **kwargs):
         super().__init__(**kwargs)
         self._robot = robot
 
@@ -32,9 +34,9 @@ class RobotResult(Result):
 
 
 class PoseResult(Result):
-    _pose: '_pose.Pose'
+    _pose: _pose.Pose
 
-    def __init__(self, pose: '_pose.Pose', **kwargs):
+    def __init__(self, pose: _pose.Pose, **kwargs):
         super().__init__(**kwargs)
         self._pose = pose
 
@@ -48,9 +50,9 @@ class PoseResult(Result):
 
 
 class PoseListResult(Result):
-    _pose_list: '_poselist.PoseList'
+    _pose_list: _poselist.PoseList
 
-    def __init__(self, pose_list: '_poselist.PoseList', **kwargs):
+    def __init__(self, pose_list: _poselist.PoseList, **kwargs):
         super().__init__(**kwargs)
         self._pose_list = pose_list
 

@@ -1,39 +1,27 @@
-from abc import ABC
+from __future__ import annotations
+
 from typing import Mapping, Sequence, Union
-import warnings
 
 import numpy as _np
+import warnings
+from abc import ABC
+from plotly import graph_objects as go
+from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
+from scipy.spatial.qhull import QhullError
+
+from cdpyr import geometry as _geometry, robot as _robot
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
-from cdpyr.geometry import (
-    cuboid as _cuboid,
-    cylinder as _cylinder,
-    ellipsoid as _ellipsoid,
-    polyhedron as _polyhedron,
-    tube as _tube,
-)
 from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
 from cdpyr.robot import (
-    cable as _cable,
-    drivetrain as _drivetrain,
-    drum as _drum,
-    frame as _frame,
-    gearbox as _gearbox,
-    motor as _motor,
-    platform as _platform,
-    pulley as _pulley,
     robot as _robot,
 )
 from cdpyr.robot.anchor import (
-    frame_anchor as _frame_anchor,
     platform_anchor as _platform_anchor,
 )
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
-from plotly import graph_objects as go
-from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
-from scipy.spatial.qhull import QhullError
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -106,13 +94,13 @@ class Plotly(_engine.Engine, ABC):
         self.figure.show()
 
     def render_cable(self,
-                     cable: '_cable.Cable',
+                     cable: _robot.Cable,
                      *args,
                      **kwargs):
         pass
 
     def render_cuboid(self,
-                      cuboid: '_cuboid.Cuboid',
+                      cuboid: _geometry.Cuboid,
                       *args,
                       **kwargs):
         """
@@ -278,7 +266,7 @@ class Plotly(_engine.Engine, ABC):
             )
 
     def render_cylinder(self,
-                        cylinder: '_cylinder.Cylinder',
+                        cylinder: _geometry.Cylinder,
                         *args, **kwargs):
         # get transformation to apply
         transform = kwargs.get('transformation', _HomogenousTransformation())
@@ -368,18 +356,18 @@ class Plotly(_engine.Engine, ABC):
             )
 
     def render_drivetrain(self,
-                          drivetrain: '_drivetrain.DriveTrain',
+                          drivetrain: _robot.DriveTrain,
                           *args,
                           **kwargs):
         pass
 
     def render_drum(self,
-                    drum: '_drum.Drum',
+                    drum: _robot.Drum,
                     *args,
                     **kwargs):
         pass
 
-    def render_ellipsoid(self, ellipsoid: '_ellipsoid.Ellipsoid', *args,
+    def render_ellipsoid(self, ellipsoid: _geometry.Ellipsoid, *args,
                          **kwargs):
         # get transformation to apply
         transform = kwargs.get('transformation', _HomogenousTransformation())
@@ -493,7 +481,7 @@ class Plotly(_engine.Engine, ABC):
             )
 
     def render_frame(self,
-                     frame: '_frame.Frame',
+                     frame: _robot.Frame,
                      *args,
                      **kwargs):
         # render all anchors
@@ -505,7 +493,7 @@ class Plotly(_engine.Engine, ABC):
                                       hovertext='world center')
 
     def render_frame_anchor(self,
-                            anchor: '_frame_anchor.FrameAnchor',
+                            anchor: _robot.FrameAnchor,
                             *args,
                             **kwargs):
         # get loop index
@@ -520,12 +508,12 @@ class Plotly(_engine.Engine, ABC):
                                       )
 
     def render_gearbox(self,
-                       gearbox: '_gearbox.Gearbox',
+                       gearbox: _robot.Gearbox,
                        *args,
                        **kwargs):
         pass
 
-    def render_kinematics(self, kinematics: '_kinematics.Result',
+    def render_kinematics(self, kinematics: _kinematics.Result,
                           *args, **kwargs):
         # ask the kinematics result object to calculate the cable shape
         cable_shapes = kinematics.cable_shapes
@@ -547,13 +535,13 @@ class Plotly(_engine.Engine, ABC):
             )
 
     def render_motor(self,
-                     motor: '_motor.Motor',
+                     motor: _robot.Motor,
                      *args,
                      **kwargs):
         pass
 
     def render_platform(self,
-                        platform: '_platform.Platform',
+                        platform: _robot.Platform,
                         *args,
                         **kwargs):
         # platform position and orientation
@@ -699,7 +687,7 @@ class Plotly(_engine.Engine, ABC):
 
     def render_platform_anchor(self,
                                anchor:
-                               '_platform_anchor.PlatformAnchor',
+                               _platform_anchor.PlatformAnchor,
                                *args,
                                transformation: _HomogenousTransformation = None,
                                **kwargs):
@@ -733,7 +721,7 @@ class Plotly(_engine.Engine, ABC):
                 )
         )
 
-    def render_polyhedron(self, polyhedron: '_polyhedron.Polyhedron', *args,
+    def render_polyhedron(self, polyhedron: _geometry.Polyhedron, *args,
                           **kwargs):
         # render the polyehedron as mesh
         self.figure.add_trace(
@@ -788,13 +776,13 @@ class Plotly(_engine.Engine, ABC):
             )
 
     def render_pulley(self,
-                      pulley: '_pulley.Pulley',
+                      pulley: _robot.Pulley,
                       *args,
                       **kwargs):
         pass
 
     def render_robot(self,
-                     robot: '_robot.Robot',
+                     robot: _robot.Robot,
                      *args,
                      **kwargs):
         # first, render the frame
@@ -806,20 +794,20 @@ class Plotly(_engine.Engine, ABC):
         self._render_component_list(robot, 'platforms', **kwargs)
 
     def render_sphere(self,
-                      sphere: '_sphere.Sphere',
+                      sphere: _geometry.Sphere,
                       *args,
                       **kwargs):
         pass
 
     def render_tube(self,
-                    tube: '_tube.Tube',
+                    tube: _geometry.Tube,
                     *args,
                     **kwargs):
         self.render(tube._inner, *args, **kwargs)
         self.render(tube._outer, *args, **kwargs)
 
     def render_workspace_grid(self,
-                              workspace: '_grid.Result',
+                              workspace: _grid.Result,
                               *args,
                               **kwargs):
         # option to plot only the points inside the workspace
@@ -863,7 +851,7 @@ class Plotly(_engine.Engine, ABC):
             )
 
     def render_workspace_hull(self,
-                              workspace: '_hull.Result',
+                              workspace: _hull.Result,
                               *args,
                               **kwargs):
         if self._NUMBER_OF_AXES != 3:

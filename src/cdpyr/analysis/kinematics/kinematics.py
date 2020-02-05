@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from typing import Union
 
@@ -20,9 +22,9 @@ class Algorithm(ABC):
         pass
 
     def forward(self,
-                robot: '_robot.Robot',
+                robot: _robot.Robot,
                 joints: Matrix,
-                **kwargs) -> 'Result':
+                **kwargs) -> Result:
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Kinematics are currently not implemented for robots with '
@@ -34,9 +36,9 @@ class Algorithm(ABC):
     direct = forward
 
     def backward(self,
-                 robot: '_robot.Robot',
-                 pose: '_pose.Pose',
-                 **kwargs) -> 'Result':
+                 robot: _robot.Robot,
+                 pose: _pose.Pose,
+                 **kwargs) -> Result:
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Kinematics are currently not implemented for robots with '
@@ -49,16 +51,16 @@ class Algorithm(ABC):
 
     @abstractmethod
     def _forward(self,
-                 robot: '_robot.Robot',
+                 robot: _robot.Robot,
                  joints: Matrix,
-                 **kwargs) -> 'Result':
+                 **kwargs) -> Result:
         raise NotImplementedError()
 
     @abstractmethod
     def _backward(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
-                  **kwargs) -> 'Result':
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
+                  **kwargs) -> Result:
         raise NotImplementedError()
 
 
@@ -107,9 +109,9 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
     _wrap: Vector
 
     def __init__(self,
-                 algorithm: 'Algorithm',
-                 robot: '_robot.Robot',
-                 pose: '_pose.Pose',
+                 algorithm: Algorithm,
+                 robot: _robot.Robot,
+                 pose: _pose.Pose,
                  lengths: Union[Vector, Matrix],
                  directions: Matrix,
                  swivel: Vector = None,

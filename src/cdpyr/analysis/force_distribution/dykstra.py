@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Union
 
 import numpy as _np
@@ -18,7 +20,7 @@ class Dykstra(_algorithm.Algorithm):
     threshold_convergence: float
 
     def __init__(self,
-                 kinematics: '_kinematics.Algorithm',
+                 kinematics: _kinematics.Algorithm,
                  force_minimum: Union[Num, Vector],
                  force_maximum: Union[Num, Vector],
                  max_iterations: int = 5000,
@@ -31,8 +33,8 @@ class Dykstra(_algorithm.Algorithm):
         self.threshold_convergence = eps_convergence
 
     def _evaluate(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
                   structure_matrix: Matrix,
                   wrench: Vector,
                   force_min: Vector,

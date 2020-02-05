@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pathlib as _pl
 from typing import Any, AnyStr, Dict, IO, Tuple, Union
 
@@ -15,15 +17,15 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Scope(object):
-    _meta: '_meta.ScopeMeta'
-    _signals: '_signal.SignalList'
+    _meta: _meta.ScopeMeta
+    _signals: _signal.SignalList
 
     def __init__(self,
                  signals: Union[
-                     '_signal.SignalList',
-                     Tuple['_signal.Signal'],
+                     _signal.SignalList,
+                     Tuple[_signal.Signal],
                      Tuple[Dict[AnyStr, Any]]],
-                 meta: Union['_meta.ScopeMeta', Dict[AnyStr, Any]]):
+                 meta: Union[_meta.ScopeMeta, Dict[AnyStr, Any]]):
         self._signals = _signal.SignalList(
                 [_signal.Signal(**signal) for signal in signals] \
                     if isinstance(signals[0], Dict) \

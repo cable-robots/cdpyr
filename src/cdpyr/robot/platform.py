@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import itertools
 from collections import UserList
 from typing import Optional, Sequence, Union
@@ -22,27 +24,27 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Platform(RobotComponent):
-    _anchors: '_platform_anchor.PlatformAnchorList'
+    _anchors: _platform_anchor.PlatformAnchorList
     _center_of_gravity: np_.ndarray
     _center_of_linkage: np_.ndarray
-    geometry: '_geometry.Primitive'
-    inertia: '_inertia.Inertia'
-    motion_pattern: '_motion_pattern.Pattern'
+    geometry: _geometry.Primitive
+    inertia: _inertia.Inertia
+    motion_pattern: _motion_pattern.Pattern
     name: str
-    pose: '_pose.Pose'
+    pose: _pose.Pose
 
     def __init__(self,
-                 motion_pattern: '_motion_pattern.Pattern',
+                 motion_pattern: _motion_pattern.Pattern,
                  anchors: Optional[Union[
-                     '_platform_anchor.PlatformAnchorList',
-                     Sequence['_platform_anchor.PlatformAnchor']
+                     _platform_anchor.PlatformAnchorList,
+                     Sequence[_platform_anchor.PlatformAnchor]
                  ]] = None,
-                 inertia: Optional['_inertia.Inertia'] = None,
+                 inertia: Optional[_inertia.Inertia] = None,
                  center_of_gravity: Optional[Vector] = None,
                  center_of_linkage: Optional[Vector] = None,
                  name: str = None,
-                 pose: '_pose.Pose' = None,
-                 geometry: '_geometry.Primitive' = None,
+                 pose: _pose.Pose = None,
+                 geometry: _geometry.Primitive = None,
                  **kwargs):
         super().__init__(**kwargs)
         self.anchors = anchors or []
@@ -61,8 +63,8 @@ class Platform(RobotComponent):
     @anchors.setter
     def anchors(self,
                 anchors: Union[
-                    '_platform_anchor.PlatformAnchorList',
-                    Sequence['_platform_anchor.PlatformAnchor']
+                    _platform_anchor.PlatformAnchorList,
+                    Sequence[_platform_anchor.PlatformAnchor]
                 ]):
         self._anchors = _platform_anchor.PlatformAnchorList(anchors)
 
@@ -159,7 +161,7 @@ class Platform(RobotComponent):
         return len(self._anchors)
 
     def gravitational_wrench(self,
-                             pose: '_pose.Pose' = None,
+                             pose: _pose.Pose = None,
                              gravity: Optional[Union[Num, Vector]] = None):
         # get rotation matrix from the given or internal pose
         dcm = (pose if pose is not None else self.pose).angular.dcm

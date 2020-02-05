@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional, Union
 
 import numpy as _np
@@ -15,10 +17,10 @@ __email__ = "p.tempel@tudelft.nl"
 
 class WrenchFeasible(_criterion.Criterion):
     _wrench: Vector
-    force_distribution: '_force_distribution.Algorithm'
+    force_distribution: _force_distribution.Algorithm
 
     def __init__(self,
-                 force_distribution: '_force_distribution.Algorithm',
+                 force_distribution: _force_distribution.Algorithm,
                  wrench: Optional[Union[Num, Vector]] = None,
                  **kwargs):
         super().__init__(**kwargs)
@@ -48,8 +50,8 @@ class WrenchFeasible(_criterion.Criterion):
         del self._wrench
 
     def _evaluate(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
                   **kwargs):
         try:
             # determine the gravitational wrench

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import abstractmethod
 from typing import Union
 
@@ -16,16 +18,16 @@ __email__ = "p.tempel@tudelft.nl"
 class Algorithm(_evaluator.Evaluator):
 
     def evaluate(self,
-                 pose: '_pose.Pose',
+                 pose: _pose.Pose,
                  platform_anchors: Vector,
-                 directions: Matrix) -> 'Result':
+                 directions: Matrix) -> Result:
         return self._evaluate(pose, platform_anchors, directions)
 
     @abstractmethod
     def _evaluate(self,
-                  pose: '_pose.Pose',
+                  pose: _pose.Pose,
                   platform_anchors: Vector,
-                  directions: Matrix) -> 'Result':
+                  directions: Matrix) -> Result:
         raise NotImplementedError()
 
 
@@ -34,7 +36,7 @@ class Result(_result.PoseResult):
     _kernel: Matrix
     _pinv: Matrix
 
-    def __init__(self, pose: '_pose.Pose', matrix: Union[Matrix, 'Result'],
+    def __init__(self, pose: _pose.Pose, matrix: Union[Matrix, Result],
                  **kwargs):
         super().__init__(pose, **kwargs)
         self._matrix = matrix.matrix if isinstance(matrix, Result) else matrix

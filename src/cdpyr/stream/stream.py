@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import OrderedDict
 from typing import AnyStr, Mapping, Union
 
@@ -12,7 +14,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Stream(BaseObject):
-    parser: '_parser.Parser'
+    parser: _parser.Parser
 
     # define the mapping of object type and marshmallow schemes
     _RESOLVER = {
@@ -100,7 +102,7 @@ class Stream(BaseObject):
                                             ),
     }
 
-    def __init__(self, parser: '_parser.Parser', **kwargs):
+    def __init__(self, parser: _parser.Parser, **kwargs):
         super().__init__(**kwargs)
         self.parser = parser
 

@@ -11,9 +11,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Linear(_transformation.Transformation):
-    _position: np_.ndarray = np_.asarray((0., 0., 0.))
-    _velocity: np_.ndarray = np_.asarray((0., 0., 0.))
-    _acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
+    _position: np_.ndarray
+    _velocity: np_.ndarray
+    _acceleration: np_.ndarray
 
     def __init__(self,
                  position: Optional[Vector] = None,
@@ -39,7 +39,8 @@ class Linear(_transformation.Transformation):
         single = coordinates.ndim == 1
 
         # return a single transformed coordinate, or all
-        return self.position + coordinates if single else self.position[:,None] + coordinates
+        return self.position + coordinates if single \
+            else self.position[:, None] + coordinates
 
     @property
     def position(self):

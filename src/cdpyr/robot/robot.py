@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import (
     AnyStr,
     Dict,
@@ -27,33 +29,33 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Robot(RobotComponent):
-    _cables: '_cable.CableList'
-    _chains: '_kinematicchain.KinematicChainList'
-    frame: '_frame.Frame'
+    _cables: _cable.CableList
+    _chains: _kinematicchain.KinematicChainList
+    frame: _frame.Frame
     _gravity: _np.ndarray
     name: AnyStr
-    _platforms: '_platform.PlatformList'
-    home_pose: '_pose.Pose'
+    _platforms: _platform.PlatformList
+    home_pose: _pose.Pose
 
     def __init__(self,
                  name: Optional[AnyStr] = None,
-                 frame: Optional['_frame.Frame'] = None,
+                 frame: Optional[_frame.Frame] = None,
                  platforms: Optional[Union[
-                     '_platform.PlatformList',
-                     Sequence['_platform.Platform']
+                     _platform.PlatformList,
+                     Sequence[_platform.Platform]
                  ]] = None,
                  cables: Optional[Union[
-                     '_cable.CableList',
-                     Sequence['_cable.Cable']
+                     _cable.CableList,
+                     Sequence[_cable.Cable]
                  ]] = None,
                  kinematic_chains: Optional[Union[
-                     '_kinematicchain.KinematicChainList',
-                     Sequence['_kinematicchain.KinematicChain'],
+                     _kinematicchain.KinematicChainList,
+                     Sequence[_kinematicchain.KinematicChain],
                      Sequence[Tuple[int, int, int, int]],
                      Sequence[Dict[AnyStr, int]]
                  ]] = None,
                  gravity: Union[Num, Vector] = None,
-                 home_pose: '_pose.Pose' = None,
+                 home_pose: _pose.Pose = None,
                  **kwargs):
         super().__init__(**kwargs)
         self.name = name or 'default'
@@ -82,8 +84,8 @@ class Robot(RobotComponent):
 
     @cables.setter
     def cables(self,
-               cables: Union['_cable.CableList',
-                             Sequence['_cable.Cable']
+               cables: Union[_cable.CableList,
+                             Sequence[_cable.Cable]
                ]):
         self._cables = _cable.CableList(cables)
 
@@ -114,8 +116,8 @@ class Robot(RobotComponent):
     @kinematic_chains.setter
     def kinematic_chains(self,
                          chains: Union[
-                             Sequence['_kinematicchain.KinematicChain'],
-                             '_kinematicchain.KinematicChainList',
+                             Sequence[_kinematicchain.KinematicChain],
+                             _kinematicchain.KinematicChainList,
                              Sequence[Tuple[int, int, int, int]],
                              Sequence[Dict[AnyStr, int]]]):
         if isinstance(chains, Iterable) \
@@ -197,8 +199,8 @@ class Robot(RobotComponent):
     @platforms.setter
     def platforms(self,
                   platforms: Union[
-                      '_platform.PlatformList',
-                      Sequence['_platform.Platform']
+                      _platform.PlatformList,
+                      Sequence[_platform.Platform]
                   ]):
         self._platforms = _platform.PlatformList(platforms)
 
@@ -206,7 +208,7 @@ class Robot(RobotComponent):
     def platforms(self):
         del self._platforms
 
-    def gravitational_wrench(self, pose: '_pose.Pose'):
+    def gravitational_wrench(self, pose: _pose.Pose):
         if self.num_platforms > 1:
             raise NotImplementedError(
                     'Wrench calculation is not implemented for robots with '

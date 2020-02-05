@@ -38,13 +38,13 @@ class Angular(_transformation.Transformation):
     angular_acceleration : ndarray
     """
 
-    _quaternion: Vector = np_.asarray([0.0, 0.0, 0.0, 1.0])
-    _angular_velocity: np_.ndarray = np_.asarray((0., 0., 0.))
-    _angular_acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
+    _quaternion: Vector
+    _angular_velocity: np_.ndarray
+    _angular_acceleration: np_.ndarray
     """
     Intrinsic orientation about local Z, then local Y, then local X axis
     """
-    sequence: AnyStr = 'XYZ'
+    sequence: AnyStr
 
     _AXIS_TO_IND = {'x': 0, 'y': 1, 'z': 2}
 
@@ -91,7 +91,7 @@ class Angular(_transformation.Transformation):
 
         # by default, we will have an extrinsic rotation about [x,y,z] given
         # as [a,b,c] so that it is Rz(c) * Ry(b) * Rx(a)
-        self.sequence = sequence or 'xyz'
+        self.sequence = sequence or 'XYZ'
         if euler is not None \
                 and quaternion is None \
                 and dcm is None \

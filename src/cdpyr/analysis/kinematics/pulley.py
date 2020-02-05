@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as _np
 
 from cdpyr.analysis.kinematics import kinematics as _algorithm
@@ -22,15 +24,15 @@ __email__ = "p.tempel@tudelft.nl"
 class Pulley(_algorithm.Algorithm):
 
     def _forward(self,
-                 robot: '_robot.Robot',
+                 robot: _robot.Robot,
                  joints: Vector,
-                 **kwargs) -> '_algorithm.Result':
+                 **kwargs) -> _algorithm.Result:
         raise NotImplementedError()
 
     def _backward(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
-                  **kwargs) -> '_algorithm.Result':
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
+                  **kwargs) -> _algorithm.Result:
         # init results
         swivel = []
         wrap = []

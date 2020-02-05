@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import multiprocessing
 from typing import Union
 
@@ -25,8 +27,8 @@ class Algorithm(_workspace.Algorithm):
     _vertices: Matrix
 
     def __init__(self,
-                 archetype: '_archetype.Archetype',
-                 criterion: '_criterion.Criterion',
+                 archetype: _archetype.Archetype,
+                 criterion: _criterion.Criterion,
                  center: Union[Num, Vector] = None,
                  maximum_iterations: int = None,
                  maximum_halvings: int = None,
@@ -56,7 +58,7 @@ class Algorithm(_workspace.Algorithm):
     def center(self):
         del self._center
 
-    def _evaluate(self, robot: '_robot.Robot', *args, **kwargs) -> 'Result':
+    def _evaluate(self, robot: _robot.Robot, *args, **kwargs) -> 'Result':
         # use our `Polyhedron` class and let it calculate the search
         # directions and faces
         polyhedron = _polyhedron.Polyhedron.from_octahedron(self.depth,
@@ -137,9 +139,9 @@ class Algorithm(_workspace.Algorithm):
 class Result(_polyhedron.Polyhedron, _workspace.Result):
 
     def __init__(self,
-                 algorithm: 'Algorithm',
-                 archetype: '_archetype.Archetype',
-                 criterion: '_criterion.Criterion',
+                 algorithm: Algorithm,
+                 archetype: _archetype.Archetype,
+                 criterion: _criterion.Criterion,
                  vertices: Matrix,
                  faces: Matrix,
                  **kwargs):

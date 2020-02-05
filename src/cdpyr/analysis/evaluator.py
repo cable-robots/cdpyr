@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 
 from cdpyr.motion.pose import pose as _pose, poselist as _poselist
@@ -20,14 +22,14 @@ class Evaluator(ABC):
 class RobotEvaluator(Evaluator):
 
     @abstractmethod
-    def evaluate(self, robot: '_robot.Robot', *args, **kwargs):
+    def evaluate(self, robot: _robot.Robot, *args, **kwargs):
         raise NotImplementedError()
 
 
 class PoseEvaluator(RobotEvaluator):
 
     @abstractmethod
-    def evaluate(self, robot: '_robot.Robot', pose: '_pose.Pose', *args,
+    def evaluate(self, robot: _robot.Robot, pose: _pose.Pose, *args,
                  **kwargs):
         raise NotImplementedError()
 
@@ -35,7 +37,7 @@ class PoseEvaluator(RobotEvaluator):
 class PoseListEvaluator(RobotEvaluator):
 
     @abstractmethod
-    def evaluate(self, robot: '_robot.Robot', poselist: '_poselist.PoseList',
+    def evaluate(self, robot: _robot.Robot, poselist: _poselist.PoseList,
                  *args, **kwargs):
         raise NotImplementedError()
 

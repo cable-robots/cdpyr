@@ -46,14 +46,14 @@ class Algorithm(_evaluator.RobotEvaluator):
 
 
 class Result(_result.PlottableResult):
-    _algorithm: 'Algorithm'
+    _algorithm: Algorithm
     _archetype: '_archetype.Archetype'
     _criterion: '_criterion.Criterion'
     _surface_area: float
     _volume: float
 
     def __init__(self,
-                 algorithm: 'Algorithm',
+                 algorithm: Algorithm,
                  archetype: '_archetype.Archetype',
                  criterion: '_criterion.Criterion',
                  **kwargs):

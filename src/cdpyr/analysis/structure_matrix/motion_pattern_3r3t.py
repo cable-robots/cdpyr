@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as _np
 
 from cdpyr.analysis.structure_matrix import structure_matrix as _algorithm
@@ -11,7 +13,7 @@ __email__ = "p.tempel@tudelft.nl"
 class MotionPattern3R3T(_algorithm.Algorithm):
 
     def _evaluate(self,
-                  pose: '_pose.Pose',
+                  pose: _pose.Pose,
                   platform_anchors: Vector,
                   directions: Matrix):
         return _algorithm.Result(pose, _np.vstack(

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional, Union
 
 import numpy as np_
@@ -15,8 +17,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Homogenous(_transformation.Transformation):
-    linear: '_linear.Linear'
-    angular: '_angular.Angular'
+    linear: _linear.Linear
+    angular: _angular.Angular
 
     def __init__(self,
                  translation: Optional[Vector] = None,

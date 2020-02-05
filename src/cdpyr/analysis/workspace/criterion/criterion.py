@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import abstractmethod
 
 from cdpyr.analysis import evaluator as _evaluator
@@ -10,7 +12,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Criterion(_evaluator.PoseEvaluator):
 
-    def evaluate(self, robot: '_robot.Robot', pose: '_pose.Pose', **kwargs):
+    def evaluate(self, robot: _robot.Robot, pose: _pose.Pose, **kwargs):
         # TODO remove this check
         if robot.num_platforms > 1:
             raise NotImplementedError(
@@ -26,7 +28,7 @@ class Criterion(_evaluator.PoseEvaluator):
         return self.__class__.__name__
 
     @abstractmethod
-    def _evaluate(self, robot: '_robot.Robot', pose: '_pose.Pose', **kwargs):
+    def _evaluate(self, robot: _robot.Robot, pose: _pose.Pose, **kwargs):
         raise NotImplementedError()
 
 

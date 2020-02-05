@@ -1,30 +1,18 @@
+from __future__ import annotations
+
 import itertools
-from abc import ABC, abstractmethod
 from typing import AnyStr, Callable, Dict, Union
 
 import numpy as _np
+from abc import ABC, abstractmethod
 
-from cdpyr import geometry as _geometry
+from cdpyr import geometry as _geometry, robot as _robot
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.result import PlottableResult
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
+from cdpyr.geometry.primitive import Primitive as GeometryPrimitive
 from cdpyr.helpers import full_classname as fcn
 from cdpyr.mixin.base_object import BaseObject
-from cdpyr.robot import (
-    cable as _cable,
-    drivetrain as _drivetrain,
-    drum as _drum,
-    frame as _frame,
-    gearbox as _gearbox,
-    motor as _motor,
-    platform as _platform,
-    pulley as _pulley,
-    robot as _robot,
-)
-from cdpyr.robot.anchor import (
-    frame_anchor as _frame_anchor,
-    platform_anchor as _platform_anchor,
-)
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Matrix, Vector
 
@@ -47,37 +35,46 @@ class Engine(ABC, BaseObject):
     _NUMBER_OF_AXES: int
     _NUMBER_OF_COORDINATES: int
 
-    _RESOLVER: Dict[AnyStr, Callable]
+    _RESOLVER: Dict[
+        AnyStr, Callable[
+            [
+                    Union[
+                        RobotComponent,
+                        PlottableResult,
+                        GeometryPrimitive],
+                    ...],
+            None]
+    ]
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._RESOLVER = {
-                fcn(_cable.Cable):              self.render_cable,
-                fcn(_cable.CableList):          self.render_cable_list,
-                fcn(_drivetrain.DriveTrain):    self.render_drivetrain,
-                fcn(_drum.Drum):                self.render_drum,
-                fcn(_frame.Frame):              self.render_frame,
-                fcn(_frame_anchor.FrameAnchor): self.render_frame_anchor,
-                fcn(_frame_anchor.FrameAnchorList):
-                                                self.render_frame_anchor_list,
-                fcn(_gearbox.Gearbox):          self.render_gearbox,
-                fcn(_geometry.Cuboid):          self.render_cuboid,
-                fcn(_geometry.Cylinder):        self.render_cylinder,
-                fcn(_geometry.Ellipsoid):       self.render_ellipsoid,
-                fcn(_geometry.Polyhedron):      self.render_polyhedron,
-                fcn(_geometry.Tube):            self.render_tube,
-                fcn(_kinematics.Result):        self.render_kinematics,
-                fcn(_motor.Motor):              self.render_motor,
-                fcn(_platform.Platform):        self.render_platform,
-                fcn(_platform.PlatformList):    self.render_platform_list,
-                fcn(_platform_anchor.PlatformAnchor):
-                                                self.render_platform_anchor,
-                fcn(_platform_anchor.PlatformAnchorList):
-                                                self.render_platform_anchor_list,
-                fcn(_pulley.Pulley):            self.render_pulley,
-                fcn(_robot.Robot):              self.render_robot,
-                fcn(_grid.Result):              self.render_workspace_grid,
-                fcn(_hull.Result):              self.render_workspace_hull,
+                fcn(_robot.Cable):         self.render_cable,
+                fcn(_robot.CableList):     self.render_cable_list,
+                fcn(_robot.DriveTrain):    self.render_drivetrain,
+                fcn(_robot.DriveTrain):    self.render_drum,
+                fcn(_robot.Frame):         self.render_frame,
+                fcn(_robot.FrameAnchor):   self.render_frame_anchor,
+                fcn(_robot.FrameAnchorList):
+                                           self.render_frame_anchor_list,
+                fcn(_robot.Gearbox):       self.render_gearbox,
+                fcn(_geometry.Cuboid):     self.render_cuboid,
+                fcn(_geometry.Cylinder):   self.render_cylinder,
+                fcn(_geometry.Ellipsoid):  self.render_ellipsoid,
+                fcn(_geometry.Polyhedron): self.render_polyhedron,
+                fcn(_geometry.Tube):       self.render_tube,
+                fcn(_kinematics.Result):   self.render_kinematics,
+                fcn(_robot.Robot):         self.render_motor,
+                fcn(_robot.Platform):      self.render_platform,
+                fcn(_robot.PlatformList):  self.render_platform_list,
+                fcn(_robot.PlatformAnchor):
+                                           self.render_platform_anchor,
+                fcn(_robot.PlatformAnchorList):
+                                           self.render_platform_anchor_list,
+                fcn(_robot.Pulley):        self.render_pulley,
+                fcn(_robot.Robot):         self.render_robot,
+                fcn(_grid.Result):         self.render_workspace_grid,
+                fcn(_hull.Result):         self.render_workspace_hull,
         }
 
     @abstractmethod
@@ -96,8 +93,8 @@ class Engine(ABC, BaseObject):
     def show(self):
         raise NotImplementedError()
 
-    def render(self, o: Union[
-        'RobotComponent', 'PlottableResult', '_geometry.Primitive'],
+    def render(self,
+               o: Union[RobotComponent, PlottableResult, GeometryPrimitive],
                *args,
                **kwargs):
         KeyE1 = None
@@ -122,118 +119,114 @@ class Engine(ABC, BaseObject):
                 f'{", ".join(self._RESOLVER.keys())} but received {fcn(o)}.')
 
     @abstractmethod
-    def render_cable(self, cable: '_cable.Cable', *args, **kwargs):
+    def render_cable(self, cable: _robot.Cable, *args, **kwargs):
         raise NotImplementedError()
 
-    def render_cable_list(self, cable_list: '_cable.CableList', *args,
+    def render_cable_list(self, cable_list: _robot.CableList, *args,
                           **kwargs):
         for cable in cable_list:
             self.render(cable, *args, **kwargs)
 
     @abstractmethod
-    def render_cuboid(self, cuboid: '_geometry.Cuboid', *args, **kwargs):
+    def render_cuboid(self, cuboid: _geometry.Cuboid, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_cylinder(self, cylinder: '_geometry.Cylinder', *args, **kwargs):
+    def render_cylinder(self, cylinder: _geometry.Cylinder, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_drivetrain(self, drivetrain: '_drivetrain.DriveTrain', *args,
+    def render_drivetrain(self, drivetrain: _robot.DriveTrain, *args,
                           **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_drum(self, drum: '_drum.Drum', *args, **kwargs):
+    def render_drum(self, drum: _robot.Drum, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
     def render_ellipsoid(self,
-                         ellipsoid: '_geometry.Ellipsoid',
+                         ellipsoid: _geometry.Ellipsoid,
                          *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_frame(self, frame: '_frame.Frame', *args, **kwargs):
+    def render_frame(self, frame: _robot.Frame, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_frame_anchor(self, anchor: '_frame_anchor.FrameAnchor', *args,
+    def render_frame_anchor(self, anchor: _robot.FrameAnchor, *args,
                             **kwargs):
         raise NotImplementedError()
 
     def render_frame_anchor_list(self,
-                                 anchor_list: '_frame_anchor.FrameAnchorList',
+                                 anchor_list: _robot.FrameAnchorList,
                                  *args, **kwargs):
         for anchor in anchor_list:
             self.render(anchor, *args, **kwargs)
 
     @abstractmethod
-    def render_gearbox(self, gearbox: '_gearbox.Gearbox', *args, **kwargs):
+    def render_gearbox(self, gearbox: _robot.Gearbox, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_kinematics(self, kinematics: '_kinematics.Result', *args,
+    def render_kinematics(self, kinematics: _kinematics.Result, *args,
                           **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_motor(self, motor: '_motor.Motor', *args, **kwargs):
+    def render_motor(self, motor: _robot.Motor, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_platform(self, platform: '_platform.Platform', *args, **kwargs):
+    def render_platform(self, platform: _robot.Platform, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_platform_anchor(self, anchor: '_platform_anchor.PlatformAnchor',
+    def render_platform_anchor(self, anchor: _robot.PlatformAnchor,
                                *args, **kwargs):
         raise NotImplementedError()
 
     def render_platform_anchor_list(self,
                                     anchor_list:
-                                    '_platform_anchor.PlatformAnchorList',
+                                    _robot.PlatformAnchorList,
                                     *args, **kwargs):
         for anchor in anchor_list:
             self.render(anchor, *args, **kwargs)
 
-    def render_platform_list(self, platform_list: '_platform.PlatformList',
+    def render_platform_list(self, platform_list: _robot.PlatformList,
                              *args, **kwargs):
         for platform in platform_list:
             self.render(platform, *args, **kwargs)
 
     @abstractmethod
-    def render_polyhedron(self, polyhedron: '_geometry.Polyhedron', *args,
+    def render_polyhedron(self, polyhedron: _geometry.Polyhedron, *args,
                           **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_pulley(self, pulley: '_pulley.Pulley', *args, **kwargs):
+    def render_pulley(self, pulley: _robot.Pulley, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_robot(self, robot: '_robot.Robot', *args, **kwargs):
+    def render_robot(self, robot: _robot.Robot, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_sphere(self, sphere: '_geometry.Sphere', *args, **kwargs):
+    def render_tube(self, tube: _geometry.Tube, *args, **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_tube(self, tube: '_geometry.Tube', *args, **kwargs):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def render_workspace_grid(self, workspace: '_grid.Result', *args,
+    def render_workspace_grid(self, workspace: _grid.Result, *args,
                               **kwargs):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_workspace_hull(self, workspace: '_hull.Result', *args,
+    def render_workspace_hull(self, workspace: _hull.Result, *args,
                               **kwargs):
         raise NotImplementedError()
 
-    def _render_component_list(self, obj: 'RobotComponent', name: str, *args,
+    def _render_component_list(self, obj: RobotComponent, name: str, *args,
                                **kwargs):
         # get user-defined plot styles for the component
         styles = kwargs.pop(name, {})

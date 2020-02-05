@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional, Sequence
 
 from magic_repr import make_repr
@@ -19,8 +21,8 @@ class PlatformAnchor(_anchor.Anchor):
     def __init__(self,
                  position: Optional[Vector] = None,
                  dcm: Optional[Matrix] = None,
-                 linear: Optional['_linear.Linear'] = None,
-                 angular: Optional['_angular.Angular'] = None,
+                 linear: Optional[_linear.Linear] = None,
+                 angular: Optional[_angular.Angular] = None,
                  **kwargs):
         super().__init__(position, dcm, linear, angular, **kwargs)
 

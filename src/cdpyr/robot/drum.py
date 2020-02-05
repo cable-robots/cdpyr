@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional
 
 from magic_repr import make_repr
@@ -11,12 +13,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Drum(RobotComponent):
-    geometry: '_geometry.Primitive'
-    inertia: '_inertia.Inertia'
+    geometry: _geometry.Primitive
+    inertia: _inertia.Inertia
 
     def __init__(self,
-                 geometry: Optional['_geometry.Primitive'] = None,
-                 inertia: Optional['_inertia.Inertia'] = None,
+                 geometry: Optional[_geometry.Primitive] = None,
+                 inertia: Optional[_inertia.Inertia] = None,
                  **kwargs):
         super().__init__(**kwargs)
         self.geometry = geometry or _geometry.Primitive()

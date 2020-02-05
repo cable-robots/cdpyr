@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace.criterion import criterion as _criterion
 from cdpyr.motion.pose import pose as _pose
@@ -8,15 +10,15 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Interference(_criterion.Criterion):
-    kinematics: '_kinematics.Algorithm'
+    kinematics: _kinematics.Algorithm
 
-    def __init__(self, kinematics: '_kinematics.Algorithm', **kwargs):
+    def __init__(self, kinematics: _kinematics.Algorithm, **kwargs):
         super().__init__(**kwargs)
         self.kinematics = kinematics
 
     def _evaluate(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
                   **kwargs):
         raise NotImplementedError()
 

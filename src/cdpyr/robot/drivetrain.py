@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from typing import Optional
 
 from magic_repr import make_repr
 
-from cdpyr.robot import drum as __drum, gearbox as __gearbox, motor as __motor
+from cdpyr.robot import drum as _drum, gearbox as _gearbox, motor as _motor
 from cdpyr.robot.robot_component import RobotComponent
 
 __author__ = "Philipp Tempel"
@@ -10,14 +12,14 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class DriveTrain(RobotComponent):
-    gearbox: '__gearbox.Gearbox'
-    drum: '__drum.Drum'
-    motor: '__motor.Motor'
+    gearbox: _gearbox.Gearbox
+    drum: _drum.Drum
+    motor: _motor.Motor
 
     def __init__(self,
-                 drum: Optional['__drum.Drum'] = None,
-                 motor: Optional['__motor.Motor'] = None,
-                 gearbox: Optional['__gearbox.Gearbox'] = None,
+                 drum: Optional[_drum.Drum] = None,
+                 motor: Optional[_motor.Motor] = None,
+                 gearbox: Optional[_gearbox.Gearbox] = None,
                  **kwargs):
         super().__init__(**kwargs)
         self.drum = drum or None

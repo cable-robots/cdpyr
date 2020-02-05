@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import abstractmethod
 from typing import Union
 
@@ -19,10 +21,10 @@ __email__ = "p.tempel@tudelft.nl"
 class Algorithm(_evaluator.PoseEvaluator):
     _force_minimum: Vector
     _force_maximum: Vector
-    _structure_matrix: '_structure_matrix.Calculator'
+    _structure_matrix: _structure_matrix.Calculator
 
     def __init__(self,
-                 kinematics: '_kinematics.Algorithm',
+                 kinematics: _kinematics.Algorithm,
                  force_minimum: Union[Num, Vector],
                  force_maximum: Union[Num, Vector],
                  **kwargs):
@@ -68,10 +70,10 @@ class Algorithm(_evaluator.PoseEvaluator):
         del self._force_minimum
 
     def evaluate(self,
-                 robot: '_robot.Robot',
-                 pose: '_pose.Pose',
+                 robot: _robot.Robot,
+                 pose: _pose.Pose,
                  wrench: Vector,
-                 **kwargs) -> 'Result':
+                 **kwargs) -> Result:
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Force distributions are currently not implemented for '
@@ -96,16 +98,16 @@ class Algorithm(_evaluator.PoseEvaluator):
 
     @abstractmethod
     def _evaluate(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
                   structure_matrix: Matrix,
                   wrench: Vector,
                   force_min: Vector,
                   force_max: Vector,
-                  **kwargs) -> 'Result':
+                  **kwargs) -> Result:
         raise NotImplementedError()
 
-    def _parse_force_limits(self, robot: '_robot.Robot'):
+    def _parse_force_limits(self, robot: _robot.Robot):
         # get configure force limits
         force_min = self._force_minimum
         force_max = self._force_maximum
@@ -141,13 +143,13 @@ __all__ = [
 
 
 class Result(_result.PoseResult):
-    _algorithm: 'Algorithm'
+    _algorithm: Algorithm
     _forces: Vector
     _wrench: Vector
 
     def __init__(self,
-                 algorithm: 'Algorithm',
-                 pose: '_pose.Pose',
+                 algorithm: Algorithm,
+                 pose: _pose.Pose,
                  forces: Vector,
                  wrench: Vector,
                  **kwargs):

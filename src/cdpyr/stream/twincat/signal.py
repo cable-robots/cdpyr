@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import UserList
 from typing import Any, AnyStr, Dict, Iterable, List, Optional, Union
 
@@ -13,12 +15,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Signal(object):
     _data: Matrix
-    _meta: '_meta.SignalMeta'
+    _meta: _meta.SignalMeta
 
     def __init__(self,
                  time: Vector,
                  values: Vector,
-                 meta: Union['_meta.SignalMeta', Dict[AnyStr, Any]]):
+                 meta: Union[_meta.SignalMeta, Dict[AnyStr, Any]]):
         self._data = _np.vstack([time, values]).T
         self._meta = meta \
             if isinstance(meta, _meta.SignalMeta) \

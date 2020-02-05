@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional
 
 import numpy as np_
@@ -14,17 +16,17 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Pulley(RobotComponent):
-    angular: '_angular.Angular'
-    geometry: '_geometry.Primitive'
-    inertia: '_inertia.Inertia'
+    angular: _angular.Angular
+    geometry: _geometry.Primitive
+    inertia: _inertia.Inertia
     radius: Num
 
     def __init__(self,
                  radius: Num,
-                 geometry: Optional['_geometry.Primitive'] = None,
-                 inertia: Optional['_inertia.Inertia'] = None,
+                 geometry: Optional[_geometry.Primitive] = None,
+                 inertia: Optional[_inertia.Inertia] = None,
                  dcm: Optional[Matrix] = None,
-                 angular: Optional['_angular.Angular'] = None,
+                 angular: Optional[_angular.Angular] = None,
                  **kwargs):
         super().__init__(**kwargs)
         self.radius = radius
