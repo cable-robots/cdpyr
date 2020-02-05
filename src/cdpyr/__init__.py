@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-"""Top-level package for CDPyR."""
+"""
+Top-level package for CDPyR.
+"""
 
 # @formatter:off
 from __future__ import annotations

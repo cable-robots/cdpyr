@@ -1,7 +1,7 @@
-import re
 from typing import AnyStr, Optional, Union
 
 import numpy as np_
+import re
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
@@ -24,26 +24,13 @@ class Angular(_transformation.Transformation):
     Attributes
     ----------
     sequence : AnyStr
-
-    dcm : ndarray
-
-    quaternion : ndarray
-
-    rotvec : ndarray
-
-    euler : ndaray
-
-    angular_velocity : ndarray
-
-    angular_acceleration : ndarray
+        Orientation sequence used when converting the angular transformation
+        into Euler angles.
     """
 
     _quaternion: Vector
     _angular_velocity: np_.ndarray
     _angular_acceleration: np_.ndarray
-    """
-    Intrinsic orientation about local Z, then local Y, then local X axis
-    """
     sequence: AnyStr
 
     _AXIS_TO_IND = {'x': 0, 'y': 1, 'z': 2}
@@ -56,47 +43,52 @@ class Angular(_transformation.Transformation):
                  rotvec: Optional[Vector] = None,
                  euler: Optional[Vector] = None,
                  sequence: Optional[AnyStr] = None,
+                 degrees: bool = False,
                  **kwargs):
         """
         Parameters
         ----------
-        euler : iterable or (3, ) ndarray, optional
+        euler : Iterable | ``(3, )`` ndarray, optional
             Euler angles of the rotation. Interpreted according to the value of
-            ``rotation_sequence``
-        quaternion : iterable or (4, ) ndarray, optional
+            ``sequence``.
+        quaternion : Iterable | ``(4, )`` ndarray, optional
             Quaternion representation of the rotation in scalar-last notation.
-        dcm : iterable or (3, 3) ndarray, optional
+        dcm : Iterable | ``(3, 3)`` ndarray, optional
             Conventional rotation matrix representation of the rotation
-        rotvec : iterable or (3, ) ndarray, optional
+        rotvec : Iterable | ``(3, )`` ndarray, optional
             A rotation vector is a 3 dimensional vector which is
             co-directional to the axis of rotation and whose norm gives the
             angle of rotation (in radians)
-        angular_velocity : iterable or (3, ) ndarray, optional
+        angular_velocity : Iterable | ``(3, )`` ndarray, optional
             Angular velocity at the current instance as give in the local
-            coordinate system. Defaults to [0., 0., 0.]
-        angular_acceleration : iterable or (3, ) ndarray, optional
+            coordinate system. Defaults to ``[0., 0., 0.]``
+        angular_acceleration : Iterable | ``(3, )`` ndarray, optional
             Angular acceleration as given in the local coordinate system.
             Defaults to [0., 0., 0.]
         sequence : AnyStr
             Valid rotation sequences to instantiate the object with. Refers
-            to the Euler extrinsic or intrinsic parameter. Defaults to 'zyx'
+            to the Euler extrinsic | intrinsic parameter. Defaults to ``zyx``
+        degrees : bool
+            Boolean flag whether euler angles are given in radians (
+            ``False``) or degree (``True``). Defaults to ``False``.
 
         See Also
         --------
-        scipy.spatial.transform.Rotation: Underlying implementation of the
-        rotation object
+        scipy.spatial.transform.Rotation:
+            Underlying implementation of the rotation object
+
         """
 
         super().__init__(**kwargs)
 
         # by default, we will have an extrinsic rotation about [x,y,z] given
         # as [a,b,c] so that it is Rz(c) * Ry(b) * Rx(a)
-        self.sequence = sequence or 'XYZ'
+        self.sequence = sequence or 'xyz'
         if euler is not None \
                 and quaternion is None \
                 and dcm is None \
                 and rotvec is None:
-            self.euler = euler
+            self.euler = np_.deg2rad(euler) if degrees else euler
         elif quaternion is not None \
                 and euler is None \
                 and dcm is None \
@@ -124,6 +116,22 @@ class Angular(_transformation.Transformation):
 
     @staticmethod
     def random(num: int = None):
+        """
+        Create (a) random angular transformation object(s).
+
+        Parameters
+        ----------
+        num : int
+            Number of random angular transformation objects to create.
+            Defaults to ``1``.
+
+        Returns
+        -------
+        obj : Angular
+            Returns a single object instance or a generator over ``num``
+            objects if ``num > 1``.
+
+        """
         if num is None:
             return Angular(quaternion=np_.random.random(4))
         else:
@@ -196,7 +204,8 @@ class Angular(_transformation.Transformation):
 
     @property
     def euler(self):
-        """Represent as Euler angles.
+        """
+        Represent as Euler angles.
 
         Any orientation can be expressed as a composition of 3 elementary
         rotations. Once the axis sequence has been chosen, Euler angles define
@@ -219,13 +228,10 @@ class Angular(_transformation.Transformation):
             Adjacent axes cannot be the same.
             Extrinsic and intrinsic rotations cannot be mixed in one function
             call.
-        degrees : boolean, optional
-            Returned angles are in degrees if this flag is True, else they are
-            in radians. Default is False.
 
         Returns
         -------
-        angles : ndarray, shape (3,) or (N, 3)
+        angles : ndarray, shape (3,)
             Shape depends on shape of inputs used to initialize object.
             The returned angles are in the range:
 
@@ -301,6 +307,21 @@ class Angular(_transformation.Transformation):
 
     @euler.setter
     def euler(self, angles: Vector):
+        """
+        Initialize from Euler angles
+
+        Parameters
+        ----------
+        angles : Num | Vector
+            Scalar or iterable of up to 3 elements where each angle
+            represents a rotation about the corresponding axis as defined in
+            the objects ``sequence`` attribute.
+
+        Returns
+        -------
+
+        """
+
         angles = np_.asarray(angles)
         if angles.ndim == 0:
             angles = np_.asarray([angles])
@@ -308,99 +329,6 @@ class Angular(_transformation.Transformation):
         _validator.linalg.dimensions(angles, 1, 'euler')
         _validator.linalg.shape(angles, (len(self.sequence),), 'euler')
 
-        """Initialize from Euler angles.
-
-        Rotations in 3 dimensions can be represented by a sequece of 3
-        rotations around a sequence of axes. In theory, any three axes spanning
-        the 3D Euclidean space are enough. In practice the axes of rotation are
-        chosen to be the basis vectors.
-
-        The three rotations can either be in a global frame of reference
-        (extrinsic) or in a body centred frame of refernce (intrinsic), which
-        is attached to, and moves with, the object under rotation [1]_.
-
-        Parameters
-        ----------
-        seq : string
-            Specifies sequence of axes for rotations. Up to 3 characters
-            belonging to the set {'X', 'Y', 'Z'} for intrinsic rotations, or
-            {'x', 'y', 'z'} for extrinsic rotations. Extrinsic and intrinsic
-            rotations cannot be mixed in one function call.
-        angles : float or array_like, shape (N,) or (N, [1 or 2 or 3])
-            Euler angles specified in radians (`degrees` is False) or degrees
-            (`degrees` is True).
-            For a single character `seq`, `angles` can be:
-
-            - a single value
-            - array_like with shape (N,), where each `angle[i]`
-              corresponds to a single rotation
-            - array_like with shape (N, 1), where each `angle[i, 0]`
-              corresponds to a single rotation
-
-            For 2- and 3-character wide `seq`, `angles` can be:
-
-            - array_like with shape (W,) where `W` is the width of
-              `seq`, which corresponds to a single rotation with `W` axes
-            - array_like with shape (N, W) where each `angle[i]`
-              corresponds to a sequence of Euler angles describing a single
-              rotation
-
-        degrees : bool, optional
-            If True, then the given angles are assumed to be in degrees.
-            Default is False.
-
-        Returns
-        -------
-        rotation : `Rotation` instance
-            Object containing the rotation represented by the sequence of
-            rotations around given axes with given angles.
-
-        References
-        ----------
-        .. [1] https://en.wikipedia.org/wiki/Euler_angles
-        #Definition_by_intrinsic_rotations
-
-        Examples
-        --------
-        >>> from scipy.spatial.transform import Rotation as R
-
-        Initialize a single rotation along a single axis:
-
-        >>> r = R.from_euler('x', 90, degrees=True)
-        >>> r.as_quat().shape
-        (4,)
-
-        Initialize a single rotation with a given axis sequence:
-
-        >>> r = R.from_euler('zyx', [90, 45, 30], degrees=True)
-        >>> r.as_quat().shape
-        (4,)
-
-        Initialize a stack with a single rotation around a single axis:
-
-        >>> r = R.from_euler('x', [90], degrees=True)
-        >>> r.as_quat().shape
-        (1, 4)
-
-        Initialize a stack with a single rotation with an axis sequence:
-
-        >>> r = R.from_euler('zyx', [[90, 45, 30]], degrees=True)
-        >>> r.as_quat().shape
-        (1, 4)
-
-        Initialize multiple elementary rotations in one object:
-
-        >>> r = R.from_euler('x', [90, 45, 30], degrees=True)
-        >>> r.as_quat().shape
-        (3, 4)
-
-        Initialize multiple rotations in one object:
-
-        >>> r = R.from_euler('zyx', [[90, 45, 30], [35, 45, 90]], degrees=True)
-        >>> r.as_quat().shape
-        (2, 4)
-
-        """
         # get configured sequence
         seq = self.sequence
 
@@ -436,6 +364,16 @@ class Angular(_transformation.Transformation):
 
     @property
     def dcm(self):
+        """
+        Orientation matrix for the angular transformation
+
+
+
+        Returns
+        -------
+        dcm : Matrix
+
+        """
         # unpack quaternion
         x, y, z, w = self.quaternion
 

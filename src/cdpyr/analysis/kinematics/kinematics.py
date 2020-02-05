@@ -69,44 +69,44 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
 
     """
 
+    _algorithm: Algorithm
     """
     Algorithm used for calculation of the kinematics result
     """
-    _algorithm: 'Algorithm'
 
+    _directions: Matrix
     """
     `(NT, M)` array of unit cable direction vectors
     """
-    _directions: Matrix
 
+    _leave_points: Matrix
     """
     `(NT,M)` array of cached cable leave points. Cable leave points are the
     spatial points where the cable leaves the pulley or frame and enters the
     workspace.
     """
-    _leave_points: Matrix
 
+    _lengths: Matrix
     """
     `(2, M)` array where each column consists of `[workspace, pulley]` lengths
     """
-    _lengths: Matrix
 
+    _cable_shapes: Matrix
     """
     `(NT,M,100)` array cached cable shape over 100 steps (99 on the pulley,
     if pulleys are available, and 1 step between the cable leave point and
     the platform
     """
-    _cable_shapes: Matrix
 
+    _swivel: Vector
     """
     `(M,)` of swivel angles of each cable frame
     """
-    _swivel: Vector
 
+    _wrap: Vector
     """
     `(M,)` of wrap angles of each pulley
     """
-    _wrap: Vector
 
     def __init__(self,
                  algorithm: Algorithm,
