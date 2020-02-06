@@ -25,7 +25,7 @@ class PlotWorkspaceTestSuite(object):
              rob,
              workspace.grid.Algorithm(
                  workspace.archetype.Translation(dcm=np.eye(3)),
-                 workspace.criterion.CableLength(
+                 cdpyr.analysis.pose.criterion.CableLength(
                      Standard(),
                      np.asarray([0.5, 1.5]) * np.sqrt(1)),
                  [-1.0],
@@ -55,7 +55,7 @@ class PlotWorkspaceTestSuite(object):
              rob,
              workspace.grid.Algorithm(
                  workspace.archetype.Translation(dcm=np.eye(3)),
-                 workspace.criterion.CableLength(
+                 cdpyr.analysis.pose.criterion.CableLength(
                      Standard(),
                      np.asarray([0.5, 1.5]) * np.sqrt(2)),
                  [-1.0, -1.0],
@@ -87,7 +87,7 @@ class PlotWorkspaceTestSuite(object):
                   rob,
                   workspace.grid.Algorithm(
                       workspace.archetype.Translation(dcm=np.eye(3)),
-                      workspace.criterion.CableLength(
+                      cdpyr.analysis.pose.criterion.CableLength(
                           Standard(),
                           np.asarray([0.5, 1.5]) * np.sqrt(3)),
                       [-1.0, -1.0, -1.0],
@@ -99,7 +99,7 @@ class PlotWorkspaceTestSuite(object):
                   rob,
                   workspace.hull.Algorithm(
                       workspace.archetype.Translation(dcm=np.eye(3)),
-                      workspace.criterion.CableLength(
+                      cdpyr.analysis.pose.criterion.CableLength(
                           Standard(),
                           np.asarray([0.5, 1.5]) * np.sqrt(3)),
                       [0.0, 0.0, 0.0],

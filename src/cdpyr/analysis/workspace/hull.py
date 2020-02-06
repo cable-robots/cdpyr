@@ -6,7 +6,7 @@ from joblib import Parallel, delayed
 
 from cdpyr.analysis.workspace import workspace as _workspace
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
-from cdpyr.analysis.workspace.criterion import criterion as _criterion
+from cdpyr.analysis.criterion import criterion as _criterion
 from cdpyr.geometry import polyhedron as _polyhedron
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
