@@ -27,7 +27,7 @@ class Cuboid(Primitive):
 
     @property
     def faces(self):
-        return ((2, 1, 0),
+        return _np.asarray(((2, 1, 0),
                 (6, 2, 1),
                 (4, 1, 0),
                 (3, 2, 0),
@@ -39,7 +39,7 @@ class Cuboid(Primitive):
                 (7, 3, 4),
                 (6, 7, 4),
                 (6, 7, 3),
-                )
+                ))
 
     @property
     def surface_area(self):
