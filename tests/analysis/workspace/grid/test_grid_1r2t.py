@@ -8,6 +8,7 @@ from cdpyr.analysis import (
     force_distribution,
     workspace,
 )
+from cdpyr.analysis.criterion import CableLength, Singularities, WrenchFeasible
 from cdpyr.analysis.kinematics.kinematics import Algorithm as Kinematics
 from cdpyr.analysis.workspace.archetype.archetype import Archetype
 from cdpyr.kinematics.transformation import Angular
@@ -46,7 +47,7 @@ class GridWorkspace1R2TTestSuite(object):
                                steps: Union[Num, Vector]):
         robot = robot_1r2t
         # create the criterion
-        criterion = workspace.criterion.CableLength(ik_standard, np.asarray(
+        criterion = CableLength(ik_standard, np.asarray(
                 [0.50, 1.50]) * np.sqrt(2))
 
         # create the grid calculator object
@@ -85,7 +86,7 @@ class GridWorkspace1R2TTestSuite(object):
                                 steps: Union[Num, Vector]):
         robot = robot_1r2t
         # create the criterion
-        criterion = workspace.criterion.Singularities(ik_standard)
+        criterion = Singularities(ik_standard)
 
         # create the grid calculator object
         calculator = workspace.grid.Algorithm(archetype,
@@ -123,7 +124,7 @@ class GridWorkspace1R2TTestSuite(object):
                                   steps: Union[Num, Vector]):
         robot = robot_1r2t
         # create the criterion
-        criterion = workspace.criterion.WrenchFeasible(
+        criterion = WrenchFeasible(
                 force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the grid calculator object

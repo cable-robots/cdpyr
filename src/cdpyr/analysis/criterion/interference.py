@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from cdpyr.analysis.kinematics import kinematics as _kinematics
-from cdpyr.analysis.workspace.criterion import criterion as _criterion
+from cdpyr.analysis.criterion import criterion as _criterion
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 

@@ -13,6 +13,18 @@ __email__ = "p.tempel@tudelft.nl"
 class Criterion(_evaluator.PoseEvaluator):
 
     def evaluate(self, robot: _robot.Robot, pose: _pose.Pose, **kwargs):
+        """
+        Public method to evaluate the pose criterio
+        Parameters
+        ----------
+        robot
+        pose
+        kwargs
+
+        Returns
+        -------
+
+        """
         # TODO remove this check
         if robot.num_platforms > 1:
             raise NotImplementedError(
