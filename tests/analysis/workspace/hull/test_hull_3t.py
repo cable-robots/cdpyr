@@ -5,6 +5,7 @@ from cdpyr.analysis import (
     force_distribution,
     workspace,
 )
+from cdpyr.analysis.criterion import Singularities, CableLength, WrenchFeasible
 from cdpyr.analysis.kinematics.kinematics import Algorithm as Kinematics
 from cdpyr.analysis.workspace.archetype.archetype import Archetype
 from cdpyr.robot import Robot
@@ -28,7 +29,7 @@ class HullWorkspace3TTestSuite(object):
                              parallel: bool):
         robot = robot_3t
         # create the criterion
-        criterion = workspace.criterion.CableLength(ik_standard, np.asarray(
+        criterion = CableLength(ik_standard, np.asarray(
                 [0.5, 1.5]) * np.sqrt(3))
 
         # create the hull calculator object
@@ -56,7 +57,7 @@ class HullWorkspace3TTestSuite(object):
                               parallel: bool):
         robot = robot_3t
         # create the criterion
-        criterion = workspace.criterion.Singularities(ik_standard)
+        criterion = Singularities(ik_standard)
 
         # create the hull calculator object
         calculator = workspace.hull.Algorithm(archetype,
@@ -83,7 +84,7 @@ class HullWorkspace3TTestSuite(object):
                                 parallel: bool):
         robot = robot_3t
         # create the criterion
-        criterion = workspace.criterion.WrenchFeasible(
+        criterion = WrenchFeasible(
                 force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the hull calculator object

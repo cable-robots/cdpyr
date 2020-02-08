@@ -4,7 +4,7 @@ import numpy as _np
 
 from cdpyr.analysis.force_distribution import force_distribution as \
     _force_distribution
-from cdpyr.analysis.workspace.criterion import criterion as _criterion
+from cdpyr.analysis.criterion import criterion as _criterion
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Num, Vector
@@ -13,19 +13,15 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class WrenchClosure(_criterion.Criterion):
+class WrenchFeasible(_criterion.Criterion):
     _wrench: Vector
-    _force_distribution: '_force_distribution.Algorithm'
+    force_distribution: '_force_distribution.Algorithm'
 
     def __init__(self,
                  force_distribution: '_force_distribution.Algorithm',
                  wrench: Optional[Union[Num, Vector]] = None,
                  **kwargs):
         super().__init__(**kwargs)
-        # update the force limits to be in the expected range of the wrench
-        # closure algorithm
-        force_distribution.force_minimum = [0]
-        force_distribution.force_maximum = [_np.inf]
         self.force_distribution = force_distribution
         self.wrench = wrench
 
@@ -75,5 +71,5 @@ class WrenchClosure(_criterion.Criterion):
 
 
 __all__ = [
-        'WrenchClosure',
+        'WrenchFeasible',
 ]
