@@ -195,4 +195,4 @@ class Stream(BaseObject):
             except Exception:
                 pass
 
-        return o
+        return dict(o) if isinstance(o, OrderedDict) else o
