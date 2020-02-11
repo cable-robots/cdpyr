@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import AnyStr, Mapping, Union
+from typing import AnyStr, Mapping, Union, IO
 
 from cdpyr import motion as _motion, robot as _robot, schema as _schema
 from cdpyr.helpers import full_classname as fcn
@@ -104,99 +104,95 @@ class Stream(BaseObject):
         super().__init__(**kwargs)
         self.parser = parser
 
-    def dump(self, o: RobotComponent, *args, **kwargs):
+    def dump(self, f: IO, o: RobotComponent, *args, **kwargs):
         """
-        Dump a CDPyR component as dictionary
 
         Parameters
         ----------
-        o : RobotComponent
+        f : IO
+            A file-like object that supports :code:`write()` and :code:`writelines()`.
+        o : object
+            Any object type or robot component object
+        args
+        kwargs
 
         Returns
         -------
-        d : Mapping
-            Dictionary representation of the CDPyR component
 
         """
-        try:
-            # try to dump the data
-            return self._RESOLVER[fcn(o)].dump(o, *args, **kwargs)
-        except KeyError:
-            raise ValueError(f'Cannot dump object of type {type(o)}.')
+
+        # now we should have a `dict`-like object, so we'll just let the
+        # explicit parser implementation take care of converting the object into
+        # the correct string-representation
+        f.write(self.dumps(o, *args, **kwargs))
 
     def dumps(self, o: RobotComponent, *args, **kwargs):
         """
-        Dump a CDPyR component as a string
+        Dump a robot component into a string-like object
 
         Parameters
         ----------
         o : RobotComponent
+            A robot component to convert into a string-like object
+        args
+        kwargs
 
         Returns
         -------
-        s : AnyStr
-            A string representation of the CDPyR component in the parser's
-            configured format
 
         """
+        # first, convert `o` into a dictionary
+        try:
+            o = self._RESOLVER[fcn(o)].dump(o)
+        except KeyError:
+            pass
 
-        # for convenience with some parsers, we will pass the root object's
-        # type along to the `dumps` method
-        kwargs = self.parser.kwargs(o, **kwargs)
+        # let the parser handle turning the dictionary into its representation
+        return self.parser.dumps(o, *args, **kwargs)
 
-        # turn the object into a dictionary and then dump this to the right
-        # format
-        return self.parser.dumps(self.dump(o), *args, **kwargs)
-
-    def load(self, d: Union[OrderedDict, Mapping], *args, **kwargs):
+    def load(self, f: IO, *args, **kwargs):
         """
-        Load dictionary into the CDPyR compatible objects
+        Load a robot component or other data type from a file-like object
+
         Parameters
         ----------
-        d : OrderedDict | Mapping
-            Dictionary representing the CDPyR component
+        f : IO
+            A file-like object that supports :code:`read()` and :code:`readlines()`.
+        args
+        kwargs
 
         Returns
         -------
-        o : RobotComponent
-            The matching
-
-        Raises
-        ------
-        TypeError
-            Raises an exception of the object could not be converted
-
+        o : object, RobotComponent
+            Either an object of built-in type or a RobotComponent object
         """
-        # loop over each mapping and try each one till we have a successful
-        # decoding, then return that result
-        for c, s in self._RESOLVER.items():
-            try:
-                # and load data
-                return s.load(d, *args, **kwargs)
-            except Exception as e:
-                if isinstance(e.args[0], str):
-                    raise e
-                pass
-
-        raise TypeError('Could not resolve type of stream given.')
+        return self.loads(''.join(f.readlines()), *args, **kwargs)
 
     def loads(self, s: AnyStr, *args, **kwargs):
         """
-        Load a string into a CDPyR component
+        Load a robot component or other data type from a string-like object
 
         Parameters
         ----------
-        s : AnyStr
+        s
+        args
+        kwargs
 
         Returns
         -------
-        o : RobotComponent
-            The parsed robot component as a CDPyR component
-
-        Raises
-        ------
-                TypeError
-            Raises an exception of the object could not be converted
 
         """
-        return self.load(self.parser.loads(s), *args, **kwargs)
+        # first, let the parser convert the string into a valid python object
+        # (dictionary or alike)
+        o = self.parser.loads(s, *args, **kwargs)
+
+        # then, loop over each mapping and try each one till we have a
+        # successful decoding, then return that result
+        for c, s in self._RESOLVER.items():
+            try:
+                # load data using the Marshmallow schema object
+                o = s.load(o, *args, **kwargs)
+            except Exception:
+                pass
+
+        return o
