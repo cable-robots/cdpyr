@@ -12,6 +12,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Xml(_parser.Parser):
 
+    EXT = 'xml'
+
     def kwargs(self, o: RobotComponent, **kwargs):
         return super().kwargs(o, root=o.__class__.__name__.lower(), **kwargs)
 

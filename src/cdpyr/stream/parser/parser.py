@@ -11,6 +11,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Parser(ABC, BaseObject):
 
+    EXT = ''
+
     def kwargs(self, o: RobotComponent, **kwargs):
         return kwargs
 

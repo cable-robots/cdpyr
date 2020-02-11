@@ -27,6 +27,9 @@ def dict_get(m: Mapping, k: Iterable, *args):
 
 
 class Wcrfx(parser.Parser):
+
+    EXT = 'wcrfx'
+
     VERSION = '0.31'
 
     def __init__(self, **kwargs):
