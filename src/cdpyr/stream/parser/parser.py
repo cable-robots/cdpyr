@@ -5,6 +5,9 @@ from typing import AnyStr, Mapping, Union
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.robot.robot_component import RobotComponent
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Parser(ABC, BaseObject):
 

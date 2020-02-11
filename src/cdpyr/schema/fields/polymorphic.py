@@ -5,6 +5,9 @@ from marshmallow.base import SchemaABC
 from marshmallow.exceptions import StringNotCollectionError, ValidationError
 from marshmallow.utils import is_collection, missing as missing_
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Polymorphic(fields.Field):
     default_error_messages = {"type": "Invalid type."}

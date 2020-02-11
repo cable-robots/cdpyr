@@ -6,6 +6,9 @@ import xmltodict
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser as _parser
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Xml(_parser.Parser):
 

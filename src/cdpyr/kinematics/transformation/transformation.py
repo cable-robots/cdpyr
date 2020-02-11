@@ -4,6 +4,9 @@ from typing import Union
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Vector
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Transformation(BaseObject):
 

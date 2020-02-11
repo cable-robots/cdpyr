@@ -5,6 +5,9 @@ import yaml
 
 from cdpyr.stream.parser import parser as _parser
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def ordered_dict_representer(dumper, data):
     return dumper.represent_dict(data.items())

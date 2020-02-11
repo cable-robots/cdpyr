@@ -14,8 +14,6 @@ from cdpyr.stream.parser import parser
 
 __author__ = 'Philipp Tempel'
 __email__ = 'p.tempel@tudelft.nl'
-__version__ = '1.0.0-dev'
-__status__ = 'Prototype'
 
 
 def dict_get(m: Mapping, k: Iterable, *args):

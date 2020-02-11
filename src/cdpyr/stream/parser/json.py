@@ -4,6 +4,9 @@ from typing import AnyStr, Mapping, Union
 
 from cdpyr.stream.parser import parser as _parser
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class Json(_parser.Parser):
 
