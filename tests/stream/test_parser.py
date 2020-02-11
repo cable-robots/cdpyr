@@ -19,6 +19,7 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(),
                      cdpyr.stream.parser.Xml(),
                      cdpyr.stream.parser.Yaml())),
+            ids=list('{}-{}'.format(a, b) for a, b in itertools.product(('num', 'str', 'dict', 'tuple'), ('json', 'xml', 'yaml'))),
     )
     def test_builtin_types(self,
                            orig,
@@ -46,7 +47,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_pose(self,
                          rand_pose_3r3t: cdpyr.motion.pose.Pose,
@@ -78,7 +80,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_motion_pattern(self,
                                    robot_3r3t: cdpyr.robot.Robot,
@@ -111,7 +114,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_cable(self,
                           robot_3r3t: cdpyr.robot.Robot,
@@ -142,7 +146,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_cables(self,
                            robot_3r3t: cdpyr.robot.Robot,
@@ -173,7 +178,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_platform_anchor(self,
                                     robot_3r3t: cdpyr.robot.Robot,
@@ -205,7 +211,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_platform_anchors(self,
                                      robot_3r3t: cdpyr.robot.Robot,
@@ -237,7 +244,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_frame_anchor(self,
                                  robot_3r3t: cdpyr.robot.Robot,
@@ -269,7 +277,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_frame_anchors(self,
                                   robot_3r3t: cdpyr.robot.Robot,
@@ -301,7 +310,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_frame(self,
                           robot_3r3t: cdpyr.robot.Robot,
@@ -332,7 +342,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_platform(self,
                              robot_3r3t: cdpyr.robot.Robot,
@@ -363,7 +374,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_platforms(self,
                               robot_3r3t: cdpyr.robot.Robot,
@@ -395,7 +407,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_kinematic_chain(self,
                                     robot_3r3t: cdpyr.robot.Robot,
@@ -427,7 +440,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Json(), ),
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'yaml'),
     )
     def test_stream_kinematic_chains(self,
                                      robot_3r3t: cdpyr.robot.Robot,
@@ -460,7 +474,8 @@ class StreamParserTestSuite(object):
                     (cdpyr.stream.parser.Xml(), ),
                     (cdpyr.stream.parser.Wcrfx(), ),
                     (cdpyr.stream.parser.Yaml(), ),
-            )
+            ),
+            ids=('json', 'xml', 'wcrfx', 'yaml'),
     )
     def test_stream_robot(self,
                           robot_3r3t: cdpyr.robot.Robot,
