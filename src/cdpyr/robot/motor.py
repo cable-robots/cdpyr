@@ -42,11 +42,12 @@ class Motor(RobotComponent):
 
     @torques.setter
     def torques(self, torques: Dict[AnyStr, Num]):
-        self._torques = ChainMap(torques, {
-                'stall': None,
-                'peak':  None,
-                'rated': None,
-                'rms':   None})
+        self._torques = {
+                **{'stall': None,
+                   'peak':  None,
+                   'rated': None,
+                   'rms':   None},
+                **torques}
 
     @torques.deleter
     def torques(self):
