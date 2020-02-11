@@ -1,4 +1,5 @@
 import pathlib as pl
+import itertools
 
 import pytest
 
@@ -12,7 +13,35 @@ __email__ = "p.tempel@tudelft.nl"
 class StreamParserTestSuite(object):
 
     @pytest.mark.parametrize(
-            ('parser', 'ext'),
+            ('orig', 'parser'),
+            itertools.product(
+                    (42, 'foo bar', {'foo': 'bar'}, ('foo', 'bar')),
+                    (cdpyr.stream.parser.Json(),
+                     cdpyr.stream.parser.Xml(),
+                     cdpyr.stream.parser.Yaml())),
+    )
+    def test_builtin_types(self,
+                           orig,
+                           parser: cdpyr.stream.parser.parser.Parser,
+                           tmpdir: pl.Path):
+        # create a JSON stream object
+        stream = cdpyr.stream.Stream(parser)
+
+        # file path to save to (with the extension at first)
+        tmpfile = tmpdir / f'{type(orig).__name__}.{parser.EXT}'
+
+        with open(tmpfile, 'w') as f:
+            f.writelines(stream.dumps(orig))
+
+        with open(tmpfile, 'r') as f:
+            resto = stream.loads(''.join(f.readlines()))
+
+        # compare all data
+        assert isinstance(resto, type(orig))
+        assert resto == orig
+
+    @pytest.mark.parametrize(
+            ('parser', ),
             (
                     (cdpyr.stream.parser.Json(), 'json'),
                     (cdpyr.stream.parser.Xml(), 'xml'),
