@@ -592,7 +592,7 @@ class Angular(_transformation.Transformation):
         if self is other:
             return True
 
-        return np_.allclose(self.quaternion, other.quaternion) \
+        return np_.isclose(np_.abs(self.quaternion.dot(other.quaternion)), 1) \
                and np_.allclose(self.angular_velocity, other.angular_velocity) \
                and np_.allclose(self.angular_acceleration,
                                 other.angular_acceleration)
