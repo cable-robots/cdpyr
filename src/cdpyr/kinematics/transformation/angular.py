@@ -124,11 +124,11 @@ class Angular(_transformation.Transformation):
 
     @staticmethod
     def random(num: int = None):
-        if num is None:
+        if num is None or num == 1:
             return Angular(quaternion=np_.random.random(4))
         else:
             return (Angular(quaternion=quaternion) for quaternion in
-                    np_.random.random((num, 4)))
+                    np_.random.random((np_.floor(num), 4)))
 
     @staticmethod
     def rotation_x(angle: Union[Num, Vector], degree: bool = False):
