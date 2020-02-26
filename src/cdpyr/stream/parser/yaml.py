@@ -5,6 +5,9 @@ import yaml
 
 from cdpyr.stream.parser import parser as _parser
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 def ordered_dict_representer(dumper, data):
     return dumper.represent_dict(data.items())
@@ -21,6 +24,8 @@ yaml.Loader.add_constructor(_mapping_tag, ordered_dict_constructor)
 
 
 class Yaml(_parser.Parser):
+
+    EXT = 'yaml'
 
     def dumps(self, d: Union[OrderedDict, Mapping], *args, **kwargs) -> AnyStr:
         return yaml.dump(d, **kwargs)

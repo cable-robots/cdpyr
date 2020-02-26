@@ -14,8 +14,6 @@ from cdpyr.stream.parser import parser
 
 __author__ = 'Philipp Tempel'
 __email__ = 'p.tempel@tudelft.nl'
-__version__ = '1.0.0-dev'
-__status__ = 'Prototype'
 
 
 def dict_get(m: Mapping, k: Iterable, *args):
@@ -29,13 +27,17 @@ def dict_get(m: Mapping, k: Iterable, *args):
 
 
 class Wcrfx(parser.Parser):
+
+    EXT = 'wcrfx'
+
     VERSION = '0.31'
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._PROCESSORS = {
-                'robot':       {'dump': self._process_dump_robot, },
-                'models':      {'load': self._process_load_models, },
+                'root':        {'dump': self._process_dump_robot},
+                'robot':       {'dump': self._process_dump_robot},
+                'models':      {'load': self._process_load_models},
                 '@id':         {'load': self._process_load_numeric},
                 '@x':          {'load': self._process_load_numeric},
                 '@y':          {'load': self._process_load_numeric},
@@ -253,9 +255,9 @@ class Wcrfx(parser.Parser):
             ))
             try:
                 frame_anchor['pulley'] = OrderedDict((
-                        ('radius', dict_get(chain, ('base', '@radius')))
+                        ('radius', dict_get(chain, ('base', '@radius'))),
                 ))
-            except KeyError:
+            except KeyError as ke:
                 pass
             robot['frame']['anchors'].append(frame_anchor)
             frame_anchor_index = robot['frame']['anchors'].index(frame_anchor)

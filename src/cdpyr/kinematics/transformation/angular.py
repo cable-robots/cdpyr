@@ -132,11 +132,11 @@ class Angular(_transformation.Transformation):
             objects if ``num > 1``.
 
         """
-        if num is None:
+        if num is None or num == 1:
             return Angular(quaternion=np_.random.random(4))
         else:
             return (Angular(quaternion=quaternion) for quaternion in
-                    np_.random.random((num, 4)))
+                    np_.random.random((np_.floor(num), 4)))
 
     @staticmethod
     def rotation_x(angle: Union[Num, Vector], degree: bool = False):
@@ -530,7 +530,7 @@ class Angular(_transformation.Transformation):
         if self is other:
             return True
 
-        return np_.allclose(self.quaternion, other.quaternion) \
+        return np_.isclose(np_.abs(self.quaternion.dot(other.quaternion)), 1) \
                and np_.allclose(self.angular_velocity, other.angular_velocity) \
                and np_.allclose(self.angular_acceleration,
                                 other.angular_acceleration)

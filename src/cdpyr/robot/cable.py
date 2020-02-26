@@ -1,4 +1,4 @@
-from collections import ChainMap, UserList
+from collections import UserList
 from typing import AnyStr, Dict, Optional, Union
 
 import numpy as _np
@@ -63,7 +63,7 @@ class Cable(RobotComponent):
 
     @lengths.setter
     def lengths(self, lengths: Dict[AnyStr, Num]):
-        self._lengths = ChainMap(lengths, {'min': 0, 'max': _np.Infinity})
+        self._lengths = {**{'min': 0, 'max': _np.Infinity}, **lengths};
 
     @property
     def modulus(self):
@@ -71,8 +71,8 @@ class Cable(RobotComponent):
 
     @modulus.setter
     def modulus(self, modulus: Dict[AnyStr, Vector]):
-        self._modulus = ChainMap(modulus,
-                                 {'elasticities': None, 'viscosities': None})
+        self._modulus = {**{'elasticities': None, 'viscosities': None},
+                         **modulus}
 
     @modulus.deleter
     def modulus(self):
