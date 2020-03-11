@@ -49,12 +49,20 @@ class Tube(Primitive):
         self._outer.height = height
 
     @property
+    def inner(self):
+        return self._inner
+
+    @property
     def inner_radius(self):
         return self._inner.radius
 
     @inner_radius.setter
     def inner_radius(self, radius: Union[Num, Vector]):
         self._inner.radius = radius
+
+    @property
+    def outer(self):
+        return self._outer
 
     @property
     def outer_radius(self):
