@@ -83,6 +83,7 @@ class Mayavi(_engine.Engine, ABC):
                                 name='cuboid',
                                 representation='surface',
                                 color=self._RGB2rgb((178, 178, 178)),
+                                line_width=0.10,
                         ),
                         kwargs.pop('mesh', {}))
         )
@@ -99,6 +100,9 @@ class Mayavi(_engine.Engine, ABC):
         if dcm is None:
             dcm = _np.eye(3)
 
+        marker_style = kwargs.pop('marker', {})
+        axes_styles = kwargs.pop('axes', {})
+
         # draw center of the coordinate system
         _mlab.points3d(
                 *self._prepare_plot_coordinates(
@@ -106,8 +110,10 @@ class Mayavi(_engine.Engine, ABC):
                 **update_recursive(
                         dict(
                                 color=(0, 0, 0),
+                                scale_factor=0.10,
+                                resolution=3,
                         ),
-                        kwargs
+                        marker_style
                 )
         )
 
@@ -115,7 +121,14 @@ class Mayavi(_engine.Engine, ABC):
         scale = kwargs.pop('scale', 0.25)
 
         # plot each coordinate axis i.e., x, y, z or which of them are available
+        name = kwargs.pop('name', 'axis {}')
         for idx in range(self._NUMBER_OF_COORDINATES):
+            try:
+                name_ = name.format(
+                        self.AXES_NAMES[idx],
+                        axis=self.AXES_NAMES[idx])
+            except KeyError:
+                name_ = f'{name}: {self.AXES_NAMES[idx]}'
             _mlab.quiver3d(
                     *self._prepare_plot_coordinates(
                             self._extract_coordinates(
@@ -127,8 +140,10 @@ class Mayavi(_engine.Engine, ABC):
                     **update_recursive(
                             dict(
                                     color=self.COORDINATE_DIRECTIONS[idx],
+                                    line_width=0.10,
+                                    name=name_,
                             ),
-                            kwargs
+                            axes_styles
                     )
             )
 
@@ -221,8 +236,9 @@ class Mayavi(_engine.Engine, ABC):
                                 _np.swapaxes(vertices, 0, 1))),
                 **update_recursive(
                         dict(
-                                color=self._RGB2rgb((178, 178, 178)),
                                 name='ellipsoid',
+                                color=self._RGB2rgb((178, 178, 178)),
+                                line_width=0.10,
                         ),
                         kwargs
                 )
@@ -361,6 +377,7 @@ class Mayavi(_engine.Engine, ABC):
                         **update_recursive(
                                 dict(
                                         color=(0, 0, 0),
+                                        line_width=0.10,
                                 ),
                                 kwargs
                         )
@@ -375,6 +392,7 @@ class Mayavi(_engine.Engine, ABC):
                             **update_recursive(
                                     dict(
                                             color=self._RGB2rgb((13, 13, 13)),
+                                            line_width=0.10,
                                     ),
                                     kwargs
                             )
@@ -420,8 +438,10 @@ class Mayavi(_engine.Engine, ABC):
                                         anchor.linear.position))),
                 **update_recursive(
                         dict(
-                                color=(1, 0, 0),
                                 name=f'platform {pidx}: anchor {aidx}',
+                                color=(1, 0, 0),
+                                scale_factor=0.10,
+                                resolution=3,
                         ),
                         kwargs
                 )
@@ -440,6 +460,7 @@ class Mayavi(_engine.Engine, ABC):
                 **update_recursive(
                         dict(
                                 color=self._RGB2rgb((178, 178, 178)),
+                                line_width=0.10,
                         ),
                         kwargs.pop('mesh', {})
                 )
@@ -453,6 +474,8 @@ class Mayavi(_engine.Engine, ABC):
                     **update_recursive(
                             dict(
                                     color=(0, 0, 0),
+                                    line_width=0.10,
+                                    tube_radius=None,
                             ),
                             kwargs.pop('lines', {})
                     )
@@ -498,6 +521,8 @@ class Mayavi(_engine.Engine, ABC):
                         dict(
                                 name='workspace: inside',
                                 color=(0, 1, 0),
+                                scale_factor=0.10,
+                                resolution=3,
                         ),
                         kwargs
                 )
@@ -511,8 +536,10 @@ class Mayavi(_engine.Engine, ABC):
                                     workspace.outside.T)),
                     **update_recursive(
                             dict(
-                                    color=(1, 0, 0),
                                     name='workspace: outside',
+                                    color=(1, 0, 0),
+                                    scale_factor=0.10,
+                                    resolution=3,
                             ),
                             kwargs
                     )
@@ -528,11 +555,20 @@ class Mayavi(_engine.Engine, ABC):
         # as simple as that
         self.render_polyhedron(workspace,
                                *args,
-                               facecolor=['rgb(178, 178, 178)'] *
-                                         workspace.faces.shape[0],
-                               vertexcolor=['rgb(255, 0, 0)'] *
-                                           workspace.vertices.shape[0],
-                               **kwargs)
+                               **kwargs
+                               # update_recursive(
+                               #         dict(
+                               #                 mesh=dict(
+                               #                         color=(1, 0, 0),
+                               #                         opacity=0.50,
+                               #                 ),
+                               #                 lines=dict(
+                               #                         line_width=0.10,
+                               #                 )
+                               #         ),
+                               #         **kwargs
+                               # )
+                               )
 
     # def _prepare_plot_coordinates(self,
     #                               coordinates: Union[Vector, Matrix],
