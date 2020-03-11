@@ -334,9 +334,8 @@ class Engine(ABC, BaseObject):
 
         Returns
         -------
-        coordinate: Vector
-            A `(NA,X)` matrix of `_NUMBER_OF_AXES` coordinates which can be
-            directly passed to the underlying matplotlib render call.
+        coordinate: Matrix
+            `(NA,X)` matrix of `NA` coordinates of dimensions `X`
 
         """
         # anything into a numpy array
@@ -353,7 +352,38 @@ class Engine(ABC, BaseObject):
         return coordinates
 
     def _rgb2RGB(self, rgb: Union[Vector, Matrix]):
-        return 255 * _np.asarray(rgb)
+        """
+        Convert RGB values in [0, 1] to values in [0, 255]
+
+        Parameters
+        ----------
+        RGB : array_like | Vector | Matrix
+            Array-like object of RGB values in the range of [0, 1]
+
+        Returns
+        -------
+        rgb : array_like | Vector | Matrix
+            Same type as input, yet values are scaled to lie in the range of
+            [0, 255]
+        """
+        return type(rgb)(_np.asarray(rgb) * 255)
+
+    def _RGB2rgb(self, rgb: Union[Vector, Matrix]):
+        """
+        Convert RGB values in [0, 255] to values in [0, 1]
+
+        Parameters
+        ----------
+        rgb : array_like | Vector | Matrix
+            Array-like object of RGB values in the range of [0, 255]
+
+        Returns
+        -------
+        RGB : array_like | Vector | Matrix
+            Same type as input, yet values are scaled to lie in the range of
+            [0, 1]
+        """
+        return type(rgb)(_np.asarray(rgb) / 255)
 
 
 __all__ = [
