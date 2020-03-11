@@ -84,9 +84,9 @@ setup(
         ],
         extras_require={
                 'visualization': [
-                        'matplotlib',
                         'plotly',
-                        'vtk'
+                        'pyqt5',
+                        'mayavi',
                 ],
         },
         entry_points={
