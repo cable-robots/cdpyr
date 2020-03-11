@@ -27,15 +27,6 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-def update_recursive(defaults: Mapping, update: Mapping):
-    for k, v in update.items():
-        if isinstance(v, Mapping):
-            defaults[k] = update_recursive(defaults.get(k, {}), v)
-        else:
-            defaults[k] = v
-    return defaults
-
-
 class Plotly(_engine.Engine, ABC):
     _figure: go.Figure
 
@@ -145,14 +136,16 @@ class Plotly(_engine.Engine, ABC):
                             **self._prepare_plot_coordinates(faces.T,
                                                              ('i', 'j', 'k')),
                             **update_recursive(dict(
-                                facecolor=['rgb(178, 178, 178)'] * faces.shape[0],
-                                vertexcolor=['rgb(0, 0, 0)'] * vertices.shape[0],
-                                flatshading=True,
-                                opacity=0.75,
-                                showscale=False,
-                                name='cuboid',
-                                hoverinfo='skip',
-                                hovertext='',
+                                    facecolor=['rgb(178, 178, 178)'] *
+                                              faces.shape[0],
+                                    vertexcolor=['rgb(0, 0, 0)'] *
+                                                vertices.shape[0],
+                                    flatshading=True,
+                                    opacity=0.75,
+                                    showscale=False,
+                                    name='cuboid',
+                                    hoverinfo='skip',
+                                    hovertext='',
                             ), kwargs.pop('mesh', {}))
                     )
             )
@@ -168,14 +161,14 @@ class Plotly(_engine.Engine, ABC):
                                         self._extract_coordinates(
                                                 vertices[face, :].T)),
                                 **update_recursive(dict(
-                                    mode='lines',
-                                    line=dict(
-                                            color='rgb(0, 0, 0)',
-                                    ),
-                                    name='cuboid face',
-                                    hoverinfo='skip',
-                                    hovertext='',
-                                    showlegend=False,
+                                        mode='lines',
+                                        line=dict(
+                                                color='rgb(0, 0, 0)',
+                                        ),
+                                        name='cuboid face',
+                                        hoverinfo='skip',
+                                        hovertext='',
+                                        showlegend=False,
                                 ), kwargs.pop('faces', {})),
                         )
                 )
@@ -186,16 +179,16 @@ class Plotly(_engine.Engine, ABC):
                                     self._extract_coordinates(
                                             vertices.T[:, faces])),
                             **update_recursive(dict(
-                                mode='lines',
-                                fill='toself',
-                                line=dict(
-                                        color='rgb(13, 13, 13)'
-                                ),
-                                fillcolor='rgb(178, 178, 178)',
-                                showlegend=False,
-                                name='cuboid',
-                                hoverinfo='skip',
-                                hovertext='',
+                                    mode='lines',
+                                    fill='toself',
+                                    line=dict(
+                                            color='rgb(13, 13, 13)'
+                                    ),
+                                    fillcolor='rgb(178, 178, 178)',
+                                    showlegend=False,
+                                    name='cuboid',
+                                    hoverinfo='skip',
+                                    hovertext='',
                             ), kwargs.pop('mesh', {})),
                     )
             )
@@ -942,5 +935,7 @@ class Spatial(Plotly):
 
 
 __all__ = [
-        'Plotly',
+        'Linear',
+        'Planar',
+        'Spatial',
 ]
