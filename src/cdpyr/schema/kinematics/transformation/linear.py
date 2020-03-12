@@ -1,13 +1,13 @@
 from marshmallow import fields, post_load
 
 from cdpyr.kinematics.transformation import linear as _linear
-from cdpyr.schema.cdpyr_schema import CdpyrSchema
+from cdpyr.schema.schema import Schema
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class LinearSchema(CdpyrSchema):
+class LinearSchema(Schema):
     position = fields.Tuple(
             (fields.Float(), fields.Float(), fields.Float()),
             missing=None

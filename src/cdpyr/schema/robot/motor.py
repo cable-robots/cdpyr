@@ -1,13 +1,13 @@
 from marshmallow import fields, post_load
 
 from cdpyr.robot import motor as _motor
-from cdpyr.schema.cdpyr_schema import CdpyrSchema
+from cdpyr.schema.schema import Schema
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class MotorSchema(CdpyrSchema):
+class MotorSchema(Schema):
     inertia = fields.Float(
             missing=None
     )

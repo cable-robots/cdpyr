@@ -2,7 +2,7 @@ from marshmallow import fields, post_load
 
 from cdpyr.motion.pose import pose as _pose, poselist as _pose_list
 from cdpyr.schema import fields as custom_fields
-from cdpyr.schema.cdpyr_schema import CdpyrSchema
+from cdpyr.schema.schema import Schema
 from cdpyr.schema.kinematics.transformation import (
     angular as _angular,
     linear as _linear
@@ -12,7 +12,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class PoseSchema(CdpyrSchema):
+class PoseSchema(Schema):
     time = custom_fields.numpy.Numpy(
             missing=None
     )

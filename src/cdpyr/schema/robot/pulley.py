@@ -1,14 +1,14 @@
 from marshmallow import fields, post_load
 
 from cdpyr.robot import pulley as _pulley
-from cdpyr.schema.cdpyr_schema import CdpyrSchema
+from cdpyr.schema.schema import Schema
 from cdpyr.schema.mechanics import inertia as _inertia
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class PulleySchema(CdpyrSchema):
+class PulleySchema(Schema):
     radius = fields.Float(
             required=True
     )

@@ -2,13 +2,13 @@ import numpy as _np
 from marshmallow import fields, post_load
 
 from cdpyr.robot import cable as _cable
-from cdpyr.schema.cdpyr_schema import CdpyrSchema
+from cdpyr.schema.schema import Schema
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class CableSchema(CdpyrSchema):
+class CableSchema(Schema):
     name = fields.String(
             missing=None
     )

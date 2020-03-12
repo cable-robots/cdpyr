@@ -1,13 +1,13 @@
 from marshmallow import fields, post_load
 
 from cdpyr.robot.anchor import anchor as _anchor
-from cdpyr.schema.cdpyr_schema import CdpyrSchema
+from cdpyr.schema.schema import Schema
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class AnchorSchema(CdpyrSchema):
+class AnchorSchema(Schema):
     position = fields.Tuple(
             (fields.Float(), fields.Float(), fields.Float()),
             required=True,

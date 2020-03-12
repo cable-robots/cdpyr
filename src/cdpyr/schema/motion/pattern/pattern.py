@@ -1,13 +1,13 @@
 from marshmallow import fields, post_load
 
 from cdpyr.motion.pattern import pattern as _motion_pattern
-from cdpyr.schema.cdpyr_schema import CdpyrSchema
+from cdpyr.schema.schema import Schema
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class PatternSchema(CdpyrSchema):
+class PatternSchema(Schema):
     dof_translation = fields.Int(
             required=True,
             data_key='translation',
