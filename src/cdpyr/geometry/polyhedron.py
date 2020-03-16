@@ -247,8 +247,8 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
 
     def __eq__(self, other):
         return super().__eq__(other) \
-               and _np.allclose(self._vertices, other._vertices) \
-               and _np.allclose(self._faces, other._faces)
+               and _np.allclose(self._vertices, other.vertices) \
+               and _np.allclose(self._faces, other.faces)
 
     def __hash__(self):
         return hash((self.centroid, self.surface_area, self.volume,
