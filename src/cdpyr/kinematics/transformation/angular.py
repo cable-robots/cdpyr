@@ -35,6 +35,8 @@ class Angular(_transformation.Transformation):
     _angular_acceleration: np_.ndarray
     sequence: AnyStr
 
+    TAIT_BRYAN = 'xyz'
+
     _AXIS_TO_IND = {'x': 0, 'y': 1, 'z': 2}
 
     def __init__(self,
@@ -85,7 +87,7 @@ class Angular(_transformation.Transformation):
 
         # by default, we will have an extrinsic rotation about [x,y,z] given
         # as [a,b,c] so that it is Rz(c) * Ry(b) * Rx(a)
-        self.sequence = sequence or 'xyz'
+        self.sequence = sequence or Angular.TAIT_BRYAN
         if euler is not None \
                 and quaternion is None \
                 and dcm is None \
