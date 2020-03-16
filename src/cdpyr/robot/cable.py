@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import UserList
-from typing import AnyStr, Dict, Optional, Union
+from typing import AnyStr, Dict, Optional, Sequence, Union
 
 import numpy as _np
 from colour import Color
@@ -145,6 +145,7 @@ class Cable(RobotComponent):
 
 
 class CableList(UserList, RobotComponent):
+    data: Sequence[Cable]
 
     @property
     def name(self):

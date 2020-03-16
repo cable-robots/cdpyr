@@ -118,7 +118,7 @@ class Signal(object):
 
 
 class SignalList(UserList):
-    data: List['Signal']
+    data: List[Signal]
 
     def __init__(self, initlist: Optional[Iterable[Any]] = None):
         super().__init__(initlist)

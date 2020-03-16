@@ -1,16 +1,19 @@
 from __future__ import annotations
 
 from collections import UserList
+from typing import Sequence
 
 from magic_repr import make_repr
 
 from cdpyr.mixin.base_object import BaseObject
+from cdpyr.motion.pose import pose as _pose
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
 class PoseList(UserList, BaseObject):
+    data: Sequence[_pose.Pose]
 
     @property
     def acceleration(self):
