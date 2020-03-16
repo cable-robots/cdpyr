@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import datetime as _datetime
 import pathlib as _pl
 from typing import AnyStr, Union

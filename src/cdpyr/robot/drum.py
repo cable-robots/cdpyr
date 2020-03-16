@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from typing import Optional
 
-from magic_repr import make_repr
-
 import numpy as np
+from magic_repr import make_repr
 
 from cdpyr.geometry import primitive as _geometry
 from cdpyr.mechanics import inertia as _inertia

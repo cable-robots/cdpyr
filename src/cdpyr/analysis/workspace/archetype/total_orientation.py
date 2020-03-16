@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from cdpyr.analysis.workspace.archetype import archetype_orientation as \
     _archetype_orientation
 

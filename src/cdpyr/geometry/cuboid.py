@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as _np
 from magic_repr import make_repr
 

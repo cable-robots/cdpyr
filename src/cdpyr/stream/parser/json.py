@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 from collections import OrderedDict
 from typing import AnyStr, Mapping, Union

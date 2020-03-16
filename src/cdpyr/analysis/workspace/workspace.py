@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from abc import abstractmethod
 
 from cdpyr.analysis import evaluator as _evaluator, result as _result
-from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.criterion import criterion as _criterion
+from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.robot import robot as _robot
 
 __author__ = "Philipp Tempel"
@@ -12,8 +14,8 @@ __license__ = "EUPL v1.2"
 
 
 class Algorithm(_evaluator.RobotEvaluator):
-    _archetype: '_archetype.Archetype'
-    _criterion: '_criterion.Criterion'
+    _archetype: _archetype.Archetype
+    _criterion: _criterion.Criterion
 
     def __init__(self,
                  archetype: '_archetype.Archetype',
@@ -31,7 +33,11 @@ class Algorithm(_evaluator.RobotEvaluator):
     def criterion(self):
         return self._criterion
 
-    def evaluate(self, robot: '_robot.Robot', *args, parallel=None, **kwargs) -> 'Result':
+    def evaluate(self,
+                 robot: _robot.Robot,
+                 *args,
+                 parallel=None,
+                 **kwargs) -> Result:
         try:
             # update keyword arguments with the `parallel` keyword
             kwargs.update({'parallel': parallel})
@@ -41,21 +47,24 @@ class Algorithm(_evaluator.RobotEvaluator):
             raise RuntimeError('Could not determine workspace.') from e
 
     @abstractmethod
-    def _evaluate(self, robot: '_robot.Robot', *args, **kwargs) -> 'Result':
+    def _evaluate(self,
+                  robot: _robot.Robot,
+                  *args,
+                  **kwargs) -> Result:
         raise NotImplementedError()
 
 
 class Result(_result.PlottableResult):
     _algorithm: Algorithm
-    _archetype: '_archetype.Archetype'
-    _criterion: '_criterion.Criterion'
+    _archetype: _archetype.Archetype
+    _criterion: _criterion.Criterion
     _surface_area: float
     _volume: float
 
     def __init__(self,
                  algorithm: Algorithm,
-                 archetype: '_archetype.Archetype',
-                 criterion: '_criterion.Criterion',
+                 archetype: _archetype.Archetype,
+                 criterion: _criterion.Criterion,
                  **kwargs):
         self._algorithm = algorithm
         self._archetype = archetype
@@ -84,3 +93,9 @@ class Result(_result.PlottableResult):
     @abstractmethod
     def volume(self):
         raise NotImplementedError()
+
+
+__all__ = [
+        'Algorithm',
+        'Result',
+]

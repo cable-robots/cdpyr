@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import _datetime as _datetime
 import pathlib as _pl
 from collections import OrderedDict

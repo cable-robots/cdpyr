@@ -1,6 +1,7 @@
-from typing import Union
+from __future__ import annotations
 
 from abc import abstractmethod
+from typing import Union
 
 from cdpyr.mixin.base_object import BaseObject
 from cdpyr.typing import Matrix, Vector

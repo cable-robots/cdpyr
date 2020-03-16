@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import AnyStr, Optional, Union
 
 import numpy as np_

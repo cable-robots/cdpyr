@@ -4,8 +4,8 @@ from abc import ABC
 
 from magic_repr import make_repr
 
-from cdpyr.motion.pose import pose as _pose, poselist as _poselist
-from cdpyr.robot import robot as _robot
+from cdpyr.motion.pose import pose as pose_, poselist as pose_list_
+from cdpyr.robot import robot as robot_
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -22,9 +22,9 @@ class PlottableResult(Result):
 
 
 class RobotResult(Result):
-    _robot: _robot.Robot
+    _robot: robot_.Robot
 
-    def __init__(self, robot: _robot.Robot, **kwargs):
+    def __init__(self, robot: robot_.Robot, **kwargs):
         super().__init__(**kwargs)
         self._robot = robot
 
@@ -34,9 +34,9 @@ class RobotResult(Result):
 
 
 class PoseResult(Result):
-    _pose: _pose.Pose
+    _pose: pose_.Pose
 
-    def __init__(self, pose: _pose.Pose, **kwargs):
+    def __init__(self, pose: pose_.Pose, **kwargs):
         super().__init__(**kwargs)
         self._pose = pose
 
@@ -50,9 +50,9 @@ class PoseResult(Result):
 
 
 class PoseListResult(Result):
-    _pose_list: _poselist.PoseList
+    _pose_list: pose_list_.PoseList
 
-    def __init__(self, pose_list: _poselist.PoseList, **kwargs):
+    def __init__(self, pose_list: pose_list_.PoseList, **kwargs):
         super().__init__(**kwargs)
         self._pose_list = pose_list
 

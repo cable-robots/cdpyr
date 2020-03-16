@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Optional
 
 import numpy as np_
@@ -11,8 +12,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Inertia(BaseObject):
-    _linear: np_.ndarray
-    _angular: np_.ndarray
+    _linear: Matrix
+    _angular: Matrix
 
     def __init__(self,
                  linear: Optional[Matrix] = None,

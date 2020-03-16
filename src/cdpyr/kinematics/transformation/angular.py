@@ -1,7 +1,9 @@
+from __future__ import annotations
+
+import re
 from typing import AnyStr, Optional, Union
 
 import numpy as np_
-import re
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import UserList
 
 from magic_repr import make_repr

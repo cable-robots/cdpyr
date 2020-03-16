@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pathlib as pl
 from typing import AnyStr, Iterable, Mapping, Optional
 
