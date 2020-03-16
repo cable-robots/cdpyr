@@ -1,9 +1,9 @@
 from cdpyr.analysis import (
+    criterion,
     force_distribution,
     kinematics,
     structure_matrix,
     workspace,
-    criterion,
 )
 
 __author__ = "Philipp Tempel"
