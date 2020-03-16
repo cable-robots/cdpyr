@@ -1,6 +1,7 @@
 from marshmallow import fields, post_load
 
 from cdpyr.robot import robot as _robot
+from cdpyr.schema.motion.pose import pose as _pose
 from cdpyr.schema.schema import Schema
 from cdpyr.schema.robot import (
     cable as _cable,
@@ -30,6 +31,9 @@ class RobotSchema(Schema):
     kinematic_chains = fields.List(
             fields.Nested(_kinematicchain.KinematicChainSchema),
             required=True
+    )
+    home_pose = fields.Nested(
+            _pose.PoseSchema,
     )
 
     __model__ = _robot.Robot
