@@ -256,7 +256,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
 
     __repr__ = make_repr(
             'centroid',
-            'surface',
+            'surface_area',
             'volume',
             'num_vertices',
             'num_faces',
