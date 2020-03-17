@@ -1,10 +1,9 @@
-from cdpyr.motion import generator, pattern, pose
+from cdpyr.motion import pattern, pose
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 __all__ = [
-        'generator',
         'pattern',
         'pose',
 ]

@@ -7,7 +7,7 @@ from typing import (
 import numpy as np
 import pytest
 
-from cdpyr.motion import generator
+from cdpyr.motion import pose
 from cdpyr.typing import (
     Num,
     Vector
@@ -37,7 +37,7 @@ class PoseGeneratorOrientationTestSuite(object):
                                sequence: AnyStr,
                                steps: Union[Num, Vector]):
         # get a pose generator
-        actual_poses = generator.orientation(start, end, sequence, steps=steps)
+        actual_poses = pose.PoseGenerator.orientation(start, end, sequence, steps=steps)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import numpy as _np
 
 from cdpyr.analysis.workspace.archetype import archetype_orientation as \
     _archetype_orientation
-from cdpyr.motion import generator as _generator
+from cdpyr.motion import pose as _pose
 from cdpyr.typing import Vector
 
 __author__ = "Philipp Tempel"
@@ -30,11 +30,11 @@ class Orientation(_archetype_orientation.ArchetypeOrientation):
         return all
 
     def _poses(self, *args, **kwargs):
-        return _generator.orientation(self.euler_min,
-                                      self.euler_max,
-                                      self.sequence,
-                                      self.position,
-                                      self.steps)
+        return _pose.PoseGenerator.orientation(self.euler_min,
+                                               self.euler_max,
+                                               self.sequence,
+                                               self.position,
+                                               self.steps)
 
 
 __all__ = [
