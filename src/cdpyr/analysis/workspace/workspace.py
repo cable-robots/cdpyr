@@ -3,8 +3,8 @@ from __future__ import annotations
 from abc import abstractmethod
 
 from cdpyr.analysis import evaluator as _evaluator, result as _result
-from cdpyr.analysis.criterion import criterion as _criterion
-from cdpyr.analysis.workspace.archetype import archetype as _archetype
+from cdpyr.analysis.criterion import criterion as _criterion_
+from cdpyr.analysis.workspace.archetype import archetype as _archetype_
 from cdpyr.robot import robot as _robot
 
 __author__ = "Philipp Tempel"
@@ -14,12 +14,12 @@ __license__ = "EUPL v1.2"
 
 
 class Algorithm(_evaluator.RobotEvaluator):
-    _archetype: _archetype.Archetype
-    _criterion: _criterion.Criterion
+    _archetype: _archetype_.Archetype
+    _criterion: _criterion_.Criterion
 
     def __init__(self,
-                 archetype: '_archetype.Archetype',
-                 criterion: '_criterion.Criterion',
+                 archetype: _archetype_.Archetype,
+                 criterion: _criterion_.Criterion,
                  **kwargs):
         super().__init__(**kwargs)
         self._archetype = archetype
@@ -56,15 +56,15 @@ class Algorithm(_evaluator.RobotEvaluator):
 
 class Result(_result.PlottableResult):
     _algorithm: Algorithm
-    _archetype: _archetype.Archetype
-    _criterion: _criterion.Criterion
+    _archetype: _archetype_.Archetype
+    _criterion: _criterion_.Criterion
     _surface_area: float
     _volume: float
 
     def __init__(self,
                  algorithm: Algorithm,
-                 archetype: _archetype.Archetype,
-                 criterion: _criterion.Criterion,
+                 archetype: _archetype_.Archetype,
+                 criterion: _criterion_.Criterion,
                  **kwargs):
         self._algorithm = algorithm
         self._archetype = archetype
