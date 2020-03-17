@@ -1,7 +1,6 @@
 from marshmallow import fields, post_load
 
-import cdpyr.motion.pose.pose
-from cdpyr.motion.pose import pose as _pose, poselist as _pose_list
+from cdpyr.motion import pose as _pose
 from cdpyr.schema import fields as custom_fields
 from cdpyr.schema.schema import Schema
 from cdpyr.schema.kinematics.transformation import (

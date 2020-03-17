@@ -4,8 +4,7 @@ from abc import ABC
 
 from magic_repr import make_repr
 
-import cdpyr.motion.pose.pose
-from cdpyr.motion.pose import pose as pose_
+from cdpyr.motion import pose as pose_
 from cdpyr.robot import robot as robot_
 
 __author__ = "Philipp Tempel"

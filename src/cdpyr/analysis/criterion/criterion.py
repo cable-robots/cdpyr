@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import abstractmethod
 
 from cdpyr.analysis import evaluator as _evaluator
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 
 __author__ = "Philipp Tempel"

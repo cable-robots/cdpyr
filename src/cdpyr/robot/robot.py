@@ -14,7 +14,7 @@ from typing import (
 import numpy as _np
 from magic_repr import make_repr
 
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import (
     cable as _cable,
     frame as _frame,

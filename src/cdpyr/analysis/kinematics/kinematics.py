@@ -8,7 +8,7 @@ import numpy as _np
 import cdpyr.numpy.linalg
 from cdpyr.analysis import result as _result
 from cdpyr.kinematics.transformation import angular as _angular
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 

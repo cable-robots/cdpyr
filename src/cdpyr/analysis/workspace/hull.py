@@ -6,7 +6,7 @@ from typing import Union
 import numpy as _np
 from joblib import Parallel, delayed
 
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.analysis.workspace import workspace as _workspace
 from cdpyr.analysis.workspace.archetype import archetype as _archetype
 from cdpyr.analysis.criterion import criterion as _criterion

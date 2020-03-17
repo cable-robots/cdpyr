@@ -4,7 +4,7 @@ import numpy as _np
 
 from cdpyr.analysis.kinematics import kinematics as _algorithm
 from cdpyr.kinematics.transformation import angular as _angular
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import (
     cable as _cable,
     kinematicchain as _kinematicchain,

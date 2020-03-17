@@ -10,7 +10,7 @@ from cdpyr import validator as _validator
 from cdpyr.analysis import evaluator as _evaluator, result as _result
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.structure_matrix import calculator as _structure_matrix
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
 

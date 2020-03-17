@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from cdpyr.analysis.structure_matrix import structure_matrix as _algorithm
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"

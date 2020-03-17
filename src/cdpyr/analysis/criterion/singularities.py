@@ -3,7 +3,7 @@ from __future__ import annotations
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.structure_matrix import calculator as _structure_matrix
 from cdpyr.analysis.criterion import criterion as _criterion
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 
 __author__ = "Philipp Tempel"

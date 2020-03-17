@@ -5,7 +5,7 @@ from scipy import optimize
 
 from cdpyr.analysis.kinematics import kinematics as _algorithm
 from cdpyr.kinematics.transformation import angular as _angular
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 

@@ -4,7 +4,7 @@ from cdpyr.robot import platform as _platform
 from cdpyr.schema.schema import Schema
 from cdpyr.schema.mechanics import inertia as _inertia
 from cdpyr.schema.motion import pose as _pose
-from cdpyr.schema.motion.pattern import pattern as _motion_pattern
+from cdpyr.schema.motion.pattern import pattern as _pattern
 from cdpyr.schema.robot.anchor import platform_anchor as _platform_anchor
 
 __author__ = "Philipp Tempel"
@@ -27,7 +27,7 @@ class PlatformSchema(Schema):
             missing=None
     )
     motion_pattern = fields.Nested(
-            _motion_pattern.PatternSchema,
+            _pattern.PatternSchema,
             required=True,
     )
     center_of_gravity = fields.Tuple(

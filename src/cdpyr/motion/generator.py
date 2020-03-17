@@ -7,7 +7,7 @@ import numpy as np_
 
 from cdpyr import validator as _validator
 from cdpyr.kinematics.transformation import angular as _angular
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"

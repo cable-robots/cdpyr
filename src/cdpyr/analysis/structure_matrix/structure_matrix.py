@@ -8,7 +8,7 @@ from magic_repr import make_repr
 from scipy.linalg import null_space
 
 from cdpyr.analysis import evaluator as _evaluator, result as _result
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pose as _pose
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"

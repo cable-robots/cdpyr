@@ -9,8 +9,7 @@ from magic_repr import make_repr
 
 from cdpyr.geometry import primitive as _geometry
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.motion import pattern as _motion_pattern
-from cdpyr.motion.pose import pose as _pose
+from cdpyr.motion import pattern as _pattern, pose as _pose
 from cdpyr.robot.anchor import platform_anchor as _platform_anchor
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import (
@@ -29,12 +28,12 @@ class Platform(RobotComponent):
     _center_of_linkage: np_.ndarray
     geometry: _geometry.Primitive
     inertia: _inertia.Inertia
-    motion_pattern: _motion_pattern.Pattern
+    motion_pattern: _pattern.Pattern
     name: str
     pose: _pose.Pose
 
     def __init__(self,
-                 motion_pattern: _motion_pattern.Pattern,
+                 motion_pattern: _pattern.Pattern,
                  anchors: Optional[Union[
                      _platform_anchor.PlatformAnchorList,
                      Sequence[_platform_anchor.PlatformAnchor]
