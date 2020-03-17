@@ -1,6 +1,6 @@
 from marshmallow import fields, post_load
 
-from cdpyr.motion.pattern import pattern as _motion_pattern
+from cdpyr.motion import pattern as _motion_pattern
 from cdpyr.schema.schema import Schema
 
 __author__ = "Philipp Tempel"

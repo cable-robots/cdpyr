@@ -9,7 +9,7 @@ from magic_repr import make_repr
 
 from cdpyr.geometry import primitive as _geometry
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.motion.pattern import pattern as _motion_pattern
+from cdpyr.motion import pattern as _motion_pattern
 from cdpyr.motion.pose import pose as _pose
 from cdpyr.robot.anchor import platform_anchor as _platform_anchor
 from cdpyr.robot.robot_component import RobotComponent
