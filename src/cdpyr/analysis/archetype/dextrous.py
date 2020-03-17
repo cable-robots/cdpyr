@@ -2,21 +2,19 @@ from __future__ import annotations
 
 import numpy as _np
 
-from cdpyr.analysis.workspace.archetype import archetype_orientation as \
-    _archetype_orientation
+from cdpyr.analysis.workspace.archetype import archetype as _archetype
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Maximum(_archetype_orientation.ArchetypeOrientation):
+class Dextrous(_archetype.ArchetypeOrientation):
     """
-    The `Maximum` workspace is given through the poses with
+    The `Dextrous` workspace is given through the poses with
         the positions in R3
     for which
-        one rotation in SO3
-    and the observed criterion is valid.
-    In math terms this reads
+        all rotations in SO3
+    and the observed criterion is valid
     """
 
     def __init__(self, steps: int = 10, **kwargs):
@@ -25,9 +23,9 @@ class Maximum(_archetype_orientation.ArchetypeOrientation):
 
     @property
     def comparator(self):
-        return any
+        return all
 
 
 __all__ = [
-        'Maximum',
+        'Dextrous',
 ]

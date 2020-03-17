@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from cdpyr.analysis.workspace.archetype import archetype_orientation as \
-    _archetype_orientation
+from cdpyr.analysis.workspace.archetype import archetype as _archetype
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class InclusionOrientation(_archetype_orientation.ArchetypeOrientation):
+class InclusionOrientation(_archetype.ArchetypeOrientation):
     """
     The `InclusionOrientation` workspace is given through the poses with
         the positions in R3

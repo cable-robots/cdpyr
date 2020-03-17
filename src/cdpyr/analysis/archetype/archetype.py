@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Union
 
 import numpy as _np
 
-from cdpyr.analysis.workspace.archetype import archetype as _archetype
+from cdpyr.mixin.base_object import BaseObject
 from cdpyr.motion import pose as _pose
 from cdpyr.typing import Num, Vector
 
@@ -13,7 +13,26 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class ArchetypeOrientation(_archetype.Archetype, ABC):
+class Archetype(BaseObject, ABC):
+
+    @property
+    @abstractmethod
+    def comparator(self):
+        raise NotImplementedError()
+
+    @property
+    def name(self):
+        return self.__class__.__name__
+
+    def poses(self, coordinate: Vector):
+        return self._poses(_np.pad(coordinate, (0, 3 - coordinate.size)))
+
+    @abstractmethod
+    def _poses(self, coordinate: Vector):
+        raise NotImplementedError()
+
+
+class ArchetypeOrientation(Archetype, ABC):
     """
     A base class for all workspace archetypes that vary the position and
     create a valid rotation matrix set at every position
@@ -45,5 +64,6 @@ class ArchetypeOrientation(_archetype.Archetype, ABC):
 
 
 __all__ = [
+        'Archetype',
         'ArchetypeOrientation',
 ]

@@ -20,8 +20,8 @@ class Translation(_archetype.Archetype):
     and the observed criterion is valid
     """
 
-    angular: Angular
-    dcm: Matrix
+    _angular: Angular
+    _dcm: Matrix
 
     def __init__(self, dcm: Matrix = None, angular: Angular = None, **kwargs):
         super().__init__(**kwargs)
@@ -31,15 +31,23 @@ class Translation(_archetype.Archetype):
         elif dcm is None and angular is None:
             angular = Angular(_np.eye(3))
 
-        self.dcm = angular.dcm
-        self.angular = angular
+        self._dcm = angular.dcm
+        self._angular = angular
+
+    @property
+    def angular(self):
+        return self.angular
 
     @property
     def comparator(self):
         return all
 
+    @property
+    def dcm(self):
+        return self.dcm
+
     def _poses(self, coordinate: Vector):
-        return [_pose.Pose(coordinate, self.dcm)]
+        return [_pose.Pose(coordinate, self._dcm)]
 
 
 __all__ = [
