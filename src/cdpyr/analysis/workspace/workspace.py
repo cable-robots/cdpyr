@@ -94,6 +94,10 @@ class Result(_result.PlottableResult):
     def volume(self):
         raise NotImplementedError()
 
+    @abstractmethod
+    def to_poselist(self):
+        raise NotImplementedError()
+
 
 __all__ = [
         'Algorithm',

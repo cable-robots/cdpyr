@@ -149,6 +149,11 @@ class Result(_polyhedron.Polyhedron, _workspace.Result):
         _polyhedron.Polyhedron.__init__(self, vertices, faces)
         _workspace.Result.__init__(self, algorithm, archetype, criterion)
 
+    def to_poselist(self):
+        return _pose.PoseList((p
+                               for c in self._vertices
+                               for p in self._archetype.poses(c)))
+
 
 __all__ = [
         'Algorithm',

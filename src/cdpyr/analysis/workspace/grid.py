@@ -190,6 +190,11 @@ class Result(_workspace.Result, abc.Collection):
 
         return self._outside
 
+    def to_poselist(self):
+        return _pose.PoseList((p
+                               for c in self._coordinates
+                               for p in self._archetype.poses(c)))
+
     @property
     def surface_area(self):
         if self._surface is None:
