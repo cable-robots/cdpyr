@@ -3,7 +3,7 @@ from typing import Union
 
 import pytest
 
-from cdpyr.motion.pose import generator
+from cdpyr.motion import generator
 from cdpyr.typing import (
     Num,
     Vector

@@ -2,7 +2,7 @@ import pytest
 
 from cdpyr import robot, visualization
 from cdpyr.analysis.kinematics.standard import Standard
-from cdpyr.motion.pose import pose
+from cdpyr.motion import pose
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"

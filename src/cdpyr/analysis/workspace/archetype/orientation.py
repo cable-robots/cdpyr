@@ -4,7 +4,7 @@ import numpy as _np
 
 from cdpyr.analysis.workspace.archetype import archetype_orientation as \
     _archetype_orientation
-from cdpyr.motion.pose import generator as _generator
+from cdpyr.motion import generator as _generator
 from cdpyr.typing import Vector
 
 __author__ = "Philipp Tempel"

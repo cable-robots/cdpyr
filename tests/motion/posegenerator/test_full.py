@@ -9,10 +9,8 @@ import numpy as np
 import pytest
 
 from cdpyr.kinematics.transformation import angular
-from cdpyr.motion.pose import (
-    generator,
-    pose
-)
+from cdpyr.motion import generator
+from cdpyr.motion import pose
 from cdpyr.typing import (
     Num,
     Vector
