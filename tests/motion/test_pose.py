@@ -1,12 +1,12 @@
 import numpy as np
 import pytest
 
+from cdpyr.kinematics.transformation import Angular, Linear
 from cdpyr.motion.pose import Pose
-from cdpyr.typing import Vector, Matrix
+from cdpyr.typing import Matrix, Vector
 
-from cdpyr.kinematics.transformation import Linear, Angular
 
-class PoseTestSuite(object):
+class MotionPoseTestSuite(object):
 
     def test_pose_transformation_instances(self, empty_pose: Pose):
         assert isinstance(empty_pose.linear, Linear)
@@ -210,7 +210,7 @@ class PoseTestSuite(object):
     def test_get_state(self, rand_pose_3d: Pose):
         state_is = rand_pose_3d.state
         state_expected = np.hstack(
-            (rand_pose_3d.linear.position, rand_pose_3d.angular.quaternion))
+                (rand_pose_3d.linear.position, rand_pose_3d.angular.quaternion))
 
         assert state_is == pytest.approx(state_expected)
 

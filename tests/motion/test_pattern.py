@@ -3,7 +3,7 @@ import pytest
 import cdpyr
 
 
-class MotionpatternTestSuite(object):
+class MotionPatternTestSuite(object):
 
     def test_motion_pattern_1t(self):
         mp = cdpyr.motion.pattern.MP_1T
