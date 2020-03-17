@@ -1,6 +1,6 @@
 from marshmallow import fields, post_load
 
-from cdpyr.motion import pattern as _motion_pattern
+from cdpyr.motion import pattern as _pattern
 from cdpyr.schema.schema import Schema
 
 __author__ = "Philipp Tempel"
@@ -19,7 +19,7 @@ class PatternSchema(Schema):
             default=0
     )
 
-    __model__ = _motion_pattern.Pattern
+    __model__ = _pattern.Pattern
 
     @post_load
     def make_object(self, data, **kwargs):

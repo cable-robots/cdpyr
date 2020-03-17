@@ -1,5 +1,6 @@
 from marshmallow import fields, post_load
 
+import cdpyr.motion.pose.pose
 from cdpyr.motion.pose import pose as _pose, poselist as _pose_list
 from cdpyr.schema import fields as custom_fields
 from cdpyr.schema.schema import Schema
@@ -30,8 +31,8 @@ class PoseSchema(Schema):
     @post_load(pass_many=True)
     def make_object(self, data, many, **kwargs):
         if many:
-            return _pose_list.PoseList(
-                    (self.make_object(each, False) for each in data))
+            return _pose.PoseList((self.make_object(each, False)
+                                   for each in data))
         else:
             return self.__model__(**data)
 

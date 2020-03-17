@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import AnyStr, Mapping, Union, IO
+from typing import AnyStr, IO
 
 from cdpyr import motion as _motion, robot as _robot, schema as _schema
 from cdpyr.helpers import full_classname as fcn
@@ -94,8 +94,7 @@ class Stream(BaseObject):
                     many=True,
                     partial=False
             ),
-            fcn(
-                    _motion.pattern.Pattern):
+            fcn(_motion.pattern.Pattern):
                                             _schema.motion.pattern.PatternSchema(
                                                     many=False,
                                                     partial=False

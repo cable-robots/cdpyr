@@ -4,7 +4,8 @@ from abc import ABC
 
 from magic_repr import make_repr
 
-from cdpyr.motion.pose import pose as pose_, poselist as pose_list_
+import cdpyr.motion.pose.pose
+from cdpyr.motion.pose import pose as pose_
 from cdpyr.robot import robot as robot_
 
 __author__ = "Philipp Tempel"
@@ -50,9 +51,9 @@ class PoseResult(Result):
 
 
 class PoseListResult(Result):
-    _pose_list: pose_list_.PoseList
+    _pose_list: pose_.PoseList
 
-    def __init__(self, pose_list: pose_list_.PoseList, **kwargs):
+    def __init__(self, pose_list: pose_.PoseList, **kwargs):
         super().__init__(**kwargs)
         self._pose_list = pose_list
 
@@ -67,8 +68,8 @@ class PoseListResult(Result):
 
 __all__ = [
         'PlottableResult',
-        'PoseListResult',
         'PoseResult',
+        'PoseListResult',
         'Result',
         'RobotResult',
 ]
