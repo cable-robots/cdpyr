@@ -6,7 +6,7 @@ import pytest
 from cdpyr import (
     visualization
 )
-from cdpyr.analysis import workspace
+from cdpyr.analysis import workspace, archetype, criterion
 from cdpyr.analysis.kinematics import Standard
 from cdpyr.robot import sample as robots
 from cdpyr.robot import Robot
@@ -24,8 +24,8 @@ class PlotWorkspaceTestSuite(object):
                 visualization.engine.plotly.Linear()),
              rob,
              workspace.grid.Algorithm(
-                 workspace.archetype.Translation(dcm=np.eye(3)),
-                 cdpyr.analysis.pose.criterion.CableLength(
+                 archetype.Translation(dcm=np.eye(3)),
+                 criterion.CableLength(
                      Standard(),
                      np.asarray([0.5, 1.5]) * np.sqrt(1)),
                  [-1.0],
@@ -54,8 +54,8 @@ class PlotWorkspaceTestSuite(object):
                 visualization.engine.plotly.Planar()),
              rob,
              workspace.grid.Algorithm(
-                 workspace.archetype.Translation(dcm=np.eye(3)),
-                 cdpyr.analysis.pose.criterion.CableLength(
+                 archetype.Translation(dcm=np.eye(3)),
+                 criterion.CableLength(
                      Standard(),
                      np.asarray([0.5, 1.5]) * np.sqrt(2)),
                  [-1.0, -1.0],
@@ -86,8 +86,8 @@ class PlotWorkspaceTestSuite(object):
                     visualization.engine.plotly.Spatial()),
                   rob,
                   workspace.grid.Algorithm(
-                      workspace.archetype.Translation(dcm=np.eye(3)),
-                      cdpyr.analysis.pose.criterion.CableLength(
+                          archetype.Translation(dcm=np.eye(3)),
+                      criterion.CableLength(
                           Standard(),
                           np.asarray([0.5, 1.5]) * np.sqrt(3)),
                       [-1.0, -1.0, -1.0],
@@ -98,8 +98,8 @@ class PlotWorkspaceTestSuite(object):
                     visualization.engine.plotly.Spatial()),
                   rob,
                   workspace.hull.Algorithm(
-                      workspace.archetype.Translation(dcm=np.eye(3)),
-                      cdpyr.analysis.pose.criterion.CableLength(
+                          archetype.Translation(dcm=np.eye(3)),
+                      criterion.CableLength(
                           Standard(),
                           np.asarray([0.5, 1.5]) * np.sqrt(3)),
                       [0.0, 0.0, 0.0],

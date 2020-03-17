@@ -7,7 +7,8 @@ from cdpyr.analysis import (
 )
 from cdpyr.analysis.criterion import Singularities, CableLength, WrenchFeasible
 from cdpyr.analysis.kinematics.kinematics import Algorithm as Kinematics
-from cdpyr.analysis.workspace.archetype.archetype import Archetype
+from cdpyr.analysis import archetype
+from cdpyr.analysis.archetype.archetype import Archetype
 from cdpyr.robot import Robot
 
 
@@ -17,7 +18,7 @@ class HullWorkspace3TTestSuite(object):
             ['archetype', 'parallel'],
             (
                     (
-                            workspace.archetype.Translation(np.eye(3)),
+                            archetype.Translation(np.eye(3)),
                             parallel,
                     ) for parallel in (False, True)
             )
@@ -45,7 +46,7 @@ class HullWorkspace3TTestSuite(object):
             ['archetype', 'parallel'],
             (
                     (
-                            workspace.archetype.Translation(np.eye(3)),
+                            archetype.Translation(np.eye(3)),
                             parallel,
                     ) for parallel in (False, True)
             )
@@ -72,7 +73,7 @@ class HullWorkspace3TTestSuite(object):
             ['archetype', 'parallel'],
             (
                     (
-                            workspace.archetype.Translation(np.eye(3)),
+                            archetype.Translation(np.eye(3)),
                             parallel,
                     ) for parallel in (False, True)
             )

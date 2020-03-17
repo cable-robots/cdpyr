@@ -1,11 +1,11 @@
-from cdpyr.analysis.workspace.archetype.dextrous import Dextrous
-from cdpyr.analysis.workspace.archetype.inclusion_orientation import \
+from cdpyr.analysis.archetype.dextrous import Dextrous
+from cdpyr.analysis.archetype.inclusion_orientation import \
     InclusionOrientation
-from cdpyr.analysis.workspace.archetype.maximum import Maximum
-from cdpyr.analysis.workspace.archetype.orientation import Orientation
-from cdpyr.analysis.workspace.archetype.total_orientation import \
+from cdpyr.analysis.archetype.maximum import Maximum
+from cdpyr.analysis.archetype.orientation import Orientation
+from cdpyr.analysis.archetype.total_orientation import \
     TotalOrientation
-from cdpyr.analysis.workspace.archetype.translation import Translation
+from cdpyr.analysis.archetype.translation import Translation
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"

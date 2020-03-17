@@ -4,7 +4,7 @@ from abc import abstractmethod
 
 from cdpyr.analysis import evaluator as _evaluator, result as _result
 from cdpyr.analysis.criterion import criterion as _criterion_
-from cdpyr.analysis.workspace.archetype import archetype as _archetype_
+from cdpyr.analysis.archetype import archetype as _archetype_
 from cdpyr.robot import robot as _robot
 
 __author__ = "Philipp Tempel"

@@ -8,7 +8,7 @@ from joblib import Parallel, delayed
 
 from cdpyr.motion import pose as _pose
 from cdpyr.analysis.workspace import workspace as _workspace
-from cdpyr.analysis.workspace.archetype import archetype as _archetype
+from cdpyr.analysis.archetype import archetype as _archetype
 from cdpyr.analysis.criterion import criterion as _criterion
 from cdpyr.geometry import polyhedron as _polyhedron
 from cdpyr.robot import robot as _robot

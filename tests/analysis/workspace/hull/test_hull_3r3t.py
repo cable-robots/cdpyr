@@ -9,7 +9,8 @@ from cdpyr.analysis import (
 )
 from cdpyr.analysis.criterion import CableLength, Singularities, WrenchFeasible
 from cdpyr.analysis.kinematics.kinematics import Algorithm as Kinematics
-from cdpyr.analysis.workspace.archetype.archetype import Archetype
+from cdpyr.analysis.archetype.archetype import Archetype
+from cdpyr.analysis import archetype
 from cdpyr.kinematics.transformation.angular import Angular
 from cdpyr.robot import Robot
 
@@ -20,7 +21,7 @@ class HullWorkspace3R3TTestSuite(object):
             ['archetype', 'parallel'],
             (
                     (
-                            workspace.archetype.Translation(dcm),
+                            archetype.Translation(dcm),
                             parallel,
                     ) for dcm, parallel in
             itertools.product((np.eye(3), Angular.random().dcm), (False, True))
@@ -49,7 +50,7 @@ class HullWorkspace3R3TTestSuite(object):
             ['archetype', 'parallel'],
             (
                     (
-                            workspace.archetype.Translation(dcm),
+                            archetype.Translation(dcm),
                             parallel,
                     ) for dcm, parallel in
             itertools.product((np.eye(3), Angular.random().dcm), (False, True))
@@ -77,7 +78,7 @@ class HullWorkspace3R3TTestSuite(object):
             ['archetype', 'parallel'],
             (
                     (
-                            workspace.archetype.Translation(dcm),
+                            archetype.Translation(dcm),
                             parallel,
                     ) for dcm, parallel in
             itertools.product((np.eye(3), Angular.random().dcm), (False, True))

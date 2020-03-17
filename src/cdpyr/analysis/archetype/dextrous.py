@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as _np
 
-from cdpyr.analysis.workspace.archetype import archetype as _archetype
+from cdpyr.analysis.archetype import archetype as _archetype
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"

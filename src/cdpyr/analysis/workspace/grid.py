@@ -11,7 +11,7 @@ from scipy.spatial import Delaunay as _Delaunay
 
 from cdpyr.motion import pose as _pose
 from cdpyr.analysis.workspace import workspace as _workspace
-from cdpyr.analysis.workspace.archetype import archetype as _archetype
+from cdpyr.analysis.archetype import archetype as _archetype
 from cdpyr.analysis.criterion import criterion as _criterion
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector

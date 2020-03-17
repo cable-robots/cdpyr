@@ -10,7 +10,8 @@ from cdpyr.analysis import (
 )
 from cdpyr.analysis.criterion import CableLength, Singularities, WrenchFeasible
 from cdpyr.analysis.kinematics.kinematics import Algorithm as Kinematics
-from cdpyr.analysis.workspace.archetype.archetype import Archetype
+from cdpyr.analysis.archetype.archetype import Archetype
+from cdpyr.analysis import archetype
 from cdpyr.kinematics.transformation import Angular
 from cdpyr.robot import Robot
 from cdpyr.typing import (
@@ -25,7 +26,7 @@ class GridWorkspace2R3TTestSuite(object):
             ['archetype', 'parallel', 'lower_bound', 'upper_bound', 'steps'],
             (
                     (
-                            workspace.archetype.Translation(dcm),
+                            archetype.Translation(dcm),
                             parallel,
                             [-1.0, -1.0, -1.0],
                             [1.0, 1.0, 1.0],
@@ -62,7 +63,7 @@ class GridWorkspace2R3TTestSuite(object):
             ['archetype', 'parallel', 'lower_bound', 'upper_bound', 'steps'],
             (
                     (
-                            workspace.archetype.Translation(dcm),
+                            archetype.Translation(dcm),
                             parallel,
                             [-1.0, -1.0, -1.0],
                             [1.0, 1.0, 1.0],
@@ -98,7 +99,7 @@ class GridWorkspace2R3TTestSuite(object):
             ['archetype', 'parallel', 'lower_bound', 'upper_bound', 'steps'],
             (
                     (
-                            workspace.archetype.Translation(dcm),
+                            archetype.Translation(dcm),
                             parallel,
                             [-1.0, -1.0, -1.0],
                             [1.0, 1.0, 1.0],
