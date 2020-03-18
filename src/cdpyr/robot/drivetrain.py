@@ -11,7 +11,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class DriveTrain(RobotComponent):
+class Drivetrain(RobotComponent):
     gearbox: _gearbox.Gearbox
     drum: _drum.Drum
     motor: _motor.Motor
@@ -51,5 +51,5 @@ class DriveTrain(RobotComponent):
 
 
 __all__ = [
-        'DriveTrain',
+        'Drivetrain',
 ]

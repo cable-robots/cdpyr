@@ -4,6 +4,7 @@ import itertools
 import pytest
 
 import cdpyr
+import cdpyr.motion.pattern
 import cdpyr.stream.parser.parser
 
 __author__ = "Philipp Tempel"
@@ -54,7 +55,8 @@ class StreamParserTestSuite(object):
                          rand_pose_3r3t: cdpyr.motion.pose.Pose,
                          parser: cdpyr.stream.parser.parser.Parser,
                          tmpdir: pl.Path):
-        orig: cdpyr.motion.pose.Pose = rand_pose_3r3t
+        orig: cdpyr.motion.pose.Pose
+        orig = rand_pose_3r3t
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -87,8 +89,8 @@ class StreamParserTestSuite(object):
                                    robot_3r3t: cdpyr.robot.Robot,
                                    parser: cdpyr.stream.parser.parser.Parser,
                                    tmpdir: pl.Path):
-        orig: cdpyr.motion.pattern.Pattern = robot_3r3t.platforms[
-            0].motion_pattern
+        orig: cdpyr.motion.pattern.Pattern
+        orig = robot_3r3t.platforms[0].motion_pattern
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -121,7 +123,8 @@ class StreamParserTestSuite(object):
                           robot_3r3t: cdpyr.robot.Robot,
                           parser: cdpyr.stream.parser.parser.Parser,
                           tmpdir: pl.Path):
-        orig: cdpyr.robot.Cable = robot_3r3t.cables[0]
+        orig: cdpyr.robot.Cable
+        orig = robot_3r3t.cables[0]
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -153,7 +156,8 @@ class StreamParserTestSuite(object):
                            robot_3r3t: cdpyr.robot.Robot,
                            parser: cdpyr.stream.parser.parser.Parser,
                            tmpdir: pl.Path):
-        orig: cdpyr.robot.CableList = robot_3r3t.cables
+        orig: cdpyr.robot.CableList
+        orig = robot_3r3t.cables
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -185,7 +189,8 @@ class StreamParserTestSuite(object):
                                     robot_3r3t: cdpyr.robot.Robot,
                                     parser: cdpyr.stream.parser.parser.Parser,
                                     tmpdir: pl.Path):
-        orig: cdpyr.robot.PlatformAnchor = robot_3r3t.platforms[0].anchors[0]
+        orig: cdpyr.robot.platform.PlatformAnchor
+        orig = robot_3r3t.platforms[0].anchors[0]
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -199,10 +204,10 @@ class StreamParserTestSuite(object):
 
         # decode the file
         with open(tmpfile, 'r') as f:
-            resto: cdpyr.robot.PlatformAnchor = stream.loads(
+            resto: cdpyr.robot.platform.PlatformAnchor = stream.loads(
                     ''.join(f.readlines()))
 
-        assert isinstance(resto, cdpyr.robot.PlatformAnchor)
+        assert isinstance(resto, cdpyr.robot.platform.PlatformAnchor)
         assert resto == orig
 
     @pytest.mark.parametrize(
@@ -218,7 +223,8 @@ class StreamParserTestSuite(object):
                                      robot_3r3t: cdpyr.robot.Robot,
                                      parser: cdpyr.stream.parser.parser.Parser,
                                      tmpdir: pl.Path):
-        orig: cdpyr.robot.PlatformAnchorList = robot_3r3t.platforms[0].anchors
+        orig: cdpyr.robot.platform.PlatformAnchorList
+        orig = robot_3r3t.platforms[0].anchors
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -232,10 +238,10 @@ class StreamParserTestSuite(object):
 
         # decode the file
         with open(tmpfile, 'r') as f:
-            resto: cdpyr.robot.PlatformAnchorList = stream.loads(
+            resto: cdpyr.robot.platform.PlatformAnchorList = stream.loads(
                     ''.join(f.readlines()))
 
-        assert isinstance(resto, cdpyr.robot.PlatformAnchorList)
+        assert isinstance(resto, cdpyr.robot.platform.PlatformAnchorList)
         assert resto == orig
 
     @pytest.mark.parametrize(
@@ -251,7 +257,8 @@ class StreamParserTestSuite(object):
                                  robot_3r3t: cdpyr.robot.Robot,
                                  parser: cdpyr.stream.parser.parser.Parser,
                                  tmpdir: pl.Path):
-        orig: cdpyr.robot.FrameAnchor = robot_3r3t.frame.anchors[0]
+        orig: cdpyr.robot.frame.FrameAnchor
+        orig = robot_3r3t.frame.anchors[0]
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -265,10 +272,10 @@ class StreamParserTestSuite(object):
 
         # decode the file
         with open(tmpfile, 'r') as f:
-            resto: cdpyr.robot.FrameAnchor = stream.loads(
+            resto: cdpyr.robot.frame.FrameAnchor = stream.loads(
                     ''.join(f.readlines()))
 
-        assert isinstance(resto, cdpyr.robot.FrameAnchor)
+        assert isinstance(resto, cdpyr.robot.frame.FrameAnchor)
         assert resto == orig
 
     @pytest.mark.parametrize(
@@ -284,7 +291,8 @@ class StreamParserTestSuite(object):
                                   robot_3r3t: cdpyr.robot.Robot,
                                   parser: cdpyr.stream.parser.parser.Parser,
                                   tmpdir: pl.Path):
-        orig: cdpyr.robot.FrameAnchorList = robot_3r3t.frame.anchors
+        orig: cdpyr.robot.frame.FrameAnchorList
+        orig = robot_3r3t.frame.anchors
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -298,10 +306,10 @@ class StreamParserTestSuite(object):
 
         # decode the file
         with open(tmpfile, 'r') as f:
-            resto: cdpyr.robot.FrameAnchorList = stream.loads(
+            resto: cdpyr.robot.frame.FrameAnchorList = stream.loads(
                     ''.join(f.readlines()))
 
-        assert isinstance(resto, cdpyr.robot.FrameAnchorList)
+        assert isinstance(resto, cdpyr.robot.frame.FrameAnchorList)
         assert resto == orig
 
     @pytest.mark.parametrize(
@@ -317,7 +325,8 @@ class StreamParserTestSuite(object):
                           robot_3r3t: cdpyr.robot.Robot,
                           parser: cdpyr.stream.parser.parser.Parser,
                           tmpdir: pl.Path):
-        orig: cdpyr.robot.Frame = robot_3r3t.frame
+        orig: cdpyr.robot.Frame
+        orig = robot_3r3t.frame
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -349,7 +358,8 @@ class StreamParserTestSuite(object):
                              robot_3r3t: cdpyr.robot.Robot,
                              parser: cdpyr.stream.parser.parser.Parser,
                              tmpdir: pl.Path):
-        orig: cdpyr.robot.Platform = robot_3r3t.platforms[0]
+        orig: cdpyr.robot.Platform
+        orig = robot_3r3t.platforms[0]
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -381,7 +391,8 @@ class StreamParserTestSuite(object):
                               robot_3r3t: cdpyr.robot.Robot,
                               parser: cdpyr.stream.parser.parser.Parser,
                               tmpdir: pl.Path):
-        orig: cdpyr.robot.PlatformList = robot_3r3t.platforms
+        orig: cdpyr.robot.PlatformList
+        orig = robot_3r3t.platforms
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -414,7 +425,8 @@ class StreamParserTestSuite(object):
                                     robot_3r3t: cdpyr.robot.Robot,
                                     parser: cdpyr.stream.parser.parser.Parser,
                                     tmpdir: pl.Path):
-        orig: cdpyr.robot.KinematicChain = robot_3r3t.kinematic_chains[0]
+        orig: cdpyr.robot.KinematicChain
+        orig = robot_3r3t.kinematic_chains[0]
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -447,7 +459,8 @@ class StreamParserTestSuite(object):
                                      robot_3r3t: cdpyr.robot.Robot,
                                      parser: cdpyr.stream.parser.parser.Parser,
                                      tmpdir: pl.Path):
-        orig: cdpyr.robot.KinematicChainList = robot_3r3t.kinematic_chains
+        orig: cdpyr.robot.KinematicChainList
+        orig = robot_3r3t.kinematic_chains
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)
@@ -481,7 +494,8 @@ class StreamParserTestSuite(object):
                           robot_3r3t: cdpyr.robot.Robot,
                           parser: cdpyr.stream.parser.parser.Parser,
                           tmpdir: pl.Path):
-        orig: cdpyr.robot.Robot = robot_3r3t
+        orig: cdpyr.robot.Robot
+        orig = robot_3r3t
 
         # create a JSON stream object
         stream = cdpyr.stream.Stream(parser)

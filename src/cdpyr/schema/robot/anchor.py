@@ -1,6 +1,6 @@
 from marshmallow import fields, post_load
 
-from cdpyr.robot.anchor import anchor as _anchor
+from cdpyr.robot import anchor as _anchor
 from cdpyr.schema.schema import Schema
 
 __author__ = "Philipp Tempel"
@@ -12,22 +12,18 @@ class AnchorSchema(Schema):
             (fields.Float(), fields.Float(), fields.Float()),
             required=True,
     )
-    dcm = fields.Tuple(
-            (
-                    fields.Tuple(
-                            (fields.Float(), fields.Float(), fields.Float())
-                    ),
-                    fields.Tuple(
-                            (fields.Float(), fields.Float(), fields.Float())
-                    ),
-                    fields.Tuple(
-                            (fields.Float(), fields.Float(), fields.Float())
-                    )
+    dcm = fields.Tuple((
+            fields.Tuple(
+                    (fields.Float(), fields.Float(), fields.Float())
             ),
+            fields.Tuple(
+                    (fields.Float(), fields.Float(), fields.Float())
+            ),
+            fields.Tuple(
+                    (fields.Float(), fields.Float(), fields.Float())
+            )),
             missing=None
     )
-
-    __model__ = _anchor.Anchor
 
     @post_load(pass_many=True)
     def make_object(self, data, many, **kwargs):
@@ -39,5 +35,4 @@ class AnchorSchema(Schema):
 
 
 __all__ = [
-        'AnchorSchema',
 ]

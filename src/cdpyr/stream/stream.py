@@ -4,8 +4,8 @@ from collections import OrderedDict
 from typing import AnyStr, IO
 
 from cdpyr import motion as _motion, robot as _robot, schema as _schema
-from cdpyr.helpers import full_classname as fcn
 from cdpyr.base import CdpyrObject
+from cdpyr.helpers import full_classname as fcn
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser as _parser
 
@@ -18,87 +18,86 @@ class Stream(CdpyrObject):
 
     # define the mapping of object type and marshmallow schemes
     _RESOLVER = {
-            fcn(_robot.Cable):              _schema.robot.CableSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.CableList):          _schema.robot.CableSchema(
-                    many=True,
-                    partial=False
-            ),
-            fcn(_robot.Drum):               _schema.robot.DrumSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.DriveTrain):         _schema.robot.DriveTrainSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.Frame):              _schema.robot.FrameSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.FrameAnchor):        _schema.robot.FrameAnchorSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.FrameAnchorList):    _schema.robot.FrameAnchorSchema(
-                    many=True,
-                    partial=False
-            ),
-            fcn(_robot.Gearbox):            _schema.robot.GearboxSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.KinematicChain):     _schema.robot.KinematicChainSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.KinematicChainList): _schema.robot.KinematicChainSchema(
-                    many=True,
-                    partial=False
-            ),
-            fcn(_robot.Motor):              _schema.robot.MotorSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.Platform):           _schema.robot.PlatformSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.PlatformList):       _schema.robot.PlatformSchema(
-                    many=True,
-                    partial=False
-            ),
-            fcn(_robot.PlatformAnchor):     _schema.robot.PlatformAnchorSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.PlatformAnchorList): _schema.robot.PlatformAnchorSchema(
-                    many=True,
-                    partial=False
-            ),
-            fcn(_robot.Pulley):             _schema.robot.PulleySchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_robot.Robot):              _schema.robot.RobotSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_motion.pose.Pose):         _schema.motion.pose.PoseSchema(
-                    many=False,
-                    partial=False
-            ),
-            fcn(_motion.pose.PoseList):     _schema.motion.pose.PoseSchema(
-                    many=True,
-                    partial=False
-            ),
+            fcn(_robot.Cable):
+                _schema.robot.CableSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.CableList):
+                _schema.robot.CableSchema(
+                        many=True,
+                        partial=False),
+            fcn(_robot.Drum):
+                _schema.robot.DrumSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.Drivetrain):
+                _schema.robot.DriveTrainSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.Frame):
+                _schema.robot.FrameSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.FrameAnchor):
+                _schema.robot.FrameAnchorSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.FrameAnchorList):
+                _schema.robot.FrameAnchorSchema(
+                        many=True,
+                        partial=False),
+            fcn(_robot.Gearbox):
+                _schema.robot.GearboxSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.KinematicChain):
+                _schema.robot.KinematicChainSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.KinematicChainList):
+                _schema.robot.KinematicChainSchema(
+                        many=True,
+                        partial=False),
+            fcn(_robot.Motor):
+                _schema.robot.MotorSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.Platform):
+                _schema.robot.PlatformSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.PlatformList):
+                _schema.robot.PlatformSchema(
+                        many=True,
+                        partial=False),
+            fcn(_robot.PlatformAnchor):
+                _schema.robot.PlatformAnchorSchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.PlatformAnchorList):
+                _schema.robot.PlatformAnchorSchema(
+                        many=True,
+                        partial=False),
+            fcn(_robot.Pulley):
+                _schema.robot.PulleySchema(
+                        many=False,
+                        partial=False),
+            fcn(_robot.Robot):
+                _schema.robot.RobotSchema(
+                        many=False,
+                        partial=False),
+            fcn(_motion.pose.Pose):
+                _schema.motion.pose.PoseSchema(
+                        many=False,
+                        partial=False),
+            fcn(_motion.pose.PoseList):
+                _schema.motion.pose.PoseSchema(
+                        many=True,
+                        partial=False),
             fcn(_motion.pattern.Pattern):
-                                            _schema.motion.pattern.PatternSchema(
-                                                    many=False,
-                                                    partial=False
-                                            ),
+                _schema.motion.pattern.PatternSchema(
+                        many=False,
+                        partial=False),
     }
 
     def __init__(self, parser: _parser.Parser, **kwargs):
@@ -111,7 +110,8 @@ class Stream(CdpyrObject):
         Parameters
         ----------
         f : IO
-            A file-like object that supports :code:`write()` and :code:`writelines()`.
+            A file-like object that supports :code:`write()` and
+            :code:`writelines()`.
         o : object
             Any object type or robot component object
         args
@@ -158,7 +158,8 @@ class Stream(CdpyrObject):
         Parameters
         ----------
         f : IO
-            A file-like object that supports :code:`read()` and :code:`readlines()`.
+            A file-like object that supports :code:`read()` and
+            :code:`readlines()`.
         args
         kwargs
 

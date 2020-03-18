@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import Mapping, Sequence, Union
-
-import numpy as _np
 import warnings
 from abc import ABC
+from typing import Sequence, Union
+
+import numpy as _np
 from plotly import graph_objects as go
 from scipy.spatial import ConvexHull as _ConvexHull, Delaunay as _Delaunay
 from scipy.spatial.qhull import QhullError
@@ -16,7 +16,6 @@ from cdpyr.helpers import update_recursive
 from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
 from cdpyr.robot import robot as _robot
-from cdpyr.robot.anchor import platform_anchor as _platform_anchor
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
 
@@ -346,7 +345,7 @@ class Plotly(_engine.Engine, ABC):
             )
 
     def render_drivetrain(self,
-                          drivetrain: _robot.DriveTrain,
+                          drivetrain: _robot.Drivetrain,
                           *args,
                           **kwargs):
         pass
@@ -676,8 +675,7 @@ class Plotly(_engine.Engine, ABC):
                                           )
 
     def render_platform_anchor(self,
-                               anchor:
-                               _platform_anchor.PlatformAnchor,
+                               anchor: _robot.PlatformAnchor,
                                *args,
                                transformation: _HomogenousTransformation = None,
                                **kwargs):

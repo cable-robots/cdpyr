@@ -8,9 +8,14 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr.geometry import primitive as _geometry
+from cdpyr.kinematics.transformation import (
+    linear as _linear,
+    angular as _angular
+)
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.motion import pattern as _pattern, pose as _pose
-from cdpyr.robot.anchor import platform_anchor as _platform_anchor
+from cdpyr.robot import anchor as _anchor
+from cdpyr.robot.anchor import Anchor, AnchorList
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import (
     Matrix,
@@ -23,7 +28,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Platform(RobotComponent):
-    _anchors: _platform_anchor.PlatformAnchorList
+    _anchors: PlatformAnchorList
     _center_of_gravity: np_.ndarray
     _center_of_linkage: np_.ndarray
     geometry: _geometry.Primitive
@@ -35,8 +40,8 @@ class Platform(RobotComponent):
     def __init__(self,
                  motion_pattern: _pattern.Pattern,
                  anchors: Optional[Union[
-                     _platform_anchor.PlatformAnchorList,
-                     Sequence[_platform_anchor.PlatformAnchor]
+                     PlatformAnchorList,
+                     Sequence[PlatformAnchor]
                  ]] = None,
                  inertia: Optional[_inertia.Inertia] = None,
                  center_of_gravity: Optional[Vector] = None,
@@ -62,10 +67,10 @@ class Platform(RobotComponent):
     @anchors.setter
     def anchors(self,
                 anchors: Union[
-                    _platform_anchor.PlatformAnchorList,
-                    Sequence[_platform_anchor.PlatformAnchor]
+                    PlatformAnchorList,
+                    Sequence[PlatformAnchor]
                 ]):
-        self._anchors = _platform_anchor.PlatformAnchorList(anchors)
+        self._anchors = PlatformAnchorList(anchors)
 
     @anchors.deleter
     def anchors(self):
@@ -272,3 +277,27 @@ __all__ = [
         'Platform',
         'PlatformList',
 ]
+
+
+class PlatformAnchor(Anchor):
+
+    def __init__(self,
+                 position: Optional[Vector] = None,
+                 dcm: Optional[Matrix] = None,
+                 linear: Optional[_linear.Linear] = None,
+                 angular: Optional[_angular.Angular] = None,
+                 **kwargs):
+        super().__init__(position=position,
+                         dcm=dcm,
+                         linear=linear,
+                         angular=angular,
+                         **kwargs)
+
+    __repr__ = make_repr(
+            'position',
+            'dcm'
+    )
+
+
+class PlatformAnchorList(AnchorList, RobotComponent):
+    data: List[PlatformAnchor]

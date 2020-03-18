@@ -1,18 +1,18 @@
 from __future__ import annotations
 
 import itertools
+from abc import ABC, abstractmethod
 from typing import AnyStr, Callable, Dict, Union
 
 import numpy as _np
-from abc import ABC, abstractmethod
 
 from cdpyr import geometry as _geometry, robot as _robot
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.result import PlottableResult
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
+from cdpyr.base import CdpyrObject
 from cdpyr.geometry.primitive import Primitive as GeometryPrimitive
 from cdpyr.helpers import full_classname as fcn
-from cdpyr.base import CdpyrObject
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Matrix, Vector
 
@@ -49,22 +49,22 @@ class Engine(CdpyrObject, ABC):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._RESOLVER = {
-                fcn(_robot.Cable):         self.render_cable,
-                fcn(_robot.CableList):     self.render_cable_list,
-                fcn(_robot.DriveTrain):    self.render_drivetrain,
-                fcn(_robot.DriveTrain):    self.render_drum,
-                fcn(_robot.Frame):         self.render_frame,
-                fcn(_robot.FrameAnchor):   self.render_frame_anchor,
+                fcn(_robot.Cable):                  self.render_cable,
+                fcn(_robot.CableList):              self.render_cable_list,
+                fcn(_robot.Drivetrain):             self.render_drivetrain,
+                fcn(_robot.Drivetrain):             self.render_drum,
+                fcn(_robot.Frame):                  self.render_frame,
+                fcn(_robot.FrameAnchor): self.render_frame_anchor,
                 fcn(_robot.FrameAnchorList):
-                                           self.render_frame_anchor_list,
-                fcn(_robot.Gearbox):       self.render_gearbox,
-                fcn(_geometry.Cuboid):     self.render_cuboid,
-                fcn(_geometry.Cylinder):   self.render_cylinder,
-                fcn(_geometry.Ellipsoid):  self.render_ellipsoid,
-                fcn(_geometry.Polyhedron): self.render_polyhedron,
-                fcn(_geometry.Tube):       self.render_tube,
-                fcn(_kinematics.Result):   self.render_kinematics,
-                fcn(_robot.Robot):         self.render_motor,
+                                                    self.render_frame_anchor_list,
+                fcn(_robot.Gearbox):                self.render_gearbox,
+                fcn(_geometry.Cuboid):              self.render_cuboid,
+                fcn(_geometry.Cylinder):            self.render_cylinder,
+                fcn(_geometry.Ellipsoid):           self.render_ellipsoid,
+                fcn(_geometry.Polyhedron):          self.render_polyhedron,
+                fcn(_geometry.Tube):                self.render_tube,
+                fcn(_kinematics.Result):            self.render_kinematics,
+                fcn(_robot.Robot):                  self.render_motor,
                 fcn(_robot.Platform):      self.render_platform,
                 fcn(_robot.PlatformList):  self.render_platform_list,
                 fcn(_robot.PlatformAnchor):
@@ -136,7 +136,7 @@ class Engine(CdpyrObject, ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_drivetrain(self, drivetrain: _robot.DriveTrain, *args,
+    def render_drivetrain(self, drivetrain: _robot.Drivetrain, *args,
                           **kwargs):
         raise NotImplementedError()
 
@@ -155,13 +155,16 @@ class Engine(CdpyrObject, ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_frame_anchor(self, anchor: _robot.FrameAnchor, *args,
+    def render_frame_anchor(self,
+                            anchor: _robot.FrameAnchor,
+                            *args,
                             **kwargs):
         raise NotImplementedError()
 
     def render_frame_anchor_list(self,
                                  anchor_list: _robot.FrameAnchorList,
-                                 *args, **kwargs):
+                                 *args,
+                                 **kwargs):
         for anchor in anchor_list:
             self.render(anchor, *args, **kwargs)
 
@@ -183,13 +186,13 @@ class Engine(CdpyrObject, ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def render_platform_anchor(self, anchor: _robot.PlatformAnchor,
+    def render_platform_anchor(self,
+                               anchor: _robot.PlatformAnchor,
                                *args, **kwargs):
         raise NotImplementedError()
 
     def render_platform_anchor_list(self,
-                                    anchor_list:
-                                    _robot.PlatformAnchorList,
+                                    anchor_list: _robot.PlatformAnchorList,
                                     *args, **kwargs):
         for anchor in anchor_list:
             self.render(anchor, *args, **kwargs)

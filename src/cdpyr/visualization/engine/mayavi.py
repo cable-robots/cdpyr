@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import warnings
 from abc import ABC
-from typing import Sequence, Union
 
 import numpy as _np
+from mayavi import mlab as _mlab
 from scipy.spatial import Delaunay as _Delaunay
 from scipy.spatial.qhull import QhullError
 
@@ -14,11 +14,8 @@ from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.helpers import update_recursive
 from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
-from cdpyr.robot.anchor import platform_anchor as _platform_anchor
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
-
-from mayavi import mlab as _mlab
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -190,7 +187,7 @@ class Mayavi(_engine.Engine, ABC):
             )
 
     def render_drivetrain(self,
-                          drivetrain: _robot.DriveTrain,
+                          drivetrain: _robot.Drivetrain,
                           *args,
                           **kwargs):
         pass
@@ -417,8 +414,7 @@ class Mayavi(_engine.Engine, ABC):
                                           name=f'platform {pidx}')
 
     def render_platform_anchor(self,
-                               anchor:
-                               _platform_anchor.PlatformAnchor,
+                               anchor: _robot.PlatformAnchor,
                                *args,
                                transformation: _HomogenousTransformation = None,
                                **kwargs):

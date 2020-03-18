@@ -194,6 +194,4 @@ class AnchorList(UserList, RobotComponent):
 
 
 __all__ = [
-        'Anchor',
-        'AnchorList',
 ]
