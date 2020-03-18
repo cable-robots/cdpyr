@@ -125,25 +125,35 @@ class Robot(RobotComponent):
             chains = list(chains)
             # loop over each chain
             for idx, chain in enumerate(chains):
-                # deal with chain as dictionary
-                if isinstance(chain, Mapping):
-                    cable = chain['cable']
-                    frame_anchor = chain['frame_anchor']
-                    platform_anchor = chain['platform_anchor']
-                    try:
-                        platform = chain['platform']
-                    except KeyError:
-                        platform = 0
+                # skip if it is already a `KinematicChain` object
+                if isinstance(chain, _kinematicchain.KinematicChain):
+                    pass
+                # deal with dictionaries or tuples
                 else:
-                    try:
-                        frame_anchor, platform, platform_anchor, cable = chain
-                    except ValueError:
-                        frame_anchor, platform_anchor, cable = chain
-                        platform = 0
-                chains[idx] = _kinematicchain.KinematicChain(frame_anchor,
-                                                             platform,
-                                                             platform_anchor,
-                                                             cable)
+                    # deal with chain as dictionary
+                    if isinstance(chain, Mapping):
+                        cable = chain['cable']
+                        frame_anchor = chain['frame_anchor']
+                        platform_anchor = chain['platform_anchor']
+                        try:
+                            platform = chain['platform']
+                        except KeyError:
+                            platform = 0
+                    # deal with chain as tuple
+                    else:
+                        try:
+                            frame_anchor, platform, platform_anchor, cable = \
+                                chain
+                        except ValueError:
+                            frame_anchor, platform_anchor, cable = chain
+                            platform = 0
+
+                    chain = _kinematicchain.KinematicChain(frame_anchor,
+                                                           platform,
+                                                           platform_anchor,
+                                                           cable)
+
+                chains[idx] = chain
 
         # set final value
         self._chains = _kinematicchain.KinematicChainList(chains)
