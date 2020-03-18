@@ -7,11 +7,11 @@ from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import (
     cable as _cable,
-    kinematicchain as _kinematicchain,
-    pulley as _pulley,
-    robot as _robot,
-    platform as _platform,
     frame as _frame,
+    kinematicchain as _kinematicchain,
+    platform as _platform,
+    pulley as _pulley,
+    robot as _robot
 )
 from cdpyr.typing import Vector
 

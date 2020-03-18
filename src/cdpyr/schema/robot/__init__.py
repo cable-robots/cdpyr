@@ -17,10 +17,12 @@ __all__ = [
         'DrumSchema',
         'DriveTrainSchema',
         'FrameSchema',
+        'FrameAnchorSchema',
         'GearboxSchema',
         'KinematicChainSchema',
         'MotorSchema',
         'PlatformSchema',
+        'PlatformAnchorSchema',
         'PulleySchema',
         'RobotSchema',
 ]

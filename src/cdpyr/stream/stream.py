@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import OrderedDict
 from typing import AnyStr, IO
 
+import cdpyr.schema.robot.anchor
 from cdpyr import motion as _motion, robot as _robot, schema as _schema
 from cdpyr.base import CdpyrObject
 from cdpyr.helpers import full_classname as fcn

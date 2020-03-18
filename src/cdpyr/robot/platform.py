@@ -9,12 +9,11 @@ from magic_repr import make_repr
 
 from cdpyr.geometry import primitive as _geometry
 from cdpyr.kinematics.transformation import (
-    linear as _linear,
-    angular as _angular
+    angular as _angular,
+    linear as _linear
 )
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.motion import pattern as _pattern, pose as _pose
-from cdpyr.robot import anchor as _anchor
 from cdpyr.robot.anchor import Anchor, AnchorList
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import (

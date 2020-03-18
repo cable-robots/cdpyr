@@ -1,19 +1,15 @@
 from __future__ import annotations
 
-from typing import Optional, Sequence, Union, List
+from typing import List, Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
-from cdpyr.kinematics.transformation import (
-    linear as _linear,
-    angular as _angular
-)
 
-from cdpyr.robot import (
-    anchor as _anchor,
-    pulley as _pulley,
-    drivetrain as _drivetrain
+from cdpyr.kinematics.transformation import (
+    angular as _angular,
+    linear as _linear
 )
+from cdpyr.robot import (drivetrain as _drivetrain, pulley as _pulley)
 from cdpyr.robot.anchor import Anchor, AnchorList
 from cdpyr.robot.robot_component import RobotComponent
 
