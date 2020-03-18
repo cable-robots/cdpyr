@@ -86,6 +86,7 @@ setup(
                 'visualization': [
                         'plotly',
                         'pyqt5',
+                        'vtk',
                         'mayavi',
                 ],
         },
