@@ -6,14 +6,11 @@ from cdpyr.analysis.kinematics import kinematics as _algorithm
 from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import (
+    anchor as _anchor,
     cable as _cable,
     kinematicchain as _kinematicchain,
     pulley as _pulley,
     robot as _robot,
-)
-from cdpyr.robot.anchor import (
-    frame_anchor as _frame_anchor,
-    platform_anchor as _platform_anchor,
 )
 from cdpyr.typing import Vector
 
@@ -44,8 +41,8 @@ class Pulley(_algorithm.Algorithm):
         platform_position, platform_dcm = pose.position
 
         # type hinting
-        frame_anchor: _frame_anchor.FrameAnchor
-        platform_anchor: _platform_anchor.PlatformAnchor
+        frame_anchor: _anchor.FrameAnchor
+        platform_anchor: _anchor.PlatformAnchor
         pulley: _pulley.Pulley
         cable: _cable.Cable
         chain: _kinematicchain.KinematicChain

@@ -3,9 +3,10 @@ from __future__ import annotations
 from collections import OrderedDict
 from typing import AnyStr, IO
 
+import cdpyr.schema.robot.anchor
 from cdpyr import motion as _motion, robot as _robot, schema as _schema
-from cdpyr.helpers import full_classname as fcn
 from cdpyr.base import CdpyrObject
+from cdpyr.helpers import full_classname as fcn
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser as _parser
 
@@ -30,7 +31,7 @@ class Stream(CdpyrObject):
                     many=False,
                     partial=False
             ),
-            fcn(_robot.DriveTrain):         _schema.robot.DriveTrainSchema(
+            fcn(_robot.Drivetrain):         _schema.robot.DriveTrainSchema(
                     many=False,
                     partial=False
             ),
@@ -38,11 +39,12 @@ class Stream(CdpyrObject):
                     many=False,
                     partial=False
             ),
-            fcn(_robot.FrameAnchor):        _schema.robot.FrameAnchorSchema(
+            fcn(_robot.FrameAnchor):        cdpyr.schema.robot.anchor
+                                             .FrameAnchorSchema(
                     many=False,
                     partial=False
             ),
-            fcn(_robot.FrameAnchorList):    _schema.robot.FrameAnchorSchema(
+            fcn(_robot.FrameAnchorList):    cdpyr.schema.robot.anchor.FrameAnchorSchema(
                     many=True,
                     partial=False
             ),
@@ -70,11 +72,12 @@ class Stream(CdpyrObject):
                     many=True,
                     partial=False
             ),
-            fcn(_robot.PlatformAnchor):     _schema.robot.PlatformAnchorSchema(
+            fcn(_robot.PlatformAnchor):     cdpyr.schema.robot.anchor
+                                                .PlatformAnchorSchema(
                     many=False,
                     partial=False
             ),
-            fcn(_robot.PlatformAnchorList): _schema.robot.PlatformAnchorSchema(
+            fcn(_robot.PlatformAnchorList): cdpyr.schema.robot.anchor.PlatformAnchorSchema(
                     many=True,
                     partial=False
             ),
@@ -111,7 +114,8 @@ class Stream(CdpyrObject):
         Parameters
         ----------
         f : IO
-            A file-like object that supports :code:`write()` and :code:`writelines()`.
+            A file-like object that supports :code:`write()` and
+            :code:`writelines()`.
         o : object
             Any object type or robot component object
         args
@@ -158,7 +162,8 @@ class Stream(CdpyrObject):
         Parameters
         ----------
         f : IO
-            A file-like object that supports :code:`read()` and :code:`readlines()`.
+            A file-like object that supports :code:`read()` and
+            :code:`readlines()`.
         args
         kwargs
 

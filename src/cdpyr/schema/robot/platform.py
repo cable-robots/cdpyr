@@ -1,11 +1,11 @@
 from marshmallow import fields, post_load
 
 from cdpyr.robot import platform as _platform
-from cdpyr.schema.schema import Schema
 from cdpyr.schema.mechanics import inertia as _inertia
 from cdpyr.schema.motion import pose as _pose
 from cdpyr.schema.motion.pattern import pattern as _pattern
-from cdpyr.schema.robot.anchor import platform_anchor as _platform_anchor
+from cdpyr.schema.robot import anchor as _anchor
+from cdpyr.schema.schema import Schema
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -17,7 +17,7 @@ class PlatformSchema(Schema):
             missing='default',
     )
     anchors = fields.Nested(
-            _platform_anchor.PlatformAnchorSchema(
+            _anchor.PlatformAnchorSchema(
                     many=True,
             ),
             required=True,

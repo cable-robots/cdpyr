@@ -10,6 +10,7 @@ from cdpyr.kinematics.transformation import (
     angular as _angular,
     linear as _linear
 )
+from cdpyr.robot import drivetrain as _drivetrain, pulley as _pulley
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Matrix, Vector
 
@@ -193,7 +194,80 @@ class AnchorList(UserList, RobotComponent):
         return hash(tuple(self.data))
 
 
+class FrameAnchor(Anchor):
+    pulley: _pulley.Pulley
+    drivetrain: _drivetrain.Drivetrain
+
+    def __init__(self,
+                 position: Optional[Vector] = None,
+                 dcm: Optional[Matrix] = None,
+                 linear: Optional[_linear.Linear] = None,
+                 angular: Optional[_angular.Angular] = None,
+                 pulley: Optional[_pulley.Pulley] = None,
+                 drivetrain: Optional[_drivetrain.Drivetrain] = None,
+                 **kwargs):
+        super().__init__(position=position,
+                         dcm=dcm,
+                         linear=linear,
+                         angular=angular, **kwargs)
+        self.pulley = pulley or None
+        self.drivetrain = drivetrain or None
+
+    def __eq__(self, other):
+        return super().__eq__(other) \
+               and self.pulley == other.pulley \
+               and self.drivetrain == other.drivetrain
+
+    def __hash__(self):
+        return hash((self.angular, self.drivetrain, self.linear, self.pulley))
+
+    __repr__ = make_repr(
+            'position',
+            'dcm',
+            'pulley',
+            'drivetrain',
+    )
+
+
+class FrameAnchorList(AnchorList, RobotComponent):
+    data: List[FrameAnchor]
+
+    @property
+    def drivetrain(self):
+        return (anchor.drivetrain for anchor in self.data)
+
+    @property
+    def pulley(self):
+        return (anchor.pulley for anchor in self.data)
+
+
+class PlatformAnchor(Anchor):
+
+    def __init__(self,
+                 position: Optional[Vector] = None,
+                 dcm: Optional[Matrix] = None,
+                 linear: Optional[_linear.Linear] = None,
+                 angular: Optional[_angular.Angular] = None,
+                 **kwargs):
+        super().__init__(position=position,
+                         dcm=dcm,
+                         linear=linear,
+                         angular=angular,
+                         **kwargs)
+
+    __repr__ = make_repr(
+            'position',
+            'dcm'
+    )
+
+
+class PlatformAnchorList(AnchorList, RobotComponent):
+    data: List[PlatformAnchor]
+
+
 __all__ = [
-        'Anchor',
-        'AnchorList',
+        'FrameAnchor',
+        'FrameAnchorList',
+        'PlatformAnchor',
+        'PlatformAnchorList',
 ]

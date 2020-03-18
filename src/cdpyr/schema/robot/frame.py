@@ -2,7 +2,7 @@ from marshmallow import fields, post_load
 
 from cdpyr.robot import frame as _frame
 from cdpyr.schema.schema import Schema
-from cdpyr.schema.robot.anchor import frame_anchor as _frame_anchor
+from cdpyr.schema.robot import anchor as _anchor
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -10,7 +10,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 class FrameSchema(Schema):
     anchors = fields.Nested(
-            _frame_anchor.FrameAnchorSchema(
+            _anchor.FrameAnchorSchema(
                     many=True
             ),
             required=True,

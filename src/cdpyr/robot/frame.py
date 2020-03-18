@@ -5,7 +5,7 @@ from typing import Optional, Sequence, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.robot.anchor import frame_anchor as _frame_anchor
+from cdpyr.robot import anchor as _anchor
 from cdpyr.robot.robot_component import RobotComponent
 
 __author__ = "Philipp Tempel"
@@ -13,12 +13,12 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Frame(RobotComponent):
-    _anchors: _frame_anchor.FrameAnchorList
+    _anchors: _anchor.FrameAnchorList
 
     def __init__(self,
                  anchors: Optional[
-                     Union[_frame_anchor.FrameAnchorList, Sequence[
-                         _frame_anchor.FrameAnchor]]] = None,
+                     Union[_anchor.FrameAnchorList, Sequence[
+                         _anchor.FrameAnchor]]] = None,
                  **kwargs):
         """ A general cable robot frame object.
 
@@ -36,10 +36,10 @@ class Frame(RobotComponent):
         return self._anchors
 
     @anchors.setter
-    def anchors(self, anchors: Union[
-        _frame_anchor.FrameAnchorList, Sequence[
-            _frame_anchor.FrameAnchor]]):
-        self._anchors = _frame_anchor.FrameAnchorList(anchors)
+    def anchors(self,
+                anchors: Union[_anchor.FrameAnchorList,
+                               Sequence[_anchor.FrameAnchor]]):
+        self._anchors = _anchor.FrameAnchorList(anchors)
 
     @anchors.deleter
     def anchors(self):

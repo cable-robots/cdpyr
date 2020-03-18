@@ -6,15 +6,13 @@
 #  as a method...
 
 from cdpyr.robot.anchor import (
-    Anchor,
-    AnchorList,
     FrameAnchor,
     FrameAnchorList,
     PlatformAnchor,
-    PlatformAnchorList
+    PlatformAnchorList,
 )
 from cdpyr.robot.cable import Cable, CableList
-from cdpyr.robot.drivetrain import DriveTrain
+from cdpyr.robot.drivetrain import Drivetrain
 from cdpyr.robot.drum import Drum
 from cdpyr.robot.frame import Frame
 from cdpyr.robot.gearbox import Gearbox
@@ -28,22 +26,20 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 __all__ = [
-        'Anchor',
-        'AnchorList',
-        'FrameAnchor',
-        'FrameAnchorList',
-        'PlatformAnchor',
-        'PlatformAnchorList',
         'Cable',
         'CableList',
         'Drum',
-        'DriveTrain',
+        'Drivetrain',
         'Frame',
+        'FrameAnchor',
+        'FrameAnchorList',
         'Gearbox',
         'KinematicChain',
         'KinematicChainList',
         'Motor',
         'Platform',
+        'PlatformAnchor',
+        'PlatformAnchorList',
         'PlatformList',
         'Pulley',
         'Robot',
