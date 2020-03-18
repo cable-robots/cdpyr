@@ -12,7 +12,7 @@ from cdpyr.analysis.result import PlottableResult
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.geometry.primitive import Primitive as GeometryPrimitive
 from cdpyr.helpers import full_classname as fcn
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.base import CdpyrObject
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Matrix, Vector
 
@@ -20,7 +20,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Engine(ABC, BaseObject):
+class Engine(CdpyrObject, ABC):
     AXES_NAMES = ('x', 'y', 'z')
     COORDINATE_DIRECTIONS = (
             (1.0, 0.0, 0.0),

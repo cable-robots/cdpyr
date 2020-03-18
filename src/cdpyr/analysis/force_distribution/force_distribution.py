@@ -153,7 +153,7 @@ class Result(_result.PoseResult):
                  forces: Vector,
                  wrench: Vector,
                  **kwargs):
-        super().__init__(pose, **kwargs)
+        super().__init__(pose=pose, **kwargs)
         self._algorithm = algorithm
         self._forces = forces
         self._wrench = wrench

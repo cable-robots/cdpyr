@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, Sequence
+from typing import List, Optional
 
 from magic_repr import make_repr
 
@@ -29,7 +29,10 @@ class FrameAnchor(_anchor.Anchor):
                  pulley: Optional[_pulley.Pulley] = None,
                  drivetrain: Optional[_drivetrain.DriveTrain] = None,
                  **kwargs):
-        super().__init__(position, dcm, linear, angular, **kwargs)
+        super().__init__(position=position,
+                         dcm=dcm,
+                         linear=linear,
+                         angular=angular, **kwargs)
         self.pulley = pulley or None
         self.drivetrain = drivetrain or None
 
@@ -50,7 +53,7 @@ class FrameAnchor(_anchor.Anchor):
 
 
 class FrameAnchorList(_anchor.AnchorList, RobotComponent):
-    data: Sequence[FrameAnchor]
+    data: List[FrameAnchor]
 
     @property
     def drivetrain(self):
@@ -59,18 +62,6 @@ class FrameAnchorList(_anchor.AnchorList, RobotComponent):
     @property
     def pulley(self):
         return (anchor.pulley for anchor in self.data)
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            raise TypeError()
-
-        if self is other:
-            return True
-
-        return all(this == that for this, that in zip(self, other))
-
-    def __hash__(self):
-        return hash(tuple(self.data))
 
 
 __all__ = [

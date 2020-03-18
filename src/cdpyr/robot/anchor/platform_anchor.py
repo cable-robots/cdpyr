@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, Sequence
+from typing import Optional, List
 
 from magic_repr import make_repr
 
@@ -24,7 +24,11 @@ class PlatformAnchor(_anchor.Anchor):
                  linear: Optional[_linear.Linear] = None,
                  angular: Optional[_angular.Angular] = None,
                  **kwargs):
-        super().__init__(position, dcm, linear, angular, **kwargs)
+        super().__init__(position=position,
+                         dcm=dcm,
+                         linear=linear,
+                         angular=angular,
+                         **kwargs)
 
     __repr__ = make_repr(
             'position',
@@ -33,7 +37,7 @@ class PlatformAnchor(_anchor.Anchor):
 
 
 class PlatformAnchorList(_anchor.AnchorList, RobotComponent):
-    data: Sequence[PlatformAnchor]
+    data: List[PlatformAnchor]
 
 
 __all__ = [

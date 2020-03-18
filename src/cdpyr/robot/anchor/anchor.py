@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import UserList
-from typing import Optional, Sequence
+from typing import List, Optional
 
 import numpy as np_
 from magic_repr import make_repr
@@ -147,7 +147,7 @@ class Anchor(RobotComponent):
 
 
 class AnchorList(UserList, RobotComponent):
-    data: Sequence[Anchor]
+    data: List[Anchor]
 
     @property
     def angular(self):

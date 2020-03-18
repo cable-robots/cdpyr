@@ -5,14 +5,14 @@ from typing import AnyStr, Optional, Union
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.base import CdpyrObject
 from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Pattern(BaseObject):
+class Pattern(CdpyrObject):
     _dof_translation: int
     _dof_rotation: int
     _human: AnyStr

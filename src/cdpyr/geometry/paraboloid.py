@@ -25,7 +25,7 @@ class Paraboloid(primitive.Primitive):
 
     def __init__(self, radius: Union[Num, Vector], height: Num,
                  center: Vector = None, **kwargs):
-        super().__init__(center, **kwargs)
+        super().__init__(center=center, **kwargs)
         self.height = height
         self.radius = radius
 

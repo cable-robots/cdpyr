@@ -33,7 +33,8 @@ class Algorithm(_workspace.Algorithm):
                  upper_bound: Union[Num, Vector] = None,
                  steps: Union[Num, Vector] = None,
                  **kwargs):
-        super().__init__(archetype, criterion, **kwargs)
+        super().__init__(archetype=archetype,
+                         criterion=criterion, **kwargs)
         self.lower_bound = lower_bound if lower_bound is not None else [0]
         self.upper_bound = upper_bound if upper_bound is not None else [0]
         self.steps = steps if steps is not None else [1]
@@ -155,7 +156,10 @@ class Result(_workspace.Result, abc.Collection):
                  coordinates: Matrix,
                  flags: Vector,
                  **kwargs):
-        super().__init__(algorithm, archetype, criterion, **kwargs)
+        super().__init__(algorithm=algorithm,
+                         archetype=archetype,
+                         criterion=criterion,
+                         **kwargs)
         self._coordinates = _np.asarray(coordinates)
         self._flags = _np.asarray(flags)
         self._inside = None

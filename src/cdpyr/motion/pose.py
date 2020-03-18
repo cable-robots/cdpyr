@@ -8,19 +8,20 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
+from cdpyr.base import Result as BaseResult
 from cdpyr.kinematics.transformation import (
     angular as _angular,
     homogenous as _homogenous,
     linear as _linear
 )
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.base import CdpyrObject
 from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Pose(BaseObject):
+class Pose(CdpyrObject):
     linear: _linear.Linear
     angular: _angular.Angular
     _time: Num
@@ -439,7 +440,7 @@ class PoseGenerator(object):
                 itertools.product(*(range(k + 1) for k in iterations)))
 
 
-class PoseList(UserList, BaseObject):
+class PoseList(UserList, CdpyrObject):
     data: Sequence[Pose]
 
     @property
@@ -494,11 +495,27 @@ class PoseList(UserList, BaseObject):
     )
 
 
+class PoseResult(BaseResult):
+
+    def __init__(self, pose: Pose, *args, **kwargs):
+        super().__init__(**kwargs)
+        self._pose = pose
+
+
+class PoseListResult(BaseResult):
+
+    def __init__(self, pose_list: PoseList, *args, **kwargs):
+        super().__init__(**kwargs)
+        self._pose_list = pose_list
+
+
 ZeroPose = Pose([0.0, 0.0, 0.0],
                 [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
 
 __all__ = [
         'Pose',
         'PoseList',
+        'PoseListResult',
+        'PoseResult',
         'ZeroPose',
 ]

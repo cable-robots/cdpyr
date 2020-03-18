@@ -19,7 +19,11 @@ class Dextrous(_archetype.ArchetypeOrientation):
 
     def __init__(self, steps: int = 10, **kwargs):
         euler = _np.pi * _np.asarray([1.0, 1.0, 1.0])
-        super().__init__(-euler, +euler, 'xyz', steps, **kwargs)
+        super().__init__(euler_min=-euler,
+                         euler_max=+euler,
+                         sequence='xyz',
+                         steps=steps,
+                         **kwargs)
 
     @property
     def comparator(self):

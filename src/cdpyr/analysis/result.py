@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 from abc import ABC
-
 from magic_repr import make_repr
 
-from cdpyr.motion import pose as pose_
-from cdpyr.robot import robot as robot_
+from cdpyr.motion.pose import Pose, PoseList
+from cdpyr.robot.robot import Robot
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -18,13 +17,15 @@ class Result(ABC):
 
 
 class PlottableResult(Result):
-    pass
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
 
 
 class RobotResult(Result):
-    _robot: robot_.Robot
+    _robot: Robot
 
-    def __init__(self, robot: robot_.Robot, **kwargs):
+    def __init__(self, robot: Robot, **kwargs):
         super().__init__(**kwargs)
         self._robot = robot
 
@@ -34,9 +35,9 @@ class RobotResult(Result):
 
 
 class PoseResult(Result):
-    _pose: pose_.Pose
+    _pose: Pose
 
-    def __init__(self, pose: pose_.Pose, **kwargs):
+    def __init__(self, pose: Pose, **kwargs):
         super().__init__(**kwargs)
         self._pose = pose
 
@@ -50,9 +51,9 @@ class PoseResult(Result):
 
 
 class PoseListResult(Result):
-    _pose_list: pose_.PoseList
+    _pose_list: PoseList
 
-    def __init__(self, pose_list: pose_.PoseList, **kwargs):
+    def __init__(self, pose_list: PoseList, **kwargs):
         super().__init__(**kwargs)
         self._pose_list = pose_list
 

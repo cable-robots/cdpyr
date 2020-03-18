@@ -38,7 +38,7 @@ class Result(_result.PoseResult):
 
     def __init__(self, pose: _pose.Pose, matrix: Union[Matrix, Result],
                  **kwargs):
-        super().__init__(pose, **kwargs)
+        super().__init__(pose=pose, **kwargs)
         self._matrix = matrix.matrix if isinstance(matrix, Result) else matrix
         self._kernel = None
         self._pinv = None

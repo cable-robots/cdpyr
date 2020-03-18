@@ -30,7 +30,7 @@ class Ellipsoid(_geometry.Primitive):
 
     def __init__(self, radius: Union[Num, Vector], center: Vector = None,
                  axis: Num = 0, **kwargs):
-        super().__init__(center, **kwargs)
+        super().__init__(center=center, **kwargs)
         self.radius = radius
         self.axis = axis or 0
 

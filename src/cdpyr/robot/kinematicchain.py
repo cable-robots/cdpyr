@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import UserList
-from typing import Sequence, Union
+from typing import Sequence, Union, List
 
 from magic_repr import make_repr
 
@@ -60,7 +60,7 @@ class KinematicChain(RobotComponent):
 
 
 class KinematicChainList(UserList, RobotComponent):
-    data: Sequence[KinematicChain]
+    data: List[KinematicChain]
 
     @property
     def frame_anchor(self):

@@ -33,7 +33,7 @@ class Tube(Primitive):
                  height: float,
                  center: Vector = None,
                  **kwargs):
-        super().__init__(center, **kwargs)
+        super().__init__(center=center, **kwargs)
         self._inner = _cylinder.Cylinder(inner_radius, height)
         self._outer = _cylinder.Cylinder(outer_radius, height)
 

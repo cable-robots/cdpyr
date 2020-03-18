@@ -36,7 +36,9 @@ class Algorithm(_workspace.Algorithm):
                  maximum_halvings: int = None,
                  depth: int = None,
                  **kwargs):
-        super().__init__(archetype, criterion, **kwargs)
+        super().__init__(archetype=archetype,
+                         criterion=criterion,
+                         **kwargs)
         self.center = center if center is not None else [0]
         self.maximum_iterations = maximum_iterations or 12
         self.maximum_halvings = maximum_halvings or 6
@@ -150,8 +152,12 @@ class Result(_polyhedron.Polyhedron, _workspace.Result):
                  vertices: Matrix,
                  faces: Matrix,
                  **kwargs):
-        _polyhedron.Polyhedron.__init__(self, vertices, faces)
-        _workspace.Result.__init__(self, algorithm, archetype, criterion)
+        _polyhedron.Polyhedron.__init__(self,
+                                        vertices=vertices, faces=faces)
+        _workspace.Result.__init__(self,
+                                   algorithm=algorithm,
+                                   archetype=archetype,
+                                   criterion=criterion)
 
     def to_poselist(self):
         return _pose.PoseList((p

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import itertools
 from collections import UserList
-from typing import Optional, Sequence, Union
+from typing import List, Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
@@ -210,7 +210,7 @@ class Platform(RobotComponent):
 
 
 class PlatformList(UserList, RobotComponent):
-    data: Sequence[Platform]
+    data: List[Platform]
 
     @property
     def all_combinations(self):

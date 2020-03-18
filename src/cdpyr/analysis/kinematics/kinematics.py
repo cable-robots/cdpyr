@@ -118,7 +118,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
                  wrap: Vector = None,
                  leave_points: Matrix = None,
                  **kwargs):
-        super().__init__(pose, robot=robot, **kwargs)
+        super().__init__(pose=pose, robot=robot, **kwargs)
         self._algorithm = algorithm
         lengths = _np.asarray(lengths)
         self._lengths = lengths if lengths.ndim == 2 else lengths[None, :]

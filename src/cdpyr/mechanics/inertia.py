@@ -4,14 +4,14 @@ from typing import Optional
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.base import CdpyrObject
 from cdpyr.typing import Matrix, Num
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Inertia(BaseObject):
+class Inertia(CdpyrObject):
     _linear: Matrix
     _angular: Matrix
 

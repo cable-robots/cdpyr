@@ -55,7 +55,7 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
 
     def __init__(self, vertices: Matrix, faces: Matrix, center: Vector = None,
                  **kwargs):
-        super().__init__(center, **kwargs)
+        super().__init__(center=center, **kwargs)
         self._vertices = _np.asarray(vertices)
         self._faces = _np.asarray(faces, dtype=_np.uint)
         self._surface_areas = None
