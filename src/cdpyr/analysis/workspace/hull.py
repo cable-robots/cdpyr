@@ -4,13 +4,14 @@ import multiprocessing
 from typing import Union
 
 import numpy as _np
-from joblib import Parallel, delayed
+from joblib import delayed, Parallel
 
-from cdpyr.motion import pose as _pose
-from cdpyr.analysis.workspace import workspace as _workspace
 from cdpyr.analysis.archetype import archetype as _archetype
 from cdpyr.analysis.criterion import criterion as _criterion
+from cdpyr.analysis.workspace import workspace as _workspace
+from cdpyr.exceptions import InvalidPoseException
 from cdpyr.geometry import polyhedron as _polyhedron
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
 
@@ -107,9 +108,9 @@ class Algorithm(_workspace.Algorithm):
         coordinate = self._center
 
         # quicker look ups
-        _archetype = self._archetype
-        _comparator = self._archetype.comparator
-        _evaluator = self._criterion.evaluate
+        archetype_ = self._archetype
+        comparator_ = self._archetype.comparator
+        criterion_ = self._criterion.evaluate
 
         # as long as the step size isn't too small
         while step_length >= min_step and kiter <= max_iters:
@@ -117,21 +118,24 @@ class Algorithm(_workspace.Algorithm):
             # the current step length
             coordinate_trial = coordinate + step_length * direction
 
-            # all poses are valid, so store the trial coordinate as
-            # successful coordinate for the next loop
-            if _comparator(_evaluator(robot, pose) for pose in
-                           _archetype.poses(coordinate_trial)):
-                # advance the pose
-                coordinate = coordinate_trial
-            # any pose is invalid at this coordinate, then we will reduce the
-            # step size
-            else:
-                # halven step size
+            try:
+                # evaluate criterion for every pose and compare the results
+                # to be true according to the archetype
+                if comparator_(criterion_(robot, pose)
+                               for pose in archetype_.poses(coordinate_trial)):
+                    coordinate = coordinate_trial
+                # the archetype has not be validating all poses successfully,
+                # so reduce step size
+                else:
+                    step_length /= 2
+            # failure to determine a valid pose due to e.g., invalid force
+            # distribution, so we will reduce the step size
+            except InvalidPoseException:
                 step_length /= 2
-
             # increase iteration counter so that we don't continue along a
             # search direction too far
-            kiter += 1
+            finally:
+                kiter += 1
 
         # append the last coordinate as the vertex
         return coordinate

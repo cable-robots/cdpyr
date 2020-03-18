@@ -7,6 +7,7 @@ from cdpyr.analysis.criterion import criterion as _criterion
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Vector
+from cdpyr.exceptions import InvalidPoseException
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -51,11 +52,17 @@ class CableLength(_criterion.Criterion):
         try:
             kinematics = self.kinematics.backward(robot, pose)
         except Exception:
-            return False
-        else:
-            return (_np.logical_and(self._limits[0, :] <= kinematics.lengths,
-                                    kinematics.lengths <= self._limits[1,
-                                                          :])).all()
+            raise InvalidPoseException(f'Error solving the inverse kinematics at pose {pose}')
+
+        lengths = kinematics.lengths
+        limits = self._limits
+
+        if any(_np.logical_or(lengths < limits[0,:], limits[1,:] < lengths)):
+            idx_violated = _np.unique(_np.hstack(
+                    (_np.where(lengths < limits[0,:])[0],
+                     _np.where(limits[1,:] < lengths)[0])))
+
+            raise InvalidPoseException(f'cable lengths violated for cables {idx_violated}')
 
 
 __all__ = [

@@ -5,6 +5,7 @@ from cdpyr.analysis.structure_matrix import calculator as _structure_matrix
 from cdpyr.analysis.criterion import criterion as _criterion
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
+from cdpyr.exceptions import InvalidPoseException
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -30,7 +31,8 @@ class Singularities(_criterion.Criterion):
         # according to Pott.2018, a pose is singular if the structure
         # matrix's rank is smaller than the number of degrees of freedom
         # i.e., the structure matrix's number of rows
-        return self._structure_matrix.evaluate(robot, pose).is_singular
+        if self._structure_matrix.evaluate(robot, pose).is_singular:
+            raise InvalidPoseException('structure matrix is singuar')
 
 
 __all__ = [

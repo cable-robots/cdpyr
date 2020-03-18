@@ -11,6 +11,7 @@ from cdpyr import (
     helpers,
     typing,
     mixin,
+    exceptions,
     # actual CDPyR imports
     validator,
     mechanics,
@@ -31,6 +32,7 @@ __version__ = '1.0.0-dev'
 
 __all__ = [
         'analysis',
+        'exceptions',
         'geometry',
         'helpers',
         'kinematics',

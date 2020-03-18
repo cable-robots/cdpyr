@@ -6,13 +6,14 @@ from collections import abc
 from typing import Union
 
 import numpy as _np
-from joblib import Parallel, delayed
+from joblib import delayed, Parallel
 from scipy.spatial import Delaunay as _Delaunay
 
-from cdpyr.motion import pose as _pose
-from cdpyr.analysis.workspace import workspace as _workspace
 from cdpyr.analysis.archetype import archetype as _archetype
 from cdpyr.analysis.criterion import criterion as _criterion
+from cdpyr.analysis.workspace import workspace as _workspace
+from cdpyr.exceptions import InvalidPoseException
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
 
@@ -109,14 +110,14 @@ class Algorithm(_workspace.Algorithm):
         if kwargs.pop('parallel', False):
             n_jobs = kwargs.pop('n_jobs', multiprocessing.cpu_count())
             coordinates, flags = zip(
-                *Parallel(n_jobs=n_jobs, **kwargs)(
-                        delayed(self.__check__coordinate)(robot, coordinate) for
-                        coordinate in self.coordinates()))
+                    *Parallel(n_jobs=n_jobs, **kwargs)(
+                            delayed(self.__check__coordinate)(robot, coordinate)
+                            for coordinate in self.coordinates()))
         # non-parallelized, fancy list comprehension
         else:
             coordinates, flags = list(zip(
-                *((coordinate, self.__check__coordinate(robot, coordinate)) for
-                  coordinate in self.coordinates())))
+                    *((coordinate, self.__check__coordinate(robot, coordinate))
+                      for coordinate in self.coordinates())))
 
         # return the tuple of poses that were evaluated
         return Result(
@@ -130,13 +131,15 @@ class Algorithm(_workspace.Algorithm):
     def __check__coordinate(self, robot, coordinate: _np.ndarray):
         # we don't want to loose too much type looking up variables inside
         # this object, so we will store them as local variables here
-        criterion_evaluator = self._criterion.evaluate
-        poses = self._archetype.poses
+        criterion_ = self._criterion.evaluate
+        poses_ = self._archetype.poses
 
         # and compare
-        return coordinate, self._archetype.comparator(
-                criterion_evaluator(robot, pose)
-                for pose in poses(coordinate))
+        try:
+            return coordinate, self._archetype.comparator(
+                    criterion_(robot, pose) for pose in poses_(coordinate))
+        except InvalidPoseException:
+            return coordinate, False
 
 
 class Result(_workspace.Result, abc.Collection):

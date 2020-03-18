@@ -49,6 +49,9 @@ class Result(_result.PoseResult):
 
     @property
     def is_singular(self):
+        # according to Pott.2018, a pose is singular if the structure
+        # matrix's rank is smaller than the number of degrees of freedom
+        # i.e., the structure matrix's number of rows
         return _np.linalg.matrix_rank(self._matrix) >= self._matrix.shape[0]
 
     @property

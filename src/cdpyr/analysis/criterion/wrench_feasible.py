@@ -4,9 +4,10 @@ from typing import Optional, Union
 
 import numpy as _np
 
+from cdpyr.analysis.criterion import criterion as _criterion
 from cdpyr.analysis.force_distribution import force_distribution as \
     _force_distribution
-from cdpyr.analysis.criterion import criterion as _criterion
+from cdpyr.exceptions import InvalidPoseException
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Num, Vector
@@ -64,12 +65,8 @@ class WrenchFeasible(_criterion.Criterion):
 
             [self.force_distribution.evaluate(robot, pose, wrench)
              for wrench in wrenches.T]
-        except Exception:
-            flag = False
-        else:
-            flag = True
-        finally:
-            return flag
+        except Exception as e:
+            raise InvalidPoseException('pose is not wrench feasible.') from e
 
 
 __all__ = [

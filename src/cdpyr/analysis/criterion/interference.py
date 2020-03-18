@@ -4,6 +4,7 @@ from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.criterion import criterion as _criterion
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
+from cdpyr.exceptions import InvalidPoseException
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -20,7 +21,7 @@ class Interference(_criterion.Criterion):
                   robot: _robot.Robot,
                   pose: _pose.Pose,
                   **kwargs):
-        raise NotImplementedError()
+        raise InvalidPoseException('feature not implemented') from NotImplementedError()
 
 
 __all__ = [
