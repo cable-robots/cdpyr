@@ -14,7 +14,8 @@ class Criterion(_evaluator.PoseEvaluator):
 
     def evaluate(self, robot: _robot.Robot, pose: _pose.Pose, **kwargs):
         """
-        Public method to evaluate the pose criterio
+        Public method to evaluate the pose criterion
+
         Parameters
         ----------
         robot

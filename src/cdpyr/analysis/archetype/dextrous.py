@@ -10,11 +10,8 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Dextrous(_archetype.ArchetypeOrientation):
     """
-    The `Dextrous` workspace is given through the poses with
-        the positions in R3
-    for which
-        all rotations in SO3
-    and the observed criterion is valid
+    The `Dextrous` workspace is given through the poses with the positions in
+    R3 for which all rotations in SO3 and the observed criterion is valid
     """
 
     def __init__(self, steps: int = 10, **kwargs):

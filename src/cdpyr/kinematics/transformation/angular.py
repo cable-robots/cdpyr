@@ -31,8 +31,11 @@ class Angular(_transformation.Transformation):
     """
 
     _quaternion: Vector
+
     _angular_velocity: np_.ndarray
+
     _angular_acceleration: np_.ndarray
+
     sequence: AnyStr
 
     TAIT_BRYAN = 'xyz'

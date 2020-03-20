@@ -37,15 +37,16 @@ def format_time(dt,
 
 def full_classname(o: object):
     """
+    [1]
 
     References
     ----------
-    .. [1] https://stackoverflow.com/questions/2020014/get-fully-qualified
-    -class-name-of-an-object-in-python
+    .. [1] https://stackoverflow.com/questions/2020014/get-fully-qualified-class-name-of-an-object-in-python
 
     Parameters
     ----------
-    o
+    o : object
+        Any object instance for which to return the full class name.
 
     Returns
     -------

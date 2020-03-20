@@ -13,11 +13,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Translation(_archetype.Archetype):
     """
-    The `translation` workspace is given through the poses with
-        the positions in R3
-    for which
-        the rotation is fixed to R0
-    and the observed criterion is valid
+    The `translation` workspace is given through the poses with the positions
+    in R3 for which the rotation is fixed to R0 and the observed criterion is
+    valid
     """
 
     _angular: Angular

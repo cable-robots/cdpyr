@@ -12,11 +12,9 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Orientation(_archetype.ArchetypeOrientation):
     """
-    The `Orientation` workspace is given through the poses with
-        the rotations in SO3
-    for which
-        the position is fixed in R3
-    and the observed criterion is valid
+    The `Orientation` workspace is given through the poses with the rotations
+    in SO3 for which the position is fixed in R3 and the observed criterion
+    is valid
     """
 
     _position: Vector
