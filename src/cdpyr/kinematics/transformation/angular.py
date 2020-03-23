@@ -83,7 +83,6 @@ class Angular(_transformation.Transformation):
         --------
         scipy.spatial.transform.Rotation:
             Underlying implementation of the rotation object
-
         """
 
         super().__init__(**kwargs)
@@ -252,8 +251,7 @@ class Angular(_transformation.Transformation):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Euler_angles
-        #Definition_by_intrinsic_rotations
+        .. [1] https://en.wikipedia.org/wiki/Euler_angles#Definition_by_intrinsic_rotations
         .. [2] Malcolm D. Shuster, F. Landis Markley, "General formula for
                extraction the Euler angles", Journal of guidance, control, and
                dynamics, vol. 29.1, pp. 215-221. 2006
@@ -373,8 +371,6 @@ class Angular(_transformation.Transformation):
     def dcm(self):
         """
         Orientation matrix for the angular transformation
-
-
 
         Returns
         -------
@@ -731,8 +727,7 @@ class Angular(_transformation.Transformation):
         if not np_.all(safe_mask):
             raise RuntimeWarning(
                     'Gimbal lock detected. Setting third angle to zero since '
-                    'it '
-                    'is not possible to uniquely determine all angles.')
+                    'it is not possible to uniquely determine all angles.')
 
         # Reverse role of extrinsic and intrinsic rotations, but let third
         # angle be
