@@ -1,4 +1,4 @@
-from cdpyr.helpers import data, formatter, magic_convert
+from cdpyr.helper import data, formatter, magic_convert
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"

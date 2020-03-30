@@ -8,7 +8,7 @@ Top-level package for CDPyR.
 from __future__ import annotations
 from cdpyr import (
     # vital imports
-    helpers,
+    helper,
     typing,
     mixin,
     exceptions,

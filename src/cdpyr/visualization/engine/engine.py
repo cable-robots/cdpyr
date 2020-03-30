@@ -12,7 +12,7 @@ from cdpyr.analysis.result import PlottableResult
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
 from cdpyr.base import CdpyrObject
 from cdpyr.geometry.primitive import Primitive as GeometryPrimitive
-from cdpyr.helpers.resolve import full_classname as fcn
+from cdpyr.helper.resolve import full_classname as fcn
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Matrix, Vector
 

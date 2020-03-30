@@ -11,7 +11,7 @@ from scipy.spatial.qhull import QhullError
 from cdpyr import geometry as _geometry, robot as _robot
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
-from cdpyr.helpers.data import update_recursive
+from cdpyr.helper.data import update_recursive
 from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
 from cdpyr.typing import Matrix, Vector
