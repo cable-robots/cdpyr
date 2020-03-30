@@ -9,7 +9,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-def converter(*args, **kwargs):
+def _converter(*args, **kwargs):
     def method(self):
         # get factory method
         factory = kwargs.pop('factory')
@@ -53,11 +53,11 @@ def converter(*args, **kwargs):
 
 
 def make_dict(*args, **kwargs):
-    return converter(*args, **{'factory': dict, **kwargs}, keyed=True)
+    return _converter(*args, **{'factory': dict, **kwargs}, keyed=True)
 
 
 def make_tuple(*args, **kwargs):
-    return converter(*args, **{'factory': tuple, **kwargs}, keyed=False)
+    return _converter(*args, **{'factory': tuple, **kwargs}, keyed=False)
 
 
 __all__ = [
