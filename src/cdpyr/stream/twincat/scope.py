@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime as _datetime
 import pathlib as _pl
 from typing import Any, AnyStr, Dict, IO, Tuple, Union
 
@@ -7,9 +8,9 @@ import numpy as _np
 from magic_repr import make_repr
 
 from cdpyr.stream.twincat import (
-    meta as _meta,
-    parser as _parser,
-    signal as _signal
+    parser as _tcparser,
+    signal as _tcsignal,
+    units as _tcunits,
 )
 
 __author__ = "Philipp Tempel"
@@ -17,26 +18,26 @@ __email__ = "p.tempel@tudelft.nl"
 
 
 class Scope(object):
-    _meta: _meta.ScopeMeta
-    _signals: _signal.SignalList
+    _meta: ScopeMeta
+    _signals: _tcsignal.SignalList
 
     def __init__(self,
                  signals: Union[
-                     _signal.SignalList,
-                     Tuple[_signal.Signal],
+                     _tcsignal.SignalList,
+                     Tuple[_tcsignal.Signal],
                      Tuple[Dict[AnyStr, Any]]],
-                 meta: Union[_meta.ScopeMeta, Dict[AnyStr, Any]]):
-        self._signals = _signal.SignalList(
-                [_signal.Signal(**signal) for signal in signals] \
-                    if isinstance(signals[0], Dict) \
-                    else signals)
+                 meta: Union[ScopeMeta, Dict[AnyStr, Any]]):
+        self._signals = _tcsignal.SignalList(
+                [_tcsignal.Signal(**signal) for signal in signals]
+                if isinstance(signals[0], Dict)
+                else signals)
         self._meta = meta \
-            if isinstance(meta, _meta.ScopeMeta) \
-            else _meta.ScopeMeta(**meta)
+            if isinstance(meta, ScopeMeta) \
+            else ScopeMeta(**meta)
 
     @staticmethod
     def from_file(f: Union[AnyStr, _pl.Path, IO], delimiter="\t"):
-        return Scope(**_parser.Parser(f, delimiter).parse())
+        return Scope(**_tcparser.Parser(f, delimiter).parse())
 
     @property
     def end(self):
@@ -70,12 +71,56 @@ class Scope(object):
     def values(self):
         return _np.asarray([signal.values for signal in self._signals])
 
+    def __iter__(self):
+        return iter(self._signals)
+
     __repr__ = make_repr(
             'signals',
             'meta',
     )
 
 
+class ScopeMeta(object):
+    _name: str
+    _file: Union[AnyStr, _pl.Path]
+    _start_record: Union[AnyStr, _datetime.datetime]
+    _end_record: Union[AnyStr, _datetime.datetime]
+
+    def __init__(self,
+                 name: str,
+                 file: Union[AnyStr, _pl.Path],
+                 start_record: Union[AnyStr, _datetime.datetime],
+                 end_record: Union[AnyStr, _datetime.datetime]):
+        self._name = name
+        self._file = file
+        self._start_record = start_record
+        self._end_record = end_record
+
+    @property
+    def end_record(self):
+        return self._end_record
+
+    @property
+    def file(self):
+        return self._file
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def start_record(self):
+        return self._start_record
+
+    __repr__ = make_repr(
+            'name',
+            'file',
+            'start_record',
+            'end_record',
+    )
+
+
 __all__ = [
-        'Scope'
+        'Scope',
+        'ScopeMeta',
 ]

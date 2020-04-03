@@ -14,11 +14,10 @@ from enum import Enum, auto
 
 from cdpyr.typing import Num, Vector
 
+from cdpyr.stream.twincat import  units as _units
+
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-
-# registry of SI units
-_ureg = _pint.UnitRegistry()
 
 # regular expression object to match a symbol name and its unit
 reg_name_unit = re.compile('^(?P<key>[A-Za-z\-]+)(\[(?P<unit>[a-z]+)\])?$')
@@ -58,7 +57,7 @@ class Parser(object):
 
     """
 
-    # handlers for differnet header fields
+    # handlers for different header fields
     HANDLERS = {
             'start_record':  process_header_time_record,
             'file':          process_header_file,
@@ -82,9 +81,7 @@ class Parser(object):
 
     def __init__(self, file: Union[AnyStr, _pl.Path], delimiter="\t"):
         # file path
-        self.file = file \
-            if isinstance(file, _pl.Path) \
-            else _pl.Path(file).resolve()
+        self.file = _pl.Path(file).resolve()
         # file delimiter to use
         self.delimiter = delimiter
         # parse data
@@ -92,10 +89,12 @@ class Parser(object):
 
     def parse(self):
         """
+        Parse the assigned TwinCAT 3 scope CSV file
 
         Returns
         -------
-
+        scope : cdpyr.stream.twincat.scope.Scope
+            Scope object
         """
 
         # store processed scope meta data and signals
@@ -173,7 +172,7 @@ class Parser(object):
 
             # try to parse the string as a unit, if possible
             try:
-                value = _ureg.parse_expression(f'{value} {unit}')
+                value = _units.ureg.parse_expression(f'{value} {unit}')
             except _pint.UndefinedUnitError:
                 pass
 
@@ -228,7 +227,7 @@ class Parser(object):
     @staticmethod
     def _merge_signals(signals: Tuple[
         Dict[AnyStr, Union[
-            Dict[AnyStr, Union[AnyStr, _ureg.Quantity, Num]],
+            Dict[AnyStr, Union[AnyStr, _units.ureg.Quantity, Num]],
             Vector]]]):
         # new signals stored in a dict
         new_signals = {}
@@ -258,7 +257,8 @@ class Parser(object):
         for key, signal in new_signals.items():
             new_signals[key]['values'] = _np.asarray(
                     [signal['values'][index] for index in
-                     sorted(signal['values'].keys())])
+                     sorted(signal['values'].keys())]).T
+
 
         # return the squeezed data
         return tuple(new_signals.values())
