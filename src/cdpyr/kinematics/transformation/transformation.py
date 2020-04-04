@@ -3,14 +3,14 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import Union
 
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.typing import Matrix, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Transformation(CdpyrObject):
+class Transformation(Object):
     """
     Abstract transformation interface
     """

@@ -14,14 +14,14 @@ from cdpyr.kinematics.transformation import (
     homogenous as _homogenous,
     linear as _linear
 )
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Pose(CdpyrObject):
+class Pose(Object):
     linear: _linear.Linear
     angular: _angular.Angular
     _time: Num
@@ -440,7 +440,7 @@ class PoseGenerator(object):
                 itertools.product(*(range(k + 1) for k in iterations)))
 
 
-class PoseList(UserList, CdpyrObject):
+class PoseList(UserList, Object):
     data: Sequence[Pose]
 
     @property

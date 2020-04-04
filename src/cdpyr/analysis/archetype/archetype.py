@@ -5,7 +5,7 @@ from typing import Union
 
 import numpy as _np
 
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.motion import pose as _pose
 from cdpyr.typing import Num, Vector
 
@@ -13,7 +13,7 @@ __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Archetype(CdpyrObject, ABC):
+class Archetype(Object, ABC):
 
     @property
     @abstractmethod
