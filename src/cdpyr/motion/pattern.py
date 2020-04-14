@@ -71,7 +71,7 @@ class Pattern(Object):
     def is_cuboid(self):
         return self.dof_rotation == self.dof_translation == 3
 
-    def gravity(self, gravity: Optional[Union[Num, Vector]]):
+    def gravity(self, gravity: Optional[Union[Num, Vector]] = None):
         # first, scalar value for gravity
         gravity = np_.asarray(gravity if gravity is not None else 0)
 
