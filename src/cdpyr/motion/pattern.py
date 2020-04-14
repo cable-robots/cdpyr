@@ -96,10 +96,11 @@ class Pattern(Object):
         cog = np_.asarray(cog) if cog is not None else np_.zeros(
                 self.dof_translation)
 
+        cog: Vector
         gravity: Vector
         linear_inertia: Matrix
-        cog: Vector
         rot: Matrix
+
         # reduce dimensions of vectors and matrices for quicker calculations
         gravity = gravity[0:self.dof_translation]
         linear_inertia = linear_inertia[0:self.dof_translation,

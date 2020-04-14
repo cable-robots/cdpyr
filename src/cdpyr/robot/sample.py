@@ -1134,13 +1134,13 @@ def cogiro():
 
 
 __all__ = [
+        'cogiro',
+        'ipanema_3',
         'robot_1t',
         'robot_2t',
         'robot_3t',
         'robot_1r2t',
         'robot_2r3t',
         'robot_3r3t',
-        'ipanema_3',
-        'cogiro',
         'segesta',
 ]
