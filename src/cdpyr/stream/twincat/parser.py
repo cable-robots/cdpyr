@@ -157,7 +157,7 @@ class Parser(object):
         # some keys are given as "name[unit]" which we will split into here
         try:
             re_match = reg_name_unit.match(key)
-            key = self._prepare_cell_key(re_match.group('key'))
+            key = re_match.group('key')
             unit = re_match.group('unit')
         except AttributeError:
             unit = None
@@ -192,8 +192,8 @@ class Parser(object):
             return
 
         # get every data key and (stripped) value
-        keys = (self._prepare_cell_key(k) for k in line_data[0:-1:2])
-        values = (k.strip() for k in line_data[1:-1:2])
+        keys = (self._prepare_cell_key(k) for k in line_data[0::2])
+        values = (k.strip() for k in line_data[1::2])
 
         # loop over each signal
         for idx, key_value in enumerate(zip(keys, values)):
