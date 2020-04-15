@@ -2,15 +2,16 @@ from __future__ import annotations
 
 import _datetime as _datetime
 import pathlib as _pl
+import re
 from collections import OrderedDict
+from enum import auto, Enum
 from typing import Any, AnyStr, Dict, List, Tuple, Union
 
 import case_changer
+import string_utils
 import more_itertools
 import numpy as _np
 import pint as _pint
-import re
-from enum import Enum, auto
 
 from cdpyr.stream.twincat import units as _units
 from cdpyr.typing import Num, Vector
@@ -233,10 +234,14 @@ class Parser(object):
             return case_changer.snake_case(k.strip().replace('-', '')) + unit
 
     @staticmethod
-    def _merge_signals(signals: Tuple[
-        Dict[AnyStr, Union[
-            Dict[AnyStr, Union[AnyStr, _units.ureg.Quantity, Num]],
-            Vector]]]):
+    def _merge_signals(signals: Tuple[Dict[AnyStr,
+                                           Union[
+                                               Dict[AnyStr,
+                                                    Union[
+                                                        AnyStr,
+                                                        _units.ureg.Quantity,
+                                                        Num]],
+                                               Vector]]]):
         # new signals stored in a dict
         new_signals = {}
         # loop over every signal
@@ -266,7 +271,6 @@ class Parser(object):
             new_signals[key]['values'] = _np.asarray(
                     [signal['values'][index] for index in
                      sorted(signal['values'].keys())]).T
-
 
         # return the squeezed data
         return tuple(new_signals.values())

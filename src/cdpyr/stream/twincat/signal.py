@@ -7,8 +7,8 @@ import numpy as _np
 import pint as _pint
 from magic_repr import make_repr
 
-from cdpyr.typing import Matrix, Num, Vector
 from cdpyr.stream.twincat import units as _tcunits
+from cdpyr.typing import Matrix, Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -22,7 +22,7 @@ class Signal(object):
                  time: Vector,
                  values: Vector,
                  meta: Union[SignalMeta, Dict[AnyStr, Any]]):
-        self._data = _np.hstack([_np.asarray(time)[:,None], values])
+        self._data = _np.hstack([_np.asarray(time)[:, None], values])
         self._meta = meta \
             if isinstance(meta, SignalMeta) \
             else SignalMeta(**meta)
@@ -95,7 +95,7 @@ class Signal(object):
         return self._data[:, 0] * self.sample_time
 
     def timed(self):
-        return iter(_np.hstack((self.time.magnitude[:,None], self.values)))
+        return iter(_np.hstack((self.time.magnitude[:, None], self.values)))
 
     @property
     def values(self):
