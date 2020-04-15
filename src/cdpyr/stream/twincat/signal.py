@@ -123,8 +123,8 @@ class Signal(object):
             'symbol_name',
             'symbol_comment',
             'time',
-            'values',
-            'variable_size',
+            values=lambda self: f'array of shape{self.values.shape}',
+            variable_size=lambda self: self._meta.variable_size
     )
 
 
