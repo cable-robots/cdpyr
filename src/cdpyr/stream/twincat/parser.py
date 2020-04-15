@@ -5,22 +5,21 @@ import pathlib as _pl
 from collections import OrderedDict
 from typing import Any, AnyStr, Dict, List, Tuple, Union
 
+import case_changer
 import more_itertools
 import numpy as _np
 import pint as _pint
 import re
-import string_utils
 from enum import Enum, auto
 
+from cdpyr.stream.twincat import units as _units
 from cdpyr.typing import Num, Vector
-
-from cdpyr.stream.twincat import  units as _units
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 # regular expression object to match a symbol name and its unit
-reg_name_unit = re.compile('^(?P<key>[A-Za-z\-]+)(\[(?P<unit>[a-z]+)\])?$')
+reg_name_unit = re.compile('^(?P<key>[A-Za-z\_\-]+)(\[(?P<unit>[a-z]+)\])?$')
 # regular expression object to match vector-like names
 reg_signal_name = re.compile('^(?P<name>[a-zA-Z\_\.]+)(\[(?P<index>\d+)\])?$')
 
@@ -222,7 +221,16 @@ class Parser(object):
     @staticmethod
     def _prepare_cell_key(k: str):
         # remove dashes/hyphens and turn camel case into snake case
-        return string_utils.camel_case_to_snake(k.strip().replace('-', ''))
+        try:
+            return str(int(k))
+        except ValueError:
+            # check if there's a unit in the key e.g., `SampleTime[ms]`
+            if '[' in k:
+                idx_unit = k.index('[')
+                k, unit = k[:idx_unit], k[idx_unit:]
+            else:
+                unit = ''
+            return case_changer.snake_case(k.strip().replace('-', '')) + unit
 
     @staticmethod
     def _merge_signals(signals: Tuple[
