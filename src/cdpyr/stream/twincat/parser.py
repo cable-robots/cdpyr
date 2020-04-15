@@ -13,7 +13,7 @@ import more_itertools
 import numpy as _np
 import pint as _pint
 
-from cdpyr.stream.twincat import units as _units
+from cdpyr.stream.twincat import units as _tcunits
 from cdpyr.typing import Num, Vector
 
 __author__ = "Philipp Tempel"
@@ -172,7 +172,7 @@ class Parser(object):
 
             # try to parse the string as a unit, if possible
             try:
-                value = _units.ureg.parse_expression(f'{value} {unit}')
+                value = _tcunits.ureg.parse_expression(f'{value} {unit}')
             except _pint.UndefinedUnitError:
                 pass
 
@@ -239,7 +239,7 @@ class Parser(object):
                                                Dict[AnyStr,
                                                     Union[
                                                         AnyStr,
-                                                        _units.ureg.Quantity,
+                                                        _tcunits.ureg.Quantity,
                                                         Num]],
                                                Vector]]]):
         # new signals stored in a dict
