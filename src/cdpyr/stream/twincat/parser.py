@@ -152,7 +152,7 @@ class Parser(object):
     def _parse_signal_meta(self, line: str):
         line_data = line.split(self.delimiter)
         key = self._prepare_cell_key(line_data[0])
-        values = line_data[1:-1:2]
+        values = line_data[1::2]
 
         # some keys are given as "name[unit]" which we will split into here
         try:
