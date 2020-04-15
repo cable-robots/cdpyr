@@ -77,7 +77,6 @@ setup(
                 'hurry.filesize',
                 'fastnumbers',
                 'tabulate',
-                'python-string-utils',
         ],
         extras_require={
                 'visualization': [
