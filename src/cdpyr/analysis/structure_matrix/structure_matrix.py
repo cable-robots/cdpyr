@@ -21,7 +21,13 @@ class Algorithm(_evaluator.Evaluator):
                  pose: _pose.Pose,
                  platform_anchors: Vector,
                  directions: Matrix) -> Result:
-        return self._evaluate(pose, platform_anchors, directions)
+        return Result(pose, self._evaluate(pose, platform_anchors, directions))
+
+    def derivative(self,
+                   pose: _pose.Pose,
+                   platform_anchors: Vector,
+                   directions: Matrix) -> Result:
+        return self._derivative(pose, platform_anchors, directions)
 
     @abstractmethod
     def _evaluate(self,
