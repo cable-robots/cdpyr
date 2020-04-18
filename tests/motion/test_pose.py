@@ -8,10 +8,10 @@ from cdpyr.typing import Matrix, Vector
 
 class MotionPoseTestSuite(object):
 
-    def test_pose_transformation_instances(self, empty_pose: Pose):
-        assert isinstance(empty_pose.linear, Linear)
-        assert isinstance(empty_pose.angular, Angular)
-        assert empty_pose.time is np.nan
+    def test_pose_transformation_instances(self, zero_pose: Pose):
+        assert isinstance(zero_pose.linear, Linear)
+        assert isinstance(zero_pose.angular, Angular)
+        assert zero_pose.time is np.nan
 
     def test_getset_linear_position(self,
                                     rand_pose_3d: Pose,

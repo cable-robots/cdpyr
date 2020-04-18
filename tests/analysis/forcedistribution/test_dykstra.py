@@ -11,7 +11,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_1t(self,
                 robot_1t: Robot,
-                empty_pose: Pose,
+                zero_pose: Pose,
                 ik_standard: StandardKinematics):
         solver = dykstra.Dykstra(
                 ik_standard,
@@ -27,12 +27,12 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         distribution = solver.evaluate(
                 robot_1t,
-                empty_pose,
+                zero_pose,
                 wrench,
         )
 
         # assertion
-        assert distribution.pose == empty_pose
+        assert distribution.pose == zero_pose
         assert distribution.forces.ndim == 1
         assert distribution.forces.shape == (
             robot_1t.num_kinematic_chains,)
@@ -40,7 +40,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_2t(self,
                 robot_2t: Robot,
-                empty_pose: Pose,
+                zero_pose: Pose,
                 ik_standard: StandardKinematics):
         # force distribution solver
         solver = dykstra.Dykstra(
@@ -57,12 +57,12 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         distribution = solver.evaluate(
                 robot_2t,
-                empty_pose,
+                zero_pose,
                 wrench,
         )
 
         # assertion
-        assert distribution.pose == empty_pose
+        assert distribution.pose == zero_pose
         assert distribution.forces.ndim == 1
         assert distribution.forces.shape == (
             robot_2t.num_kinematic_chains,)
@@ -70,7 +70,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_3t(self,
                 robot_3t: Robot,
-                empty_pose: Pose,
+                zero_pose: Pose,
                 ik_standard: StandardKinematics):
         # force distribution solver
         solver = dykstra.Dykstra(
@@ -87,12 +87,12 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         distribution = solver.evaluate(
                 robot_3t,
-                empty_pose,
+                zero_pose,
                 wrench,
         )
 
         # assertion
-        assert distribution.pose == empty_pose
+        assert distribution.pose == zero_pose
         assert distribution.forces.ndim == 1
         assert distribution.forces.shape == (
             robot_3t.num_kinematic_chains,)
@@ -100,7 +100,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_1r2t(self,
                   robot_1r2t: Robot,
-                  empty_pose: Pose,
+                  zero_pose: Pose,
                   ik_standard: StandardKinematics):
         # force distribution solver
         solver = dykstra.Dykstra(
@@ -117,12 +117,12 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         distribution = solver.evaluate(
                 robot_1r2t,
-                empty_pose,
+                zero_pose,
                 wrench,
         )
 
         # assertion
-        assert distribution.pose == empty_pose
+        assert distribution.pose == zero_pose
         assert distribution.forces.ndim == 1
         assert distribution.forces.shape == (
             robot_1r2t.num_kinematic_chains,)
@@ -130,7 +130,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_2r3t(self,
                   robot_2r3t: Robot,
-                  empty_pose: Pose,
+                  zero_pose: Pose,
                   ik_standard: StandardKinematics):
         # force distribution solver
         solver = dykstra.Dykstra(
@@ -147,12 +147,12 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         distribution = solver.evaluate(
                 robot_2r3t,
-                empty_pose,
+                zero_pose,
                 wrench,
         )
 
         # assertion
-        assert distribution.pose == empty_pose
+        assert distribution.pose == zero_pose
         assert distribution.forces.ndim == 1
         assert distribution.forces.shape == (
             robot_2r3t.num_kinematic_chains,)
@@ -160,7 +160,7 @@ class DykstraForceDistributionTestSuite(object):
 
     def test_3r3t(self,
                   robot_3r3t: Robot,
-                  empty_pose: Pose,
+                  zero_pose: Pose,
                   ik_standard: StandardKinematics):
         # force distribution solver
         solver = dykstra.Dykstra(
@@ -177,12 +177,12 @@ class DykstraForceDistributionTestSuite(object):
         # and calculate force distribution
         distribution = solver.evaluate(
                 robot_3r3t,
-                empty_pose,
+                zero_pose,
                 wrench,
         )
 
         # assertion
-        assert distribution.pose == empty_pose
+        assert distribution.pose == zero_pose
         assert distribution.forces.ndim == 1
         assert distribution.forces.shape == (
             robot_3r3t.num_kinematic_chains,)
