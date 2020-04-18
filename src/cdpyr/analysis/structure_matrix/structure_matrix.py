@@ -30,13 +30,22 @@ class Algorithm(_evaluator.Evaluator):
                   directions: Matrix) -> Result:
         raise NotImplementedError()
 
+    @abstractmethod
+    def _derivative(self,
+                    pose: _pose.Pose,
+                    platform_anchors: Vector,
+                    directions: Matrix) -> Result:
+        raise NotImplementedError()
+
 
 class Result(_result.PoseResult):
     _matrix: Matrix
     _kernel: Matrix
     _pinv: Matrix
 
-    def __init__(self, pose: _pose.Pose, matrix: Union[Matrix, Result],
+    def __init__(self,
+                 pose: _pose.Pose,
+                 matrix: Union[Matrix, Result],
                  **kwargs):
         super().__init__(pose=pose, **kwargs)
         self._matrix = matrix.matrix if isinstance(matrix, Result) else matrix
