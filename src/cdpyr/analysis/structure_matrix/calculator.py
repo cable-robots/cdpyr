@@ -54,7 +54,9 @@ class Calculator(_evaluator.PoseEvaluator):
 
     def evaluate(self,
                  robot: _robot.Robot,
-                 pose: _pose.Pose) -> _structure_matrix.Result:
+                 pose: _pose.Pose,
+                 *args,
+                 **kwargs) -> _structure_matrix.Result:
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Structure matrices are currently not implemented for '

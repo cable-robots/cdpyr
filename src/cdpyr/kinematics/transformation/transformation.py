@@ -9,11 +9,11 @@ __all__ = [
 from abc import abstractmethod
 from typing import Union
 
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.typing import Matrix, Vector
 
 
-class Transformation(CdpyrObject):
+class Transformation(Object):
     """
     Abstract transformation interface
     """

@@ -16,14 +16,14 @@ from cdpyr import geometry as _geometry, robot as _robot
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.result import PlottableResult
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.geometry.primitive import Primitive as GeometryPrimitive
 from cdpyr.helper.resolve import full_classname as fcn
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Matrix, Vector
 
 
-class Engine(CdpyrObject, ABC):
+class Engine(Object, ABC):
     AXES_NAMES = ('x', 'y', 'z')
     COORDINATE_DIRECTIONS = (
             (1.0, 0.0, 0.0),

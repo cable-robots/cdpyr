@@ -9,13 +9,13 @@ __all__ = [
 from typing import Union
 
 from cdpyr.analysis.result import PlottableResult
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.geometry.primitive import Primitive as GeometryPrimitive
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.visualization.engine import engine as _engine
 
 
-class Visualizer(CdpyrObject):
+class Visualizer(Object):
     _engine: _engine.Engine
 
     def __init__(self, engine: _engine.Engine, **kwargs):

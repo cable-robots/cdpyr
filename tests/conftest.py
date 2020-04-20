@@ -67,8 +67,8 @@ def unit_rot():
 
 
 @pytest.fixture
-def empty_pose():
-    return cdpyr.motion.pose.Pose()
+def zero_pose():
+    return cdpyr.motion.pose.ZeroPose
 
 
 @pytest.fixture

@@ -1,4 +1,4 @@
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
@@ -7,5 +7,5 @@ __all__ = [
 ]
 
 
-class RobotComponent(CdpyrObject):
+class RobotComponent(Object):
     VERSION = '1.0.0'

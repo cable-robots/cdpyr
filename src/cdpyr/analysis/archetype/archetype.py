@@ -12,12 +12,12 @@ from typing import Union
 
 import numpy as _np
 
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.motion import pose as _pose
 from cdpyr.typing import Num, Vector
 
 
-class Archetype(CdpyrObject, ABC):
+class Archetype(Object, ABC):
 
     @property
     @abstractmethod

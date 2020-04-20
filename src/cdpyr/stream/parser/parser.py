@@ -10,11 +10,11 @@ from abc import ABC, abstractmethod
 from collections import OrderedDict
 from typing import AnyStr, Mapping, Union
 
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.robot.robot_component import RobotComponent
 
 
-class Parser(CdpyrObject, ABC):
+class Parser(Object, ABC):
     EXT = ''
 
     def kwargs(self, o: RobotComponent, **kwargs):

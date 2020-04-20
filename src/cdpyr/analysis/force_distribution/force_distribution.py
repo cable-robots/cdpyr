@@ -77,6 +77,7 @@ class Algorithm(_evaluator.PoseEvaluator):
                  robot: _robot.Robot,
                  pose: _pose.Pose,
                  wrench: Vector,
+                 *args,
                  **kwargs) -> Result:
         if robot.num_platforms > 1:
             raise NotImplementedError(

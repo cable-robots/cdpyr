@@ -19,16 +19,14 @@ class MotionPattern3R3T(_algorithm.Algorithm):
                   pose: _pose.Pose,
                   platform_anchors: Vector,
                   directions: Matrix):
-        return _algorithm.Result(pose, _np.vstack(
-                (
-                        directions,
-                        _np.cross(
-                                pose.angular.dcm.dot(
-                                        platform_anchors
-                                ),
-                                directions,
-                                axis=0
-                        )
-                )
-        ),
-                                 )
+        return _np.vstack((directions,
+                           _np.cross(pose.angular.dcm.dot(platform_anchors),
+                                     directions,
+                                     axis=0)
+                           ))
+
+    def _derivative(self,
+                    pose: _pose.Pose,
+                    platform_anchors: Vector,
+                    directions: Matrix) -> _algorithm.Result:
+        raise NotImplementedError()
