@@ -1,13 +1,16 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Orientation',
+]
+
 import numpy as _np
 
 from cdpyr.analysis.archetype import archetype as _archetype
 from cdpyr.motion import pose as _pose
 from cdpyr.typing import Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Orientation(_archetype.ArchetypeOrientation):
@@ -44,8 +47,3 @@ class Orientation(_archetype.ArchetypeOrientation):
                                                self.sequence,
                                                self._position,
                                                self.steps)
-
-
-__all__ = [
-        'Orientation',
-]

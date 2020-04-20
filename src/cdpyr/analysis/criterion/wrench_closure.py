@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'WrenchClosure',
+]
+
 from typing import Optional, Union
 
 import numpy as _np
@@ -11,9 +17,6 @@ from cdpyr.exceptions import InvalidPoseException
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class WrenchClosure(_criterion.Criterion):
@@ -71,9 +74,4 @@ class WrenchClosure(_criterion.Criterion):
              for wrench in wrenches.T]
         except Exception as e:
             raise InvalidPoseException(
-                'pose cannot provide wrench closure.') from e
-
-
-__all__ = [
-        'WrenchClosure',
-]
+                    'pose cannot provide wrench closure.') from e

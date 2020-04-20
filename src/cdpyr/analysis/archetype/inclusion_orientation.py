@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from cdpyr.analysis.archetype import archetype as _archetype
-
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'InclusionOrientation',
+]
+
+from cdpyr.analysis.archetype import archetype as _archetype
 
 
 class InclusionOrientation(_archetype.ArchetypeOrientation):
@@ -18,8 +21,3 @@ class InclusionOrientation(_archetype.ArchetypeOrientation):
     @property
     def comparator(self):
         return any
-
-
-__all__ = [
-        'InclusionOrientation',
-]

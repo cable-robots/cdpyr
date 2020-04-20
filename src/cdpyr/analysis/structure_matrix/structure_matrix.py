@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Algorithm',
+        'Result',
+]
+
 from abc import abstractmethod
 from typing import Union
 
@@ -10,9 +17,6 @@ from scipy.linalg import null_space
 from cdpyr.analysis import evaluator as _evaluator, result as _result
 from cdpyr.motion import pose as _pose
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Algorithm(_evaluator.Evaluator):
@@ -88,9 +92,3 @@ class Result(_result.PoseResult):
             'matrix',
             'kernel',
     )
-
-
-__all__ = [
-        'Algorithm',
-        'Result',
-]

@@ -1,13 +1,27 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'equal_to',
+        'finite',
+        'greater_than',
+        'greater_than_or_equal_to',
+        'less_than',
+        'less_than_or_equal_to',
+        'negative',
+        'nonnan',
+        'nonnegative',
+        'nonpositive',
+        'nonzero',
+        'positive',
+]
+
 from typing import AnyStr, Optional, Sequence, Union
 
 import numpy as np_
 
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 def nonzero(value: Union[Num, Vector],

@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Algorithm',
+        'Result',
+]
+
 import itertools
 import multiprocessing
 from collections import abc
@@ -16,9 +23,6 @@ from cdpyr.exceptions import InvalidPoseException
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Algorithm(_workspace.Algorithm):
@@ -288,9 +292,3 @@ class Result(_workspace.Result, abc.Collection):
             return self._flags[idx]
         except KeyError as KeyE:
             return False
-
-
-__all__ = [
-        'Algorithm',
-        'Result',
-]

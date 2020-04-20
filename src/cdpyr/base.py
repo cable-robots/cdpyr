@@ -1,9 +1,14 @@
 from __future__ import annotations
 
-from abc import ABC
-
 __author__ = 'Philipp Tempel'
 __email__ = 'p.tempel@tudelft.nl'
+__all__ = [
+        'Algorithm',
+        'CdpyrObject',
+        'Result',
+]
+
+from abc import ABC
 
 
 class CdpyrObject(ABC):
@@ -22,10 +27,3 @@ class Result(CdpyrObject):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-
-__all__ = [
-        'Algorithm',
-        'CdpyrObject',
-        'Result',
-]

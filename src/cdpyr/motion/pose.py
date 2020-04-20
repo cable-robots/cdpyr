@@ -1,5 +1,15 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Pose',
+        'PoseList',
+        'PoseListResult',
+        'PoseResult',
+        'ZeroPose',
+]
+
 import itertools
 from collections import UserList
 from typing import AnyStr, Iterable, Optional, Sequence, Tuple, Union
@@ -8,17 +18,13 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
-from cdpyr.base import Result as BaseResult
+from cdpyr.base import CdpyrObject, Result as BaseResult
 from cdpyr.kinematics.transformation import (
     angular as _angular,
     homogenous as _homogenous,
-    linear as _linear
+    linear as _linear,
 )
-from cdpyr.base import CdpyrObject
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Pose(CdpyrObject):
@@ -511,11 +517,3 @@ class PoseListResult(BaseResult):
 
 ZeroPose = Pose([0.0, 0.0, 0.0],
                 [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
-
-__all__ = [
-        'Pose',
-        'PoseList',
-        'PoseListResult',
-        'PoseResult',
-        'ZeroPose',
-]

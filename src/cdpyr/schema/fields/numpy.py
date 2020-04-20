@@ -1,8 +1,14 @@
-import numpy as np_
-from marshmallow import fields
+from __future__ import annotations
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Numpy',
+]
+
+import numpy as np_
+
+from marshmallow import fields
 
 
 class Numpy(fields.Field):
@@ -28,8 +34,3 @@ class Numpy(fields.Field):
             return np_.asarray(value)
 
         return np_.asscalar(np_.asarray(value))
-
-
-__all__ = [
-        'Numpy'
-]

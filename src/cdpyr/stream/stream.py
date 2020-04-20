@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Stream',
+]
+
 from collections import OrderedDict
 from typing import AnyStr, IO
 
@@ -9,9 +15,6 @@ from cdpyr.base import CdpyrObject
 from cdpyr.helper.resolve import full_classname as fcn
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser as _parser
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Stream(CdpyrObject):

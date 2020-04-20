@@ -1,15 +1,17 @@
 from __future__ import annotations
 
+__author__ = 'Philipp Tempel'
+__email__ = 'p.tempel@tudelft.nl'
+__all__ = [
+        'Paraboloid'
+]
+
 from typing import Union
 
 import numpy as _np
 from magic_repr import make_repr
 
 from cdpyr.geometry import primitive
-
-__author__ = 'Philipp Tempel'
-__email__ = 'phtempel@fastmail.com'
-
 from cdpyr.typing import Num, Vector
 
 
@@ -77,8 +79,3 @@ class Paraboloid(primitive.Primitive):
             'surface',
             'volume',
     )
-
-
-__all__ = [
-        'Paraboloid'
-]

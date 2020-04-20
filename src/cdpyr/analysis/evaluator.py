@@ -1,13 +1,19 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Evaluator',
+        'RobotEvaluator',
+        'PoseEvaluator',
+        'PoseListEvaluator',
+]
+
 from abc import abstractmethod
 
 from cdpyr.base import Algorithm
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Evaluator(Algorithm):
@@ -52,11 +58,3 @@ class PoseListEvaluator(RobotEvaluator):
                  *args,
                  **kwargs):
         raise NotImplementedError()
-
-
-__all__ = [
-        'Evaluator',
-        'RobotEvaluator',
-        'PoseEvaluator',
-        'PoseListEvaluator',
-]

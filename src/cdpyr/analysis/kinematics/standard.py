@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Standard',
+]
+
 import numpy as _np
 from scipy import optimize
 
@@ -8,9 +14,6 @@ from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Standard(_algorithm.Algorithm):
@@ -242,8 +245,3 @@ class Standard(_algorithm.Algorithm):
             platform_slice]
 
         return estimate
-
-
-__all__ = [
-        'Standard',
-]

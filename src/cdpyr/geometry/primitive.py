@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Primitive',
+]
+
 from abc import ABC, abstractmethod
 
 import numpy as _np
@@ -7,9 +13,6 @@ from magic_repr import make_repr
 
 from cdpyr.base import CdpyrObject
 from cdpyr.typing import Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Primitive(CdpyrObject, ABC):
@@ -136,8 +139,3 @@ class Primitive(CdpyrObject, ABC):
             'surface',
             'volume',
     )
-
-
-__all__ = [
-        'Primitive',
-]

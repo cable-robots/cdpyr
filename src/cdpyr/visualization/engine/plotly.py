@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Linear',
+        'Planar',
+        'Spatial',
+]
+
 import warnings
 from abc import ABC
 from typing import Sequence, Union
@@ -18,9 +26,6 @@ from cdpyr.kinematics.transformation import Homogenous as \
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Plotly(_engine.Engine, ABC):
@@ -927,10 +932,3 @@ class Spatial(Plotly):
                              ),
                              kwargs)
                      )
-
-
-__all__ = [
-        'Linear',
-        'Planar',
-        'Spatial',
-]

@@ -1,13 +1,14 @@
-from cdpyr.analysis.dynamics.dynamics import Dynamics
+from __future__ import annotations
 
 __author__ = 'Philipp Tempel'
 __email__ = 'p.tempel@tudelft.nl'
 
-
-class Inverse(Dynamics):
-    pass
-
-
 __all__ = [
         'Inverse',
 ]
+
+from cdpyr.analysis.dynamics.dynamics import Dynamics
+
+
+class Inverse(Dynamics):
+    pass

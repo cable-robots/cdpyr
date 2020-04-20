@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Parser',
+]
+
 from abc import ABC, abstractmethod
 from collections import OrderedDict
 from typing import AnyStr, Mapping, Union
@@ -7,12 +13,8 @@ from typing import AnyStr, Mapping, Union
 from cdpyr.base import CdpyrObject
 from cdpyr.robot.robot_component import RobotComponent
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
-
 
 class Parser(CdpyrObject, ABC):
-
     EXT = ''
 
     def kwargs(self, o: RobotComponent, **kwargs):

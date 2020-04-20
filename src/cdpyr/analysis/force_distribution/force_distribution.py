@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Algorithm',
+        'Result',
+]
+
 from abc import abstractmethod
 from typing import Union
 
@@ -13,9 +20,6 @@ from cdpyr.analysis.structure_matrix import calculator as _structure_matrix
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Algorithm(_evaluator.PoseEvaluator):
@@ -176,9 +180,3 @@ class Result(_result.PoseResult):
             'forces',
             'wrench'
     )
-
-
-__all__ = [
-        'Algorithm',
-        'Result',
-]

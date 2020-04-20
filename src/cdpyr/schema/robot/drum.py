@@ -1,20 +1,25 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'DrumSchema',
+]
+
 from marshmallow import fields, post_load
 
 from cdpyr.geometry import Cuboid, Cylinder, Ellipsoid, Polyhedron, Tube
 from cdpyr.robot import drum as _drum
 from cdpyr.schema import fields as custom_fields
-from cdpyr.schema.schema import Schema
 from cdpyr.schema.geometry import (
     CuboidSchema,
     CylinderSchema,
     EllipsoidSchema,
     PolyhedronSchema,
-    TubeSchema
+    TubeSchema,
 )
 from cdpyr.schema.mechanics import inertia as _inertia
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
+from cdpyr.schema.schema import Schema
 
 
 class DrumSchema(Schema):
@@ -38,8 +43,3 @@ class DrumSchema(Schema):
     @post_load
     def make_object(self, data, **kwargs):
         return self.__model__(**data)
-
-
-__all__ = [
-        'DrumSchema',
-]

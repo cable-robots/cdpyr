@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'WrenchFeasible',
+]
+
 from typing import Optional, Union
 
 import numpy as _np
@@ -11,9 +17,6 @@ from cdpyr.exceptions import InvalidPoseException
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class WrenchFeasible(_criterion.Criterion):
@@ -67,8 +70,3 @@ class WrenchFeasible(_criterion.Criterion):
              for wrench in wrenches.T]
         except Exception as e:
             raise InvalidPoseException('pose is not wrench feasible.') from e
-
-
-__all__ = [
-        'WrenchFeasible',
-]

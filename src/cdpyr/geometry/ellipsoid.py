@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = 'Philipp Tempel'
+__email__ = 'p.tempel@tudelft.nl'
+__all__ = [
+        'Ellipsoid'
+]
+
 from typing import Union
 
 import numpy as _np
@@ -7,9 +13,6 @@ from magic_repr import make_repr
 
 from cdpyr.geometry import primitive as _geometry
 from cdpyr.typing import Num, Vector
-
-__author__ = 'Philipp Tempel'
-__email__ = 'p.tempel@tudelft.nl'
 
 
 class Ellipsoid(_geometry.Primitive):
@@ -114,8 +117,3 @@ class Ellipsoid(_geometry.Primitive):
             'surface',
             'volume',
     )
-
-
-__all__ = [
-        'Ellipsoid'
-]

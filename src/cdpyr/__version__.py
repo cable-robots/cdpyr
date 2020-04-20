@@ -1,9 +1,9 @@
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 import os.path
 
 from pkg_resources import DistributionNotFound, get_distribution
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 try:
     _dist = get_distribution('cdpyr')
     # Normalize case for Windows systems

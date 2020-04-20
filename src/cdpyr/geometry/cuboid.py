@@ -1,13 +1,16 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Cuboid',
+]
+
 import numpy as _np
 from magic_repr import make_repr
 
 from cdpyr.geometry.primitive import Primitive
 from cdpyr.typing import Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Cuboid(Primitive):
@@ -30,18 +33,18 @@ class Cuboid(Primitive):
     @property
     def faces(self):
         return _np.asarray(((2, 1, 0),
-                (6, 2, 1),
-                (4, 1, 0),
-                (3, 2, 0),
-                (6, 3, 2),
-                (3, 4, 0),
-                (5, 4, 1),
-                (6, 5, 1),
-                (6, 5, 4),
-                (7, 3, 4),
-                (6, 7, 4),
-                (6, 7, 3),
-                ))
+                            (6, 2, 1),
+                            (4, 1, 0),
+                            (3, 2, 0),
+                            (6, 3, 2),
+                            (3, 4, 0),
+                            (5, 4, 1),
+                            (6, 5, 1),
+                            (6, 5, 4),
+                            (7, 3, 4),
+                            (6, 7, 4),
+                            (6, 7, 3),
+                            ))
 
     @property
     def surface_area(self):
@@ -72,8 +75,3 @@ class Cuboid(Primitive):
             'depth',
             'height',
     )
-
-
-__all__ = [
-        'Cuboid',
-]

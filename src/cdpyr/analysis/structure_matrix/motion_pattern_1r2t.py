@@ -1,13 +1,16 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'MotionPattern1R2T',
+]
+
 import numpy as _np
 
 from cdpyr.analysis.structure_matrix import structure_matrix as _algorithm
 from cdpyr.motion import pose as _pose
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class MotionPattern1R2T(_algorithm.Algorithm):
@@ -29,8 +32,3 @@ class MotionPattern1R2T(_algorithm.Algorithm):
                 )
         ),
                                  )
-
-
-__all__ = [
-        'MotionPattern1R2T',
-]

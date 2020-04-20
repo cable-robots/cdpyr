@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from typing import Mapping
-
 __author__ = 'Philipp Tempel'
 __email__ = 'p.tempel@tudelft.nl'
+__all__ = [
+        'update_recursive',
+]
+
+from typing import Mapping
 
 
 def update_recursive(defaults: Mapping, update: Mapping):
@@ -30,8 +33,3 @@ def update_recursive(defaults: Mapping, update: Mapping):
         else:
             defaults[k] = v
     return defaults
-
-
-__all__ = [
-        'update_recursive',
-]

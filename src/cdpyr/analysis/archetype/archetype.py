@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Archetype',
+        'ArchetypeOrientation',
+]
+
 from abc import ABC, abstractmethod
 from typing import Union
 
@@ -8,9 +15,6 @@ import numpy as _np
 from cdpyr.base import CdpyrObject
 from cdpyr.motion import pose as _pose
 from cdpyr.typing import Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Archetype(CdpyrObject, ABC):
@@ -61,9 +65,3 @@ class ArchetypeOrientation(Archetype, ABC):
                                                self.sequence,
                                                coordinate,
                                                self.steps)
-
-
-__all__ = [
-        'Archetype',
-        'ArchetypeOrientation',
-]

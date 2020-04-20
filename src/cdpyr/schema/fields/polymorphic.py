@@ -1,12 +1,17 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Polymorphic',
+]
+
 import typing
 
 from marshmallow import class_registry, fields, types, utils
 from marshmallow.base import SchemaABC
 from marshmallow.exceptions import StringNotCollectionError, ValidationError
 from marshmallow.utils import is_collection, missing as missing_
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Polymorphic(fields.Field):

@@ -1,14 +1,17 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'ClosedFormImproved',
+]
+
 import numpy as _np
 
 from cdpyr.analysis.force_distribution import force_distribution as _algorithm
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class ClosedFormImproved(_algorithm.Algorithm):
@@ -106,8 +109,3 @@ class ClosedFormImproved(_algorithm.Algorithm):
         # return a quick form of the closed form
         return force_mean - _np.linalg.pinv(structure_matrix).dot(
                 wrench + structure_matrix.dot(force_mean))
-
-
-__all__ = [
-        'ClosedFormImproved',
-]

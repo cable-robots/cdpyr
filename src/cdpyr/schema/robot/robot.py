@@ -1,17 +1,22 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'RobotSchema',
+]
+
 from marshmallow import fields, post_load
 
 from cdpyr.robot import robot as _robot
 from cdpyr.schema.motion.pose import pose as _pose
-from cdpyr.schema.schema import Schema
 from cdpyr.schema.robot import (
     cable as _cable,
     frame as _frame,
     kinematic_chain as _kinematicchain,
-    platform as _platform
+    platform as _platform,
 )
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
+from cdpyr.schema.schema import Schema
 
 
 class RobotSchema(Schema):
@@ -41,8 +46,3 @@ class RobotSchema(Schema):
     @post_load
     def make_object(self, data, **kwargs):
         return self.__model__(**data)
-
-
-__all__ = [
-        'RobotSchema',
-]

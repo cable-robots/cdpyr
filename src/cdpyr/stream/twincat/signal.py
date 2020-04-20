@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Signal',
+        'SignalList',
+        'SignalMeta',
+]
+
 from collections import UserList
 from typing import Any, AnyStr, Dict, Iterable, List, Optional, Union
 
@@ -9,9 +17,6 @@ from magic_repr import make_repr
 
 from cdpyr.stream.twincat import units as _tcunits
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Signal(object):
@@ -280,10 +285,3 @@ class SignalMeta(object):
             'scale_factor',
             'bit_mask',
     )
-
-
-__all__ = [
-        'Signal',
-        'SignalList',
-        'SignalMeta',
-]

@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Algorithm',
+        'Result',
+]
+
 import multiprocessing
 from typing import Union
 
@@ -14,9 +21,6 @@ from cdpyr.geometry import polyhedron as _polyhedron
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Algorithm(_workspace.Algorithm):
@@ -163,9 +167,3 @@ class Result(_polyhedron.Polyhedron, _workspace.Result):
         return _pose.PoseList((p
                                for c in self._vertices
                                for p in self._archetype.poses(c)))
-
-
-__all__ = [
-        'Algorithm',
-        'Result',
-]

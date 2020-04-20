@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Angular',
+]
+
 import re
 from typing import AnyStr, Optional, Union
 
@@ -9,9 +15,6 @@ from magic_repr import make_repr
 from cdpyr import validator as _validator
 from cdpyr.kinematics.transformation import transformation as _transformation
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Angular(_transformation.Transformation):
@@ -773,8 +776,3 @@ class Angular(_transformation.Transformation):
             'angular_acceleration',
             'sequence'
     )
-
-
-__all__ = [
-        'Angular',
-]

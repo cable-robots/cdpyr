@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Polyhedron',
+]
+
 from collections import abc
 from typing import Union
 
@@ -9,9 +15,6 @@ from magic_repr import make_repr
 from cdpyr.geometry import primitive as _geometry
 from cdpyr.geometry._subdivision import subdivide
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Polyhedron(_geometry.Primitive, abc.Collection):
@@ -261,8 +264,3 @@ class Polyhedron(_geometry.Primitive, abc.Collection):
             'num_vertices',
             'num_faces',
     )
-
-
-__all__ = [
-        'Polyhedron',
-]

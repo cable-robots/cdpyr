@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Homogenous',
+]
+
 from typing import Optional, Union
 
 import numpy as np_
@@ -8,12 +14,9 @@ from magic_repr import make_repr
 from cdpyr.kinematics.transformation import (
     angular as _angular,
     linear as _linear,
-    transformation as _transformation
+    transformation as _transformation,
 )
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Homogenous(_transformation.Transformation):
@@ -110,8 +113,3 @@ class Homogenous(_transformation.Transformation):
             'translation',
             'dcm',
     )
-
-
-__all__ = [
-        'Homogenous',
-]

@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Dextrous',
+]
+
 import numpy as _np
 
 from cdpyr.analysis.archetype import archetype as _archetype
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Dextrous(_archetype.ArchetypeOrientation):
@@ -28,8 +31,3 @@ class Dextrous(_archetype.ArchetypeOrientation):
     @property
     def comparator(self):
         return all
-
-
-__all__ = [
-        'Dextrous',
-]

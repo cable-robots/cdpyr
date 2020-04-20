@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Xml',
+]
+
 from collections import OrderedDict
 from typing import AnyStr, Mapping, Sequence, Tuple, Union
 
@@ -8,12 +14,8 @@ import xmltodict
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser as _parser
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
-
 
 class Xml(_parser.Parser):
-
     EXT = 'xml'
 
     def kwargs(self, o: RobotComponent, **kwargs):

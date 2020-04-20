@@ -1,10 +1,15 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'KinematicChainSchema',
+]
+
 from marshmallow import fields, post_load
 
 from cdpyr.robot import kinematicchain as _kinematicchain
 from cdpyr.schema.schema import Schema
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class KinematicChainSchema(Schema):
@@ -32,8 +37,3 @@ class KinematicChainSchema(Schema):
                     (self.make_object(each, False) for each in data))
         else:
             return self.__model__(**data)
-
-
-__all__ = [
-        'KinematicChainSchema',
-]

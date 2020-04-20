@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Calculator',
+]
+
 from typing import AnyStr, Dict
 
 import numpy as _np
@@ -13,13 +19,10 @@ from cdpyr.analysis.structure_matrix import (
     motion_pattern_2t as _structure_matrix_2t,
     motion_pattern_3r3t as _structure_matrix_3r3t,
     motion_pattern_3t as _structure_matrix_3t,
-    structure_matrix as _structure_matrix
+    structure_matrix as _structure_matrix,
 )
 from cdpyr.motion import pattern as _pattern, pose as _pose
 from cdpyr.robot import robot as _robot
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Calculator(_evaluator.PoseEvaluator):
@@ -75,8 +78,3 @@ class Calculator(_evaluator.PoseEvaluator):
                          robot.kinematic_chains.with_platform(
                                  platform_index).platform_anchor]).T,
                 kinematics.directions)
-
-
-__all__ = [
-        'Calculator',
-]

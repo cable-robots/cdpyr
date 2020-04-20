@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Drum',
+]
+
 from typing import Optional
 
 import numpy as np
@@ -9,9 +15,6 @@ from cdpyr.geometry import primitive as _geometry
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Drum(RobotComponent):
@@ -119,8 +122,3 @@ class Drum(RobotComponent):
             'geometry',
             'inertia'
     )
-
-
-__all__ = [
-        'Drum',
-]
