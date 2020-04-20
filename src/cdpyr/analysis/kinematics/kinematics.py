@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Union
 
 import numpy as _np
+from magic_repr import make_repr
 
 import cdpyr.numpy.linalg
 from cdpyr.analysis import result as _result
@@ -18,7 +19,7 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Algorithm(ABC):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         pass
 
     def forward(self,
@@ -62,6 +63,8 @@ class Algorithm(ABC):
                   pose: _pose.Pose,
                   **kwargs) -> Result:
         raise NotImplementedError()
+
+    __repr__ = make_repr()
 
 
 class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
