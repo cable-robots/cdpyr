@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Parser',
+]
+
 import _datetime as _datetime
 import pathlib as _pl
 import re
@@ -8,16 +14,12 @@ from enum import auto, Enum
 from typing import Any, AnyStr, Dict, List, Tuple, Union
 
 import case_changer
-import string_utils
 import more_itertools
 import numpy as _np
 import pint as _pint
 
 from cdpyr.stream.twincat import units as _tcunits
 from cdpyr.typing import Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 # regular expression object to match a symbol name and its unit
 reg_name_unit = re.compile('^(?P<key>[A-Za-z\_\-]+)(\[(?P<unit>[a-z]+)\])?$')

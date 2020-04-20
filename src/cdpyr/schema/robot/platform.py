@@ -1,3 +1,12 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'PlatformSchema',
+        'PlatformAnchorSchema',
+]
+
 from marshmallow import fields, post_load
 
 import cdpyr.robot
@@ -7,9 +16,6 @@ from cdpyr.schema.motion import pose as _pose
 from cdpyr.schema.motion.pattern import pattern as _pattern
 from cdpyr.schema.robot.anchor import AnchorSchema
 from cdpyr.schema.schema import Schema
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class PlatformAnchorSchema(AnchorSchema):
@@ -68,9 +74,3 @@ class PlatformSchema(Schema):
                     (self.make_object(each, False) for each in data))
         else:
             return self.__model__(**data)
-
-
-__all__ = [
-        'PlatformSchema',
-        'PlatformAnchorSchema',
-]

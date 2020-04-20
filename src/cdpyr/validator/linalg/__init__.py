@@ -1,14 +1,26 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'dimensions',
+        'inertia_tensor',
+        'landscape',
+        'portrait',
+        'rotation_matrix',
+        'shape',
+        'space_coordinate',
+        'square',
+        'symmetric',
+        'unit_vector',
+]
+
 from typing import AnyStr, Optional, Sequence, Union
 
 import numpy as np_
 
 from cdpyr.typing import Matrix, Num, Vector
 from cdpyr.validator.numeric import equal_to, greater_than_or_equal_to
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 def dimensions(value: Union[Num, Vector, Matrix, Sequence[Num]],
@@ -147,7 +159,7 @@ def unit_vector(value: Union[Sequence[Num], Vector],
         ) from ValueE
 
 
-def landspace(value: Union[Sequence[Num], Vector, Matrix],
+def landscape(value: Union[Sequence[Num], Vector, Matrix],
               name: Optional[AnyStr] = None):
     value = np_.asarray(value)
 

@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Linear',
+]
+
 from typing import Optional, Union
 
 import numpy as np_
@@ -7,9 +13,6 @@ from magic_repr import make_repr
 
 from cdpyr.kinematics.transformation import transformation as _transformation
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Linear(_transformation.Transformation):
@@ -148,8 +151,3 @@ class Linear(_transformation.Transformation):
             'velocity',
             'acceleration'
     )
-
-
-__all__ = [
-        'Linear',
-]

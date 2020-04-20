@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Pulley',
+]
+
 from typing import Optional
 
 import numpy as np_
@@ -10,9 +16,6 @@ from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Matrix, Num
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Pulley(RobotComponent):
@@ -69,8 +72,3 @@ class Pulley(RobotComponent):
             'inertia',
             'angular'
     )
-
-
-__all__ = [
-        'Pulley',
-]

@@ -1,5 +1,16 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'MP_1T',
+        'MP_2T',
+        'MP_3T',
+        'MP_1R2T',
+        'MP_2R3T',
+        'MP_3R3T',
+]
+
 from typing import AnyStr, Optional, Union
 
 import numpy as np_
@@ -7,9 +18,6 @@ from magic_repr import make_repr
 
 from cdpyr.base import Object
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Pattern(Object):
@@ -154,12 +162,3 @@ MP_3T = Pattern(3, 0)
 MP_1R2T = Pattern(2, 1)
 MP_2R3T = Pattern(3, 2)
 MP_3R3T = Pattern(3, 3)
-
-__all__ = [
-        'MP_1T',
-        'MP_2T',
-        'MP_3T',
-        'MP_1R2T',
-        'MP_2R3T',
-        'MP_3R3T',
-]

@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from typing import AnyStr, Optional, Sized
-
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'length',
+]
+
+from typing import AnyStr, Optional, Sized
 
 
 def length(value: Sized,

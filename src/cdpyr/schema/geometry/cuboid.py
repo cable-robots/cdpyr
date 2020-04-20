@@ -1,10 +1,15 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'CuboidSchema',
+]
+
 from marshmallow import fields
 
 from cdpyr.geometry import cuboid as _cuboid
 from cdpyr.schema.geometry import primitive as _geometry
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class CuboidSchema(_geometry.PrimitiveSchema):
@@ -19,8 +24,3 @@ class CuboidSchema(_geometry.PrimitiveSchema):
     )
 
     __model__ = _cuboid.Cuboid
-
-
-__all__ = [
-        'CuboidSchema',
-]

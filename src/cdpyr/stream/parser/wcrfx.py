@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = 'Philipp Tempel'
+__email__ = 'p.tempel@tudelft.nl'
+__all__ = [
+        'Wcrfx',
+]
+
 import functools
 import itertools
 import operator
@@ -14,9 +20,6 @@ import xmltodict
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser
 
-__author__ = 'Philipp Tempel'
-__email__ = 'p.tempel@tudelft.nl'
-
 
 def dict_get(m: Mapping, k: Iterable, *args):
     # set keys which are integers to their integer value
@@ -29,7 +32,6 @@ def dict_get(m: Mapping, k: Iterable, *args):
 
 
 class Wcrfx(parser.Parser):
-
     EXT = 'wcrfx'
 
     VERSION = '0.31'
@@ -157,7 +159,10 @@ class Wcrfx(parser.Parser):
                                          c in [1, 2, 3]), itertools.chain(
                                             *dict_get(frame_anchor, ('dcm',),
                                                       _np.eye(3)))),
-                                    zip(('@radius', ), (dict_get(frame_anchor, ('pulley', 'radius'), 0.0), ))
+                                    zip(('@radius',), (
+                                            dict_get(frame_anchor,
+                                                     ('pulley', 'radius'),
+                                                     0.0),))
                             ))),
                             ('platform', OrderedDict(itertools.chain(
                                     zip((f'@{c}' for c in 'xyz'),
@@ -341,8 +346,3 @@ class Wcrfx(parser.Parser):
             )))
 
         return key, robot
-
-
-__all__ = [
-        'Wcrfx'
-]

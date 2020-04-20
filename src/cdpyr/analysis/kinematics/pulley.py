@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Pulley',
+]
+
 import numpy as _np
 
 from cdpyr.analysis.kinematics import kinematics as _algorithm
@@ -11,12 +17,9 @@ from cdpyr.robot import (
     kinematicchain as _kinematicchain,
     platform as _platform,
     pulley as _pulley,
-    robot as _robot
+    robot as _robot,
 )
 from cdpyr.typing import Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Pulley(_algorithm.Algorithm):
@@ -127,8 +130,3 @@ class Pulley(_algorithm.Algorithm):
         return _algorithm.Result(self, robot, pose, lengths=lengths,
                                  directions=directions, swivel=swivel,
                                  wrap=wrap, leave_points=leave_points)
-
-
-__all__ = [
-        'Pulley',
-]

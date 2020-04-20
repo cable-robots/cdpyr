@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Algorithm',
+        'Result',
+]
+
 from abc import ABC, abstractmethod
 from typing import Union
 
@@ -12,9 +19,6 @@ from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Algorithm(ABC):
@@ -283,9 +287,3 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
     @property
     def wrap_angles(self):
         return self._wrap
-
-
-__all__ = [
-        'Algorithm',
-        'Result',
-]

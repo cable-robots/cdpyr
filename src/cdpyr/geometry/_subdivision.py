@@ -1,14 +1,14 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 import functools
 import itertools
 
 import numpy as _np
 
 from cdpyr.typing import Faces, Vertices
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 @functools.lru_cache(128)

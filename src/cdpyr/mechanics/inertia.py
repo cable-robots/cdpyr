@@ -1,4 +1,11 @@
 from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Inertia',
+]
+
 from typing import Optional
 
 import numpy as np_
@@ -6,9 +13,6 @@ from magic_repr import make_repr
 
 from cdpyr.base import Object
 from cdpyr.typing import Matrix, Num
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Inertia(Object):
@@ -112,8 +116,3 @@ class Inertia(Object):
             'linear',
             'angular'
     )
-
-
-__all__ = [
-        'Inertia',
-]

@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__all__ = [
+        'Interference',
+]
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 import numpy as _np
 
 from cdpyr.analysis.criterion import criterion as _criterion
@@ -7,9 +13,6 @@ from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.exceptions import InvalidPoseException
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Interference(_criterion.Criterion):
@@ -67,8 +70,3 @@ class Interference(_criterion.Criterion):
                 except _np.linalg.LinAlgError as e:
                     # valid pose, just move on
                     pass
-
-
-__all__ = [
-        'Interference',
-]

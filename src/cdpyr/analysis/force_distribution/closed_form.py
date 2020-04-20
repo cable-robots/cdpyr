@@ -1,14 +1,17 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'ClosedForm',
+]
+
 import numpy as _np
 
 from cdpyr.analysis.force_distribution import force_distribution as _algorithm
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class ClosedForm(_algorithm.Algorithm):
@@ -33,8 +36,3 @@ class ClosedForm(_algorithm.Algorithm):
                     wrench + structure_matrix.dot(force_mean))
 
         return _algorithm.Result(self, pose, distribution, wrench)
-
-
-__all__ = [
-        'ClosedForm',
-]

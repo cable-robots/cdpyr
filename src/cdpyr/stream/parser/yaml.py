@@ -1,14 +1,17 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Yaml',
+]
+
 from collections import OrderedDict
 from typing import AnyStr, Mapping, Union
 
 import yaml
 
 from cdpyr.stream.parser import parser as _parser
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 def ordered_dict_representer(dumper, data):
@@ -26,7 +29,6 @@ yaml.Loader.add_constructor(_mapping_tag, ordered_dict_constructor)
 
 
 class Yaml(_parser.Parser):
-
     EXT = 'yaml'
 
     def dumps(self, d: Union[OrderedDict, Mapping], *args, **kwargs) -> AnyStr:

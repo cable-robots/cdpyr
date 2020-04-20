@@ -1,15 +1,18 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Visualizer',
+]
+
 from typing import Union
 
 from cdpyr.analysis.result import PlottableResult
-from cdpyr.geometry.primitive import Primitive as GeometryPrimitive
 from cdpyr.base import Object
+from cdpyr.geometry.primitive import Primitive as GeometryPrimitive
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.visualization.engine import engine as _engine
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Visualizer(Object):
@@ -40,8 +43,3 @@ class Visualizer(Object):
                *args,
                **kwargs):
         return self._engine.render(obj, *args, **kwargs)
-
-
-__all__ = [
-        'Visualizer',
-]

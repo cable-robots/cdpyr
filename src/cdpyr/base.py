@@ -1,9 +1,14 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-
 __author__ = 'Philipp Tempel'
 __email__ = 'p.tempel@tudelft.nl'
+__all__ = [
+        'Algorithm',
+        'Object',
+        'Result',
+]
+
+from abc import ABC, abstractmethod
 
 
 class Object(ABC):
@@ -31,10 +36,3 @@ class Result(Object):
     @property
     def algorithm(self):
         return self._algorithm
-
-
-__all__ = [
-        'Algorithm',
-        'Object',
-        'Result',
-]

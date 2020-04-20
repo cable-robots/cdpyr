@@ -1,13 +1,26 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'cart2pol',
+        'cart2sph',
+        'evec_1',
+        'evec_2',
+        'evec3_1',
+        'evec3_2',
+        'evec3_3',
+        'issquare',
+        'kronecker',
+        'pol2cart',
+        'sph2cart',
+]
+
 from typing import Sequence, Union
 
 import numpy as _np
 
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 def issquare(value: Union[Num, Vector, Matrix]):
@@ -213,18 +226,3 @@ def cart2sph(x: Union[Num, Vector, Matrix], y: Union[Num, Vector, Matrix],
     return _np.arctan2(y, x), \
            _np.arctan2(z, _np.sqrt(x ** 2 + y ** 2)), \
            _np.sqrt(x ** 2 + y ** 2 + z ** 2)
-
-
-__all__ = [
-        'cart2pol',
-        'cart2sph',
-        'evec_1',
-        'evec_2',
-        'evec3_1',
-        'evec3_2',
-        'evec3_3',
-        'issquare',
-        'kronecker',
-        'pol2cart',
-        'sph2cart',
-]

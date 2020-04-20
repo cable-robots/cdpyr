@@ -1,13 +1,16 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Transformation',
+]
+
 from abc import abstractmethod
 from typing import Union
 
 from cdpyr.base import Object
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Transformation(Object):
@@ -44,8 +47,3 @@ class Transformation(Object):
 
         """
         raise NotImplementedError()
-
-
-__all__ = [
-        'Transformation',
-]

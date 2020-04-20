@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Linear',
+        'Planar',
+        'Spatial',
+]
+
 import warnings
 from abc import ABC
 
@@ -16,9 +24,6 @@ from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Mayavi(_engine.Engine, ABC):
@@ -607,10 +612,3 @@ class Planar(Mayavi):
 class Spatial(Mayavi):
     _NUMBER_OF_COORDINATES = 3
     _NUMBER_OF_AXES = 3
-
-
-__all__ = [
-        'Linear',
-        'Planar',
-        'Spatial',
-]

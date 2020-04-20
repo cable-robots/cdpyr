@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Scope',
+        'ScopeMeta',
+]
+
 import datetime as _datetime
 import pathlib as _pl
 from typing import Any, AnyStr, Dict, IO, Tuple, Union
@@ -10,11 +17,7 @@ from magic_repr import make_repr
 from cdpyr.stream.twincat import (
     parser as _tcparser,
     signal as _tcsignal,
-    units as _tcunits,
 )
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Scope(object):
@@ -118,9 +121,3 @@ class ScopeMeta(object):
             'start_record',
             'end_record',
     )
-
-
-__all__ = [
-        'Scope',
-        'ScopeMeta',
-]

@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'make_dict',
+        'make_tuple',
+]
+
 from itertools import chain
 from operator import attrgetter
 
 from six import moves
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 def _converter(*args, **kwargs):
@@ -47,7 +51,8 @@ def _converter(*args, **kwargs):
 
         fields = ((name, getter(self)) for name, getter in field_getters)
 
-        return factory((k, v) for k, v in fields) if is_keyed else factory(v for _, v in fields)
+        return factory((k, v) for k, v in fields) if is_keyed else factory(
+                v for _, v in fields)
 
     return method
 
@@ -58,9 +63,3 @@ def make_dict(*args, **kwargs):
 
 def make_tuple(*args, **kwargs):
     return _converter(*args, **{'factory': tuple, **kwargs}, keyed=False)
-
-
-__all__ = [
-        'make_dict',
-        'make_tuple',
-]
