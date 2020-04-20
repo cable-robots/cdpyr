@@ -12,9 +12,14 @@ __email__ = "p.tempel@tudelft.nl"
 
 class Criterion(_evaluator.PoseEvaluator):
 
-    def evaluate(self, robot: _robot.Robot, pose: _pose.Pose, **kwargs):
+    def evaluate(self,
+                 robot: _robot.Robot,
+                 pose: _pose.Pose,
+                 *args,
+                 **kwargs):
         """
-        Public method to evaluate the pose criterio
+        Public method to evaluate the pose criterion
+
         Parameters
         ----------
         robot
@@ -29,8 +34,7 @@ class Criterion(_evaluator.PoseEvaluator):
         if robot.num_platforms > 1:
             raise NotImplementedError(
                     'Workspace criteria are currently not implemented for '
-                    'robots '
-                    'with more than one platform.')
+                    'robots with more than one platform.')
 
         # pass down to the criterion's actual evaluation implementation
         return self._evaluate(robot, pose, **kwargs)

@@ -32,7 +32,7 @@ class RobotEvaluator(Evaluator):
         raise NotImplementedError()
 
 
-class PoseEvaluator(RobotEvaluator):
+class PoseEvaluator(Evaluator):
 
     @abstractmethod
     def evaluate(self,
@@ -43,7 +43,7 @@ class PoseEvaluator(RobotEvaluator):
         raise NotImplementedError()
 
 
-class PoseListEvaluator(RobotEvaluator):
+class PoseListEvaluator(Evaluator):
 
     @abstractmethod
     def evaluate(self,

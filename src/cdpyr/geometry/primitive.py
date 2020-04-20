@@ -5,14 +5,14 @@ from abc import ABC, abstractmethod
 import numpy as _np
 from magic_repr import make_repr
 
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.typing import Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Primitive(CdpyrObject, ABC):
+class Primitive(Object, ABC):
     """
 
     """

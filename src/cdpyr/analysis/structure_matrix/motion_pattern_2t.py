@@ -14,7 +14,13 @@ class MotionPattern2T(_algorithm.Algorithm):
                   pose: _pose.Pose,
                   platform_anchors: Vector,
                   directions: Matrix):
-        return _algorithm.Result(pose, directions[0:2, :])
+        return directions[0:2, :]
+
+    def _derivative(self,
+                    pose: _pose.Pose,
+                    platform_anchors: Vector,
+                    directions: Matrix) -> _algorithm.Result:
+        raise NotImplementedError()
 
 
 __all__ = [

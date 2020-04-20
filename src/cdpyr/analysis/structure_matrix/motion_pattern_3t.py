@@ -13,8 +13,14 @@ class MotionPattern3T(_algorithm.Algorithm):
     def _evaluate(self,
                   pose: _pose.Pose,
                   platform_anchors: Vector,
-                  directions: Matrix):
-        return _algorithm.Result(pose, directions[0:3, :])
+                  directions: Matrix) -> _algorithm.Result:
+        return directions[0:3, :]
+
+    def _derivative(self,
+                    pose: _pose.Pose,
+                    platform_anchors: Vector,
+                    directions: Matrix) -> _algorithm.Result:
+        raise NotImplementedError()
 
 
 __all__ = [
