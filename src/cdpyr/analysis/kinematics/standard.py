@@ -121,6 +121,7 @@ class Standard(_algorithm.Algorithm):
         result: optimize.OptimizeResult
         result = optimize.least_squares(goal_function,
                                         initial_estimate,
+                                        args=(frame_anchors, platform_anchors),
                                         **kwargs)
 
         # check for convergence
