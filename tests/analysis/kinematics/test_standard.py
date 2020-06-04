@@ -12,17 +12,17 @@ class StandardKinematicsBackwardTestSuite(object):
             ('robot', 'pose'),
             (
                     (sample.robot_1t(), _pose.ZeroPose),
-                    (sample.robot_1t(), _pose.rand_1t()),
+                    (sample.robot_1t(), _pose.PoseGenerator.random_1t()),
                     (sample.robot_2t(), _pose.ZeroPose),
-                    (sample.robot_2t(), _pose.rand_2t()),
+                    (sample.robot_2t(), _pose.PoseGenerator.random_2t()),
                     (sample.robot_3t(), _pose.ZeroPose),
-                    (sample.robot_3t(), _pose.rand_3t()),
+                    (sample.robot_3t(), _pose.PoseGenerator.random_3t()),
                     (sample.robot_1r2t(), _pose.ZeroPose),
-                    (sample.robot_1r2t(), _pose.rand_1r2t()),
+                    (sample.robot_1r2t(), _pose.PoseGenerator.random_1r2t()),
                     (sample.robot_2r3t(), _pose.ZeroPose),
-                    (sample.robot_2r3t(), _pose.rand_2r3t()),
+                    (sample.robot_2r3t(), _pose.PoseGenerator.random_2r3t()),
                     (sample.robot_3r3t(), _pose.ZeroPose),
-                    (sample.robot_3r3t(), _pose.rand_3r3t()),
+                    (sample.robot_3r3t(), _pose.PoseGenerator.random_3r3t()),
             ),
             ids=[
                     '1T_home', '1T_random',
@@ -42,7 +42,7 @@ class StandardKinematicsBackwardTestSuite(object):
         # solve the inverse kinematics
         res_backward = ik.backward(robot, pose)
 
-        nl, _ = robot.num_dimensions
+        nl, _ = robot.num_dimensionality
         kc: kinematicchain.KinematicChain
 
         assert res_backward.pose == pose
@@ -69,17 +69,17 @@ class StandardKinematicsBackwardTestSuite(object):
             ('robot', 'pose'),
             (
                     (sample.robot_1t(), _pose.ZeroPose),
-                    (sample.robot_1t(), _pose.rand_1t()),
+                    (sample.robot_1t(), _pose.PoseGenerator.random_1t()),
                     (sample.robot_2t(), _pose.ZeroPose),
-                    (sample.robot_2t(), _pose.rand_2t()),
+                    (sample.robot_2t(), _pose.PoseGenerator.random_2t()),
                     (sample.robot_3t(), _pose.ZeroPose),
-                    (sample.robot_3t(), _pose.rand_3t()),
+                    (sample.robot_3t(), _pose.PoseGenerator.random_3t()),
                     (sample.robot_1r2t(), _pose.ZeroPose),
-                    (sample.robot_1r2t(), _pose.rand_1r2t()),
+                    (sample.robot_1r2t(), _pose.PoseGenerator.random_1r2t()),
                     (sample.robot_2r3t(), _pose.ZeroPose),
-                    (sample.robot_2r3t(), _pose.rand_2r3t()),
+                    (sample.robot_2r3t(), _pose.PoseGenerator.random_2r3t()),
                     (sample.robot_3r3t(), _pose.ZeroPose),
-                    (sample.robot_3r3t(), _pose.rand_3r3t()),
+                    (sample.robot_3r3t(), _pose.PoseGenerator.random_3r3t()),
             ),
             ids=[
                     '1T_home', '1T_random',
@@ -102,7 +102,7 @@ class StandardKinematicsBackwardTestSuite(object):
         # now, solve forward kinematics
         res_forward = ik.forward(robot, res_backward.lengths)
 
-        nl, _ = robot.num_dimensions
+        nl, _ = robot.num_dimensionality
         kc: kinematicchain.KinematicChain
 
         assert res_forward.pose.linear.position \

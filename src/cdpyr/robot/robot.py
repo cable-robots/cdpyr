@@ -206,6 +206,12 @@ class Robot(RobotComponent):
         return self.num_kinematic_chains - self.num_dof
 
     @property
+    def num_dimensionality(self):
+        return list(map(max, zip(
+                *((platform.dof_translation, platform.dof_rotation)
+                  for platform in self.platforms))))
+
+    @property
     def platforms(self):
         return self._platforms
 

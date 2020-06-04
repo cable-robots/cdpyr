@@ -59,7 +59,7 @@ class Standard(_algorithm.Algorithm):
             estim_lengths, directions, _ = self._vector_loop(robot_, xpose_)
 
             # number of linear degrees of freedom
-            num_linear, _ = robot.num_dimensions
+            num_linear, _ = robot.num_dimensionality
             # strip additional spatial dimensions
             directions = directions[:, 0:num_linear]
 
@@ -169,7 +169,7 @@ class Standard(_algorithm.Algorithm):
         swivel = _np.arctan2(-directions[:, 1], -directions[:, 0])
 
         # number of linear degrees of freedom
-        num_linear, _ = robot.num_dimensions
+        num_linear, _ = robot.num_dimensionality
         # strip additional spatial dimensions
         directions = directions[:, 0:num_linear]
 
@@ -184,7 +184,7 @@ class Standard(_algorithm.Algorithm):
 
     def _vector_loop(self, robot: _robot.Robot, pose: _pose.Pose):
         # number of linear degrees of freedom
-        num_linear, _ = robot.num_dimensions
+        num_linear, _ = robot.num_dimensionality
         # cable vector
         cables = [] #_np.zeros((num_kinchains, num_linear))
         # cable leave points
