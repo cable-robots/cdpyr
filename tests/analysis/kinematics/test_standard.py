@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cdpyr.analysis.kinematics.standard import Standard as StandardKin
+from cdpyr.analysis.kinematics.standard import Standard as Kinematics
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import kinematicchain, Robot, sample
 
@@ -37,7 +37,7 @@ class StandardKinematicsBackwardTestSuite(object):
                       robot: Robot,
                       pose: _pose.Pose):
         # kinematics object
-        ik = StandardKin()
+        ik = Kinematics()
 
         # solve the inverse kinematics
         res_backward = ik.backward(robot, pose)
@@ -94,7 +94,7 @@ class StandardKinematicsBackwardTestSuite(object):
                      robot: Robot,
                      pose: _pose.Pose):
         # kinematics object
-        ik = StandardKin()
+        ik = Kinematics()
 
         # first, calculate cable lengths to run forward kinematics
         res_backward = ik.backward(robot, pose)
