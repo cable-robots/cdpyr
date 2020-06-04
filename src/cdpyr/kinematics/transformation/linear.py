@@ -36,6 +36,39 @@ class Linear(_transformation.Transformation):
             if acceleration is not None \
             else [0.0, 0.0, 0.0]
 
+    @staticmethod
+    def random(num: int = None, dim: int = 3):
+        """
+        Create random linear transformation objects.
+
+        Parameters
+        ----------
+        num : int
+            Number of random linear transformation objects to create.
+            Defaults to ``1``.
+        dim : int
+            Number of random dimensions. Maximum of 3 dimensions can be set, if
+            less than 3, the remaining dimensions are set to 0
+
+        Returns
+        -------
+        obj : Linear
+            Returns a single object instance or a generator over ``num``
+            objects if ``num > 1``.
+
+        """
+        # how many dimensions to pad
+        pad_dim = 3 - dim
+
+        # single object
+        if num is None or num == 1:
+            return Linear(position=np_.pad(2 * (np_.random.random(dim) - 0.5),
+                                           (0, pad_dim)))
+        else:
+            return (Linear(position=pos) for pos in
+                    np_.pad(2 * (np_.random.random((num, dim)) - 0.5),
+                            (0, pad_dim)))
+
     def apply(self, coordinates: Union[Vector, Matrix]):
         # deal only with numpy arrays
         coordinates = np_.asarray(coordinates)
