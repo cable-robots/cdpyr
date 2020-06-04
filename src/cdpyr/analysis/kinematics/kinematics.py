@@ -128,7 +128,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
         super().__init__(pose=pose, robot=robot, **kwargs)
         self._algorithm = algorithm
         lengths = _np.asarray(lengths)
-        self._lengths = lengths if lengths.ndim == 2 else lengths[None, :]
+        self._lengths = lengths if lengths.ndim == 2 else lengths[:, None]
         self._directions = _np.asarray(directions)
         self._swivel = _np.asarray(swivel) if swivel is not None else None
         self._wrap = _np.asarray(wrap) if wrap is not None else None
@@ -153,47 +153,49 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
             eye = _np.eye(3)
 
             # loop over each kinematic chain
-            for index_chain, chain in enumerate(self._robot.kinematic_chains):
+            for idxkc, kc in enumerate(self._robot.kinematic_chains):
                 # get frame anchor, platform, platform anchor, and cable
-                frame_anchor = self._robot.frame.anchors[chain.frame_anchor]
-                platform = self._robot.platforms[chain.platform]
-                platform_anchor = platform.anchors[chain.platform_anchor]
-                cable = self._robot.cables[chain.cable]
+                fanchor = self._robot.frame.anchors[kc.frame_anchor]
+                platform = self._robot.platforms[kc.platform]
+                panchor = platform.anchors[kc.platform_anchor]
+                # cable = self._robot.cables[kc.cable]
 
                 # get platform position and orientation
                 platform_pos, platform_dcm = self._pose.position
 
                 # absolute frame anchor coordinates
-                frame_anchor_coordinates = frame_anchor.linear.position
+                frame_anchor_coordinates = fanchor.linear.position
 
-                # transform platform anchor into its world coordinates
-                platform_anchor_coords = platform_pos + platform_dcm.dot(
-                        platform_anchor.linear.position)
+                # # transform platform anchor into its world coordinates
+                # platform_anchor_coords = platform_pos \
+                #                          + platform_dcm.dot(panchor.linear.position)
 
-                shapes[:, index_chain, 0:num - 1] = frame_anchor_coordinates[:,
-                                                    None]
+                shapes[:, idxkc, 0:num - 1] = frame_anchor_coordinates[:, None]
 
                 # first, the part on the drum
                 try:
                     # we discretize with a step of 2deg (should be fine)
-                    linspace_wrap = _np.linspace(0, self._wrap[index_chain],
-                                                 num=num - 1, endpoint=True)
+                    linspace_wrap = _np.linspace(0,
+                                                 self._wrap[idxkc],
+                                                 num=num - 1,
+                                                 endpoint=True)
 
                     # calculate shape on the pulley
-                    pulley_shape = _np.asarray([frame_anchor.pulley.radius * (
-                            eye - transform.dcm).dot(evec_x) for transform in
-                                                _angular.Angular.rotation_y(
-                                                        linspace_wrap)]).T
+                    pulley_shape = _np.asarray([
+                            fanchor.pulley.radius
+                            * (eye - transform.dcm).dot(evec_x)
+                            for transform
+                            in _angular.Angular.rotation_y(linspace_wrap)]).T
 
                     # pre-calculate and pre-gather some rotation matrices
                     cable_dcm = _angular.Angular.rotation_z(
-                            self._swivel[index_chain]).dcm
-                    pulley_dcm = frame_anchor.pulley.dcm
-                    frame_dcm = frame_anchor.dcm
+                            self._swivel[idxkc]).dcm
+                    pulley_dcm = fanchor.pulley.dcm
+                    frame_dcm = fanchor.dcm
 
                     # transform coordinates back into world coordinates and
                     # store
-                    shapes[:, index_chain, 0:num - 1] += frame_dcm.dot(
+                    shapes[:, idxkc, 0:num - 1] += frame_dcm.dot(
                             pulley_dcm.dot(cable_dcm.dot(pulley_shape)))
                 except (TypeError, KeyError, ValueError) as e:
                     pass
@@ -201,8 +203,8 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
             # the last step will be to close the loop from the cable leave point
             # to the platform anchor which we will append as a simple last point
             shapes[:, :, -1] = shapes[:, :, -2] \
-                               - self.workspace_length[None,
-                                 :] * self._directions
+                               - self.workspace_length[None, :] \
+                               * self._directions
             # cache result
             self._cable_shapes = shapes
 
@@ -275,12 +277,12 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
 
     @property
     def workspace_length(self):
-        return self._lengths[0, :]
+        return self._lengths[:, 0]
 
     @property
     def wrapped_length(self):
         try:
-            return self._lengths[1, :]
+            return self._lengths[:, 1]
         except IndexError:
             return None
 
