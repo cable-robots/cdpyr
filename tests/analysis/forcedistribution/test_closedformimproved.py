@@ -6,6 +6,9 @@ from cdpyr.analysis.kinematics.standard import Standard as StandardKinematics
 from cdpyr.motion.pose import Pose
 from cdpyr.robot import Robot
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class ClosedFormImprovedorceDistributionTestSuite(object):
 

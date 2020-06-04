@@ -1,7 +1,12 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 
 from cdpyr.validator.numeric import less_than_or_equal_to
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class LessThanOrEqualToTestSuite(object):

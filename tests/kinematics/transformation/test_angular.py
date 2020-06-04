@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import itertools
 
 import numpy as np
@@ -6,6 +8,9 @@ from scipy.spatial.transform import Rotation
 
 from cdpyr.kinematics.transformation import Angular
 from cdpyr.typing import Matrix, Vector
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class AngularTransformationTestSuite(object):

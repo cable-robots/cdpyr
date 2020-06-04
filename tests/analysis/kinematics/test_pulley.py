@@ -1,9 +1,14 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 
 from cdpyr.analysis.kinematics.pulley import Pulley as Kinematics
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import kinematicchain, Robot, sample
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class PulleyKinematicsBackwardTestSuite(object):

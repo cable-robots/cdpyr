@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 
@@ -10,6 +12,9 @@ from cdpyr.analysis.kinematics.kinematics import Algorithm as Kinematics
 from cdpyr.analysis import archetype
 from cdpyr.analysis.archetype.archetype import Archetype
 from cdpyr.robot import Robot
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class HullWorkspace3TTestSuite(object):

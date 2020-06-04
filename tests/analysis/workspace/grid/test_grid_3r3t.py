@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import itertools
 from typing import Union
 
@@ -18,6 +20,9 @@ from cdpyr.typing import (
     Num,
     Vector,
 )
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class GridWorkspace3R3TTestSuite(object):

@@ -1,6 +1,11 @@
+from __future__ import annotations
+
 import pytest
 
 from cdpyr.validator.linalg import shape
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class ShapeTestSuite(object):

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 
@@ -6,6 +8,9 @@ from cdpyr.analysis.structure_matrix.calculator import Calculator as \
     StructureMatrixCalculator
 from cdpyr.motion.pose import Pose
 from cdpyr.robot import Robot
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class StructureMatrixTestSuite(object):

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import itertools
 from typing import Union
 
@@ -10,6 +12,9 @@ from cdpyr.kinematics.transformation.homogenous import Homogenous
 from cdpyr.typing import (
     Vector
 )
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class HomogenousTransformationTestSuite(object):

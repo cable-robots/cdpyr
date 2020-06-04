@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import itertools
 
 import numpy as np
@@ -13,6 +15,9 @@ from cdpyr.analysis.archetype.archetype import Archetype
 from cdpyr.analysis import archetype
 from cdpyr.kinematics.transformation.angular import Angular
 from cdpyr.robot import Robot
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class HullWorkspace3R3TTestSuite(object):

@@ -1,9 +1,14 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 
 from cdpyr.kinematics.transformation import Angular, Linear
 from cdpyr.motion.pose import Pose
 from cdpyr.typing import Matrix, Vector
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class MotionPoseTestSuite(object):

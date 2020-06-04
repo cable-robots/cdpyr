@@ -1,7 +1,12 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 
 from cdpyr.validator.linalg import inertia_tensor
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class InertiaTensorTestSuite(object):

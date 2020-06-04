@@ -3,6 +3,9 @@ import pytest
 
 from cdpyr.validator.numeric import greater_than
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+
 
 class GreaterThanTestSuite(object):
 

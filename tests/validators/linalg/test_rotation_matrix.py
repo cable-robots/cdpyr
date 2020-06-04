@@ -1,7 +1,12 @@
+from __future__ import annotations
+
 import numpy as np
 import pytest
 
 from cdpyr.validator.linalg import rotation_matrix
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
 
 
 class RotationMatrixTestSuite(object):
