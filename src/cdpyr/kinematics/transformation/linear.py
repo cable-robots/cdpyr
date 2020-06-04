@@ -1,26 +1,31 @@
-from typing import Optional
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Linear',
+]
+
+from typing import Optional, Union
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.typing import Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
+from cdpyr.kinematics.transformation import transformation as _transformation
+from cdpyr.typing import Matrix, Vector
 
 
-class Linear(BaseObject):
-    _position: np_.ndarray = np_.asarray((0., 0., 0.))
-    _velocity: np_.ndarray = np_.asarray((0., 0., 0.))
-    _acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
+class Linear(_transformation.Transformation):
+    _position: np_.ndarray
+    _velocity: np_.ndarray
+    _acceleration: np_.ndarray
 
     def __init__(self,
                  position: Optional[Vector] = None,
                  velocity: Optional[Vector] = None,
-                 acceleration: Optional[Vector] = None
-                 ):
+                 acceleration: Optional[Vector] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.position = position \
             if position is not None \
             else [0.0, 0.0, 0.0]
@@ -30,6 +35,50 @@ class Linear(BaseObject):
         self.acceleration = acceleration \
             if acceleration is not None \
             else [0.0, 0.0, 0.0]
+
+    @staticmethod
+    def random(num: int = None, dim: int = 3):
+        """
+        Create random linear transformation objects.
+
+        Parameters
+        ----------
+        num : int
+            Number of random linear transformation objects to create.
+            Defaults to ``1``.
+        dim : int
+            Number of random dimensions. Maximum of 3 dimensions can be set, if
+            less than 3, the remaining dimensions are set to 0
+
+        Returns
+        -------
+        obj : Linear
+            Returns a single object instance or a generator over ``num``
+            objects if ``num > 1``.
+
+        """
+        # how many dimensions to pad
+        pad_dim = 3 - dim
+
+        # single object
+        if num is None or num == 1:
+            return Linear(position=np_.pad(2 * (np_.random.random(dim) - 0.5),
+                                           (0, pad_dim)))
+        else:
+            return (Linear(position=pos) for pos in
+                    np_.pad(2 * (np_.random.random((num, dim)) - 0.5),
+                            (0, pad_dim)))
+
+    def apply(self, coordinates: Union[Vector, Matrix]):
+        # deal only with numpy arrays
+        coordinates = np_.asarray(coordinates)
+
+        # check if we have a single coordinate
+        single = coordinates.ndim == 1
+
+        # return a single transformed coordinate, or all
+        return self.position + coordinates if single \
+            else self.position[:, None] + coordinates
 
     @property
     def position(self):
@@ -131,12 +180,7 @@ class Linear(BaseObject):
                      id(self.velocity)))
 
     __repr__ = make_repr(
-        'position',
-        'velocity',
-        'acceleration'
+            'position',
+            'velocity',
+            'acceleration'
     )
-
-
-__all__ = [
-    'Linear',
-]

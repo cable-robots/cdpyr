@@ -1,150 +1,136 @@
-# import sys
+import itertools
 from typing import Union
 
-# import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
 from cdpyr.analysis import (
     force_distribution,
-    workspace
+    workspace,
 )
-from cdpyr.analysis.kinematics.algorithm import Algorithm as Kinematics
-from cdpyr.analysis.workspace.archetype.archetype import Archetype
+from cdpyr.analysis.criterion import CableLength, Singularities, WrenchFeasible
+from cdpyr.analysis.kinematics.kinematics import Algorithm as Kinematics
+from cdpyr.analysis.archetype.archetype import Archetype
+from cdpyr.analysis import archetype
 from cdpyr.kinematics.transformation import Angular
 from cdpyr.robot import Robot
 from cdpyr.typing import (
     Num,
-    Vector
+    Vector,
 )
 
 
 class GridWorkspace3R3TTestSuite(object):
 
     @pytest.mark.parametrize(
-        ['archetype', 'lower_bound', 'upper_bound', 'steps'],
-        (
+            ['archetype', 'parallel', 'lower_bound', 'upper_bound', 'steps'],
             (
-                workspace.archetype.Translation(dcm),
-                [-1.0, -1.0, -1.0],
-                [1.0, 1.0, 1.0],
-                9
-            ) for dcm in (np.eye(3), Angular.rotation_z(np.random.random()).dcm)
-        )
+                    (
+                            archetype.Translation(dcm),
+                            parallel,
+                            [-1.0, -1.0, -1.0],
+                            [1.0, 1.0, 1.0],
+                            9,
+                    ) for dcm, parallel in
+            itertools.product((np.eye(3), Angular.random().dcm), (False, True))
+            )
     )
     def test_3r3t_cable_length(self,
                                robot_3r3t: Robot,
                                ik_standard: Kinematics,
                                archetype: Archetype,
+                               parallel: bool,
                                lower_bound: Union[Num, Vector],
                                upper_bound: Union[Num, Vector],
                                steps: Union[Num, Vector]):
+        robot = robot_3r3t
         # create the criterion
-        criterion = workspace.criterion.CableLength(ik_standard, [0.5, 1.5])
+        criterion = CableLength(ik_standard, np.asarray(
+                [0.50, 1.50]) * np.sqrt(3))
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(archetype,
+        calculator = workspace.grid.Algorithm(archetype,
                                               criterion,
                                               lower_bound,
                                               upper_bound,
                                               steps)
 
         # evaluate workspace
-        workspace_result = calculator.evaluate(robot_3r3t)
+        workspace_grid = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
     @pytest.mark.parametrize(
-        ['archetype', 'lower_bound', 'upper_bound', 'steps'],
-        (
+            ['archetype', 'parallel', 'lower_bound', 'upper_bound', 'steps'],
             (
-                workspace.archetype.Translation(dcm),
-                [-1.0, -1.0, -1.0],
-                [1.0, 1.0, 1.0],
-                9
-            ) for dcm in (np.eye(3), Angular.rotation_z(np.random.random()).dcm)
-        )
+                    (
+                            archetype.Translation(dcm),
+                            parallel,
+                            [-1.0, -1.0, -1.0],
+                            [1.0, 1.0, 1.0],
+                            9,
+                    ) for dcm, parallel in
+            itertools.product((np.eye(3), Angular.random().dcm), (False, True))
+            )
     )
     def test_3r3t_singularities(self,
                                 robot_3r3t: Robot,
                                 ik_standard: Kinematics,
                                 archetype: Archetype,
+                                parallel: bool,
                                 lower_bound: Union[Num, Vector],
                                 upper_bound: Union[Num, Vector],
                                 steps: Union[Num, Vector]):
+        robot = robot_3r3t
         # create the criterion
-        criterion = workspace.criterion.Singularities(ik_standard)
+        criterion = Singularities(ik_standard)
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(archetype,
+        calculator = workspace.grid.Algorithm(archetype,
                                               criterion,
                                               lower_bound,
                                               upper_bound,
                                               steps)
 
         # evaluate workspace
-        workspace_result = calculator.evaluate(robot_3r3t)
+        workspace_grid = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
     @pytest.mark.parametrize(
-        ['archetype', 'lower_bound', 'upper_bound', 'steps'],
-        (
+            ['archetype', 'parallel', 'lower_bound', 'upper_bound', 'steps'],
             (
-                workspace.archetype.Translation(dcm),
-                [-1.0, -1.0, -1.0],
-                [1.0, 1.0, 1.0],
-                9
-            ) for dcm in (np.eye(3), Angular.rotation_z(np.random.random()).dcm)
-        )
-    )
-    def test_3r3t_singularities(self,
-                                robot_3r3t: Robot,
-                                ik_standard: Kinematics,
-                                archetype: Archetype,
-                                lower_bound: Union[Num, Vector],
-                                upper_bound: Union[Num, Vector],
-                                steps: Union[Num, Vector]):
-        # create the criterion
-        criterion = workspace.criterion.Singularities(ik_standard)
-
-        # create the grid calculator object
-        calculator = workspace.GridCalculator(archetype,
-                                              criterion,
-                                              lower_bound,
-                                              upper_bound,
-                                              steps)
-
-        # evaluate workspace
-        workspace_result = calculator.evaluate(robot_3r3t)
-
-    @pytest.mark.parametrize(
-        ['archetype', 'lower_bound', 'upper_bound', 'steps'],
-        (
-            (
-                workspace.archetype.Translation(dcm),
-                [-1.0, -1.0, -1.0],
-                [1.0, 1.0, 1.0],
-                9
-            ) for dcm in (np.eye(3), Angular.rotation_z(np.random.random()).dcm)
-        )
+                    (
+                            archetype.Translation(dcm),
+                            parallel,
+                            [-1.0, -1.0, -1.0],
+                            [1.0, 1.0, 1.0],
+                            9,
+                    ) for dcm, parallel in
+            itertools.product((np.eye(3), Angular.random().dcm), (False, True))
+            )
     )
     def test_3r3t_wrench_feasible(self,
                                   robot_3r3t: Robot,
                                   ik_standard: Kinematics,
                                   archetype: Archetype,
+                                  parallel: bool,
                                   lower_bound: Union[Num, Vector],
                                   upper_bound: Union[Num, Vector],
                                   steps: Union[Num, Vector]):
+        robot = robot_3r3t
         # create the criterion
-        criterion = workspace.criterion.WrenchFeasible(
-            force_distribution.ClosedFormImproved(ik_standard, 1, 10), -1)
+        criterion = WrenchFeasible(
+                force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the grid calculator object
-        calculator = workspace.GridCalculator(archetype,
+        calculator = workspace.grid.Algorithm(archetype,
                                               criterion,
                                               lower_bound,
                                               upper_bound,
                                               steps)
 
         # evaluate workspace
-        workspace_result = calculator.evaluate(robot_3r3t)
+        workspace_grid = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
 
 if __name__ == "__main__":

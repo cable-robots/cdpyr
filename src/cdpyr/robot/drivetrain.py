@@ -1,28 +1,27 @@
+from __future__ import annotations
+
 from typing import Optional
 
 from magic_repr import make_repr
 
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.robot import (
-    drum as __drum,
-    gearbox as __gearbox,
-    motor as __motor,
-)
+from cdpyr.robot import drum as _drum, gearbox as _gearbox, motor as _motor
+from cdpyr.robot.robot_component import RobotComponent
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class DriveTrain(BaseObject):
-    gearbox: '__gearbox.Gearbox'
-    drum: '__drum.Drum'
-    motor: '__motor.Motor'
+class Drivetrain(RobotComponent):
+    gearbox: _gearbox.Gearbox
+    drum: _drum.Drum
+    motor: _motor.Motor
 
     def __init__(self,
-                 drum: Optional['__drum.Drum'] = None,
-                 motor: Optional['__motor.Motor'] = None,
-                 gearbox: Optional['__gearbox.Gearbox'] = None
-                 ):
+                 drum: Optional[_drum.Drum] = None,
+                 motor: Optional[_motor.Motor] = None,
+                 gearbox: Optional[_gearbox.Gearbox] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.drum = drum or None
         self.motor = motor or None
         self.gearbox = gearbox or None
@@ -45,12 +44,12 @@ class DriveTrain(BaseObject):
         return hash((self.drum, self.gearbox, self.motor))
 
     __repr__ = make_repr(
-        'motor',
-        'gearbox',
-        'drum'
+            'motor',
+            'gearbox',
+            'drum'
     )
 
 
 __all__ = [
-    'DriveTrain',
+        'Drivetrain',
 ]

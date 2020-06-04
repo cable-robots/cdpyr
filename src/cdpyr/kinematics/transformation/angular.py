@@ -1,26 +1,23 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Angular',
+]
+
 import re
-from typing import (
-    AnyStr,
-    Optional,
-    Union
-)
+from typing import AnyStr, Optional, Union
 
 import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.typing import (
-    Matrix,
-    Num,
-    Vector
-)
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
+from cdpyr.kinematics.transformation import transformation as _transformation
+from cdpyr.typing import Matrix, Num, Vector
 
 
-class Angular(BaseObject):
+class Angular(_transformation.Transformation):
     """
     A kinematic angular transformation object.
 
@@ -32,24 +29,19 @@ class Angular(BaseObject):
     Attributes
     ----------
     sequence : AnyStr
-
-    dcm : ndarray
-
-    quaternion : ndarray
-
-    rotvec : ndarray
-
-    euler : ndaray
-
-    angular_velocity : ndarray
-
-    angular_acceleration : ndarray
+        Orientation sequence used when converting the angular transformation
+        into Euler angles.
     """
 
-    _quaternion: Vector = np_.asarray([0.0, 0.0, 0.0, 1.0])
-    _angular_velocity: np_.ndarray = np_.asarray((0., 0., 0.))
-    _angular_acceleration: np_.ndarray = np_.asarray((0., 0., 0.))
-    sequence: AnyStr = 'xyz'
+    _quaternion: Vector
+
+    _angular_velocity: np_.ndarray
+
+    _angular_acceleration: np_.ndarray
+
+    sequence: AnyStr
+
+    TAIT_BRYAN = 'xyz'
 
     _AXIS_TO_IND = {'x': 0, 'y': 1, 'z': 2}
 
@@ -60,60 +52,66 @@ class Angular(BaseObject):
                  quaternion: Optional[Vector] = None,
                  rotvec: Optional[Vector] = None,
                  euler: Optional[Vector] = None,
-                 sequence: Optional[AnyStr] = None
-                 ):
+                 sequence: Optional[AnyStr] = None,
+                 degrees: bool = False,
+                 **kwargs):
         """
         Parameters
         ----------
-        euler : iterable or (3, ) ndarray, optional
+        euler : Iterable | ``(3, )`` ndarray, optional
             Euler angles of the rotation. Interpreted according to the value of
-            ``rotation_sequence``
-        quaternion : iterable or (4, ) ndarray, optional
+            ``sequence``.
+        quaternion : Iterable | ``(4, )`` ndarray, optional
             Quaternion representation of the rotation in scalar-last notation.
-        dcm : iterable or (3, 3) ndarray, optional
+        dcm : Iterable | ``(3, 3)`` ndarray, optional
             Conventional rotation matrix representation of the rotation
-        rotvec : iterable or (3, ) ndarray, optional
+        rotvec : Iterable | ``(3, )`` ndarray, optional
             A rotation vector is a 3 dimensional vector which is
             co-directional to the axis of rotation and whose norm gives the
             angle of rotation (in radians)
-        angular_velocity : iterable or (3, ) ndarray, optional
+        angular_velocity : Iterable | ``(3, )`` ndarray, optional
             Angular velocity at the current instance as give in the local
-            coordinate system. Defaults to [0., 0., 0.]
-        angular_acceleration : iterable or (3, ) ndarray, optional
+            coordinate system. Defaults to ``[0., 0., 0.]``
+        angular_acceleration : Iterable | ``(3, )`` ndarray, optional
             Angular acceleration as given in the local coordinate system.
             Defaults to [0., 0., 0.]
         sequence : AnyStr
             Valid rotation sequences to instantiate the object with. Refers
-            to the Euler extrinsic or intrinsic parameter. Defaults to 'zyx'
+            to the Euler extrinsic | intrinsic parameter. Defaults to ``zyx``
+        degrees : bool
+            Boolean flag whether euler angles are given in radians (
+            ``False``) or degree (``True``). Defaults to ``False``.
 
         See Also
         --------
-        scipy.spatial.transform.Rotation: Underlying implementation of the
-        rotation object
+        scipy.spatial.transform.Rotation:
+            Underlying implementation of the rotation object
         """
+
+        super().__init__(**kwargs)
 
         # by default, we will have an extrinsic rotation about [x,y,z] given
         # as [a,b,c] so that it is Rz(c) * Ry(b) * Rx(a)
-        self.sequence = sequence or 'xyz'
+        self.sequence = sequence or Angular.TAIT_BRYAN
         if euler is not None \
-            and quaternion is None \
-            and dcm is None \
-            and rotvec is None:
-            self.euler = euler
-        elif euler is None \
-            and quaternion is not None \
-            and dcm is None \
-            and rotvec is None:
+                and quaternion is None \
+                and dcm is None \
+                and rotvec is None:
+            self.euler = np_.deg2rad(euler) if degrees else euler
+        elif quaternion is not None \
+                and euler is None \
+                and dcm is None \
+                and rotvec is None:
             self.quaternion = quaternion
-        elif euler is None \
-            and quaternion is None \
-            and dcm is not None \
-            and rotvec is None:
+        elif dcm is not None \
+                and euler is None \
+                and quaternion is None \
+                and rotvec is None:
             self.dcm = dcm
-        elif euler is None \
-            and quaternion is None \
-            and dcm is None \
-            and rotvec is not None:
+        elif rotvec is not None \
+                and euler is None \
+                and quaternion is None \
+                and dcm is None:
             self.rotvec = rotvec
         else:
             self.quaternion = [0.0, 0.0, 0.0, 1.0]
@@ -127,11 +125,27 @@ class Angular(BaseObject):
 
     @staticmethod
     def random(num: int = None):
-        if num is None:
+        """
+        Create random angular transformation objects.
+
+        Parameters
+        ----------
+        num : int
+            Number of random angular transformation objects to create.
+            Defaults to ``1``.
+
+        Returns
+        -------
+        obj : Angular
+            Returns a single object instance or a generator over ``num``
+            objects if ``num > 1``.
+
+        """
+        if num is None or num == 1:
             return Angular(quaternion=np_.random.random(4))
         else:
             return (Angular(quaternion=quaternion) for quaternion in
-                    np_.random.random((num, 4)))
+                    np_.random.random((np_.floor(num), 4)))
 
     @staticmethod
     def rotation_x(angle: Union[Num, Vector], degree: bool = False):
@@ -193,9 +207,14 @@ class Angular(BaseObject):
             # create a generator object
             return (Angular(sequence='z', euler=[a]) for a in angle)
 
+    def apply(self, coordinates: Union[Vector, Matrix]):
+        # return a single transformed coordinate, or all
+        return self.dcm.dot(coordinates)
+
     @property
     def euler(self):
-        """Represent as Euler angles.
+        """
+        Represent as Euler angles.
 
         Any orientation can be expressed as a composition of 3 elementary
         rotations. Once the axis sequence has been chosen, Euler angles define
@@ -218,13 +237,10 @@ class Angular(BaseObject):
             Adjacent axes cannot be the same.
             Extrinsic and intrinsic rotations cannot be mixed in one function
             call.
-        degrees : boolean, optional
-            Returned angles are in degrees if this flag is True, else they are
-            in radians. Default is False.
 
         Returns
         -------
-        angles : ndarray, shape (3,) or (N, 3)
+        angles : ndarray, shape (3,)
             Shape depends on shape of inputs used to initialize object.
             The returned angles are in the range:
 
@@ -238,8 +254,7 @@ class Angular(BaseObject):
 
         References
         ----------
-        .. [1] https://en.wikipedia.org/wiki/Euler_angles
-        #Definition_by_intrinsic_rotations
+        .. [1] https://en.wikipedia.org/wiki/Euler_angles#Definition_by_intrinsic_rotations
         .. [2] Malcolm D. Shuster, F. Landis Markley, "General formula for
                extraction the Euler angles", Journal of guidance, control, and
                dynamics, vol. 29.1, pp. 215-221. 2006
@@ -288,18 +303,33 @@ class Angular(BaseObject):
         extrinsic = (re.match(r'^[xyz]{1,3}$', seq) is not None)
         if not (intrinsic or extrinsic):
             raise ValueError(
-                f'Expected axes from `seq` to be from [`x`, `y`, `z`] or ['
-                f'`X`, `Y`, `Z`], got `{seq}` instead.')
+                    f'Expected axes from `seq` to be from [`x`, `y`, `z`] or ['
+                    f'`X`, `Y`, `Z`], got `{seq}` instead.')
 
         if any(seq[i] == seq[i + 1] for i in range(2)):
             raise ValueError(
-                f'Expected consecutive axes to be different, got `{seq}` '
-                f'instead.')
+                    f'Expected consecutive axes to be different, got `{seq}` '
+                    f'instead.')
 
         return self._compute_euler_from_dcm(self.dcm, seq.lower(), extrinsic)
 
     @euler.setter
     def euler(self, angles: Vector):
+        """
+        Initialize from Euler angles
+
+        Parameters
+        ----------
+        angles : Num | Vector
+            Scalar or iterable of up to 3 elements where each angle
+            represents a rotation about the corresponding axis as defined in
+            the objects ``sequence`` attribute.
+
+        Returns
+        -------
+
+        """
+
         angles = np_.asarray(angles)
         if angles.ndim == 0:
             angles = np_.asarray([angles])
@@ -307,99 +337,6 @@ class Angular(BaseObject):
         _validator.linalg.dimensions(angles, 1, 'euler')
         _validator.linalg.shape(angles, (len(self.sequence),), 'euler')
 
-        """Initialize from Euler angles.
-
-        Rotations in 3 dimensions can be represented by a sequece of 3
-        rotations around a sequence of axes. In theory, any three axes spanning
-        the 3D Euclidean space are enough. In practice the axes of rotation are
-        chosen to be the basis vectors.
-
-        The three rotations can either be in a global frame of reference
-        (extrinsic) or in a body centred frame of refernce (intrinsic), which
-        is attached to, and moves with, the object under rotation [1]_.
-
-        Parameters
-        ----------
-        seq : string
-            Specifies sequence of axes for rotations. Up to 3 characters
-            belonging to the set {'X', 'Y', 'Z'} for intrinsic rotations, or
-            {'x', 'y', 'z'} for extrinsic rotations. Extrinsic and intrinsic
-            rotations cannot be mixed in one function call.
-        angles : float or array_like, shape (N,) or (N, [1 or 2 or 3])
-            Euler angles specified in radians (`degrees` is False) or degrees
-            (`degrees` is True).
-            For a single character `seq`, `angles` can be:
-
-            - a single value
-            - array_like with shape (N,), where each `angle[i]`
-              corresponds to a single rotation
-            - array_like with shape (N, 1), where each `angle[i, 0]`
-              corresponds to a single rotation
-
-            For 2- and 3-character wide `seq`, `angles` can be:
-
-            - array_like with shape (W,) where `W` is the width of
-              `seq`, which corresponds to a single rotation with `W` axes
-            - array_like with shape (N, W) where each `angle[i]`
-              corresponds to a sequence of Euler angles describing a single
-              rotation
-
-        degrees : bool, optional
-            If True, then the given angles are assumed to be in degrees.
-            Default is False.
-
-        Returns
-        -------
-        rotation : `Rotation` instance
-            Object containing the rotation represented by the sequence of
-            rotations around given axes with given angles.
-
-        References
-        ----------
-        .. [1] https://en.wikipedia.org/wiki/Euler_angles
-        #Definition_by_intrinsic_rotations
-
-        Examples
-        --------
-        >>> from scipy.spatial.transform import Rotation as R
-
-        Initialize a single rotation along a single axis:
-
-        >>> r = R.from_euler('x', 90, degrees=True)
-        >>> r.as_quat().shape
-        (4,)
-
-        Initialize a single rotation with a given axis sequence:
-
-        >>> r = R.from_euler('zyx', [90, 45, 30], degrees=True)
-        >>> r.as_quat().shape
-        (4,)
-
-        Initialize a stack with a single rotation around a single axis:
-
-        >>> r = R.from_euler('x', [90], degrees=True)
-        >>> r.as_quat().shape
-        (1, 4)
-
-        Initialize a stack with a single rotation with an axis sequence:
-
-        >>> r = R.from_euler('zyx', [[90, 45, 30]], degrees=True)
-        >>> r.as_quat().shape
-        (1, 4)
-
-        Initialize multiple elementary rotations in one object:
-
-        >>> r = R.from_euler('x', [90, 45, 30], degrees=True)
-        >>> r.as_quat().shape
-        (3, 4)
-
-        Initialize multiple rotations in one object:
-
-        >>> r = R.from_euler('zyx', [[90, 45, 30], [35, 45, 90]], degrees=True)
-        >>> r.as_quat().shape
-        (2, 4)
-
-        """
         # get configured sequence
         seq = self.sequence
 
@@ -409,21 +346,21 @@ class Angular(BaseObject):
         # ensure we have between 1 and 3 axes to deal with
         if num_axes < 1 or num_axes > 3:
             raise ValueError(
-                f'Expected axis specification to be a non-empty string of '
-                f'up to 3 characters, got `{seq}` instead')
+                    f'Expected axis specification to be a non-empty string of '
+                    f'up to 3 characters, got `{seq}` instead')
 
         # figure out if user requested intrinsic or extrinsic orientation
         intrinsic = (re.match(r'^[XYZ]{1,3}$', seq) is not None)
         extrinsic = (re.match(r'^[xyz]{1,3}$', seq) is not None)
         if not (intrinsic or extrinsic):
             raise ValueError(
-                f'Expected axes from `seq` to be from [`x`, `y`, `z`] or ['
-                f'`X`, `Y`, `Z`], got `{seq}` instead.')
+                    f'Expected axes from `seq` to be from [`x`, `y`, `z`] or ['
+                    f'`X`, `Y`, `Z`], got `{seq}` instead.')
 
         if any(seq[i] == seq[i + 1] for i in range(num_axes - 1)):
             raise ValueError(
-                f'Expected consecutive axes to be different, got `{seq}` '
-                f'instead.')
+                    f'Expected consecutive axes to be different, got `{seq}` '
+                    f'instead.')
 
         # and store the quaternion inside
         self._quaternion = self._elementary_quat_compose(seq.lower(), angles,
@@ -435,6 +372,14 @@ class Angular(BaseObject):
 
     @property
     def dcm(self):
+        """
+        Orientation matrix for the angular transformation
+
+        Returns
+        -------
+        dcm : Matrix
+
+        """
         # unpack quaternion
         x, y, z, w = self.quaternion
 
@@ -453,19 +398,19 @@ class Angular(BaseObject):
         xw = x * w
 
         return np_.asarray((
-            (
-                x2 - y2 - z2 + w2,
-                2 * (xy - zw),
-                2 * (xz + yw),
-            ), (
-                2 * (xy + zw),
-                - x2 + y2 - z2 + w2,
-                2 * (yz - xw)
-            ), (
-                2 * (xz - yw),
-                2 * (yz + xw),
-                - x2 - y2 + z2 + w2
-            )
+                (
+                        x2 - y2 - z2 + w2,
+                        2 * (xy - zw),
+                        2 * (xz + yw),
+                ), (
+                        2 * (xy + zw),
+                        - x2 + y2 - z2 + w2,
+                        2 * (yz - xw)
+                ), (
+                        2 * (xz - yw),
+                        2 * (yz + xw),
+                        - x2 - y2 + z2 + w2
+                )
         ))
 
     @dcm.setter
@@ -591,7 +536,7 @@ class Angular(BaseObject):
         if self is other:
             return True
 
-        return np_.allclose(self.quaternion, other.quaternion) \
+        return np_.isclose(np_.abs(self.quaternion.dot(other.quaternion)), 1) \
                and np_.allclose(self.angular_velocity, other.angular_velocity) \
                and np_.allclose(self.angular_acceleration,
                                 other.angular_acceleration)
@@ -620,8 +565,8 @@ class Angular(BaseObject):
         return (self.euler <= other.euler).any() \
                or (self.angular_velocity <= other.angular_velocity).any() \
                or (
-                   self.angular_acceleration <=
-                   other.angular_acceleration).any()
+                       self.angular_acceleration <=
+                       other.angular_acceleration).any()
 
     def __gt__(self, other):
         if not isinstance(other, self.__class__):
@@ -644,8 +589,8 @@ class Angular(BaseObject):
         return (self.euler >= other.euler).any() \
                or (self.angular_velocity >= other.angular_velocity).any() \
                or (
-                   self.angular_acceleration >=
-                   other.angular_acceleration).any()
+                       self.angular_acceleration >=
+                       other.angular_acceleration).any()
 
     def __hash__(self):
         return hash((id(self.angular_acceleration),
@@ -692,9 +637,9 @@ class Angular(BaseObject):
 
         # Step 3
         rot = np_.array([
-            [1, 0, 0],
-            [0, cl, sl],
-            [0, -sl, cl],
+                [1, 0, 0],
+                [0, cl, sl],
+                [0, -sl, cl],
         ])
         res = np_.einsum('...ij,...jk->...ik', c, dcm)
         dcm_transformed = np_.einsum('...ij,...jk->...ik', res, c.T.dot(rot))
@@ -730,13 +675,17 @@ class Angular(BaseObject):
             angles[~safe_mask, 0] = 0
             # 6b
             angles[~safe1, 2] = np_.arctan2(
-                dcm_transformed[~safe1, 1, 0] - dcm_transformed[~safe1, 0, 1],
-                dcm_transformed[~safe1, 0, 0] + dcm_transformed[~safe1, 1, 1]
+                    dcm_transformed[~safe1, 1, 0] - dcm_transformed[
+                        ~safe1, 0, 1],
+                    dcm_transformed[~safe1, 0, 0] + dcm_transformed[
+                        ~safe1, 1, 1]
             )
             # 6c
             angles[~safe2, 2] = -np_.arctan2(
-                dcm_transformed[~safe2, 1, 0] + dcm_transformed[~safe2, 0, 1],
-                dcm_transformed[~safe2, 0, 0] - dcm_transformed[~safe2, 1, 1]
+                    dcm_transformed[~safe2, 1, 0] + dcm_transformed[
+                        ~safe2, 0, 1],
+                    dcm_transformed[~safe2, 0, 0] - dcm_transformed[
+                        ~safe2, 1, 1]
             )
         else:
             # For instrinsic, set third angle to zero
@@ -744,13 +693,17 @@ class Angular(BaseObject):
             angles[~safe_mask, 2] = 0
             # 6b
             angles[~safe1, 0] = np_.arctan2(
-                dcm_transformed[~safe1, 1, 0] - dcm_transformed[~safe1, 0, 1],
-                dcm_transformed[~safe1, 0, 0] + dcm_transformed[~safe1, 1, 1]
+                    dcm_transformed[~safe1, 1, 0] - dcm_transformed[
+                        ~safe1, 0, 1],
+                    dcm_transformed[~safe1, 0, 0] + dcm_transformed[
+                        ~safe1, 1, 1]
             )
             # 6c
             angles[~safe2, 0] = np_.arctan2(
-                dcm_transformed[~safe2, 1, 0] + dcm_transformed[~safe2, 0, 1],
-                dcm_transformed[~safe2, 0, 0] - dcm_transformed[~safe2, 1, 1]
+                    dcm_transformed[~safe2, 1, 0] + dcm_transformed[
+                        ~safe2, 0, 1],
+                    dcm_transformed[~safe2, 0, 0] - dcm_transformed[
+                        ~safe2, 1, 1]
             )
 
         # Step 7
@@ -776,8 +729,8 @@ class Angular(BaseObject):
         # Step 8
         if not np_.all(safe_mask):
             raise RuntimeWarning(
-                'Gimbal lock detected. Setting third angle to zero since it '
-                'is not possible to uniquely determine all angles.')
+                    'Gimbal lock detected. Setting third angle to zero since '
+                    'it is not possible to uniquely determine all angles.')
 
         # Reverse role of extrinsic and intrinsic rotations, but let third
         # angle be
@@ -807,22 +760,17 @@ class Angular(BaseObject):
         for idx, axis in enumerate(seq[1:], start=1):
             if intrinsic:
                 result = self._compose_quat(
-                    result,
-                    self._make_elementary_quat(axis, angles[idx]))
+                        result,
+                        self._make_elementary_quat(axis, angles[idx]))
             else:
                 result = self._compose_quat(
-                    self._make_elementary_quat(axis, angles[idx]),
-                    result)
+                        self._make_elementary_quat(axis, angles[idx]),
+                        result)
         return result
 
     __repr__ = make_repr(
-        'dcm',
-        'angular_velocity',
-        'angular_acceleration',
-        'sequence'
+            'dcm',
+            'angular_velocity',
+            'angular_acceleration',
+            'sequence'
     )
-
-
-__all__ = [
-    'Angular',
-]

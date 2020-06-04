@@ -3,7 +3,7 @@ from typing import Union
 
 import pytest
 
-from cdpyr.motion.pose import generator
+from cdpyr.motion import pose
 from cdpyr.typing import (
     Num,
     Vector
@@ -29,7 +29,7 @@ class PoseGeneratorTranslationTestSuite(object):
                                end: Vector,
                                steps: Union[Num, Vector]):
         # get a pose generator
-        actual_poses = generator.translation(start, end, steps=steps)
+        actual_poses = pose.PoseGenerator.translation(start, end, steps=steps)
 
 
 if __name__ == "__main__":

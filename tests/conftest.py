@@ -2,657 +2,18 @@ import numpy as np
 import pytest
 
 import cdpyr
+from cdpyr.robot import sample as robots
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
-
-@pytest.fixture
-def robot_1t():
-    return cdpyr.robot.Robot(
-        name="Sample 1T robot",
-        frame=cdpyr.robot.Frame(
-            anchors=[
-                cdpyr.robot.FrameAnchor(
-                    position=[-1., 0., 0.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1., 0., 0.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-            ]
-        ),
-        platforms=[
-            cdpyr.robot.Platform(
-                motion_pattern=cdpyr.motion.pattern.MP_1T,
-                anchors=[
-                    cdpyr.robot.PlatformAnchor(),
-                    cdpyr.robot.PlatformAnchor()
-                ]
-            ),
-        ],
-        cables=[
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-        ],
-        kinematic_chains=[
-            {
-                'frame_anchor':    0,
-                'platform':        0,
-                'platform_anchor': 0,
-                'cable':           0
-            },
-            {
-                'frame_anchor':    1,
-                'platform':        0,
-                'platform_anchor': 1,
-                'cable':           1
-            },
-        ],
-    )
-
-
-@pytest.fixture
-def robot_2t():
-    return cdpyr.robot.Robot(
-        name="Sample 2T robot",
-        frame=cdpyr.robot.Frame(
-            anchors=[
-                cdpyr.robot.FrameAnchor(
-                    position=[-1., 1., 0.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1., 1., 0.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[0., -1., 0.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-            ]
-        ),
-        platforms=[
-            cdpyr.robot.Platform(
-                motion_pattern=cdpyr.motion.pattern.MP_2T,
-                anchors=[
-                    cdpyr.robot.PlatformAnchor(),
-                    cdpyr.robot.PlatformAnchor(),
-                    cdpyr.robot.PlatformAnchor(),
-                ]
-            ),
-        ],
-        cables=[
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-        ],
-        kinematic_chains=[
-            {
-                'frame_anchor':    0,
-                'platform':        0,
-                'platform_anchor': 0,
-                'cable':           0
-            },
-            {
-                'frame_anchor':    1,
-                'platform':        0,
-                'platform_anchor': 1,
-                'cable':           1
-            },
-            {
-                'frame_anchor':    2,
-                'platform':        0,
-                'platform_anchor': 2,
-                'cable':           2
-            },
-        ],
-    )
-
-
-@pytest.fixture
-def robot_3t():
-    return cdpyr.robot.Robot(
-        name="Sample 3T robot",
-        frame=cdpyr.robot.Frame(
-            anchors=[
-                cdpyr.robot.FrameAnchor(
-                    position=[-1., 1., 1.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1., 1., 1.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[0., -1., 1.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-            ]
-        ),
-        platforms=[
-            cdpyr.robot.Platform(
-                motion_pattern=cdpyr.motion.pattern.MP_3T,
-                anchors=[
-                    cdpyr.robot.PlatformAnchor(),
-                    cdpyr.robot.PlatformAnchor(),
-                    cdpyr.robot.PlatformAnchor(),
-                ]
-            ),
-        ],
-        cables=[
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-        ],
-        kinematic_chains=[
-            {
-                'frame_anchor':    0,
-                'platform':        0,
-                'platform_anchor': 0,
-                'cable':           0
-            },
-            {
-                'frame_anchor':    1,
-                'platform':        0,
-                'platform_anchor': 1,
-                'cable':           1
-            },
-            {
-                'frame_anchor':    2,
-                'platform':        0,
-                'platform_anchor': 2,
-                'cable':           2
-            },
-        ],
-    )
-
-
-@pytest.fixture
-def robot_1r2t():
-    return cdpyr.robot.Robot(
-        name="Sample 1R2T robot",
-        frame=cdpyr.robot.Frame(
-            anchors=[
-                cdpyr.robot.FrameAnchor(
-                    position=[-1., 1., 0.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1., 1., 0.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1., -1., 0.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[-1., -1., 0.],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-            ]
-        ),
-        platforms=[
-            cdpyr.robot.Platform(
-                motion_pattern=cdpyr.motion.pattern.MP_1R2T,
-                anchors=[
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.1, 0.1, 0.],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.1, 0.1, 0.],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.1, -0.1, 0.],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.1, -0.1, 0.],
-                    ),
-                ],
-            ),
-        ],
-        cables=[
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-        ],
-        kinematic_chains=[
-            {
-                'frame_anchor':    0,
-                'platform':        0,
-                'platform_anchor': 0,
-                'cable':           0
-            },
-            {
-                'frame_anchor':    1,
-                'platform':        0,
-                'platform_anchor': 1,
-                'cable':           1
-            },
-            {
-                'frame_anchor':    2,
-                'platform':        0,
-                'platform_anchor': 2,
-                'cable':           2
-            },
-            {
-                'frame_anchor':    3,
-                'platform':        0,
-                'platform_anchor': 3,
-                'cable':           3
-            },
-        ],
-    )
-
-
-@pytest.fixture
-def robot_2r3t():
-    return cdpyr.robot.Robot(
-        name="Sample 2R3T robot",
-        frame=cdpyr.robot.Frame(
-            anchors=[
-                cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, 1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, 1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, 1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, 1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, -1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, -1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, -1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, -1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-            ]
-        ),
-        platforms=[
-            cdpyr.robot.Platform(
-                motion_pattern=cdpyr.motion.pattern.MP_2R3T,
-                anchors=[
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.01, 0.01, 0.1],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.01, 0.01, 0.1],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.01, -0.01, 0.1],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.01, -0.01, 0.1],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.01, 0.01, -0.1],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.01, 0.01, -0.1],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.01, -0.01, -0.1],
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.01, -0.01, -0.1],
-                    ),
-                ]
-            )
-        ],
-        cables=[
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-        ],
-        kinematic_chains=[
-            {
-                'frame_anchor':    0,
-                'platform':        0,
-                'platform_anchor': 4,
-                'cable':           0
-            },
-            {
-                'frame_anchor':    1,
-                'platform':        0,
-                'platform_anchor': 5,
-                'cable':           1
-            },
-            {
-                'frame_anchor':    2,
-                'platform':        0,
-                'platform_anchor': 6,
-                'cable':           2
-            },
-            {
-                'frame_anchor':    3,
-                'platform':        0,
-                'platform_anchor': 7,
-                'cable':           3
-            },
-            {
-                'frame_anchor':    4,
-                'platform':        0,
-                'platform_anchor': 0,
-                'cable':           4
-            },
-            {
-                'frame_anchor':    5,
-                'platform':        0,
-                'platform_anchor': 1,
-                'cable':           5
-            },
-            {
-                'frame_anchor':    6,
-                'platform':        0,
-                'platform_anchor': 2,
-                'cable':           6
-            },
-            {
-                'frame_anchor':    7,
-                'platform':        0,
-                'platform_anchor': 3,
-                'cable':           7
-            },
-        ],
-    )
-
-
-@pytest.fixture
-def robot_3r3t():
-    return cdpyr.robot.Robot(
-        name="Sample 3R3T robot",
-        frame=cdpyr.robot.Frame(
-            anchors=[
-                cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, 1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, 1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, 1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, 1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[-1.0, 1.0, -1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1.0, 1.0, -1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[1.0, -1.0, -1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-                cdpyr.robot.FrameAnchor(
-                    position=[-1.0, -1.0, -1.0],
-                    angular=cdpyr.kinematics.transformation.Angular.random(),
-                ),
-            ]
-        ),
-        platforms=[
-            cdpyr.robot.Platform(
-                motion_pattern=cdpyr.motion.pattern.MP_3R3T,
-                anchors=[
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.1, 0.1, 0.1]
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.1, 0.1, 0.1]
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.1, -0.1, 0.1]
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.1, -0.1, 0.1]
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.1, 0.1, -0.1]
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.1, 0.1, -0.1]
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[0.1, -0.1, -0.1]
-                    ),
-                    cdpyr.robot.PlatformAnchor(
-                        position=[-0.1, -0.1, -0.1]
-                    ),
-                ]
-            )
-        ],
-        cables=[
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-            cdpyr.robot.Cable(
-                name="Dyneema",
-                material="Liros D-Pro SK78",
-                diameter=6 / 1000,
-                color="red"
-            ),
-        ],
-        kinematic_chains=[
-            {
-                'frame_anchor':    0,
-                'platform':        0,
-                'platform_anchor': 0,
-                'cable':           0
-            },
-            {
-                'frame_anchor':    1,
-                'platform':        0,
-                'platform_anchor': 1,
-                'cable':           1
-            },
-            {
-                'frame_anchor':    2,
-                'platform':        0,
-                'platform_anchor': 2,
-                'cable':           2
-            },
-            {
-                'frame_anchor':    3,
-                'platform':        0,
-                'platform_anchor': 3,
-                'cable':           3
-            },
-            {
-                'frame_anchor':    4,
-                'platform':        0,
-                'platform_anchor': 4,
-                'cable':           4
-            },
-            {
-                'frame_anchor':    5,
-                'platform':        0,
-                'platform_anchor': 5,
-                'cable':           5
-            },
-            {
-                'frame_anchor':    6,
-                'platform':        0,
-                'platform_anchor': 6,
-                'cable':           6
-            },
-            {
-                'frame_anchor':    7,
-                'platform':        0,
-                'platform_anchor': 7,
-                'cable':           7
-            },
-        ],
-    )
+robot_1t = pytest.fixture(robots.robot_1t, name='robot_1t')
+robot_2t = pytest.fixture(robots.robot_2t, name='robot_2t')
+robot_3t = pytest.fixture(robots.robot_3t, name='robot_3t')
+robot_1r2t = pytest.fixture(robots.robot_1r2t, name='robot_1r2t')
+robot_2r3t = pytest.fixture(robots.robot_2r3t, name='robot_2r3t')
+robot_3r3t = pytest.fixture(robots.robot_3r3t, name='robot_3r3t')
+ipanema_3 = pytest.fixture(robots.ipanema_3, name='ipanema_3')
 
 
 @pytest.fixture
@@ -683,8 +44,11 @@ def rand_rot_1r():
 
 @pytest.fixture
 def rand_rot_2r():
-    return cdpyr.kinematics.transformation.Angular(sequence='xy', euler=np.pi * (
-        np.random.random(2) - 0.5)).dcm
+    return cdpyr.kinematics.transformation.Angular(sequence='xy',
+                                                   euler=np.pi * (
+                                                           np.random.random(
+                                                                   2) -
+                                                           0.5)).dcm
 
 
 @pytest.fixture
@@ -703,45 +67,46 @@ def unit_rot():
 
 
 @pytest.fixture
-def empty_pose():
-    return cdpyr.motion.Pose()
+def zero_pose():
+    return cdpyr.motion.pose.ZeroPose
 
 
 @pytest.fixture
 def rand_pose_1t(rand_pos_1t, unit_rot):
-    return cdpyr.motion.Pose(rand_pos_1t, unit_rot)
+    return cdpyr.motion.pose.Pose(rand_pos_1t, unit_rot)
 
 
 @pytest.fixture
 def rand_pose_2t(rand_pos_2t, unit_rot):
-    return cdpyr.motion.Pose(rand_pos_2t, unit_rot)
+    return cdpyr.motion.pose.Pose(rand_pos_2t, unit_rot)
 
 
 @pytest.fixture
 def rand_pose_3t(rand_pos_3t, unit_rot):
-    return cdpyr.motion.Pose(rand_pos_3t, unit_rot)
+    return cdpyr.motion.pose.Pose(rand_pos_3t, unit_rot)
 
 
 @pytest.fixture
 def rand_pose_1r2t(rand_pos_2t, rand_rot_1r):
-    return cdpyr.motion.Pose(rand_pos_2t, rand_rot_1r)
+    return cdpyr.motion.pose.Pose(rand_pos_2t, rand_rot_1r)
 
 
 @pytest.fixture
 def rand_pose_2r3t(rand_pos_3t, rand_rot_2r):
-    return cdpyr.motion.Pose(rand_pos_3t, rand_rot_2r)
+    return cdpyr.motion.pose.Pose(rand_pos_3t, rand_rot_2r)
 
 
 @pytest.fixture
 def rand_pose_3r3t(rand_pos_3t, rand_rot_3r):
-    return cdpyr.motion.Pose(rand_pos_3t, rand_rot_3r)
+    return cdpyr.motion.pose.Pose(rand_pos_3t, rand_rot_3r)
 
 
 @pytest.fixture
 def rand_pose_3d(rand_pos_3t, rand_rot_3r):
-    return cdpyr.motion.Pose(rand_pos_3t, rand_rot_3r)
+    return cdpyr.motion.pose.Pose(rand_pos_3t, rand_rot_3r)
 
 
-@pytest.fixture
-def ik_standard():
-    return cdpyr.analysis.kinematics.Standard()
+ik_standard = pytest.fixture(lambda: cdpyr.analysis.kinematics.Standard(),
+                             name='ik_standard')
+ik_pulley = pytest.fixture(lambda: cdpyr.analysis.kinematics.Pulley(),
+                           name='ik_pulley')

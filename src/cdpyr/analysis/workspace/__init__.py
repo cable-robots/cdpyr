@@ -1,22 +1,20 @@
-from cdpyr.analysis.workspace import archetype, criterion
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'grid',
+        'hull',
+        'Hull',
+        'HullResult',
+        'Grid',
+        'GridResult',
+]
 
+from cdpyr.analysis.workspace import grid, hull
 from cdpyr.analysis.workspace.grid import (
-    Calculator as GridCalculator,
+    Algorithm as Grid,
     Result as GridResult,
 )
 from cdpyr.analysis.workspace.hull import (
-    Calculator as HullCalculator,
+    Algorithm as Hull,
     Result as HullResult,
 )
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
-
-__all__ = [
-    'archetype',
-    'criterion',
-    'GridCalculator',
-    'GridResult',
-    'HullResult',
-    'HullCalculator'
-]

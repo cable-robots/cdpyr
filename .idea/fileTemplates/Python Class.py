@@ -1,15 +1,12 @@
-#set( $CAMEL_NAME = ${StringUtils.removeAndHump(${NAME}, "_.")} )
+#parse('header.py')
 
-#parse ("DefaultVariables.py")
-__author__ = "${FULLNAME}"
-__email__ = "${FULLEMAIL}"
-__copyright__ = "${COPYRIGHT}"
-__license__ = "${LICENSE}"
+#set( $CLASS_NAME = ${StringUtils.removeAndHump(${NAME}, "_.")} )
 
-class ${CAMEL_NAME}(object):
-    pass
+class $CLASS_NAME(object):
+    def __init__(self, *args, **kwargs):
+        pass
 
 
 __all__ = [
-    '${CAMEL_NAME}',
+    '$CLASS_NAME'
 ]

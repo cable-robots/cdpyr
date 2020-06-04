@@ -1,28 +1,33 @@
-import numpy as _np
-from marshmallow import Schema, fields, post_load
+from __future__ import annotations
 
-from cdpyr.motion.pose import pose as _pose, poselist as _pose_list
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'PoseSchema',
+]
+
+from marshmallow import fields, post_load
+
+from cdpyr.motion import pose as _pose
+from cdpyr.schema import fields as custom_fields
 from cdpyr.schema.kinematics.transformation import (
     angular as _angular,
     linear as _linear,
 )
-from cdpyr.stream.marshmallow import fields as custom_fields
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
+from cdpyr.schema.schema import Schema
 
 
 class PoseSchema(Schema):
     time = custom_fields.numpy.Numpy(
-        missing=None
+            missing=None
     )
     linear = fields.Nested(
-        _linear.LinearSchema,
-        missing=None
+            _linear.LinearSchema,
+            missing=None
     )
     angular = fields.Nested(
-        _angular.AngularSchema,
-        missing=None
+            _angular.AngularSchema,
+            missing=None
     )
 
     __model__ = _pose.Pose
@@ -30,12 +35,7 @@ class PoseSchema(Schema):
     @post_load(pass_many=True)
     def make_object(self, data, many, **kwargs):
         if many:
-            return _pose_list.PoseList(
-                (self.make_object(each, False) for each in data))
+            return _pose.PoseList((self.make_object(each, False)
+                                   for each in data))
         else:
             return self.__model__(**data)
-
-
-__all__ = [
-    'PoseSchema',
-]

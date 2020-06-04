@@ -1,10 +1,9 @@
-from cdpyr.visualization.matplotlib import Matplotlib
-from cdpyr.visualization.plotly import Plotly
-
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
-
 __all__ = [
-    'Matplotlib',
-    'Plotly',
+        'engine',
+        'Visualizer'
 ]
+
+from cdpyr.visualization import engine
+from cdpyr.visualization.visualizer import Visualizer

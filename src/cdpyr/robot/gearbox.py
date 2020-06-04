@@ -1,24 +1,29 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Gearbox',
+]
+
 from typing import Optional
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
-
-class Gearbox(BaseObject):
+class Gearbox(RobotComponent):
     inertia: Num
     ratio: Num
 
     def __init__(self,
                  ratio: Optional[Num] = None,
-                 inertia: Optional[Num] = None
-                 ):
+                 inertia: Optional[Num] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.ratio = ratio or 1
         self.inertia = inertia or np_.Inf
 
@@ -39,11 +44,6 @@ class Gearbox(BaseObject):
         return hash((self.inertia, self.ratio))
 
     __repr__ = make_repr(
-        'ratio',
-        'inertia'
+            'ratio',
+            'inertia'
     )
-
-
-__all__ = [
-    'Gearbox',
-]

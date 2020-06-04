@@ -1,24 +1,24 @@
-import numpy as _np
-
-from cdpyr.analysis.force_distribution import (
-    algorithm as _algorithm,
-)
-from cdpyr.motion.pose import pose as _pose
-from cdpyr.robot import robot as _robot
-from cdpyr.typing import (
-    Matrix,
-    Vector
-)
+from __future__ import annotations
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'ClosedForm',
+]
+
+import numpy as _np
+
+from cdpyr.analysis.force_distribution import force_distribution as _algorithm
+from cdpyr.motion import pose as _pose
+from cdpyr.robot import robot as _robot
+from cdpyr.typing import Matrix, Vector
 
 
 class ClosedForm(_algorithm.Algorithm):
 
     def _evaluate(self,
-                  robot: '_robot.Robot',
-                  pose: '_pose.Pose',
+                  robot: _robot.Robot,
+                  pose: _pose.Pose,
                   structure_matrix: Matrix,
                   wrench: Vector,
                   force_min: Vector,
@@ -33,15 +33,6 @@ class ClosedForm(_algorithm.Algorithm):
             force_mean = 0.5 * (force_max + force_min)
             # and distribution
             distribution = force_mean - _np.linalg.pinv(structure_matrix).dot(
-                wrench + structure_matrix.dot(force_mean))
+                    wrench + structure_matrix.dot(force_mean))
 
-        return {
-            'pose':   pose,
-            'wrench': wrench,
-            'forces': distribution,
-        }
-
-
-__all__ = [
-    'ClosedForm',
-]
+        return _algorithm.Result(self, pose, distribution, wrench)

@@ -1,109 +1,101 @@
-# import sys
-
-# import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
 from cdpyr.analysis import (
     force_distribution,
-    workspace
+    workspace,
 )
-from cdpyr.analysis.kinematics.algorithm import Algorithm as Kinematics
-from cdpyr.analysis.workspace.archetype.archetype import Archetype
-from cdpyr.kinematics.transformation import Angular
+from cdpyr.analysis.criterion import Singularities, CableLength, WrenchFeasible
+from cdpyr.analysis.kinematics.kinematics import Algorithm as Kinematics
+from cdpyr.analysis import archetype
+from cdpyr.analysis.archetype.archetype import Archetype
 from cdpyr.robot import Robot
 
 
 class HullWorkspace3TTestSuite(object):
 
     @pytest.mark.parametrize(
-        ['archetype'],
-        (
+            ['archetype', 'parallel'],
             (
-                [workspace.archetype.Translation(dcm)]
-            ) for dcm in (np.eye(3), Angular.random().dcm)
-        )
+                    (
+                            archetype.Translation(np.eye(3)),
+                            parallel,
+                    ) for parallel in (False, True)
+            )
     )
     def test_3t_cable_length(self,
                              robot_3t: Robot,
                              ik_standard: Kinematics,
-                             archetype: Archetype):
+                             archetype: Archetype,
+                             parallel: bool):
+        robot = robot_3t
         # create the criterion
-        criterion = workspace.criterion.CableLength(ik_standard, [0.5, 1.5])
+        criterion = CableLength(ik_standard, np.asarray(
+                [0.5, 1.5]) * np.sqrt(3))
 
         # create the hull calculator object
-        calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+        calculator = workspace.hull.Algorithm(archetype,
+                                              criterion,
+                                              center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_result = calculator.evaluate(robot_3t)
+        workspace_hull = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
     @pytest.mark.parametrize(
-        ['archetype'],
-        (
+            ['archetype', 'parallel'],
             (
-                [workspace.archetype.Translation(dcm)]
-            ) for dcm in (np.eye(3), Angular.random().dcm)
-        )
+                    (
+                            archetype.Translation(np.eye(3)),
+                            parallel,
+                    ) for parallel in (False, True)
+            )
     )
     def test_3t_singularities(self,
                               robot_3t: Robot,
                               ik_standard: Kinematics,
-                              archetype: Archetype):
+                              archetype: Archetype,
+                              parallel: bool):
+        robot = robot_3t
         # create the criterion
-        criterion = workspace.criterion.Singularities(ik_standard)
+        criterion = Singularities(ik_standard)
 
         # create the hull calculator object
-        calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+        calculator = workspace.hull.Algorithm(archetype,
+                                              criterion,
+                                              center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_result = calculator.evaluate(robot_3t)
+        workspace_hull = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
     @pytest.mark.parametrize(
-        ['archetype'],
-        (
+            ['archetype', 'parallel'],
             (
-                [workspace.archetype.Translation(dcm)]
-            ) for dcm in (np.eye(3), Angular.random().dcm)
-        )
-    )
-    def test_3t_singularities(self,
-                              robot_3t: Robot,
-                              ik_standard: Kinematics,
-                              archetype: Archetype):
-        # create the criterion
-        criterion = workspace.criterion.Singularities(ik_standard)
-
-        # create the hull calculator object
-        calculator = workspace.HullCalculator(archetype,
-                                              criterion)
-
-        # evaluate workspace
-        workspace_result = calculator.evaluate(robot_3t)
-
-    @pytest.mark.parametrize(
-        ['archetype'],
-        (
-            (
-                [workspace.archetype.Translation(dcm)]
-            ) for dcm in (np.eye(3), Angular.random().dcm)
-        )
+                    (
+                            archetype.Translation(np.eye(3)),
+                            parallel,
+                    ) for parallel in (False, True)
+            )
     )
     def test_3t_wrench_feasible(self,
                                 robot_3t: Robot,
                                 ik_standard: Kinematics,
-                                archetype: Archetype):
+                                archetype: Archetype,
+                                parallel: bool):
+        robot = robot_3t
         # create the criterion
-        criterion = workspace.criterion.WrenchFeasible(
-            force_distribution.ClosedFormImproved(ik_standard, 1, 10), -1)
+        criterion = WrenchFeasible(
+                force_distribution.ClosedFormImproved(ik_standard, 1, 10))
 
         # create the hull calculator object
-        calculator = workspace.HullCalculator(archetype,
-                                              criterion)
+        calculator = workspace.hull.Algorithm(archetype,
+                                              criterion,
+                                              center=[0.0, 0.0, 0.0])
 
         # evaluate workspace
-        workspace_result = calculator.evaluate(robot_3t)
+        workspace_hull = calculator.evaluate(robot, parallel=parallel,
+                                             verbose=20)
 
 
 if __name__ == "__main__":

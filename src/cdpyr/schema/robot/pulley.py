@@ -1,35 +1,39 @@
-from marshmallow import Schema, fields, post_load
-
-from cdpyr.robot import pulley as _pulley
-from cdpyr.schema.geometry import geometry as _geometry
-from cdpyr.schema.mechanics import inertia as _inertia
+from __future__ import annotations
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'PulleySchema',
+]
+
+from marshmallow import fields, post_load
+
+from cdpyr.robot import pulley as _pulley
+from cdpyr.schema.mechanics import inertia as _inertia
+from cdpyr.schema.schema import Schema
 
 
 class PulleySchema(Schema):
-    geometry = fields.Nested(
-        _geometry.GeometrySchema,
-        missing=None
+    radius = fields.Float(
+            required=True
     )
     inertia = fields.Nested(
-        _inertia.InertiaSchema,
-        missing=None
+            _inertia.InertiaSchema,
+            missing=None
     )
     dcm = fields.Tuple(
-        (
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
+            (
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    ),
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    ),
+                    fields.Tuple(
+                            (fields.Float(), fields.Float(), fields.Float())
+                    )
             ),
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
-            ),
-            fields.Tuple(
-                (fields.Float(), fields.Float(), fields.Float())
-            )
-        ),
-        missing=None
+            missing=None
     )
 
     __model__ = _pulley.Pulley
@@ -37,8 +41,3 @@ class PulleySchema(Schema):
     @post_load
     def make_object(self, data, **kwargs):
         return self.__model__(**data)
-
-
-__all__ = [
-    'PulleySchema',
-]

@@ -1,46 +1,61 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Platform',
+        'PlatformList',
+        'PlatformAnchor',
+        'PlatformAnchorList',
+]
+
 import itertools
 from collections import UserList
-from typing import Optional, Sequence, Tuple, Union
+from typing import List, Optional, Sequence, Union
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
-from cdpyr.geometry import geometry as _geometry
+from cdpyr.geometry import primitive as _geometry
+from cdpyr.kinematics.transformation import (
+    angular as _angular,
+    linear as _linear,
+)
 from cdpyr.mechanics import inertia as _inertia
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.motion import pose as _pose
-from cdpyr.motion.pattern import pattern as _motion_pattern
-from cdpyr.robot.anchor import platform_anchor as _platform_anchor
-from cdpyr.typing import Matrix, Num, Vector
+from cdpyr.motion import pattern as _pattern, pose as _pose
+from cdpyr.robot.anchor import Anchor, AnchorList
+from cdpyr.robot.robot_component import RobotComponent
+from cdpyr.typing import (
+    Matrix,
+    Num,
+    Vector,
+)
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
-
-class Platform(BaseObject):
-    _anchors: '_platform_anchor.PlatformAnchorList'
-    _center_of_gravity: 'np_.ndarray'
-    _center_of_linkage: 'np_.ndarray'
-    geometry: '_geometry.Geometry'
-    inertia: '_inertia.Inertia'
-    motion_pattern: '_motion_pattern.MotionPattern'
+class Platform(RobotComponent):
+    _anchors: PlatformAnchorList
+    _center_of_gravity: np_.ndarray
+    _center_of_linkage: np_.ndarray
+    geometry: _geometry.Primitive
+    inertia: _inertia.Inertia
+    motion_pattern: _pattern.Pattern
     name: str
-    pose: '_pose.Pose'
+    pose: _pose.Pose
 
     def __init__(self,
-                 motion_pattern: '_motion_pattern.Pattern',
+                 motion_pattern: _pattern.Pattern,
                  anchors: Optional[Union[
-                     '_platform_anchor.PlatformAnchorList',
-                     Sequence['_platform_anchor.PlatformAnchor']
+                     PlatformAnchorList,
+                     Sequence[PlatformAnchor]
                  ]] = None,
-                 inertia: Optional['_inertia.Inertia'] = None,
+                 inertia: Optional[_inertia.Inertia] = None,
                  center_of_gravity: Optional[Vector] = None,
                  center_of_linkage: Optional[Vector] = None,
                  name: str = None,
-                 pose: '_pose.Pose' = None,
-                 geometry: '_geometry.Geometry' = None
-                 ):
+                 pose: _pose.Pose = None,
+                 geometry: _geometry.Primitive = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.anchors = anchors or []
         self.center_of_gravity = center_of_gravity or [0.0, 0.0, 0.0]
         self.center_of_linkage = center_of_linkage or [0.0, 0.0, 0.0]
@@ -57,10 +72,10 @@ class Platform(BaseObject):
     @anchors.setter
     def anchors(self,
                 anchors: Union[
-                    '_platform_anchor.PlatformAnchorList',
-                    Sequence['_platform_anchor.PlatformAnchor']
+                    PlatformAnchorList,
+                    Sequence[PlatformAnchor]
                 ]):
-        self._anchors = _platform_anchor.PlatformAnchorList(anchors)
+        self._anchors = PlatformAnchorList(anchors)
 
     @anchors.deleter
     def anchors(self):
@@ -76,7 +91,7 @@ class Platform(BaseObject):
 
     @property
     def bi(self):
-        return np_.vstack([anchor.position for anchor in self.anchors]).T
+        return np_.asarray([anchor.position for anchor in self.anchors])
 
     @property
     def can_rotate(self):
@@ -154,17 +169,16 @@ class Platform(BaseObject):
     def num_anchors(self):
         return len(self._anchors)
 
-    def wrench(self,
-               pose: '_pose.Pose' = None,
-               gravity: Optional[Union[Num, Vector]] = None):
+    def gravitational_wrench(self,
+                             pose: _pose.Pose = None,
+                             gravity: Optional[Union[Num, Vector]] = None):
         # get rotation matrix from the given or internal pose
         dcm = (pose if pose is not None else self.pose).angular.dcm
 
         # pass down to the motion pattern for handling
-        return self.motion_pattern.wrench(self.inertia.linear,
-                                          self.motion_pattern.gravity(gravity),
-                                          dcm,
-                                          self.center_of_gravity)
+        return self.motion_pattern.gravitational_wrench(
+                self.inertia.linear, self.motion_pattern.gravity(gravity), dcm,
+                self.center_of_gravity)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -196,16 +210,17 @@ class Platform(BaseObject):
                      self.pose))
 
     __repr__ = make_repr(
-        'anchors',
-        'center_of_gravity',
-        'center_of_linkage',
-        'inertia',
-        'motion_pattern',
-        'pose',
+            'anchors',
+            'center_of_gravity',
+            'center_of_linkage',
+            'inertia',
+            'motion_pattern',
+            'pose',
     )
 
 
-class PlatformList(UserList, BaseObject):
+class PlatformList(UserList, RobotComponent):
+    data: List[Platform]
 
     @property
     def all_combinations(self):
@@ -255,12 +270,33 @@ class PlatformList(UserList, BaseObject):
     def __ne__(self, other):
         return not self == other
 
+    def __hash__(self):
+        return hash(tuple(self.data))
+
     __repr__ = make_repr(
-        'data'
+            'data'
     )
 
 
-__all__ = [
-    'Platform',
-    'PlatformList',
-]
+class PlatformAnchor(Anchor):
+
+    def __init__(self,
+                 position: Optional[Vector] = None,
+                 dcm: Optional[Matrix] = None,
+                 linear: Optional[_linear.Linear] = None,
+                 angular: Optional[_angular.Angular] = None,
+                 **kwargs):
+        super().__init__(position=position,
+                         dcm=dcm,
+                         linear=linear,
+                         angular=angular,
+                         **kwargs)
+
+    __repr__ = make_repr(
+            'position',
+            'dcm'
+    )
+
+
+class PlatformAnchorList(AnchorList, RobotComponent):
+    data: List[PlatformAnchor]

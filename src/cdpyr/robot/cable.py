@@ -1,61 +1,48 @@
-from collections import UserList
-from typing import AnyStr, Optional, Sequence, Union
+from __future__ import annotations
 
-import numpy as np_
+from collections import UserList
+from typing import AnyStr, Dict, List, Optional, Union
+
+import numpy as _np
 from colour import Color
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
-from cdpyr.typing import Num
+from cdpyr.robot.robot_component import RobotComponent
+from cdpyr.typing import Num, Vector
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
 
 
-class Cable(BaseObject):
+class Cable(RobotComponent):
     breaking_load: Num
     _color: Color
+    density: Num
     diameter: Num
+    _lengths: Dict[AnyStr, Num]
     material: AnyStr
-    _modulus: dict
+    _modulus: Dict[AnyStr, Vector]
     name: AnyStr
 
     def __init__(self,
                  name: Optional[AnyStr] = None,
                  material: Optional[AnyStr] = None,
-                 modulus: Optional[dict] = None,
+                 modulus: Optional[Dict[AnyStr, Vector]] = None,
                  diameter: Optional[Num] = None,
                  color: Optional[Union[AnyStr, Color]] = None,
-                 breaking_load: Optional[Num] = None
-                 ):
-        """ Base cable class that represents a rigid, elastic, viscous,
-        or viscoelastic cable object.
-
-        :rtype: Cable
-        :param AnyStr name: Optional string representing a human-readable
-        name of
-        the cable
-        :param AnyStr material: Optional string representing a human-readable
-        name of the cable's material
-        :param dict modulus: Optional dictionary mapping of elastic and viscous
-        modulus of the cable. Contains the case-sensitive fields `elasticities`
-        and `viscosities`
-        :param float diameter: Optional float representing the cable's
-        diameter in SI
-        unit [ m ] (Meter)
-        :param AnyStr|Color color: Optional string or Color object representing
-        the object's color. Used mostly for visualizing the cable correctly.
-        :param float|np_.Infinity breaking_load: Optional float or
-        np_.Infinity representing the cable's rated breaking load. Set to
-        `np_.Infinity` if the cable is like steel.
-        """
+                 breaking_load: Optional[Num] = None,
+                 density: Num = None,
+                 lengths: Dict[AnyStr, Num] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.name = name or 'default'
         self.material = material or 'default'
         self.modulus = modulus or {}
         self.diameter = diameter or 0
         self.color = color or 'red'
-        self.breaking_load = breaking_load or np_.Infinity
+        self.breaking_load = breaking_load or _np.Infinity
+        self.density = density or _np.Infinity
+        self.lengths = lengths or {}
 
     @property
     def color(self):
@@ -73,15 +60,21 @@ class Cable(BaseObject):
         del self._color
 
     @property
+    def lengths(self):
+        return self._lengths
+
+    @lengths.setter
+    def lengths(self, lengths: Dict[AnyStr, Num]):
+        self._lengths = {**{'min': 0, 'max': _np.Infinity}, **lengths};
+
+    @property
     def modulus(self):
         return self._modulus
 
     @modulus.setter
-    def modulus(self, modulus: dict):
-        default = {'elasticities': None, 'viscosities': None}
-        modulus = modulus or {}
-
-        self._modulus = {**default, **modulus}
+    def modulus(self, modulus: Dict[AnyStr, Vector]):
+        self._modulus = {**{'elasticities': None, 'viscosities': None},
+                         **modulus}
 
     @modulus.deleter
     def modulus(self):
@@ -89,13 +82,12 @@ class Cable(BaseObject):
 
     @property
     def elasticities(self):
-        try:
-            return self._modulus['elasticities']
-        except KeyError:
-            return None
+        return self._modulus['elasticities']
 
     @elasticities.setter
-    def elasticities(self, elasticities: Sequence[Num]):
+    def elasticities(self, elasticities: Vector):
+        if elasticities is not None:
+            elasticities = _np.asarray(elasticities)
         self.modulus['elasticities'] = elasticities
 
     @elasticities.deleter
@@ -104,13 +96,12 @@ class Cable(BaseObject):
 
     @property
     def viscosities(self):
-        try:
-            return self._modulus['viscosities']
-        except KeyError:
-            return None
+        return self._modulus['viscosities']
 
     @viscosities.setter
-    def viscosities(self, viscosities: Sequence[Num]):
+    def viscosities(self, viscosities: Vector):
+        if viscosities is not None:
+            viscosities = _np.asarray(viscosities)
         self.modulus['viscosities'] = viscosities
 
     @viscosities.deleter
@@ -143,16 +134,18 @@ class Cable(BaseObject):
                      self.name))
 
     __repr__ = make_repr(
-        'name',
-        'material',
-        'diameter',
-        'modulus',
-        'color',
-        'breaking_load',
+            'name',
+            'material',
+            'diameter',
+            'lengths',
+            'modulus',
+            'color',
+            'breaking_load',
     )
 
 
-class CableList(UserList, BaseObject):
+class CableList(UserList, RobotComponent):
+    data: List[Cable]
 
     @property
     def name(self):
@@ -202,11 +195,11 @@ class CableList(UserList, BaseObject):
         return hash(tuple(self.data))
 
     __repr__ = make_repr(
-        'data'
+            'data'
     )
 
 
 __all__ = [
-    'Cable',
-    'CableList',
+        'Cable',
+        'CableList',
 ]

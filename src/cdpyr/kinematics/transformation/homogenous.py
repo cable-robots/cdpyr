@@ -1,25 +1,33 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Homogenous',
+]
+
 from typing import Optional, Union
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.kinematics.transformation import (
+    angular as _angular,
+    linear as _linear,
+    transformation as _transformation,
+)
 from cdpyr.typing import Matrix, Vector
-from cdpyr.kinematics.transformation import angular as _angular, linear as _linear
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
-class Homogenous(BaseObject):
-    linear: '_linear.Linear'
-    angular: '_angular.Angular'
+class Homogenous(_transformation.Transformation):
+    linear: _linear.Linear
+    angular: _angular.Angular
 
     def __init__(self,
                  translation: Optional[Vector] = None,
-                 dcm: Optional[Matrix] = None
-                 ):
+                 dcm: Optional[Matrix] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         # init internal variables
         self.linear = _linear.Linear()
         self.angular = _angular.Angular()
@@ -27,17 +35,26 @@ class Homogenous(BaseObject):
         self.translation = translation if translation is not None else [0, 0, 0]
         self.dcm = dcm if dcm is not None else np_.eye(3)
 
-    @property
-    def translation(self):
-        return self.linear.position
+    def apply(self, coordinates: Union[Vector, Matrix]):
+        # deal only with numpy arrays
+        coordinates = np_.asarray(coordinates)
 
-    @translation.setter
-    def translation(self, translation: Vector):
-        self.linear.position = np_.asarray(translation)
+        # check if we have a single coordinate
+        single = coordinates.ndim == 1
 
-    @translation.deleter
-    def translation(self):
-        del self.linear
+        # ensure coordinates is a 3xM array
+        if single:
+            coordinates = coordinates[:, np_.newaxis]
+
+        # stack coordinates above a row of `1`
+        coordinates = np_.vstack(
+                (coordinates, np_.ones(tuple([1]) + coordinates.shape[1:])))
+
+        # first, apply the transformation
+        transformed = self.matrix.dot(coordinates)
+
+        # return whatever we have
+        return transformed[0:3, 0] if single else transformed[0:3, :]
 
     @property
     def dcm(self):
@@ -53,43 +70,28 @@ class Homogenous(BaseObject):
 
     @property
     def matrix(self):
-        return np_.vstack(
-            (
-                np_.hstack(
-                    (
+        return np_.vstack((
+                np_.hstack((
                         self.dcm,
-                        self.translation[:, np_.newaxis]
-                    ),
+                        self.translation[:, np_.newaxis]),
                 ),
-                np_.hstack(
-                    (
+                np_.hstack((
                         np_.zeros((3,)),
-                        1
-                    ),
-                )
-            ),
+                        1),
+                )),
         )
 
-    def apply(self, coordinates: Union[Vector, Matrix]):
-        # deal only with numpy arrays
-        coordinates = np_.asarray(coordinates)
+    @property
+    def translation(self):
+        return self.linear.position
 
-        # check if we have a single coordinate
-        single = coordinates.ndim == 1
+    @translation.setter
+    def translation(self, translation: Vector):
+        self.linear.position = np_.asarray(translation)
 
-        # ensure coordinates is a 3xM array
-        if single:
-            coordinates = coordinates[:, np_.newaxis]
-
-        # stack coordinates above a row of `1`
-        coordinates = np_.vstack(
-            (coordinates, np_.ones(tuple([1]) + coordinates.shape[1:])))
-
-        # First, apply the transformation
-        transformed = self.matrix.dot(coordinates)
-
-        # Return whatever we have
-        return transformed[0:3,0] if single else transformed[0:3,:]
+    @translation.deleter
+    def translation(self):
+        del self.linear
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -108,11 +110,6 @@ class Homogenous(BaseObject):
         return hash((id(self.dcm), id(self.translation)))
 
     __repr__ = make_repr(
-        'translation',
-        'dcm',
+            'translation',
+            'dcm',
     )
-
-
-__all__ = [
-    'Homogenous',
-]

@@ -1,30 +1,32 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Xml',
+]
+
 from collections import OrderedDict
-from typing import (
-    AnyStr,
-    Sequence,
-    Tuple,
-    Union
-)
+from typing import AnyStr, Mapping, Sequence, Tuple, Union
 
 import xmltodict
 
-from cdpyr.robot import RobotComponent
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.stream.parser import parser as _parser
 
 
 class Xml(_parser.Parser):
+    EXT = 'xml'
 
     def kwargs(self, o: RobotComponent, **kwargs):
-        return super().kwargs(o, root=o.__class__.__name__, **kwargs)
+        return super().kwargs(o, root=o.__class__.__name__.lower(), **kwargs)
 
-    def dumps(self, d: Union[OrderedDict, dict],
-              *args,
-              **kwargs) -> AnyStr:
+    def dumps(self, d: Union[OrderedDict, Mapping], *args, **kwargs) -> AnyStr:
         return xmltodict.unparse({kwargs.get('root', 'root'): d}, pretty=True)
 
-    def loads(self, s: AnyStr, *args, **kwargs) -> Union[OrderedDict, dict]:
+    def loads(self, s: AnyStr, *args, **kwargs) -> Union[OrderedDict, Mapping]:
         # first, parse from XML to dictionary
-        d = xmltodict.parse(s, force_list={'dcm'}, disable_entities=False,
+        d = xmltodict.parse(s, force_list=('dcm'),
                             postprocessor=self._postprocessing)
         # then, since there always must be a root object in XML, we will
         # strip this off the dictionary from here
@@ -51,8 +53,8 @@ class Xml(_parser.Parser):
         #     new_value = new_value.split(',')
 
         if value is not None and (
-            ',' in value or isinstance(value, Sequence) and not isinstance(
-            value, str)):
+                ',' in value or isinstance(value, Sequence) and not isinstance(
+                value, str)):
             if ',' in value:
                 value = value.split(',')
             try:

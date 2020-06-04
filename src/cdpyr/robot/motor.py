@@ -1,32 +1,38 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Motor',
+]
+
 from typing import AnyStr, Dict, Optional
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr import validator as _validator
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
-
-class Motor(BaseObject):
+class Motor(RobotComponent):
     inertia: Num
     rated_power: Num
     rated_speed: Num
-    _torques: dict
+    _torques: Dict[AnyStr, Num]
 
     def __init__(self,
-                 torques: Optional[Dict[AnyStr, float]] = None,
+                 torques: Optional[Dict[AnyStr, Num]] = None,
                  inertia: Optional[Num] = None,
                  rated_speed: Optional[Num] = None,
-                 rated_power: Optional[Num] = None):
+                 rated_power: Optional[Num] = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.torques = {
-            'stall': None,
-            'peak':  None,
-            'rated': None,
-            'rms':   None
+                'stall': None,
+                'peak':  None,
+                'rated': None,
+                'rms':   None
         }
 
         self.torques = torques or {}
@@ -39,11 +45,16 @@ class Motor(BaseObject):
         return self._torques
 
     @torques.setter
-    def torques(self, torques: dict):
-        default = {'stall': None, 'peak': None, 'rated': None, 'rms': None}
-        torques = torques or {}
-
-        self._torques = {**default, **torques}
+    def torques(self, torques: Dict[AnyStr, Num]):
+        self._torques = {
+                **{
+                        'stall': None,
+                        'peak':  None,
+                        'rated': None,
+                        'rms':   None
+                },
+                **torques
+        }
 
     @torques.deleter
     def torques(self):
@@ -131,13 +142,8 @@ class Motor(BaseObject):
                      self.torques))
 
     __repr__ = make_repr(
-        'torques',
-        'rated_power',
-        'rated_speed',
-        'inertia'
+            'torques',
+            'rated_power',
+            'rated_speed',
+            'inertia'
     )
-
-
-__all__ = [
-    'Motor',
-]

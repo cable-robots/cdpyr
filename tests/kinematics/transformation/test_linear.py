@@ -1,314 +1,63 @@
-from typing import Sequence
+import itertools
 
 import numpy as np
 import pytest
 
-import cdpyr
+from cdpyr.kinematics.transformation import Linear
+from cdpyr.typing import Matrix, Vector
 
 
 class LinearTransformationTestSuite(object):
 
-    def test_empty_object(self):
-        linear = cdpyr.kinematics.transformation.Linear()
+    @pytest.mark.parametrize(
+            ('pos', 'vel', 'acc'),
+            (
+                    itertools.product(
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                    )
+            )
+    )
+    def test_init(self, pos: Matrix, vel: Matrix, acc: Matrix):
+        linear = Linear(pos, vel, acc)
 
-        assert isinstance(linear, cdpyr.kinematics.transformation.Linear)
+        pos = np.asarray(pos if pos is not None else [0.0, 0.0, 0.0])
+        vel = np.asarray(vel if vel is not None else [0.0, 0.0, 0.0])
+        acc = np.asarray(acc if acc is not None else [0.0, 0.0, 0.0])
 
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx([0., 0., 0.])
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx([0., 0., 0.])
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx([0., 0., 0.])
+        assert linear.position.shape == pos.shape
+        assert linear.velocity.shape == vel.shape
+        assert linear.acceleration.shape == acc.shape
+        assert linear.position == pytest.approx(pos)
+        assert linear.velocity == pytest.approx(vel)
+        assert linear.acceleration == pytest.approx(acc)
 
     @pytest.mark.parametrize(
-        "pos",
-        [
-            (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.random((3,)).tolist()),  # 3x1 vector
-        ]
+            ('pos', 'coordinate'),
+            (
+                    itertools.product(
+                            (None, np.zeros((3,)), np.random.random((3,))),
+                            (np.zeros((3,)), np.random.random((3,)),
+                             np.random.random((3, 5))),
+                    )
+            )
     )
-    def test_with_position_from_list_as_positional_argument(self,
-                                                            pos: Sequence):
-        linear = cdpyr.kinematics.transformation.Linear(
-            pos
-        )
+    def test_apply_transformation(self, pos: Vector, coordinate: Matrix):
+        linear = Linear(pos)
 
-        expected = np.asarray(pos
-                              if isinstance(pos, Sequence)
-                              else [pos]
-                              )
+        pos = np.asarray(pos if pos is not None else [0.0, 0.0, 0.0])
 
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx(expected)
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx([0., 0., 0.])
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx([0., 0., 0.])
+        single_coordinate = coordinate.ndim == 1
+        if single_coordinate:
+            expected_transformed = pos + coordinate
+        else:
+            expected_transformed = pos[:, None] + coordinate
 
-    @pytest.mark.parametrize(
-        "pos",
-        [
-            (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.random((3,)).tolist()),  # 3x1 vector
-        ]
-    )
-    def test_with_position_from_list_as_keyword_argument(self, pos: Sequence):
-        linear = cdpyr.kinematics.transformation.Linear(
-            position=pos,
-        )
+        transformed = linear.apply(coordinate)
 
-        expected = np.asarray(pos
-                              if isinstance(pos, Sequence)
-                              else [pos]
-                              )
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx(expected)
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx([0., 0., 0.])
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "pos",
-        [
-            (np.zeros((3,))),  # 3x1 zeros
-            (np.random.random((3,))),  # 3x1 vector
-        ]
-    )
-    def test_with_position_from_numpyarray_as_positional_argument(self,
-                                                                  pos:
-                                                                  np.ndarray):
-        linear = cdpyr.kinematics.transformation.Linear(
-            pos
-        )
-
-        expected = np.asarray(pos if isinstance(pos, np.ndarray) else [pos])
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx(expected)
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx([0., 0., 0.])
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "pos",
-        [
-            (np.zeros((3,))),  # 3x1 zeros
-            (np.random.random((3,))),  # 3x1 vector
-        ]
-    )
-    def test_with_position_from_numpyarray_as_keyword_argument(self,
-                                                               pos: np.ndarray):
-        linear = cdpyr.kinematics.transformation.Linear(
-            position=pos,
-        )
-
-        expected = np.asarray(pos if isinstance(pos, np.ndarray) else [pos])
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx(expected)
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx([0., 0., 0.])
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "vel",
-        [
-            (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.random((3,)).tolist()),  # 3x1 vector
-        ]
-    )
-    def test_with_velocity_from_list_as_positional_argument(self,
-                                                            vel: Sequence):
-        linear = cdpyr.kinematics.transformation.Linear(
-            None,
-            vel
-        )
-
-        expected = np.asarray(vel
-                              if isinstance(vel, Sequence)
-                              else [vel]
-                              )
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx([0., 0., 0.])
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx(expected)
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "vel",
-        [
-            (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.random((3,)).tolist()),  # 3x1 vector
-        ]
-    )
-    def test_with_velocity_from_list_as_keyword_argument(self, vel: Sequence):
-        linear = cdpyr.kinematics.transformation.Linear(
-            velocity=vel,
-        )
-
-        expected = np.asarray(vel
-                              if isinstance(vel, Sequence)
-                              else [vel]
-                              )
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx([0., 0., 0.])
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx(expected)
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "vel",
-        [
-            (np.zeros((3,))),  # 3x1 zeros
-            (np.random.random((3,))),  # 3x1 vector
-        ]
-    )
-    def test_with_velocity_from_numpyarray_as_positional_argument(self,
-                                                                  vel:
-                                                                  np.ndarray):
-        linear = cdpyr.kinematics.transformation.Linear(
-            None,
-            vel
-        )
-
-        expected = np.asarray(vel if isinstance(vel, np.ndarray) else [vel])
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx([0., 0., 0.])
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx(expected)
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "vel",
-        [
-            (np.zeros((3,))),  # 3x1 zeros
-            (np.random.random((3,))),  # 3x1 vector
-        ]
-    )
-    def test_with_velocity_from_numpyarray_as_keyword_argument(self,
-                                                               vel: np.ndarray):
-        linear = cdpyr.kinematics.transformation.Linear(
-            velocity=vel,
-        )
-
-        expected = np.asarray(vel if isinstance(vel, np.ndarray) else [vel])
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx([0., 0., 0.])
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx(expected)
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx([0., 0., 0.])
-
-    @pytest.mark.parametrize(
-        "acc",
-        [
-            (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.random((3,)).tolist()),  # 3x1 vector
-        ]
-    )
-    def test_with_acceleration_from_list_as_positional_argument(self,
-                                                                acc: Sequence):
-        linear = cdpyr.kinematics.transformation.Linear(
-            None,
-            None,
-            acc
-        )
-
-        expected = np.asarray(acc
-                              if isinstance(acc, Sequence)
-                              else [acc]
-                              )
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx([0., 0., 0.])
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx([0., 0., 0.])
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx(expected)
-
-    @pytest.mark.parametrize(
-        "acc",
-        [
-            (np.zeros((3,)).tolist()),  # 3x1 zeros
-            (np.random.random((3,)).tolist()),  # 3x1 vector
-        ]
-    )
-    def test_with_acceleration_from_list_as_keyword_argument(self,
-                                                             acc: Sequence):
-        linear = cdpyr.kinematics.transformation.Linear(
-            acceleration=acc
-        )
-
-        expected = np.asarray(acc
-                              if isinstance(acc, Sequence)
-                              else [acc]
-                              )
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx([0., 0., 0.])
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx([0., 0., 0.])
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx(expected)
-
-    @pytest.mark.parametrize(
-        "acc",
-        [
-            (np.zeros((3,))),  # 3x1 zeros
-            (np.random.random((3,))),  # 3x1 vector
-        ]
-    )
-    def test_with_acceleration_from_numpyarray_as_positional_argument(self,
-                                                                      acc:
-                                                                      np.ndarray):
-        linear = cdpyr.kinematics.transformation.Linear(
-            None,
-            None,
-            acc
-        )
-
-        expected = np.asarray(acc if isinstance(acc, np.ndarray) else [acc])
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx([0., 0., 0.])
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx([0., 0., 0.])
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx(expected)
-
-    @pytest.mark.parametrize(
-        "acc",
-        [
-            (np.zeros((3,))),  # 3x1 zeros
-            (np.random.random((3,))),  # 3x1 vector
-        ]
-    )
-    def test_with_acceleration_from_numpyarray_as_keyword_argument(self,
-                                                                   acc:
-                                                                   np.ndarray):
-        linear = cdpyr.kinematics.transformation.Linear(
-            acceleration=acc,
-        )
-
-        expected = np.asarray(acc if isinstance(acc, np.ndarray) else [acc])
-
-        assert linear.position.shape == (3,)
-        assert linear.position == pytest.approx([0., 0., 0.])
-        assert linear.velocity.shape == (3,)
-        assert linear.velocity == pytest.approx([0., 0., 0.])
-        assert linear.acceleration.shape == (3,)
-        assert linear.acceleration == pytest.approx(expected)
+        assert transformed.shape == expected_transformed.shape
+        assert transformed == pytest.approx(expected_transformed)
 
 
 if __name__ == "__main__":

@@ -1,54 +1,73 @@
-from typing import AnyStr, Dict, List, Optional, Sequence, Tuple, Union
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Robot',
+]
+
+from typing import (
+    AnyStr,
+    Dict,
+    Iterable,
+    Mapping,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 import numpy as _np
 from magic_repr import make_repr
 
-from cdpyr.mixin.base_object import BaseObject
+from cdpyr.motion import pose as _pose
 from cdpyr.robot import (
     cable as _cable,
     frame as _frame,
     kinematicchain as _kinematicchain,
     platform as _platform,
 )
-from cdpyr.robot.anchor import (
-    frame_anchor as _frame_anchor,
-    platform_anchor as _platform_anchor,
-)
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
+from cdpyr.robot.robot_component import RobotComponent
+from cdpyr.typing import Num, Vector
 
 
-class Robot(BaseObject):
-    frame: '_frame.Frame'
-    _cables: '_cable.CableList'
-    _chains: '_kinematicchain.KinematicChainList'
-    _platforms: '_platform.PlatformList'
+class Robot(RobotComponent):
+    _cables: _cable.CableList
+    _chains: _kinematicchain.KinematicChainList
+    frame: _frame.Frame
+    _gravity: _np.ndarray
     name: AnyStr
+    _platforms: _platform.PlatformList
+    home_pose: _pose.Pose
 
     def __init__(self,
                  name: Optional[AnyStr] = None,
-                 frame: Optional['_frame.Frame'] = None,
+                 frame: Optional[_frame.Frame] = None,
                  platforms: Optional[Union[
-                     '_platform.PlatformList',
-                     Sequence['_platform.Platform']
+                     _platform.PlatformList,
+                     Sequence[_platform.Platform]
                  ]] = None,
                  cables: Optional[Union[
-                     '_cable.CableList',
-                     Sequence['_cable.Cable']
+                     _cable.CableList,
+                     Sequence[_cable.Cable]
                  ]] = None,
                  kinematic_chains: Optional[Union[
-                     '_kinematicchain.KinematicChainList',
-                     Sequence['_kinematicchain.KinematicChain'],
+                     _kinematicchain.KinematicChainList,
+                     Sequence[_kinematicchain.KinematicChain],
                      Sequence[Tuple[int, int, int, int]],
                      Sequence[Dict[AnyStr, int]]
-                 ]] = None
-                 ):
+                 ]] = None,
+                 gravity: Union[Num, Vector] = None,
+                 home_pose: _pose.Pose = None,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.name = name or 'default'
         self.frame = frame or None
         self.platforms = platforms or []
         self.cables = cables or []
         self.kinematic_chains = kinematic_chains or {}
+        self.gravity = gravity if gravity is not None else [0]
+        self.home_pose = home_pose if home_pose is not None else _pose.Pose()
 
     @property
     def ai(self):
@@ -56,7 +75,7 @@ class Robot(BaseObject):
 
     @property
     def bi(self):
-        return _np.hstack(list(self.platforms.bi))
+        return _np.stack(list(self.platforms.bi), axis=0)
 
     @property
     def can_rotate(self):
@@ -68,8 +87,8 @@ class Robot(BaseObject):
 
     @cables.setter
     def cables(self,
-               cables: Union['_cable.CableList',
-                   Sequence['_cable.Cable']
+               cables: Union[_cable.CableList,
+                             Sequence[_cable.Cable]
                ]):
         self._cables = _cable.CableList(cables)
 
@@ -78,69 +97,68 @@ class Robot(BaseObject):
         del self._cables
 
     @property
+    def gravity(self):
+        return self._gravity
+
+    @gravity.setter
+    def gravity(self, gravity: Union[Num, Vector]):
+        self._gravity = _np.asarray(gravity)
+
+    @gravity.deleter
+    def gravity(self):
+        del self._gravity
+
+    @property
+    def is_redundant(self):
+        return self.num_redundancy > 0
+
+    @property
     def kinematic_chains(self):
         return self._chains
 
     @kinematic_chains.setter
     def kinematic_chains(self,
                          chains: Union[
-                             '_kinematicchain.KinematicChainList',
-                             Sequence['_kinematicchain.KinematicChain'],
+                             Sequence[_kinematicchain.KinematicChain],
+                             _kinematicchain.KinematicChainList,
                              Sequence[Tuple[int, int, int, int]],
-                             Sequence[Dict[AnyStr, int]]
-                         ]):
-        # turn anything not a set into a set (also removes already redundant
-        # objects)
-        # if not isinstance(chains, Set) and not isinstance(chains, tuple):
-        #     chains = set(chains)
+                             Sequence[Dict[AnyStr, int]]]):
+        if isinstance(chains, Iterable) \
+                and not isinstance(chains, _kinematicchain.KinematicChainList):
+            chains = list(chains)
+            # loop over each chain
+            for idx, chain in enumerate(chains):
+                # skip if it is already a `KinematicChain` object
+                if isinstance(chain, _kinematicchain.KinematicChain):
+                    pass
+                # deal with dictionaries or tuples
+                else:
+                    # deal with chain as dictionary
+                    if isinstance(chain, Mapping):
+                        cable = chain['cable']
+                        frame_anchor = chain['frame_anchor']
+                        platform_anchor = chain['platform_anchor']
+                        try:
+                            platform = chain['platform']
+                        except KeyError:
+                            platform = 0
+                    # deal with chain as tuple
+                    else:
+                        try:
+                            frame_anchor, platform, platform_anchor, cable = \
+                                chain
+                        except ValueError:
+                            frame_anchor, platform_anchor, cable = chain
+                            platform = 0
 
-        # loop over each chain and turn it from integer values into object
-        # values
-        for idx, v in enumerate(chains):
-            if not isinstance(v, _kinematicchain.KinematicChain):
-                # create a proper KinematicChain object
-                if isinstance(v, Dict):
-                    frame_anchor = v['frame_anchor']
-                    platform = v['platform']
-                    platform_anchor = v['platform_anchor']
-                    cable = v['cable']
-                elif isinstance(v, List) or isinstance(v, Tuple):
-                    frame_anchor, platform, platform_anchor, cable = v
+                    chain = _kinematicchain.KinematicChain(frame_anchor,
+                                                           platform,
+                                                           platform_anchor,
+                                                           cable)
 
-                if not isinstance(frame_anchor, _frame_anchor.FrameAnchor):
-                    frame_anchor = self.frame.anchors[frame_anchor]
+                chains[idx] = chain
 
-                if not isinstance(platform, _platform.Platform):
-                    platform = self.platforms[platform]
-
-                if not isinstance(platform_anchor,
-                                  _platform_anchor.PlatformAnchor):
-                    platform_anchor = self.platforms[
-                        self.platforms.index(platform)
-                    ].anchors[platform_anchor]
-
-                if not isinstance(cable, _cable.Cable):
-                    cable = self.cables[cable]
-
-                # update the entry with the correct type i.e., convert
-                # anything into KinematicChain which isn't already
-                chains[idx] = _kinematicchain.KinematicChain(
-                    frame_anchor=frame_anchor,
-                    platform=platform,
-                    platform_anchor=platform_anchor,
-                    cable=cable
-                )
-
-        # We only support unique kinematic chains i.e., one cable may only be
-        # attached to one winch and one platform anchor at a time. That's why
-        # we will remove duplicate kinematic chains from the list but in a
-        # way that the original order is preserved (FIFO-style).
-        # @SEE https://stackoverflow.com/questions/44628186
-        seen = set()
-        seen_add = seen.add
-        chains = [x for x in chains if not (x in seen or seen_add(x))]
-
-        # and set the correct object type
+        # set final value
         self._chains = _kinematicchain.KinematicChainList(chains)
 
     @kinematic_chains.deleter
@@ -184,20 +202,38 @@ class Robot(BaseObject):
         return len(self.platforms)
 
     @property
+    def num_redundancy(self):
+        return self.num_kinematic_chains - self.num_dof
+
+    @property
+    def num_dimensionality(self):
+        return list(map(max, zip(
+                *((platform.dof_translation, platform.dof_rotation)
+                  for platform in self.platforms))))
+
+    @property
     def platforms(self):
         return self._platforms
 
     @platforms.setter
     def platforms(self,
                   platforms: Union[
-                      '_platform.PlatformList',
-                      Sequence['_platform.Platform']
+                      _platform.PlatformList,
+                      Sequence[_platform.Platform]
                   ]):
         self._platforms = _platform.PlatformList(platforms)
 
     @platforms.deleter
     def platforms(self):
         del self._platforms
+
+    def gravitational_wrench(self, pose: _pose.Pose):
+        if self.num_platforms > 1:
+            raise NotImplementedError(
+                    'Wrench calculation is not implemented for robots with '
+                    'more than one platforms.')
+
+        return self.platforms[0].gravitational_wrench(pose, self.gravity)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -223,14 +259,9 @@ class Robot(BaseObject):
                      self.platforms))
 
     __repr__ = make_repr(
-        'name',
-        'frame',
-        'platforms',
-        'cables',
-        'kinematic_chains'
+            'name',
+            'frame',
+            'platforms',
+            'cables',
+            'kinematic_chains'
     )
-
-
-__all__ = [
-    'Robot',
-]

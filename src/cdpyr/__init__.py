@@ -1,14 +1,34 @@
 # -*- coding: utf-8 -*-
 
-"""Top-level package for CDPyR."""
+"""
+Top-level package for CDPyR.
+"""
+
+__author__ = 'Philipp Tempel'
+__email__ = 'p.tempel@tudelft.nl'
+__version__ = '1.0.0-dev'
+__all__ = [
+        'analysis',
+        'exceptions',
+        'geometry',
+        'kinematics',
+        'mechanics',
+        'mixin',
+        'motion',
+        'robot',
+        'schema',
+        'stream',
+        'typing',
+        'validator',
+]
 
 # @formatter:off
-from __future__ import annotations
 from cdpyr import (
     # vital imports
-    helpers,
+    helper,
     typing,
     mixin,
+    exceptions,
     # actual CDPyR imports
     validator,
     mechanics,
@@ -19,27 +39,6 @@ from cdpyr import (
     analysis,
     # I/O imports
     stream,
-    schema,
-    visualization
+    schema
 )
 # @formatter:on
-
-__author__ = 'Philipp Tempel'
-__email__ = 'p.tempel@tudelft.nl'
-__version__ = '1.0.0-dev'
-
-__all__ = [
-    'analysis',
-    'geometry',
-    'helpers',
-    'kinematics',
-    'mechanics',
-    'mixin',
-    'motion',
-    'robot',
-    'schema',
-    'stream',
-    'typing',
-    'validator',
-    'visualization',
-]

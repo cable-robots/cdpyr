@@ -5,89 +5,40 @@
 #  platforms center of gravity. Or we'll add this to the `robot.Robot` object
 #  as a method...
 
-from typing import (
-    Sequence,
-    Union
-)
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Cable',
+        'CableList',
+        'Drum',
+        'Drivetrain',
+        'Frame',
+        'FrameAnchor',
+        'FrameAnchorList',
+        'Gearbox',
+        'KinematicChain',
+        'KinematicChainList',
+        'Motor',
+        'Platform',
+        'PlatformAnchor',
+        'PlatformAnchorList',
+        'PlatformList',
+        'Pulley',
+        'Robot',
+]
 
-from cdpyr.analysis.workspace.result import Result as WorkspaceResult
-from cdpyr.robot.anchor import (
-    Anchor,
-    AnchorList,
-    FrameAnchor,
-    FrameAnchorList,
-    PlatformAnchor,
-    PlatformAnchorList,
-)
-from cdpyr.robot.cable import (
-    Cable,
-    CableList
-)
-from cdpyr.robot.drivetrain import DriveTrain
+from cdpyr.robot.cable import Cable, CableList
+from cdpyr.robot.drivetrain import Drivetrain
 from cdpyr.robot.drum import Drum
-from cdpyr.robot.frame import Frame
+from cdpyr.robot.frame import Frame, FrameAnchor, FrameAnchorList
 from cdpyr.robot.gearbox import Gearbox
-from cdpyr.robot.kinematicchain import (
-    KinematicChain,
-    KinematicChainList,
-)
+from cdpyr.robot.kinematicchain import KinematicChain, KinematicChainList
 from cdpyr.robot.motor import Motor
 from cdpyr.robot.platform import (
     Platform,
-    PlatformList
+    PlatformAnchor,
+    PlatformAnchorList,
+    PlatformList,
 )
 from cdpyr.robot.pulley import Pulley
 from cdpyr.robot.robot import Robot
-
-RobotComponent = Union[
-    Cable,
-    Sequence[Cable],
-    CableList,
-    DriveTrain,
-    Drum,
-    Frame,
-    FrameAnchor,
-    Sequence[FrameAnchor],
-    FrameAnchorList,
-    Gearbox,
-    KinematicChain,
-    Sequence[KinematicChain],
-    KinematicChainList,
-    Motor,
-    Platform,
-    Sequence[Platform],
-    PlatformList,
-    PlatformAnchor,
-    Sequence[PlatformAnchor],
-    PlatformAnchorList,
-    Pulley,
-    Robot,
-    WorkspaceResult,
-]
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
-
-__all__ = [
-    'Anchor',
-    'AnchorList',
-    'FrameAnchor',
-    'FrameAnchorList',
-    'PlatformAnchor',
-    'PlatformAnchorList',
-    'Cable',
-    'CableList',
-    'Drum',
-    'DriveTrain',
-    'Frame',
-    'Gearbox',
-    'KinematicChain',
-    'KinematicChainList',
-    'Motor',
-    'Platform',
-    'PlatformList',
-    'Pulley',
-    'Robot',
-    'RobotComponent',
-    'WorkspaceResult',
-]

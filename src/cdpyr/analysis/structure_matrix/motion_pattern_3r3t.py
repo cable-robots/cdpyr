@@ -1,35 +1,32 @@
-import numpy as _np
-
-from cdpyr.analysis.structure_matrix import algorithm as _algorithm
-from cdpyr.motion.pose import pose as _pose
-from cdpyr.robot import platform as _platform
-from cdpyr.typing import Matrix
+from __future__ import annotations
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'MotionPattern3R3T',
+]
+
+import numpy as _np
+
+from cdpyr.analysis.structure_matrix import structure_matrix as _algorithm
+from cdpyr.motion import pose as _pose
+from cdpyr.typing import Matrix, Vector
 
 
 class MotionPattern3R3T(_algorithm.Algorithm):
+
     def _evaluate(self,
-                  platform: '_platform.Platform',
-                  pose: '_pose.Pose',
+                  pose: _pose.Pose,
+                  platform_anchors: Vector,
                   directions: Matrix):
-        return {
-            'matrix': _np.vstack(
-                (
-                    directions,
-                    _np.cross(
-                        pose.angular.dcm.dot(
-                            platform.bi
-                        ),
-                        directions,
-                        axis=0
-                    )
-                )
-            ),
-        }
+        return _np.vstack((directions,
+                           _np.cross(pose.angular.dcm.dot(platform_anchors),
+                                     directions,
+                                     axis=0)
+                           ))
 
-
-__all__ = [
-    'MotionPattern3R3T',
-]
+    def _derivative(self,
+                    pose: _pose.Pose,
+                    platform_anchors: Vector,
+                    directions: Matrix) -> _algorithm.Result:
+        raise NotImplementedError()
