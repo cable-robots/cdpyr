@@ -1,128 +1,158 @@
-.. highlight:: shell
-
 ============
 Contributing
 ============
 
-Contributions are welcome, and they are greatly appreciated! Every little bit
-helps, and credit will always be given.
+Contributions are welcome, and they are greatly appreciated! Every
+little bit helps, and credit will always be given.
 
-You can contribute in many ways:
+Bug reports
+===========
 
-Types of Contributions
-----------------------
+When `reporting a bug <https://github.com/cable-robots/cdpyr/issues>`_ please include:
 
-Report Bugs
-~~~~~~~~~~~
+    * Your operating system name and version.
+    * Any details about your local setup that might be helpful in troubleshooting.
+    * Detailed steps to reproduce the bug.
 
-Report bugs at https://github.com/philipptempel/cdpyr/issues.
-
-If you are reporting a bug, please include:
-
-* Your operating system name and version.
-* Any details about your local setup that might be helpful in troubleshooting.
-* Detailed steps to reproduce the bug.
-
-Fix Bugs
-~~~~~~~~
-
-Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
-wanted" is open to whoever wants to implement it.
-
-Implement Features
-~~~~~~~~~~~~~~~~~~
-
-Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
-
-Write Documentation
-~~~~~~~~~~~~~~~~~~~
+Documentation improvements
+==========================
 
 CDPyR could always use more documentation, whether as part of the
 official CDPyR docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
-Submit Feedback
-~~~~~~~~~~~~~~~
+Feature requests and feedback
+=============================
 
-The best way to send feedback is to file an issue at https://github.com/philipptempel/cdpyr/issues.
+The best way to send feedback is to file an issue at https://github.com/cable-robots/cdpyr/issues.
 
 If you are proposing a feature:
 
 * Explain in detail how it would work.
 * Keep the scope as narrow as possible, to make it easier to implement.
-* Remember that this is a volunteer-driven project, and that contributions
-  are welcome :)
+* Remember that this is a volunteer-driven project, and that code contributions are welcome :)
 
-Get Started!
-------------
+Development
+===========
 
-Ready to contribute? Here's how to set up `cdpyr` for local development.
+**Note** this project uses the `git flow`_ branching model.
 
-1. Fork the `cdpyr` repo on GitHub.
-2. Clone your fork locally::
+To set up CDPyR_ for local development:
 
-    $ git clone git@github.com:your_name_here/cdpyr.git
+1. Fork cdpyr_ (look for the "Fork" button).
+#. Clone your fork locally:
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+   .. code-block:: bash
 
-    $ mkvirtualenv cdpyr
-    $ cd cdpyr/
-    $ python setup.py develop
+      $ git clone git@github.com:your-username-or-organization/cdpyr.git
 
-4. Create a branch for local development::
+#. Set up your local development environment by installing tox, creating the dev environment, and setting up git flow
 
-    $ git checkout -b name-of-your-bugfix-or-feature
+   .. code-block:: bash
 
-   Now you can make your changes locally.
+      $ pip install tox
+      $ tox -e dev
+      $ git flow init
 
-5. When you're done making changes, check that your changes pass flake8 and the
-   tests, including testing other Python versions with tox::
+#. Activate the python environment:
 
-    $ flake8 cdpyr tests
-    $ python setup.py test or py.test
-    $ tox
+   1. Windows:
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+   .. code-block:: powershell
 
-6. Commit your changes and push your branch to GitHub::
+      > .tox\dev\Scripts\activate
 
-    $ git add .
-    $ git commit -m "Your detailed description of your changes."
-    $ git push origin name-of-your-bugfix-or-feature
+   2. Unix:
 
-7. Submit a pull request through the GitHub website.
+   .. code-block:: shell
+
+      $ source .tox/dev/bin/activate
+
+#. Create a branch for local development to make your changes locally:
+
+   1. For new features:
+
+   .. code-block:: shell
+
+      $ git flow feature start name-of-your-feature
+
+   2. For hotfixes:
+
+   .. code-block:: shell
+
+      $ git flow hotfix start name-of-your-hotfix
+
+#. When you're done making changes, run all the checks, doc builder and spell checker with `tox <https://tox.readthedocs.io/en/latest/install.html>`_ one command:
+
+   .. code-block:: shell
+
+      $ tox
+
+#. Commit your changes and push your branch to GitHub:
+
+   .. code-block:: shell
+
+      $ git add .
+      $ git commit -m "Your detailed description of your changes."
+      $ git push origin name-of-your-hotfix-or-feature
+
+#. Submit a pull request through the GitHub website.
+
+If your change requires changes to the dependencies of :code:`cdpyr`, then add these in :code:`setup.py` under :code:`install_requires`.
+However, if you make changes to the dependencies of tests or the development environment, then add these dependencies in :code:`tox.ini` in the :code:`deps` of either the :code:`[testenv]` or :code:`[testenv:dev]` section.
+
+Git Flow
+----------------------
+
+See this `fancy cheat sheet <https://danielkummer.github.io/git-flow-cheatsheet/>`_ on the git flow commands, and when to use each.
+
+* Branch name for production releases: :code:`master`
+* Branch name for "next release" development: :code:`develop`
+* Feature branch prefix: :code:`feature/`
+* Bugfix branch prefix: :code:`bugfix/`
+* Release branch prefix: :code:`release/`
+* Hotfix branch prefix: :code:`hotfix/`
+* Support branch prefix: :code:`support/`
+* Version tag prefix: :code:`v`
 
 Pull Request Guidelines
 -----------------------
 
-Before you submit a pull request, check that it meets these guidelines:
+If you need some code review or feedback while you're developing the code just make the pull request.
 
-1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put
-   your new functionality into a function with a docstring, and add the
-   feature to the list in README.rst.
-3. The pull request should work for Python 2.7, 3.4, 3.5 and 3.6, and for PyPy. Check
-   https://travis-ci.org/philipptempel/cdpyr/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+For merging, you should:
+
+1. Include passing tests (run :code:`tox`) [1]_.
+#. Update documentation when there's new API, functionality etc.
+#. Add a note to :code:`CHANGELOG.rst` about the changes.
+#. Add yourself to :code:`AUTHORS.rst`.
 
 Tips
 ----
 
-To run a subset of tests::
+To run a subset of tests:
 
-$ py.test tests.test_cdpyr
+.. code-block:: shell
+
+   tox -e envname -- pytest -k test_myfeature
+
+To run all the test environments in *parallel* (you need to :code:`pip install detox`):
+
+.. code-block:: shell
+
+   detox
+
+To build the docs locally to :code:`dist/docs`:
+
+.. code-block:: shell
+
+   tox -e docs
 
 
-Deploying
----------
+.. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will `run the tests <https://travis-ci.org/cable-robots/cdpyr/pull_requests>`_ for each change you add in the pull request.
 
-A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
-Then run::
+       It will be slower though ...
 
-$ bumpversion patch # possible: major / minor / patch
-$ git push
-$ git push --tags
 
-Travis will then deploy to PyPI if tests pass.
+.. _cdpyr: https://github.com/cable-robots/cdpyr
+.. _`git flow`: https://nvie.com/posts/a-successful-git-branching-model/

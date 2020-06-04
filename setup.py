@@ -1,90 +1,98 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
+from __future__ import absolute_import, print_function
 
-"""The setup script."""
+import io
+import re
+from glob import glob
+from os.path import basename, dirname, join, splitext
 
-import os
-
-from setuptools import setup, find_packages
-
-try:  # for pip >= 10
-    from pip._internal.req import parse_requirements
-    from pip._internal.download import PipSession
-except ImportError:  # for pip <= 9.0.3
-    from pip.req import parse_requirements
-
-NAME = "cdpyr"
-AUTHOR = "Philipp Tempel"
-EMAIL = "philipp.tempel@isw.uni-stuttgart.de"
-KEYWORDS = "cdpyr cable-driven parallel robot"
-
-VERSION = None
-
-# The rest you shouldn't have to touch too much :)
+from setuptools import find_packages, setup
 
 
-here = os.path.abspath(os.path.dirname(__file__))
+def read(*names, **kwargs):
+    with io.open(
+            join(dirname(__file__), *names),
+            encoding=kwargs.get('encoding', 'utf8')
+    ) as fh:
+        return fh.read()
 
-with open('README.rst') as readme_file:
-    README = readme_file.read()
-
-with open('HISTORY.rst') as history_file:
-    HISTORY = history_file.read()
-
-with open('LICENSE') as license_file:
-    LICENSE = license_file.read()
-
-parsed_requirements = parse_requirements(
-    'requirements/prod.txt',
-    session=PipSession()
-)
-
-parsed_test_requirements = parse_requirements(
-    'requirements/test.txt',
-    session=PipSession()
-)
-
-requirements = [str(ir.req) for ir in parsed_requirements]
-test_requirements = [str(tr.req) for tr in parsed_test_requirements]
-
-# Load the package's __version__.py module as a dictionary.
-about = {}
-if not VERSION:
-    project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
-    with open(os.path.join(here, project_slug, '__init__.py')) as f:
-        ls = [l.strip() for l in f.readlines()]
-        try:
-            about['__version__'] = [v for v in ls if '__version__' in v][0].split(' = ')[1].strip('\'')
-        except IndexError:
-            about['__version__'] = VERSION
-else:
-    about['__version__'] = VERSION
 
 setup(
-    author=AUTHOR,
-    author_email=EMAIL,
-    description="Cable-Driven Parallel Robots in Python.",
-    entry_points={
-        'console_scripts': [
-            'cdpyr=cdpyr.cli:main',
+        name='cdpyr',
+        version='1.0.dev0',
+        license='EUPL v1.2',
+        description='A Python 3 package for designing, analyzing, '
+                    'and simulating cable-driven parallel robots.',
+        long_description='%s\n%s' % (
+                re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub(
+                        '', read('README.rst')),
+                re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
+        ),
+        author='Philipp Tempel',
+        author_email='p.tempel@tudelft.nl',
+        url='https://github.com/cable-robots/cdpyr',
+        packages=find_packages('src'),
+        package_dir={'': 'src'},
+        py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
+        include_package_data=True,
+        zip_safe=False,
+        classifiers=[
+                # complete classifier list:
+                # http://pypi.python.org/pypi?%3Aaction=list_classifiers
+                'Development Status :: 2 - Pre-Alpha',
+                'Intended Audience :: Developers',
+                'License :: OSI Approved :: European Union Public Licence 1.2 '
+                '(EUPL 1.2)',
+                'Operating System :: Unix',
+                'Operating System :: POSIX',
+                'Operating System :: Microsoft :: Windows',
+                'Programming Language :: Python',
+                'Programming Language :: Python :: 3',
+                'Programming Language :: Python :: 3.7',
+                'Topic :: Utilities',
         ],
-    },
-    install_requires=requirements,
-    long_description=README + '\n\n' + HISTORY,
-    include_package_data=True,
-    keywords=KEYWORDS,
-    name=NAME,
-    license=LICENSE,
-    packages=find_packages(include=['cdpyr']),
-    # setup_requires=setup_requirements,
-    test_suite='tests',
-    tests_require=test_requirements,
-    url='https://www.cable-robots.com/cdpyr/',
-    version=about['__version__'],
-    zip_safe=False,
-    classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
-        'Natural Language :: English',
-    ],
+        project_urls={
+                'Documentation': 'https://cdpyr.readthedocs.io/',
+                'Changelog':
+                                 'https://cdpyr.readthedocs.io/en/latest/changelog.html',
+                'Issue Tracker': 'https://github.com/cable-robots/cdpyr/issues',
+        },
+        keywords=[
+                # eg: 'keyword1', 'keyword2', 'keyword3',
+        ],
+        python_requires='!=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, '
+                        '!=3.5.*, !=3.6.*',
+        install_requires=[
+                'click',
+                'numpy',
+                'scipy',
+                'repr',
+                'colour',
+                'pyyaml',
+                'xmltodict',
+                'marshmallow',
+                'case-changer',
+                'joblib',
+                'hurry.filesize',
+                'fastnumbers',
+                'tabulate',
+        ],
+        extras_require={
+                'visualization': [
+                        'plotly',
+                        'pyqt5',
+                        'vtk',
+                        'mayavi',
+                ],
+                'twincat':       [
+                        'pint',
+                        'more-itertools',
+                ]
+        },
+        entry_points={
+                'console_scripts': [
+                        'cdpyr = cdpyr.cli:main',
+                ]
+        },
 )

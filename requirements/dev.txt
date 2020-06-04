@@ -1,4 +1,0 @@
-nose
-pytest
-pytest-runner
-sphinx_rtd_theme

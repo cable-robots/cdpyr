@@ -1,20 +1,22 @@
-Welcome to CDPyR's documentation!
-======================================
+========
+Contents
+========
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 3
 
-   readme
-   installation
-   usage
-   modules
-   contributing
-   authors
-   history
+   Overview <readme>
+   Installation <installation>
+   Usage <usage>
+   Module Reference <api/modules>
+   Contributing <contributing>
+   Authors <authors>
+   Changelog <changelog>
 
 Indices and tables
 ==================
+
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
