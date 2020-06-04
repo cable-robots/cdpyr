@@ -34,6 +34,13 @@ class Pulley(_algorithm.Algorithm):
                   robot: _robot.Robot,
                   pose: _pose.Pose,
                   **kwargs) -> _algorithm.Result:
+        # type hinting
+        fanchor: _frame.FrameAnchor
+        panchor: _platform.PlatformAnchor
+        pulley: _pulley.Pulley
+        cable: _cable.Cable
+        kc: _kinematicchain.KinematicChain
+
         # init results
         swivel = []
         wrap = []
@@ -41,30 +48,26 @@ class Pulley(_algorithm.Algorithm):
         directions = []
         cable_leave_points = []
 
-        # extract platform position and orientation
-        platform_position, platform_dcm = pose.position
-
-        # type hinting
-        frame_anchor: _frame.FrameAnchor
-        platform_anchor: _platform.PlatformAnchor
-        pulley: _pulley.Pulley
-        cable: _cable.Cable
-        chain: _kinematicchain.KinematicChain
+        # number of linear dimensionality
+        num_lin, _ = robot.num_dimensionality
 
         # loop over each kinematic chain
-        for chain_index, chain in enumerate(robot.kinematic_chains):
-            frame_anchor = robot.frame.anchors[chain.frame_anchor]
-            platform = robot.platforms[chain.platform]
-            platform_anchor = platform.anchors[chain.platform_anchor]
+        for idxkc, kc in enumerate(robot.kinematic_chains):
+            fanchor = robot.frame.anchors[kc.frame_anchor]
+            platform = robot.platforms[kc.platform]
+            panchor = platform.anchors[kc.platform_anchor]
             # cable = robot.cables[chain.cable]
-            pulley = frame_anchor.pulley
-            frame_dcm = frame_anchor.angular.dcm
+            pulley = fanchor.pulley
+            frame_dcm = fanchor.angular.dcm
             pulley_dcm = pulley.dcm
 
+            # extract platform position and orientation
+            ppos, prot = pose.position
+
             # frame anchor to platform (negative of conventional vector loop)
-            frame_to_platform = platform_position + platform_dcm.dot(
-                    platform_anchor.linear.position) - \
-                                frame_anchor.linear.position
+            frame_to_platform = ppos \
+                                + prot.dot(panchor.linear.position) \
+                                - fanchor.linear.position
 
             # pulley to platform
             pulley_to_platform = pulley_dcm.T.dot(
@@ -92,13 +95,13 @@ class Pulley(_algorithm.Algorithm):
             ))
             # position of the cable leave point in coordinates of the roller
             # center
-            cable_leave_points.append(_np.linalg.solve(leave_dcm,
-                                                       roller_center_to_platform[
-                                                           [0, 2]]))
+            leave_point = _np.linalg.solve(leave_dcm,
+                                           roller_center_to_platform[[0, 2]])
 
             # "unwrapped angle"
-            unwrapped = _np.arctan2(cable_leave_points[-1][1],
-                                    cable_leave_points[-1][0])
+            unwrapped = _np.arctan2(leave_point[1], leave_point[0])
+
+            cable_leave_points.append(leave_point[0:num_lin])
 
             # append the angle of wrap
             wrap_ = _np.pi - unwrapped
@@ -114,19 +117,24 @@ class Pulley(_algorithm.Algorithm):
             direction = (frame_dcm.dot(pulley_dcm.dot(cable_dcm.dot(
                     [pulley.radius, 0, 0] + _angular.Angular().rotation_y(
                             wrap_).dcm.dot([-pulley.radius, 0, 0])))) + (
-                                 frame_anchor.linear.position - (
-                                 platform_position + platform_dcm.dot(
-                                 platform_anchor.linear.position))))
-            directions.append(direction[
-                              0:platform.motion_pattern.dof_translation] /
-                              length_workspace)
+                                 fanchor.linear.position - (
+                                 ppos + prot.dot(
+                                 panchor.linear.position))))
+            # direction = direction[0:num_lin] / length_workspace
+            directions.append(direction[0:num_lin] / length_workspace)
 
-        lengths = _np.asarray(lengths).T
-        directions = _np.asarray(directions).T
+        # turn everything into numpy arrays
+        lengths = _np.asarray(lengths)
+        directions = _np.asarray(directions)
         swivel = _np.asarray(swivel)
         wrap = _np.asarray(wrap)
-        leave_points = _np.asarray(cable_leave_points).T
+        leave_points = _np.asarray(cable_leave_points)
 
-        return _algorithm.Result(self, robot, pose, lengths=lengths,
-                                 directions=directions, swivel=swivel,
-                                 wrap=wrap, leave_points=leave_points)
+        return _algorithm.Result(self,
+                                 robot,
+                                 pose,
+                                 lengths=lengths,
+                                 directions=directions,
+                                 swivel=swivel,
+                                 wrap=wrap,
+                                 leave_points=leave_points)

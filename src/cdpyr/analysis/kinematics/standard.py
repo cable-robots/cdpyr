@@ -12,8 +12,8 @@ from scipy import optimize
 from cdpyr.analysis.kinematics import kinematics as _algorithm
 from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.motion import pose as _pose
-from cdpyr.robot import robot as _robot
-from cdpyr.typing import Matrix, Vector
+from cdpyr.robot import kinematicchain as _kinematic_chain, robot as _robot
+from cdpyr.typing import Vector
 
 
 class Standard(_algorithm.Algorithm):
@@ -36,38 +36,38 @@ class Standard(_algorithm.Algorithm):
         # get frame anchors and platform anchors
         frame_anchors = _np.asarray(
                 [robot.frame.anchors[anchor_index].linear.position for
-                 anchor_index in kcs.frame_anchor]).T
+                 anchor_index in kcs.frame_anchor])
         platform_anchors = _np.asarray(
                 [platform.anchors[anchor_index].linear.position for anchor_index
-                 in kcs.platform_anchor]).T
+                 in kcs.platform_anchor])
 
         # initial directions needed for later returned result
         last_direction = []
 
         # goal function for the estimator
-        def goal_function(x, ai, bi, *args, **kwargs):
+        def goal_function(x: Vector,
+                          robot_: _robot.Robot,
+                          xpose_: _pose.Pose,
+                          *args,
+                          **kwargs):
             # position estimate
-            pos = x[0:3]
+            xpose_.linear.position = x[0:3]
             # euler angle estimate to rotation matrix
-            dcm = _angular.Angular(sequence='xyz', euler=x[3:6]).dcm
+            xpose_.angular = _angular.Angular(sequence='xyz', euler=x[3:6])
 
-            # solve the inverse kinematics vector loop
-            directions = self._vector_loop(pos,
-                                           dcm,
-                                           ai,
-                                           bi)
+            # solve the vector loop and obtain solution
+            estim_lengths, directions, _ = self._vector_loop(robot_, xpose_)
 
+            # number of linear degrees of freedom
+            num_linear, _ = robot.num_dimensionality
             # strip additional spatial dimensions
-            directions = directions[0:platform.motion_pattern.dof_translation,
-                         :]
+            directions = directions[:, 0:num_linear]
 
+            # store last direction so we have it later
             last_direction.insert(0, directions)
 
-            # cable lengths
-            estimated_lengths = _np.linalg.norm(directions, axis=0)
-
             # return error as (l^2 - l(x)^2)
-            return lengths ** 2 - estimated_lengths ** 2
+            return lengths ** 2 - estim_lengths ** 2
 
         # initial pose estimate given by user?
         initial_estimate = kwargs.pop('x0', None)
@@ -94,34 +94,37 @@ class Standard(_algorithm.Algorithm):
         xtol = _np.sqrt(_np.finfo(float).eps) / 1e5
         gtol = 0.0
 
-        # default keyword arguments to `least_squares`
-        defaults = {
-                'method':  method,
-                'ftol':    ftol,
-                'xtol':    xtol,
-                'gtol':    gtol,
-                'x_scale': x_scale,
-                'jac':     '3-point',
-                'args':    (
-                        frame_anchors,
-                        platform_anchors,
-                ),
-                'kwargs':  {
-                        'ai': frame_anchors,
-                        'bi': platform_anchors
-                },
-        }
-        # only add `bounds` if the solver is not `lm` (levenberg-marquardt)
-        if method != 'lm':
-            defaults['bounds'] = bounds
-        # update with user-supplied kwargs
-        defaults.update(kwargs)
+        # # default keyword arguments to `least_squares`
+        # defaults = {
+        #         'method':  method,
+        #         'ftol':    ftol,
+        #         'xtol':    xtol,
+        #         'gtol':    gtol,
+        #         'x_scale': x_scale,
+        #         'jac':     '3-point',
+        #         'args':    (
+        #                 frame_anchors,
+        #                 platform_anchors,
+        #         ),
+        #         'kwargs':  {
+        #                 'ai': frame_anchors,
+        #                 'bi': platform_anchors
+        #         },
+        # }
+        # # only add `bounds` if the solver is not `lm` (levenberg-marquardt)
+        # if method != 'lm':
+        #     defaults['bounds'] = bounds
+        # # update with user-supplied kwargs
+        # defaults.update(kwargs)
+
+        # a pose estimate
+        x_pose = _pose.ZeroPose
 
         # estimate pose
         result: optimize.OptimizeResult
         result = optimize.least_squares(goal_function,
                                         initial_estimate,
-                                        args=(frame_anchors, platform_anchors),
+                                        args=(robot, x_pose),
                                         **kwargs)
 
         # check for convergence
@@ -138,15 +141,20 @@ class Standard(_algorithm.Algorithm):
                     'arguments to the underlying optimization method.') from \
                 ArithmeticE
         else:
+            # get last value
             final = result.x
+            # make sure rotation is limited to [0, 2*pi)
             final[3:6] = _np.fmod(final[3:6], 2 * _np.pi)
 
-            pose = _pose.Pose(
-                    final[0:3],
-                    angular=_angular.Angular(sequence='xyz', euler=final[3:6])
-            )
+            # populate values of estimated pose
+            x_pose.linear.position = final[0:3]
+            x_pose.angular = _angular.Angular(sequence='xyz', euler=final[3:6])
 
-            return _algorithm.Result(self, robot, pose, lengths=lengths,
+            # and return estimated result
+            return _algorithm.Result(self,
+                                     robot,
+                                     x_pose,
+                                     lengths=lengths,
                                      directions=last_direction[0],
                                      leave_points=frame_anchors)
 
@@ -154,60 +162,63 @@ class Standard(_algorithm.Algorithm):
                   robot: _robot.Robot,
                   pose: _pose.Pose,
                   **kwargs) -> _algorithm.Result:
-        # for now, this is the inner-loop code for the first platform
-        index_platform = 0
-        # quicker and shorter access to platform object
-        platform = robot.platforms[index_platform]
-
-        # get platform position
-        pos, rot = pose.position
-        # kinematic chains of the platform
-        kcs = robot.kinematic_chains.with_platform(index_platform)
-        # get frame anchors and platform anchors
-        frame_anchors = _np.asarray(
-                [robot.frame.anchors[anchor_index].linear.position for
-                 anchor_index in kcs.frame_anchor]).T
-        platform_anchors = _np.asarray(
-                [platform.anchors[anchor_index].linear.position for anchor_index
-                 in kcs.platform_anchor]).T
-
-        # cable directions
-        directions = self._vector_loop(pos,
-                                       rot,
-                                       frame_anchors,
-                                       platform_anchors)
+        # solve the vector loop and obtain solution
+        lengths, directions, leaves = self._vector_loop(robot, pose)
 
         # cable swivel angles
-        swivel = _np.arctan2(directions[1, :], directions[0, :])
+        swivel = _np.arctan2(-directions[:, 1], -directions[:, 0])
 
+        # number of linear degrees of freedom
+        num_linear, _ = robot.num_dimensionality
         # strip additional spatial dimensions
-        directions = directions[0:platform.motion_pattern.dof_translation, :]
+        directions = directions[:, 0:num_linear]
+
+        # return algorithm result object
+        return _algorithm.Result(self,
+                                 robot,
+                                 pose,
+                                 lengths=lengths,
+                                 directions=directions,
+                                 swivel=swivel,
+                                 leave_points=leaves)
+
+    def _vector_loop(self, robot: _robot.Robot, pose: _pose.Pose):
+        # number of linear degrees of freedom
+        num_linear, _ = robot.num_dimensionality
+        # cable vector
+        cables = [] #_np.zeros((num_kinchains, num_linear))
+        # cable leave points
+        leaves = [] # _np.zeros((num_kinchains, num_linear))
+
+        # loop over each kinematic chain
+        kc: _kinematic_chain.KinematicChain
+        for idxkc, kc in enumerate(robot.kinematic_chains):
+            # extract frame anchor, platform, and platform anchor
+            fanchor = robot.frame.anchors[kc.frame_anchor].linear.position
+            platform = robot.platforms[kc.platform]
+            panchor = platform.anchors[kc.platform_anchor].linear.position
+
+            # store frame anchor point as cable leave point
+            leaves.append(fanchor)
+
+            # read platform position and orientation
+            pos, rot = pose.position
+
+            # write vector loop
+            cables.append(fanchor - (pos + rot.dot(panchor)))
+
+        # ensure cables is a numpy array from this point on
+        cables = _np.asarray(cables)
 
         # cable lengths
-        lengths = _np.linalg.norm(directions, axis=0)
+        lengths = _np.linalg.norm(cables, axis=1)
 
-        # unit directions
-        directions /= lengths
+        # determine cable directions and set any division by zero to 0
+        directions = cables / lengths[: , None]
+        directions[_np.isclose(lengths, 0), :] = 0
 
-        # to avoid divisions by zero yielding `NaN`, we will set all unit
-        # vectors to zero where the cable length is zero. technically,
-        # this case is not well-defined, however, from the standard
-        # kinematics algorithm_old there is no force transmitted, so ui == 0
-        # in this case
-        directions[:, _np.isclose(lengths, 0)] = 0
-
-        return _algorithm.Result(self, robot, pose, lengths=lengths,
-                                 directions=directions, swivel=swivel,
-                                 leave_points=frame_anchors)
-
-    def _vector_loop(self,
-                     position: Matrix,
-                     dcm: Matrix,
-                     frame_anchor: Matrix,
-                     platform_anchor: Matrix):
-        return frame_anchor - (
-                position[:, _np.newaxis] + dcm.dot(platform_anchor)
-        )
+        # return lengths li, directions ui, and leaves ai
+        return lengths, directions, _np.asarray(leaves)
 
     def _pose_estimate(self, robot: _robot.Robot, lengths: Vector):
         # consistent arguments

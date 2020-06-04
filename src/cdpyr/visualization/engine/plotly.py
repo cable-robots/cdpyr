@@ -557,9 +557,9 @@ class Plotly(_engine.Engine, ABC):
         # anchor points and plot the platform shape via that
         else:
             # render bounding box of platform
-            if not platform.is_point:
+            if platform.is_cuboid:
                 # get original anchors as (K,M) matrix
-                anchors = self._extract_coordinates(platform.bi)
+                anchors = self._extract_coordinates(platform.bi.swapaxes(0, 1))
 
                 # in 3D, we perform delaunay triangulation of the corners and
                 # retrieve the convex hull from there

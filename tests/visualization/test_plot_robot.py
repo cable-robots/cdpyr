@@ -11,9 +11,9 @@ __email__ = "p.tempel@tudelft.nl"
 class PlotRobotTestSuite(object):
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Linear())
+                    (visualization.engine.plotly.Linear(),),
             ]
     )
     def test_render_1t(self, engine: visualization.engine.Engine,
@@ -28,13 +28,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Linear())
+                    (visualization.engine.plotly.Linear(),),
             ]
     )
     def test_render_1t_random(self, engine: visualization.engine.Engine,
@@ -50,13 +50,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Planar())
+                    (visualization.engine.plotly.Planar(),),
             ]
     )
     def test_render_2t(self, engine: visualization.engine.Engine,
@@ -72,13 +72,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Planar())
+                    (visualization.engine.plotly.Planar(),),
             ]
     )
     def test_render_2t_random(self, engine: visualization.engine.Engine,
@@ -94,13 +94,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Spatial())
+                    (visualization.engine.plotly.Spatial(),),
             ]
     )
     def test_render_3t(self, engine: visualization.engine.Engine,
@@ -116,13 +116,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Spatial())
+                    (visualization.engine.plotly.Spatial(),),
             ]
     )
     def test_render_3t_random(self, engine: visualization.engine.Engine,
@@ -138,13 +138,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Planar())
+                    (visualization.engine.plotly.Planar(),),
             ]
     )
     def test_render_1r2t(self, engine: visualization.engine.Engine,
@@ -160,13 +160,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Planar())
+                    (visualization.engine.plotly.Planar(),),
             ]
     )
     def test_render_1r2t_random(self, engine: visualization.engine.Engine,
@@ -182,11 +182,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -205,14 +205,14 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
-                    (visualization.engine.mayavi.Spatial(),)
+                    (visualization.engine.mayavi.Spatial(),),
             ]
     )
     def test_render_2r3t_random(self, engine: visualization.engine.Engine,
@@ -228,11 +228,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -251,11 +251,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -274,11 +274,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -297,11 +297,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -320,7 +320,7 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
 

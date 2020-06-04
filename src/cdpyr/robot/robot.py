@@ -75,7 +75,7 @@ class Robot(RobotComponent):
 
     @property
     def bi(self):
-        return _np.hstack(list(self.platforms.bi))
+        return _np.stack(list(self.platforms.bi), axis=0)
 
     @property
     def can_rotate(self):
@@ -204,6 +204,12 @@ class Robot(RobotComponent):
     @property
     def num_redundancy(self):
         return self.num_kinematic_chains - self.num_dof
+
+    @property
+    def num_dimensionality(self):
+        return list(map(max, zip(
+                *((platform.dof_translation, platform.dof_rotation)
+                  for platform in self.platforms))))
 
     @property
     def platforms(self):

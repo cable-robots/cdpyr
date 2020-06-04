@@ -210,7 +210,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
 
     @property
     def joints(self):
-        return _np.sum(self._lengths, axis=0)
+        return _np.sum(self._lengths, axis=1)
 
     @property
     def leave_points(self):
@@ -238,7 +238,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
             for index_chain, chain in enumerate(self._robot.kinematic_chains):
                 # get frame anchor, platform, platform anchor, and cable
                 frame_anchor = self._robot.frame.anchors[chain.frame_anchor]
-                platform = self._robot.platforms[chain.platform]
+                # platform = self._robot.platforms[chain.platform]
                 # platform_anchor = platform.anchors[chain.platform_anchor]
                 # cable = self._robot.cables[chain.cable]
 

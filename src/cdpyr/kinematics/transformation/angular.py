@@ -124,7 +124,7 @@ class Angular(_transformation.Transformation):
     @staticmethod
     def random(num: int = None):
         """
-        Create (a) random angular transformation object(s).
+        Create random angular transformation objects.
 
         Parameters
         ----------
