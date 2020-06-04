@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Linear',
+        'Planar',
+        'Spatial',
+]
+
 import warnings
 from abc import ABC
 
@@ -11,14 +19,11 @@ from scipy.spatial.qhull import QhullError
 from cdpyr import geometry as _geometry, robot as _robot
 from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.analysis.workspace import grid as _grid, hull as _hull
-from cdpyr.helpers import update_recursive
+from cdpyr.helper.data import update_recursive
 from cdpyr.kinematics.transformation import Homogenous as \
     _HomogenousTransformation
 from cdpyr.typing import Matrix, Vector
 from cdpyr.visualization.engine import engine as _engine
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Mayavi(_engine.Engine, ABC):
@@ -342,9 +347,9 @@ class Mayavi(_engine.Engine, ABC):
         # anchor points and plot the platform shape via that
         else:
             # render bounding box of platform
-            if not platform.is_point:
+            if platform.is_cuboid:
                 # get original anchors as (K,M) matrix
-                anchors = self._extract_coordinates(platform.bi)
+                anchors = self._extract_coordinates(platform.bi.swapaxes(0, 1))
 
                 # in 3D, we perform delaunay triangulation of the corners and
                 # retrieve the convex hull from there
@@ -607,10 +612,3 @@ class Planar(Mayavi):
 class Spatial(Mayavi):
     _NUMBER_OF_COORDINATES = 3
     _NUMBER_OF_AXES = 3
-
-
-__all__ = [
-        'Linear',
-        'Planar',
-        'Spatial',
-]

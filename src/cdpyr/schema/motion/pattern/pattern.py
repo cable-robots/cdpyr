@@ -1,10 +1,15 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'PatternSchema',
+]
+
 from marshmallow import fields, post_load
 
 from cdpyr.motion import pattern as _pattern
 from cdpyr.schema.schema import Schema
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class PatternSchema(Schema):
@@ -25,8 +30,3 @@ class PatternSchema(Schema):
     def make_object(self, data, **kwargs):
         return self.__model__(translation=data['dof_translation'],
                               rotation=data['dof_rotation'])
-
-
-__all__ = [
-        'PatternSchema',
-]

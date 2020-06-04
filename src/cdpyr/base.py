@@ -1,31 +1,38 @@
 from __future__ import annotations
 
-from abc import ABC
-
 __author__ = 'Philipp Tempel'
 __email__ = 'p.tempel@tudelft.nl'
+__all__ = [
+        'Algorithm',
+        'Object',
+        'Result',
+]
+
+from abc import ABC, abstractmethod
 
 
-class CdpyrObject(ABC):
+class Object(ABC):
 
     def __init__(self, *args, **kwargs):
         pass
 
 
-class Algorithm(CdpyrObject):
+class Algorithm(Object):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    @abstractmethod
+    def evaluate(self, *args, **kwargs) -> Algorithm:
+        raise NotImplementedError()
 
-class Result(CdpyrObject):
 
-    def __init__(self, *args, **kwargs):
+class Result(Object):
+
+    def __init__(self, algorithm: Algorithm, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._algorithm = algorithm
 
-
-__all__ = [
-        'Algorithm',
-        'CdpyrObject',
-        'Result',
-]
+    @property
+    def algorithm(self):
+        return self._algorithm

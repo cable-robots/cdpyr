@@ -1,16 +1,18 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Algorithm',
+        'Result',
+]
+
 from abc import abstractmethod
 
 from cdpyr.analysis import evaluator as _evaluator, result as _result
-from cdpyr.analysis.criterion import criterion as _criterion_
 from cdpyr.analysis.archetype import archetype as _archetype_
+from cdpyr.analysis.criterion import criterion as _criterion_
 from cdpyr.robot import robot as _robot
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
-__copyright__ = "Copyright 2019, Philipp Tempel"
-__license__ = "EUPL v1.2"
 
 
 class Algorithm(_evaluator.RobotEvaluator):
@@ -97,9 +99,3 @@ class Result(_result.PlottableResult):
     @abstractmethod
     def to_poselist(self):
         raise NotImplementedError()
-
-
-__all__ = [
-        'Algorithm',
-        'Result',
-]

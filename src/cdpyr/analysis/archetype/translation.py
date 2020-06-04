@@ -1,14 +1,17 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Translation',
+]
+
 import numpy as _np
 
 from cdpyr.analysis.archetype import archetype as _archetype
 from cdpyr.kinematics.transformation import Angular
 from cdpyr.motion import pose as _pose
 from cdpyr.typing import Matrix, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Translation(_archetype.Archetype):
@@ -46,8 +49,3 @@ class Translation(_archetype.Archetype):
 
     def _poses(self, coordinate: Vector):
         return [_pose.Pose(coordinate, self._dcm)]
-
-
-__all__ = [
-        'Translation',
-]

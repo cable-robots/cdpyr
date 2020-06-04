@@ -1,5 +1,14 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Platform',
+        'PlatformList',
+        'PlatformAnchor',
+        'PlatformAnchorList',
+]
+
 import itertools
 from collections import UserList
 from typing import List, Optional, Sequence, Union
@@ -10,7 +19,7 @@ from magic_repr import make_repr
 from cdpyr.geometry import primitive as _geometry
 from cdpyr.kinematics.transformation import (
     angular as _angular,
-    linear as _linear
+    linear as _linear,
 )
 from cdpyr.mechanics import inertia as _inertia
 from cdpyr.motion import pattern as _pattern, pose as _pose
@@ -21,9 +30,6 @@ from cdpyr.typing import (
     Num,
     Vector,
 )
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Platform(RobotComponent):
@@ -85,7 +91,7 @@ class Platform(RobotComponent):
 
     @property
     def bi(self):
-        return np_.vstack([anchor.position for anchor in self.anchors]).T
+        return np_.asarray([anchor.position for anchor in self.anchors])
 
     @property
     def can_rotate(self):
@@ -270,12 +276,6 @@ class PlatformList(UserList, RobotComponent):
     __repr__ = make_repr(
             'data'
     )
-
-
-__all__ = [
-        'Platform',
-        'PlatformList',
-]
 
 
 class PlatformAnchor(Anchor):

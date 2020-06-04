@@ -1,15 +1,19 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'KinematicChain',
+        'KinematicChainList',
+]
+
 from collections import UserList
-from typing import Sequence, Union, List
+from typing import List, Sequence, Union
 
 from magic_repr import make_repr
 
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class KinematicChain(RobotComponent):
@@ -117,9 +121,3 @@ class KinematicChainList(UserList, RobotComponent):
     __repr__ = make_repr(
             'data'
     )
-
-
-__all__ = [
-        'KinematicChain',
-        'KinematicChainList',
-]

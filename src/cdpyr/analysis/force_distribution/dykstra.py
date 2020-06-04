@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Dykstra',
+]
+
 from typing import Union
 
 import numpy as _np
@@ -9,9 +15,6 @@ from cdpyr.analysis.kinematics import kinematics as _kinematics
 from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Dykstra(_algorithm.Algorithm):
@@ -118,8 +121,3 @@ class Dykstra(_algorithm.Algorithm):
                 distribution = projection_a
 
         return _algorithm.Result(self, pose, distribution, wrench)
-
-
-__all__ = [
-        'Dykstra',
-]

@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Robot',
+]
+
 from typing import (
     AnyStr,
     Dict,
@@ -8,7 +14,7 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
-    Union
+    Union,
 )
 
 import numpy as _np
@@ -19,13 +25,10 @@ from cdpyr.robot import (
     cable as _cable,
     frame as _frame,
     kinematicchain as _kinematicchain,
-    platform as _platform
+    platform as _platform,
 )
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Robot(RobotComponent):
@@ -72,7 +75,7 @@ class Robot(RobotComponent):
 
     @property
     def bi(self):
-        return _np.hstack(list(self.platforms.bi))
+        return _np.stack(list(self.platforms.bi), axis=0)
 
     @property
     def can_rotate(self):
@@ -203,6 +206,12 @@ class Robot(RobotComponent):
         return self.num_kinematic_chains - self.num_dof
 
     @property
+    def num_dimensionality(self):
+        return list(map(max, zip(
+                *((platform.dof_translation, platform.dof_rotation)
+                  for platform in self.platforms))))
+
+    @property
     def platforms(self):
         return self._platforms
 
@@ -256,8 +265,3 @@ class Robot(RobotComponent):
             'cables',
             'kinematic_chains'
     )
-
-
-__all__ = [
-        'Robot',
-]

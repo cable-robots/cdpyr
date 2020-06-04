@@ -1,5 +1,15 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Pose',
+        'PoseList',
+        'PoseListResult',
+        'PoseResult',
+        'ZeroPose',
+]
+
 import itertools
 from collections import UserList
 from typing import AnyStr, Iterable, Optional, Sequence, Tuple, Union
@@ -8,20 +18,16 @@ import numpy as np_
 from magic_repr import make_repr
 
 from cdpyr import validator as _validator
-from cdpyr.base import Result as BaseResult
+from cdpyr.base import Object, Result as BaseResult
 from cdpyr.kinematics.transformation import (
     angular as _angular,
     homogenous as _homogenous,
-    linear as _linear
+    linear as _linear,
 )
-from cdpyr.base import CdpyrObject
 from cdpyr.typing import Matrix, Num, Vector
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
-
-class Pose(CdpyrObject):
+class Pose(Object):
     linear: _linear.Linear
     angular: _angular.Angular
     _time: Num
@@ -195,6 +201,71 @@ class Pose(CdpyrObject):
 
 
 class PoseGenerator(object):
+
+    @staticmethod
+    def zero():
+        return Pose(position=[0.0, 0.0, 0.0],
+             dcm=[[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+
+    @staticmethod
+    def random_1t(num: int = None):
+        if num is None or num == 1:
+            return Pose(
+                    linear=_linear.Linear.random(dim=1),
+                    angular=_angular.Angular())
+        else:
+            return (PoseGenerator.random_1t() for _ in range(num))
+
+    @staticmethod
+    def random_1r2t(num: int = None):
+        if num is None or num == 1:
+            return Pose(
+                    linear=_linear.Linear.random(dim=2),
+                    angular=_angular.Angular(
+                            sequence='z',
+                            euler=np_.pi * (
+                                    np_.random.random(1) - 0.5)))
+        else:
+            return (PoseGenerator.random_1r2t() for _ in range(num))
+
+    @staticmethod
+    def random_2t(num: int = None):
+        if num is None or num == 1:
+            return Pose(
+                    linear=_linear.Linear.random(dim=2),
+                    angular=_angular.Angular())
+        else:
+            return (PoseGenerator.random_2t() for _ in range(num))
+
+    @staticmethod
+    def random_2r3t(num: int = None):
+        if num is None or num == 1:
+            return Pose(
+                    linear=_linear.Linear.random(dim=2),
+                    angular=_angular.Angular(
+                            sequence='xy',
+                            euler=np_.pi * (
+                                    np_.random.random(2) - 0.5)))
+        else:
+            return (PoseGenerator.random_2t() for _ in range(num))
+
+    @staticmethod
+    def random_3t(num: int = None):
+        if num is None or num == 1:
+            return Pose(
+                    linear=_linear.Linear.random(dim=3),
+                    angular=_angular.Angular())
+        else:
+            return (PoseGenerator.random_3t() for _ in range(num))
+
+    @staticmethod
+    def random_3r3t(num: int = None):
+        if num is None or num == 1:
+            return Pose(
+                    linear=_linear.Linear.random(dim=3),
+                    angular=_angular.Angular.random())
+        else:
+            return (PoseGenerator.random_3r3t() for _ in range(num))
 
     @staticmethod
     def full(position: Tuple[Union[Num, Vector], Union[Num, Vector]],
@@ -440,7 +511,7 @@ class PoseGenerator(object):
                 itertools.product(*(range(k + 1) for k in iterations)))
 
 
-class PoseList(UserList, CdpyrObject):
+class PoseList(UserList, Object):
     data: Sequence[Pose]
 
     @property
@@ -509,13 +580,4 @@ class PoseListResult(BaseResult):
         self._pose_list = pose_list
 
 
-ZeroPose = Pose([0.0, 0.0, 0.0],
-                [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
-
-__all__ = [
-        'Pose',
-        'PoseList',
-        'PoseListResult',
-        'PoseResult',
-        'ZeroPose',
-]
+ZeroPose = PoseGenerator.zero()

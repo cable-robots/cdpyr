@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Cylinder',
+]
+
 from typing import Union
 
 import numpy as _np
@@ -7,9 +13,6 @@ from magic_repr import make_repr
 
 from cdpyr.geometry.primitive import Primitive
 from cdpyr.typing import Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Cylinder(Primitive):
@@ -86,8 +89,3 @@ class Cylinder(Primitive):
             'radius',
             'height',
     )
-
-
-__all__ = [
-        'Cylinder',
-]

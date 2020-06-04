@@ -1,10 +1,15 @@
-import numpy as np
-from marshmallow import Schema, fields, post_load
-
-from cdpyr.mechanics import inertia as _inertia
+from __future__ import annotations
 
 __author__ = "Philipp Tempel"
 __email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'InertiaSchema'
+]
+
+import numpy as np
+from marshmallow import fields, post_load, Schema
+
+from cdpyr.mechanics import inertia as _inertia
 
 
 class InertiaSchema(Schema):
@@ -58,8 +63,3 @@ class InertiaSchema(Schema):
     @post_load
     def make_object(self, data, **kwargs):
         return self.__model__(**data)
-
-
-__all__ = [
-        'InertiaSchema'
-]

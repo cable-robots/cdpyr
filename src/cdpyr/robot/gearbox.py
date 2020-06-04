@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Gearbox',
+]
+
 from typing import Optional
 
 import numpy as np_
@@ -7,9 +13,6 @@ from magic_repr import make_repr
 
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Gearbox(RobotComponent):
@@ -44,8 +47,3 @@ class Gearbox(RobotComponent):
             'ratio',
             'inertia'
     )
-
-
-__all__ = [
-        'Gearbox',
-]

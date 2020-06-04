@@ -1,10 +1,15 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'AngularSchema',
+]
+
 from marshmallow import fields, post_load
 
 from cdpyr.kinematics.transformation import angular as _angular
 from cdpyr.schema.schema import Schema
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class AngularSchema(Schema):
@@ -38,8 +43,3 @@ class AngularSchema(Schema):
     @post_load
     def make_object(self, data, **kwargs):
         return self.__model__(**data)
-
-
-__all__ = [
-        'AngularSchema',
-]

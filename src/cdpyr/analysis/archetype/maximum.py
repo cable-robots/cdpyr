@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Maximum',
+]
+
 import numpy as _np
 
 from cdpyr.analysis.archetype import archetype as _archetype
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Maximum(_archetype.ArchetypeOrientation):
@@ -25,8 +28,3 @@ class Maximum(_archetype.ArchetypeOrientation):
     @property
     def comparator(self):
         return any
-
-
-__all__ = [
-        'Maximum',
-]

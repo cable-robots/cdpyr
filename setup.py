@@ -26,7 +26,7 @@ setup(
                     'and simulating cable-driven parallel robots.',
         long_description='%s\n%s' % (
                 re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub(
-                    '', read('README.rst')),
+                        '', read('README.rst')),
                 re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
         ),
         author='Philipp Tempel',
@@ -55,7 +55,7 @@ setup(
         project_urls={
                 'Documentation': 'https://cdpyr.readthedocs.io/',
                 'Changelog':
-                    'https://cdpyr.readthedocs.io/en/latest/changelog.html',
+                                 'https://cdpyr.readthedocs.io/en/latest/changelog.html',
                 'Issue Tracker': 'https://github.com/cable-robots/cdpyr/issues',
         },
         keywords=[
@@ -67,20 +67,16 @@ setup(
                 'click',
                 'numpy',
                 'scipy',
-                'colour',
                 'repr',
+                'colour',
                 'pyyaml',
                 'xmltodict',
                 'marshmallow',
+                'case-changer',
                 'joblib',
-                'watchdog',
                 'hurry.filesize',
-                'tabulate',
                 'fastnumbers',
-                'cached-property',
-                'pint',
-                'python-string-utils',
-                'more-itertools',
+                'tabulate',
         ],
         extras_require={
                 'visualization': [
@@ -89,6 +85,10 @@ setup(
                         'vtk',
                         'mayavi',
                 ],
+                'twincat':       [
+                        'pint',
+                        'more-itertools',
+                ]
         },
         entry_points={
                 'console_scripts': [

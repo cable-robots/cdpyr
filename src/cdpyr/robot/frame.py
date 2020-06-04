@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Frame',
+        'FrameAnchor',
+        'FrameAnchorList',
+]
+
 from typing import List, Optional, Sequence, Union
 
 import numpy as np_
@@ -7,16 +15,12 @@ from magic_repr import make_repr
 
 from cdpyr.kinematics.transformation import (
     angular as _angular,
-    linear as _linear
+    linear as _linear,
 )
 from cdpyr.robot import drivetrain as _drivetrain, pulley as _pulley
 from cdpyr.robot.anchor import Anchor, AnchorList
 from cdpyr.robot.robot_component import RobotComponent
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
-
-from cdpyr.typing import Vector, Matrix
+from cdpyr.typing import Matrix, Vector
 
 
 class Frame(RobotComponent):
@@ -58,7 +62,7 @@ class Frame(RobotComponent):
 
     @property
     def ai(self):
-        return np_.vstack([anchor.position for anchor in self.anchors]).T
+        return np_.asarray([anchor.position for anchor in self.anchors])
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -79,11 +83,6 @@ class Frame(RobotComponent):
     __repr__ = make_repr(
             'anchors'
     )
-
-
-__all__ = [
-        'Frame',
-]
 
 
 class FrameAnchor(Anchor):

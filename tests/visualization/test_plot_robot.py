@@ -11,30 +11,30 @@ __email__ = "p.tempel@tudelft.nl"
 class PlotRobotTestSuite(object):
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Linear())
+                    (visualization.engine.plotly.Linear(),),
             ]
     )
     def test_render_1t(self, engine: visualization.engine.Engine,
                        ik_standard: Standard,
-                       empty_pose: pose.Pose,
+                       zero_pose: pose.Pose,
                        robot_1t: robot.Robot):
         robot = robot_1t
-        pose = empty_pose
+        pose = zero_pose
 
         kinematics = ik_standard.backward(robot, pose)
         wizard = visualization.Visualizer(engine)
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Linear())
+                    (visualization.engine.plotly.Linear(),),
             ]
     )
     def test_render_1t_random(self, engine: visualization.engine.Engine,
@@ -50,21 +50,21 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Planar())
+                    (visualization.engine.plotly.Planar(),),
             ]
     )
     def test_render_2t(self, engine: visualization.engine.Engine,
                        ik_standard: Standard,
-                       empty_pose: pose.Pose,
+                       zero_pose: pose.Pose,
                        robot_2t: robot.Robot):
         robot = robot_2t
-        pose = empty_pose
+        pose = zero_pose
 
         kinematics = ik_standard.backward(robot, pose)
         robot.platforms[0].pose = pose
@@ -72,13 +72,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Planar())
+                    (visualization.engine.plotly.Planar(),),
             ]
     )
     def test_render_2t_random(self, engine: visualization.engine.Engine,
@@ -94,21 +94,21 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Spatial())
+                    (visualization.engine.plotly.Spatial(),),
             ]
     )
     def test_render_3t(self, engine: visualization.engine.Engine,
                        ik_standard: Standard,
-                       empty_pose: pose.Pose,
+                       zero_pose: pose.Pose,
                        robot_3t: robot.Robot):
         robot = robot_3t
-        pose = empty_pose
+        pose = zero_pose
 
         kinematics = ik_standard.backward(robot, pose)
         robot.platforms[0].pose = pose
@@ -116,13 +116,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Spatial())
+                    (visualization.engine.plotly.Spatial(),),
             ]
     )
     def test_render_3t_random(self, engine: visualization.engine.Engine,
@@ -138,21 +138,21 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Planar())
+                    (visualization.engine.plotly.Planar(),),
             ]
     )
     def test_render_1r2t(self, engine: visualization.engine.Engine,
                          ik_standard: Standard,
-                         empty_pose: pose.Pose,
+                         zero_pose: pose.Pose,
                          robot_1r2t: robot.Robot):
         robot = robot_1r2t
-        pose = empty_pose
+        pose = zero_pose
 
         kinematics = ik_standard.backward(robot, pose)
         robot.platforms[0].pose = pose
@@ -160,13 +160,13 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine'),
+            ('engine',),
             [
-                    (visualization.engine.plotly.Planar())
+                    (visualization.engine.plotly.Planar(),),
             ]
     )
     def test_render_1r2t_random(self, engine: visualization.engine.Engine,
@@ -182,11 +182,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -194,10 +194,10 @@ class PlotRobotTestSuite(object):
     )
     def test_render_2r3t(self, engine: visualization.engine.Engine,
                          ik_standard: Standard,
-                         empty_pose: pose.Pose,
+                         zero_pose: pose.Pose,
                          robot_2r3t: robot.Robot):
         robot = robot_2r3t
-        pose = empty_pose
+        pose = zero_pose
 
         kinematics = ik_standard.backward(robot, pose)
         robot.platforms[0].pose = pose
@@ -205,14 +205,14 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
-                    (visualization.engine.mayavi.Spatial(),)
+                    (visualization.engine.mayavi.Spatial(),),
             ]
     )
     def test_render_2r3t_random(self, engine: visualization.engine.Engine,
@@ -228,11 +228,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -240,10 +240,10 @@ class PlotRobotTestSuite(object):
     )
     def test_render_3r3t(self, engine: visualization.engine.Engine,
                          ik_standard: Standard,
-                         empty_pose: pose.Pose,
+                         zero_pose: pose.Pose,
                          robot_3r3t: robot.Robot):
         robot = robot_3r3t
-        pose = empty_pose
+        pose = zero_pose
 
         kinematics = ik_standard.backward(robot, pose)
         robot.platforms[0].pose = pose
@@ -251,11 +251,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -274,11 +274,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -286,10 +286,10 @@ class PlotRobotTestSuite(object):
     )
     def test_render_ipanema3(self, engine: visualization.engine.Engine,
                              ik_pulley: Standard,
-                             empty_pose: pose.Pose,
+                             zero_pose: pose.Pose,
                              ipanema_3: robot.Robot):
         robot = ipanema_3
-        pose = empty_pose
+        pose = zero_pose
 
         kinematics = ik_pulley.backward(robot, pose)
         robot.platforms[0].pose = pose
@@ -297,11 +297,11 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
     @pytest.mark.parametrize(
-            ('engine', ),
+            ('engine',),
             [
                     (visualization.engine.plotly.Spatial(),),
                     (visualization.engine.mayavi.Spatial(),),
@@ -320,7 +320,7 @@ class PlotRobotTestSuite(object):
         wizard.render(robot)
         wizard.render(kinematics)
         wizard.draw()
-        wizard.show()
+        # wizard.show()
         wizard.close()
 
 

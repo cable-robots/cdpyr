@@ -1,3 +1,12 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'FrameSchema',
+        'FrameAnchorSchema',
+]
+
 from marshmallow import fields, post_load
 
 import cdpyr.robot
@@ -5,9 +14,6 @@ from cdpyr.robot import frame as _frame
 from cdpyr.schema.robot import drivetrain as _drivetrain, pulley as _pulley
 from cdpyr.schema.robot.anchor import AnchorSchema
 from cdpyr.schema.schema import Schema
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class FrameAnchorSchema(AnchorSchema):
@@ -44,9 +50,3 @@ class FrameSchema(Schema):
     @post_load
     def make_object(self, data, **kwargs):
         return self.__model__(**data)
-
-
-__all__ = [
-        'FrameSchema',
-        'FrameAnchorSchema',
-]

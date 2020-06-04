@@ -1,13 +1,21 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'PlottableResult',
+        'PoseResult',
+        'PoseListResult',
+        'Result',
+        'RobotResult',
+]
+
 from abc import ABC
+
 from magic_repr import make_repr
 
 from cdpyr.motion.pose import Pose, PoseList
 from cdpyr.robot.robot import Robot
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Result(ABC):
@@ -64,12 +72,3 @@ class PoseListResult(Result):
     __repr__ = make_repr(
             'pose_list'
     )
-
-
-__all__ = [
-        'PlottableResult',
-        'PoseResult',
-        'PoseListResult',
-        'Result',
-        'RobotResult',
-]

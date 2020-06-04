@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Motor',
+]
+
 from typing import AnyStr, Dict, Optional
 
 import numpy as np_
@@ -7,9 +13,6 @@ from magic_repr import make_repr
 
 from cdpyr.robot.robot_component import RobotComponent
 from cdpyr.typing import Num
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Motor(RobotComponent):
@@ -44,11 +47,14 @@ class Motor(RobotComponent):
     @torques.setter
     def torques(self, torques: Dict[AnyStr, Num]):
         self._torques = {
-                **{'stall': None,
-                   'peak':  None,
-                   'rated': None,
-                   'rms':   None},
-                **torques}
+                **{
+                        'stall': None,
+                        'peak':  None,
+                        'rated': None,
+                        'rms':   None
+                },
+                **torques
+        }
 
     @torques.deleter
     def torques(self):
@@ -141,8 +147,3 @@ class Motor(RobotComponent):
             'rated_speed',
             'inertia'
     )
-
-
-__all__ = [
-        'Motor',
-]

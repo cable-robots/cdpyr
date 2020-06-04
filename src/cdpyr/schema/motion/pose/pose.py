@@ -1,15 +1,20 @@
+from __future__ import annotations
+
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'PoseSchema',
+]
+
 from marshmallow import fields, post_load
 
 from cdpyr.motion import pose as _pose
 from cdpyr.schema import fields as custom_fields
-from cdpyr.schema.schema import Schema
 from cdpyr.schema.kinematics.transformation import (
     angular as _angular,
-    linear as _linear
+    linear as _linear,
 )
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
+from cdpyr.schema.schema import Schema
 
 
 class PoseSchema(Schema):
@@ -34,8 +39,3 @@ class PoseSchema(Schema):
                                    for each in data))
         else:
             return self.__model__(**data)
-
-
-__all__ = [
-        'PoseSchema',
-]

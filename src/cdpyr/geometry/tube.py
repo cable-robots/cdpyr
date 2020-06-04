@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Tube',
+]
+
 from typing import Union
 
 import numpy as _np
@@ -7,9 +13,6 @@ import numpy as _np
 from cdpyr.geometry import cylinder as _cylinder
 from cdpyr.geometry.primitive import Primitive
 from cdpyr.typing import Num, Vector
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 class Tube(Primitive):
@@ -84,8 +87,3 @@ class Tube(Primitive):
     @property
     def volume(self):
         return self._outer.volume - self._inner.volume
-
-
-__all__ = [
-        'Tube',
-]

@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Algorithm',
+        'Result',
+]
+
 from abc import abstractmethod
 from typing import Union
 
@@ -11,9 +18,6 @@ from cdpyr.analysis import evaluator as _evaluator, result as _result
 from cdpyr.motion import pose as _pose
 from cdpyr.typing import Matrix, Vector
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
-
 
 class Algorithm(_evaluator.Evaluator):
 
@@ -21,7 +25,13 @@ class Algorithm(_evaluator.Evaluator):
                  pose: _pose.Pose,
                  platform_anchors: Vector,
                  directions: Matrix) -> Result:
-        return self._evaluate(pose, platform_anchors, directions)
+        return Result(pose, self._evaluate(pose, platform_anchors, directions))
+
+    def derivative(self,
+                   pose: _pose.Pose,
+                   platform_anchors: Vector,
+                   directions: Matrix) -> Result:
+        return self._derivative(pose, platform_anchors, directions)
 
     @abstractmethod
     def _evaluate(self,
@@ -30,13 +40,22 @@ class Algorithm(_evaluator.Evaluator):
                   directions: Matrix) -> Result:
         raise NotImplementedError()
 
+    @abstractmethod
+    def _derivative(self,
+                    pose: _pose.Pose,
+                    platform_anchors: Vector,
+                    directions: Matrix) -> Result:
+        raise NotImplementedError()
+
 
 class Result(_result.PoseResult):
     _matrix: Matrix
     _kernel: Matrix
     _pinv: Matrix
 
-    def __init__(self, pose: _pose.Pose, matrix: Union[Matrix, Result],
+    def __init__(self,
+                 pose: _pose.Pose,
+                 matrix: Union[Matrix, Result],
                  **kwargs):
         super().__init__(pose=pose, **kwargs)
         self._matrix = matrix.matrix if isinstance(matrix, Result) else matrix
@@ -88,9 +107,3 @@ class Result(_result.PoseResult):
             'matrix',
             'kernel',
     )
-
-
-__all__ = [
-        'Algorithm',
-        'Result',
-]

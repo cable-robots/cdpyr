@@ -1,9 +1,17 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Algorithm',
+        'Result',
+]
+
 from abc import ABC, abstractmethod
 from typing import Union
 
 import numpy as _np
+from magic_repr import make_repr
 
 import cdpyr.numpy.linalg
 from cdpyr.analysis import result as _result
@@ -12,13 +20,10 @@ from cdpyr.motion import pose as _pose
 from cdpyr.robot import robot as _robot
 from cdpyr.typing import Matrix, Vector
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
-
 
 class Algorithm(ABC):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         pass
 
     def forward(self,
@@ -62,6 +67,8 @@ class Algorithm(ABC):
                   pose: _pose.Pose,
                   **kwargs) -> Result:
         raise NotImplementedError()
+
+    __repr__ = make_repr()
 
 
 class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
@@ -203,7 +210,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
 
     @property
     def joints(self):
-        return _np.sum(self._lengths, axis=0)
+        return _np.sum(self._lengths, axis=1)
 
     @property
     def leave_points(self):
@@ -231,7 +238,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
             for index_chain, chain in enumerate(self._robot.kinematic_chains):
                 # get frame anchor, platform, platform anchor, and cable
                 frame_anchor = self._robot.frame.anchors[chain.frame_anchor]
-                platform = self._robot.platforms[chain.platform]
+                # platform = self._robot.platforms[chain.platform]
                 # platform_anchor = platform.anchors[chain.platform_anchor]
                 # cable = self._robot.cables[chain.cable]
 
@@ -280,9 +287,3 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
     @property
     def wrap_angles(self):
         return self._wrap
-
-
-__all__ = [
-        'Algorithm',
-        'Result',
-]

@@ -1,11 +1,22 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'cogiro',
+        'ipanema_3',
+        'robot_1t',
+        'robot_2t',
+        'robot_3t',
+        'robot_1r2t',
+        'robot_2r3t',
+        'robot_3r3t',
+        'segesta',
+]
+
 import numpy as np
 
 import cdpyr
-
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
 
 def robot_1t():
@@ -1131,16 +1142,3 @@ def cogiro():
                             sequence='xyz', euler=(0.0201, 0.0012, -0.0151))
             )
     )
-
-
-__all__ = [
-        'robot_1t',
-        'robot_2t',
-        'robot_3t',
-        'robot_1r2t',
-        'robot_2r3t',
-        'robot_3r3t',
-        'ipanema_3',
-        'cogiro',
-        'segesta',
-]

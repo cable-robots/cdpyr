@@ -1,18 +1,26 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'MP_1T',
+        'MP_2T',
+        'MP_3T',
+        'MP_1R2T',
+        'MP_2R3T',
+        'MP_3R3T',
+]
+
 from typing import AnyStr, Optional, Union
 
 import numpy as np_
 from magic_repr import make_repr
 
-from cdpyr.base import CdpyrObject
+from cdpyr.base import Object
 from cdpyr.typing import Matrix, Num, Vector
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
 
-
-class Pattern(CdpyrObject):
+class Pattern(Object):
     _dof_translation: int
     _dof_rotation: int
     _human: AnyStr
@@ -71,7 +79,7 @@ class Pattern(CdpyrObject):
     def is_cuboid(self):
         return self.dof_rotation == self.dof_translation == 3
 
-    def gravity(self, gravity: Optional[Union[Num, Vector]]):
+    def gravity(self, gravity: Optional[Union[Num, Vector]] = None):
         # first, scalar value for gravity
         gravity = np_.asarray(gravity if gravity is not None else 0)
 
@@ -96,10 +104,11 @@ class Pattern(CdpyrObject):
         cog = np_.asarray(cog) if cog is not None else np_.zeros(
                 self.dof_translation)
 
+        cog: Vector
         gravity: Vector
         linear_inertia: Matrix
-        cog: Vector
         rot: Matrix
+
         # reduce dimensions of vectors and matrices for quicker calculations
         gravity = gravity[0:self.dof_translation]
         linear_inertia = linear_inertia[0:self.dof_translation,
@@ -153,12 +162,3 @@ MP_3T = Pattern(3, 0)
 MP_1R2T = Pattern(2, 1)
 MP_2R3T = Pattern(3, 2)
 MP_3R3T = Pattern(3, 3)
-
-__all__ = [
-        'MP_1T',
-        'MP_2T',
-        'MP_3T',
-        'MP_1R2T',
-        'MP_2R3T',
-        'MP_3R3T',
-]

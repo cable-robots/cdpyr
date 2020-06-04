@@ -1,27 +1,28 @@
 from __future__ import annotations
 
+__author__ = "Philipp Tempel"
+__email__ = "p.tempel@tudelft.nl"
+__all__ = [
+        'Parser',
+]
+
 import _datetime as _datetime
 import pathlib as _pl
+import re
 from collections import OrderedDict
+from enum import auto, Enum
 from typing import Any, AnyStr, Dict, List, Tuple, Union
 
+import case_changer
 import more_itertools
 import numpy as _np
 import pint as _pint
-import re
-import string_utils
-from enum import Enum, auto
 
+from cdpyr.stream.twincat import units as _tcunits
 from cdpyr.typing import Num, Vector
 
-__author__ = "Philipp Tempel"
-__email__ = "p.tempel@tudelft.nl"
-
-# registry of SI units
-_ureg = _pint.UnitRegistry()
-
 # regular expression object to match a symbol name and its unit
-reg_name_unit = re.compile('^(?P<key>[A-Za-z\-]+)(\[(?P<unit>[a-z]+)\])?$')
+reg_name_unit = re.compile('^(?P<key>[A-Za-z\_\-]+)(\[(?P<unit>[a-z]+)\])?$')
 # regular expression object to match vector-like names
 reg_signal_name = re.compile('^(?P<name>[a-zA-Z\_\.]+)(\[(?P<index>\d+)\])?$')
 
@@ -58,7 +59,7 @@ class Parser(object):
 
     """
 
-    # handlers for differnet header fields
+    # handlers for different header fields
     HANDLERS = {
             'start_record':  process_header_time_record,
             'file':          process_header_file,
@@ -82,9 +83,7 @@ class Parser(object):
 
     def __init__(self, file: Union[AnyStr, _pl.Path], delimiter="\t"):
         # file path
-        self.file = file \
-            if isinstance(file, _pl.Path) \
-            else _pl.Path(file).resolve()
+        self.file = _pl.Path(file).resolve()
         # file delimiter to use
         self.delimiter = delimiter
         # parse data
@@ -92,10 +91,12 @@ class Parser(object):
 
     def parse(self):
         """
+        Parse the assigned TwinCAT 3 scope CSV file
 
         Returns
         -------
-
+        scope : cdpyr.stream.twincat.scope.Scope
+            Scope object
         """
 
         # store processed scope meta data and signals
@@ -154,12 +155,12 @@ class Parser(object):
     def _parse_signal_meta(self, line: str):
         line_data = line.split(self.delimiter)
         key = self._prepare_cell_key(line_data[0])
-        values = line_data[1:-1:2]
+        values = line_data[1::2]
 
         # some keys are given as "name[unit]" which we will split into here
         try:
             re_match = reg_name_unit.match(key)
-            key = self._prepare_cell_key(re_match.group('key'))
+            key = re_match.group('key')
             unit = re_match.group('unit')
         except AttributeError:
             unit = None
@@ -173,7 +174,7 @@ class Parser(object):
 
             # try to parse the string as a unit, if possible
             try:
-                value = _ureg.parse_expression(f'{value} {unit}')
+                value = _tcunits.ureg.parse_expression(f'{value} {unit}')
             except _pint.UndefinedUnitError:
                 pass
 
@@ -194,8 +195,8 @@ class Parser(object):
             return
 
         # get every data key and (stripped) value
-        keys = (self._prepare_cell_key(k) for k in line_data[0:-1:2])
-        values = (k.strip() for k in line_data[1:-1:2])
+        keys = (self._prepare_cell_key(k) for k in line_data[0::2])
+        values = (k.strip() for k in line_data[1::2])
 
         # loop over each signal
         for idx, key_value in enumerate(zip(keys, values)):
@@ -223,13 +224,26 @@ class Parser(object):
     @staticmethod
     def _prepare_cell_key(k: str):
         # remove dashes/hyphens and turn camel case into snake case
-        return string_utils.camel_case_to_snake(k.strip().replace('-', ''))
+        try:
+            return str(int(k))
+        except ValueError:
+            # check if there's a unit in the key e.g., `SampleTime[ms]`
+            if '[' in k:
+                idx_unit = k.index('[')
+                k, unit = k[:idx_unit], k[idx_unit:]
+            else:
+                unit = ''
+            return case_changer.snake_case(k.strip().replace('-', '')) + unit
 
     @staticmethod
-    def _merge_signals(signals: Tuple[
-        Dict[AnyStr, Union[
-            Dict[AnyStr, Union[AnyStr, _ureg.Quantity, Num]],
-            Vector]]]):
+    def _merge_signals(signals: Tuple[Dict[AnyStr,
+                                           Union[
+                                               Dict[AnyStr,
+                                                    Union[
+                                                        AnyStr,
+                                                        _tcunits.ureg.Quantity,
+                                                        Num]],
+                                               Vector]]]):
         # new signals stored in a dict
         new_signals = {}
         # loop over every signal
@@ -258,7 +272,7 @@ class Parser(object):
         for key, signal in new_signals.items():
             new_signals[key]['values'] = _np.asarray(
                     [signal['values'][index] for index in
-                     sorted(signal['values'].keys())])
+                     sorted(signal['values'].keys())]).T
 
         # return the squeezed data
         return tuple(new_signals.values())
