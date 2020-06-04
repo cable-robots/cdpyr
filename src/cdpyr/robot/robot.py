@@ -75,7 +75,7 @@ class Robot(RobotComponent):
 
     @property
     def bi(self):
-        return _np.hstack(list(self.platforms.bi))
+        return _np.stack(list(self.platforms.bi), axis=0)
 
     @property
     def can_rotate(self):

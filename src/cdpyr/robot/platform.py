@@ -91,7 +91,7 @@ class Platform(RobotComponent):
 
     @property
     def bi(self):
-        return np_.vstack([anchor.position for anchor in self.anchors]).T
+        return np_.asarray([anchor.position for anchor in self.anchors])
 
     @property
     def can_rotate(self):

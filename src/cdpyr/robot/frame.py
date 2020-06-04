@@ -62,7 +62,7 @@ class Frame(RobotComponent):
 
     @property
     def ai(self):
-        return np_.vstack([anchor.position for anchor in self.anchors]).T
+        return np_.asarray([anchor.position for anchor in self.anchors])
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
