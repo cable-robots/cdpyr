@@ -74,9 +74,5 @@ class Calculator(_evaluator.PoseEvaluator):
 
         return self.resolver[platform.motion_pattern].evaluate(
                 pose,
-                _np.asarray(
-                        [platform.anchors[anchor_index].linear.position
-                         for anchor_index in
-                         robot.kinematic_chains.with_platform(
-                                 platform_index).platform_anchor]).T,
+                platform.bi[[kc.platform_anchor for kc in robot.kinematic_chains.with_platform(platform_index)], :],
                 kinematics.directions)

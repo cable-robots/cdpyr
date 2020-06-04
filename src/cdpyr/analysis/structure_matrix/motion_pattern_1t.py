@@ -17,7 +17,7 @@ class MotionPattern1T(_algorithm.Algorithm):
                   pose: _pose.Pose,
                   platform_anchors: Vector,
                   directions: Matrix):
-        return directions[0:1, :]
+        return directions[:, 0:1].transpose()
 
     def _derivative(self,
                     pose: _pose.Pose,

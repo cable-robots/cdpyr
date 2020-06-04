@@ -19,12 +19,14 @@ class MotionPattern1R2T(_algorithm.Algorithm):
                   pose: _pose.Pose,
                   platform_anchors: Vector,
                   directions: Matrix):
-        return _np.vstack((directions,
-                           _np.cross(pose.angular.dcm[0:2, 0:2]
-                                     .dot(platform_anchors[0:2, :]),
-                                     directions[0:2, :],
-                                     axis=0)
-                           ))
+        return _np.hstack((
+                directions,
+                pose.angular.dcm.dot(
+                        _np.cross(
+                                platform_anchors,
+                                directions,
+                                axis=1).transpose()
+                )[2, :, None])).transpose()
 
     def _derivative(self,
                     pose: _pose.Pose,
