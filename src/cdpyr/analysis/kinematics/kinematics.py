@@ -210,7 +210,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
 
     @property
     def joints(self):
-        return _np.sum(self._lengths, axis=0)
+        return _np.sum(self._lengths, axis=1)
 
     @property
     def leave_points(self):
