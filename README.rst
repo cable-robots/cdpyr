@@ -2,34 +2,6 @@
 Overview
 ========
 
-.. start-badges
-
-.. list-table::
-    :stub-columns: 1
-
-    * - docs
-      - |docs|
-    * - tests
-      - | |travis|
-        |
-    * - package
-      - | |commits-since|
-.. |docs| image:: https://readthedocs.org/projects/cdpyr/badge/?style=flat
-    :target: https://readthedocs.org/projects/cdpyr
-    :alt: Documentation Status
-
-.. |travis| image:: https://api.travis-ci.org/cable-robots/cdpyr.svg?branch=master
-    :alt: Travis-CI Build Status
-    :target: https://travis-ci.org/cable-robots/cdpyr
-
-.. |commits-since| image:: https://img.shields.io/github/commits-since/cable-robots/cdpyr/v1.0.dev0.svg
-    :alt: Commits since latest release
-    :target: https://github.com/cable-robots/cdpyr/compare/v1.0.dev0...master
-
-
-
-.. end-badges
-
 A Python 3 package for designing, analyzing, and simulating cable-driven parallel robots.
 
 * Free software: European Union Public Licence V. 1.2
