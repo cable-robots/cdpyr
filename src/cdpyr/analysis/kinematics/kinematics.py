@@ -12,6 +12,7 @@ from typing import Union
 
 import numpy as _np
 from magic_repr import make_repr
+from scipy import optimize
 
 import cdpyr.numpy.linalg
 from cdpyr.analysis import result as _result
@@ -24,7 +25,48 @@ from cdpyr.typing import Matrix, Vector
 class Algorithm(ABC):
 
     def __init__(self, **kwargs):
-        pass
+        self._forward_last_direction = None
+
+    @abstractmethod
+    def _vector_loop(self,
+                     robot: _robot.Robot,
+                     pose: _pose.Pose,
+                     *args,
+                     **kwargs):
+        raise NotImplementedError()
+
+    def backward(self,
+                 robot: _robot.Robot,
+                 pose: _pose.Pose,
+                 **kwargs) -> Result:
+        if robot.num_platforms > 1:
+            raise NotImplementedError(
+                    'Kinematics are currently not implemented for robots with '
+                    'more than one platform.'
+            )
+        # solve the vector loop and obtain solution
+        lengths, directions, leaves, swivel, *rem = self._vector_loop(robot,
+                                                                      pose,
+                                                                      **kwargs)
+        try:
+            wrap, *rem = rem
+        except ValueError:
+            wrap = None
+
+        # number of linear degrees of freedom
+        num_linear, _ = robot.num_dimensionality
+        # strip additional spatial dimensions
+        directions = directions[:, 0:num_linear]
+
+        # return algorithm result object
+        return Result(self,
+                      robot,
+                      pose,
+                      lengths=lengths,
+                      directions=directions,
+                      leave_points=leaves,
+                      swivel=swivel,
+                      wrap=wrap)
 
     def forward(self,
                 robot: _robot.Robot,
@@ -36,37 +78,148 @@ class Algorithm(ABC):
                     'more than one platform.'
             )
 
-        return self._forward(robot, joints, **kwargs)
+        # for now, this is the inner-loop code for the first platform
+        index_platform = 0
+
+        # consistent arguments
+        joints = _np.asarray(joints)
+
+        # quicker and shorter access to platform object
+        platform = robot.platforms[index_platform]
+
+        # kinematic chains of the platform
+        kcs = robot.kinematic_chains.with_platform(index_platform)
+        # get frame anchors and platform anchors
+        frame_anchors = _np.asarray(
+                [robot.frame.anchors[anchor_index].linear.position for
+                 anchor_index in kcs.frame_anchor])
+
+        # initial directions needed for later returned result
+        last_direction = []
+
+        # initial pose estimate given by user?
+        initial_estimate = kwargs.pop('x0', None)
+        # no initial pose estimate given, so calculate one based on Schmidt.2016
+        if initial_estimate is None:
+            initial_estimate = self._pose_estimate(robot, joints)
+
+        # a pose estimate
+        x_pose = _pose.ZeroPose
+
+        # extract forward kinematics goal function from the kwargs, or default
+        # to our own implementation
+        goal_function = kwargs.pop('goal_function', self._forward_goal_function)
+
+        # estimate pose
+        result: optimize.OptimizeResult
+        result = optimize.least_squares(goal_function,
+                                        initial_estimate,
+                                        args=(robot, x_pose, joints),
+                                        **kwargs)
+
+        # check for convergence
+        try:
+            if result.success is not True:
+                raise ArithmeticError(
+                        f'Optimizer did not exit successfully. Last message '
+                        f'was {result.message}')
+        except ArithmeticError as ArithmeticE:
+            raise ValueError(
+                    'Unable to solve the standard forward kinematics for the '
+                    'given cable lengths. Please check if your inputs are '
+                    'correct and then run again. You may also pass additional '
+                    'arguments to the underlying optimization method.') from \
+                ArithmeticE
+        else:
+            # get last value
+            final = result.x
+            # make sure rotation is limited to [0, 2*pi)
+            final[3:6] = _np.fmod(final[3:6], 2 * _np.pi)
+
+            # populate values of estimated pose
+            x_pose.linear.position = final[0:3]
+            x_pose.angular = _angular.Angular(sequence='xyz', euler=final[3:6])
+
+            # get and reset last forward direction
+            last_direction = self._forward_last_direction
+            self._forward_last_direction = None
+
+            # and return estimated result
+            return Result(self,
+                          robot,
+                          x_pose,
+                          lengths=joints,
+                          directions=last_direction,
+                          leave_points=frame_anchors)
 
     direct = forward
 
-    def backward(self,
-                 robot: _robot.Robot,
-                 pose: _pose.Pose,
-                 **kwargs) -> Result:
-        if robot.num_platforms > 1:
-            raise NotImplementedError(
-                    'Kinematics are currently not implemented for robots with '
-                    'more than one platform.'
-            )
-
-        return self._backward(robot, pose, **kwargs)
-
     inverse = backward
 
-    @abstractmethod
-    def _forward(self,
-                 robot: _robot.Robot,
-                 joints: Matrix,
-                 **kwargs) -> Result:
-        raise NotImplementedError()
+    def _pose_estimate(self, robot: _robot.Robot, lengths: Vector):
+        # consistent arguments
+        lengths = _np.asarray(lengths)
 
-    @abstractmethod
-    def _backward(self,
-                  robot: _robot.Robot,
-                  pose: _pose.Pose,
-                  **kwargs) -> Result:
-        raise NotImplementedError()
+        # initialize estimated initial position
+        estimate = _np.asarray([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+
+        # for now, this is the inner-loop code for the first platform
+        index_platform = 0
+
+        # quicker and shorter access to platform object
+        platform = robot.platforms[index_platform]
+
+        # kinematic chains of the platform
+        kcs = robot.kinematic_chains.with_platform(index_platform)
+        # get frame anchors and platform anchors
+        frame_anchors = _np.asarray([anchor.position for idx, anchor in
+                                     enumerate(robot.frame.anchors) if
+                                     idx in kcs.frame_anchor]).T
+        platform_anchors = _np.asarray([anchor.position for idx, anchor in
+                                        enumerate(platform.anchors) if
+                                        idx in kcs.platform_anchor]).T
+
+        radius_low = _np.max(frame_anchors - (lengths + _np.linalg.norm(
+                platform_anchors, axis=0))[_np.newaxis, :], axis=1)
+        radius_high = _np.min(frame_anchors + (lengths + _np.linalg.norm(
+                platform_anchors, axis=0))[_np.newaxis, :], axis=1)
+
+        # build index slicer to push values into correct entries
+        platform_slice = slice(0,
+                               robot.platforms[index_platform].dof_translation)
+
+        # use center of bounding box as initial estimate
+        estimate[platform_slice] = (0.5 * (radius_high + radius_low))[
+            platform_slice]
+
+        return estimate
+
+    def _forward_goal_function(self,
+                               x: Vector,
+                               robot: _robot.Robot,
+                               pose: _pose.Pose,
+                               joints: Vector,
+                               *args,
+                               **kwargs):
+        # position estimate
+        pose.linear.position = x[0:3]
+        # euler angle estimate to rotation matrix
+        pose.angular = _angular.Angular(sequence='xyz', euler=x[3:6])
+
+        # solve the vector loop and obtain solution
+        estim_lengths, directions, *_ = self._vector_loop(robot, pose)
+        estim_lengths = _np.sum(estim_lengths, axis=1)
+
+        # number of linear degrees of freedom
+        num_linear, _ = robot.num_dimensionality
+        # strip additional spatial dimensions
+        directions = directions[:, 0:num_linear]
+
+        # store last direction so we have it later
+        self._forward_last_direction = directions
+
+        # return error as (l^2 - l(x)^2)
+        return joints ** 2 - estim_lengths ** 2
 
     __repr__ = make_repr()
 
@@ -121,18 +274,18 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
                  pose: _pose.Pose,
                  lengths: Union[Vector, Matrix],
                  directions: Matrix,
+                 leave_points: Matrix = None,
                  swivel: Vector = None,
                  wrap: Vector = None,
-                 leave_points: Matrix = None,
                  **kwargs):
         super().__init__(pose=pose, robot=robot, **kwargs)
         self._algorithm = algorithm
         lengths = _np.asarray(lengths)
         self._lengths = lengths if lengths.ndim == 2 else lengths[:, None]
         self._directions = _np.asarray(directions)
+        self._leave_points = leave_points
         self._swivel = _np.asarray(swivel) if swivel is not None else None
         self._wrap = _np.asarray(wrap) if wrap is not None else None
-        self._leave_points = leave_points
         self._cable_shapes = None
 
     @property
@@ -168,7 +321,8 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
 
                 # # transform platform anchor into its world coordinates
                 # platform_anchor_coords = platform_pos \
-                #                          + platform_dcm.dot(panchor.linear.position)
+                #                          + platform_dcm.dot(
+                #                          panchor.linear.position)
 
                 shapes[:, idxkc, 0:num - 1] = frame_anchor_coordinates[:, None]
 

@@ -158,37 +158,37 @@ class Standard(_algorithm.Algorithm):
                                      directions=last_direction[0],
                                      leave_points=frame_anchors)
 
-    def _backward(self,
-                  robot: _robot.Robot,
-                  pose: _pose.Pose,
-                  **kwargs) -> _algorithm.Result:
-        # solve the vector loop and obtain solution
-        lengths, directions, leaves = self._vector_loop(robot, pose)
-
-        # cable swivel angles
-        swivel = _np.arctan2(-directions[:, 1], -directions[:, 0])
-
-        # number of linear degrees of freedom
-        num_linear, _ = robot.num_dimensionality
-        # strip additional spatial dimensions
-        directions = directions[:, 0:num_linear]
-
-        # return algorithm result object
-        return _algorithm.Result(self,
-                                 robot,
-                                 pose,
-                                 lengths=lengths,
-                                 directions=directions,
-                                 swivel=swivel,
-                                 leave_points=leaves)
+    # def _backward(self,
+    #               robot: _robot.Robot,
+    #               pose: _pose.Pose,
+    #               **kwargs) -> _algorithm.Result:
+    #     # solve the vector loop and obtain solution
+    #     lengths, directions, leaves = self._vector_loop(robot, pose)
+    #
+    #     # cable swivel angles
+    #     swivel = _np.arctan2(-directions[:, 1], -directions[:, 0])
+    #
+    #     # number of linear degrees of freedom
+    #     num_linear, _ = robot.num_dimensionality
+    #     # strip additional spatial dimensions
+    #     directions = directions[:, 0:num_linear]
+    #
+    #     # return algorithm result object
+    #     return _algorithm.Result(self,
+    #                              robot,
+    #                              pose,
+    #                              lengths=lengths,
+    #                              directions=directions,
+    #                              swivel=swivel,
+    #                              leave_points=leaves)
 
     def _vector_loop(self, robot: _robot.Robot, pose: _pose.Pose):
         # number of linear degrees of freedom
         num_linear, _ = robot.num_dimensionality
         # cable vector
-        cables = [] #_np.zeros((num_kinchains, num_linear))
+        cables = []  # _np.zeros((num_kinchains, num_linear))
         # cable leave points
-        leaves = [] # _np.zeros((num_kinchains, num_linear))
+        leaves = []  # _np.zeros((num_kinchains, num_linear))
 
         # loop over each kinematic chain
         kc: _kinematic_chain.KinematicChain
@@ -214,46 +214,11 @@ class Standard(_algorithm.Algorithm):
         lengths = _np.linalg.norm(cables, axis=1)
 
         # determine cable directions and set any division by zero to 0
-        directions = cables / lengths[: , None]
+        directions = cables / lengths[:, None]
         directions[_np.isclose(lengths, 0), :] = 0
 
+        # cable swivel angles
+        swivel = _np.arctan2(-directions[:, 1], -directions[:, 0])
+
         # return lengths li, directions ui, and leaves ai
-        return lengths, directions, _np.asarray(leaves)
-
-    def _pose_estimate(self, robot: _robot.Robot, lengths: Vector):
-        # consistent arguments
-        lengths = _np.asarray(lengths)
-
-        # initialize estimated initial position
-        estimate = _np.asarray([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-
-        # for now, this is the inner-loop code for the first platform
-        index_platform = 0
-
-        # quicker and shorter access to platform object
-        platform = robot.platforms[index_platform]
-
-        # kinematic chains of the platform
-        kcs = robot.kinematic_chains.with_platform(index_platform)
-        # get frame anchors and platform anchors
-        frame_anchors = _np.asarray([anchor.position for idx, anchor in
-                                     enumerate(robot.frame.anchors) if
-                                     idx in kcs.frame_anchor]).T
-        platform_anchors = _np.asarray([anchor.position for idx, anchor in
-                                        enumerate(platform.anchors) if
-                                        idx in kcs.platform_anchor]).T
-
-        radius_low = _np.max(frame_anchors - (lengths + _np.linalg.norm(
-                platform_anchors, axis=0))[_np.newaxis, :], axis=1)
-        radius_high = _np.min(frame_anchors + (lengths + _np.linalg.norm(
-                platform_anchors, axis=0))[_np.newaxis, :], axis=1)
-
-        # build index slicer to push values into correct entries
-        platform_slice = slice(0,
-                               robot.platforms[index_platform].dof_translation)
-
-        # use center of bounding box as initial estimate
-        estimate[platform_slice] = (0.5 * (radius_high + radius_low))[
-            platform_slice]
-
-        return estimate
+        return lengths, directions, _np.asarray(leaves), swivel
