@@ -8,7 +8,7 @@ little bit helps, and credit will always be given.
 Bug reports
 ===========
 
-When `reporting a bug <https://github.com/cable-robots/cdpyr/issues>`_ please include:
+When `reporting a bug`_ please include:
 
     * Your operating system name and version.
     * Any details about your local setup that might be helpful in troubleshooting.
@@ -24,7 +24,7 @@ articles, and such.
 Feature requests and feedback
 =============================
 
-The best way to send feedback is to file an issue at https://github.com/cable-robots/cdpyr/issues.
+The best way to send feedback is to file an issue at `cdpyr issues`_.
 
 If you are proposing a feature:
 
@@ -35,7 +35,7 @@ If you are proposing a feature:
 Development
 ===========
 
-**Note** this project uses the `git flow`_ branching model.
+**Note** this project uses the `GitLab flow`_ branching model.
 
 To set up CDPyR_ for local development:
 
@@ -44,7 +44,7 @@ To set up CDPyR_ for local development:
 
    .. code-block:: bash
 
-      $ git clone git@github.com:your-username-or-organization/cdpyr.git
+      $ git clone https://gitlab.com/<your-username>/cdpyr.git
 
 #. Set up your local development environment by installing tox, creating the dev environment, and setting up git flow
 
@@ -52,7 +52,6 @@ To set up CDPyR_ for local development:
 
       $ pip install tox
       $ tox -e dev
-      $ git flow init
 
 #. Activate the python environment:
 
@@ -60,60 +59,38 @@ To set up CDPyR_ for local development:
 
    .. code-block:: powershell
 
-      > .tox\dev\Scripts\activate
+      > .venv\Scripts\activate.bat
 
    2. Unix:
 
    .. code-block:: shell
 
-      $ source .tox/dev/bin/activate
+      $ . .venv/bin/activate
 
 #. Create a branch for local development to make your changes locally:
 
-   1. For new features:
-
    .. code-block:: shell
-
-      $ git flow feature start name-of-your-feature
-
-   2. For hotfixes:
-
-   .. code-block:: shell
-
-      $ git flow hotfix start name-of-your-hotfix
-
+   
+      $ git checkout -b your-branch-name-should-explain-the-changes
+      
 #. When you're done making changes, run all the checks, doc builder and spell checker with `tox <https://tox.readthedocs.io/en/latest/install.html>`_ one command:
 
    .. code-block:: shell
 
       $ tox
 
-#. Commit your changes and push your branch to GitHub:
+#. Commit your changes and push your branch to your repository:
 
    .. code-block:: shell
 
       $ git add .
       $ git commit -m "Your detailed description of your changes."
-      $ git push origin name-of-your-hotfix-or-feature
+      $ git push origin your-branch-name-should-explain-the-changes
 
-#. Submit a pull request through the GitHub website.
+#. `Submit a merge request`_ through the GitLab website.
 
 If your change requires changes to the dependencies of :code:`cdpyr`, then add these in :code:`setup.py` under :code:`install_requires`.
 However, if you make changes to the dependencies of tests or the development environment, then add these dependencies in :code:`tox.ini` in the :code:`deps` of either the :code:`[testenv]` or :code:`[testenv:dev]` section.
-
-Git Flow
-----------------------
-
-See this `fancy cheat sheet <https://danielkummer.github.io/git-flow-cheatsheet/>`_ on the git flow commands, and when to use each.
-
-* Branch name for production releases: :code:`master`
-* Branch name for "next release" development: :code:`develop`
-* Feature branch prefix: :code:`feature/`
-* Bugfix branch prefix: :code:`bugfix/`
-* Release branch prefix: :code:`release/`
-* Hotfix branch prefix: :code:`hotfix/`
-* Support branch prefix: :code:`support/`
-* Version tag prefix: :code:`v`
 
 Pull Request Guidelines
 -----------------------
@@ -122,7 +99,7 @@ If you need some code review or feedback while you're developing the code just m
 
 For merging, you should:
 
-1. Include passing tests (run :code:`tox`) [1]_.
+1. Include passing tests (run :code:`tox`) [#ci-footnote]_.
 #. Update documentation when there's new API, functionality etc.
 #. Add a note to :code:`CHANGELOG.rst` about the changes.
 #. Add yourself to :code:`AUTHORS.rst`.
@@ -149,10 +126,11 @@ To build the docs locally to :code:`dist/docs`:
    tox -e docs
 
 
-.. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will `run the tests <https://travis-ci.org/cable-robots/cdpyr/pull_requests>`_ for each change you add in the pull request.
-
-       It will be slower though ...
+.. [#ci-footnote] If you don't have all the necessary python versions available locally you can rely on GitLab CI - it will `run the tests <https://gitlab.com/cable-robots/cdpyr/-/pipelines>`_ for each change you add in the pull request. It will be slower though ...
 
 
-.. _cdpyr: https://github.com/cable-robots/cdpyr
-.. _`git flow`: https://nvie.com/posts/a-successful-git-branching-model/
+.. _cdpyr: https://gitlab.com/cable-robots/cdpyr/
+.. _`Submit a merge request`: https://gitlab.com/cable-robots/cdpyr/-/merge_requests
+.. _`reporting a bug`: https://gitlab.com/cable-robots/cdpyr/-/issues/
+.. _`cdpyr issues`: https://gitlab.com/cable-robots/cdpyr/-/issues/
+.. _`GitLab flow`: https://docs.gitlab.com/ee/topics/gitlab_flow.html
