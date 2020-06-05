@@ -107,12 +107,6 @@ class PulleyKinematicsBackwardTestSuite(object):
         assert (0 <= res_forward.lengths).all()
         assert res_forward.directions.shape == (robot.num_kinematic_chains, nl)
         for idxkc, kc in enumerate(robot.kinematic_chains):
-            fanchor = robot.frame.anchors[kc.frame_anchor].linear.position
-            platform = robot.platforms[kc.platform]
-            panchor = platform.anchors[kc.platform_anchor].linear.position
-
-            assert res_backward.leave_points[idxkc, 0:nl] \
-                   == pytest.approx(fanchor[0:nl])
             assert np.linalg.norm(res_backward.directions[idxkc, 0:nl]) \
                    == pytest.approx(1)
 

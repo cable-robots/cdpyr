@@ -19,21 +19,15 @@ from cdpyr.robot import (
     pulley as _pulley,
     robot as _robot,
 )
-from cdpyr.typing import Vector
 
 
 class Pulley(_algorithm.Algorithm):
 
-    def _forward(self,
-                 robot: _robot.Robot,
-                 joints: Vector,
-                 **kwargs) -> _algorithm.Result:
-        raise NotImplementedError()
-
-    def _backward(self,
-                  robot: _robot.Robot,
-                  pose: _pose.Pose,
-                  **kwargs) -> _algorithm.Result:
+    def _vector_loop(self,
+                     robot: _robot.Robot,
+                     pose: _pose.Pose,
+                     *args,
+                     **kwargs):
         # type hinting
         fanchor: _frame.FrameAnchor
         panchor: _platform.PlatformAnchor
@@ -130,11 +124,4 @@ class Pulley(_algorithm.Algorithm):
         wrap = _np.asarray(wrap)
         leave_points = _np.asarray(cable_leave_points)
 
-        return _algorithm.Result(self,
-                                 robot,
-                                 pose,
-                                 lengths=lengths,
-                                 directions=directions,
-                                 swivel=swivel,
-                                 wrap=wrap,
-                                 leave_points=leave_points)
+        return lengths, directions, leave_points, swivel, wrap
