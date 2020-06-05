@@ -32,7 +32,7 @@ Overview
 
 A Python 3 package for designing, analyzing, and simulating cable-driven parallel robots.
 
-* Free software: BSD 3-Clause License
+* Free software: European Union Public Licence V. 1.2
 
 Installation
 ============
@@ -43,7 +43,7 @@ Installation
 
 You can also install the in-development version with::
 
-    pip install https://github.com/cable-robots/cdpyr/archive/master.zip
+    pip install https://gitlab.com/cable-robots/cdpyr/-/archive/master/cdpyr-master.zip
 
 
 Documentation
