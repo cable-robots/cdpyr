@@ -121,13 +121,12 @@ class Plotly(_engine.Engine, ABC):
                     [0, 1, 2, 3, 0]
             )
         else:
-            pass
+            faces = cuboid.faces
 
-        faces = cuboid.faces
         vertices = cuboid.vertices
 
         # scale vertices to account for the dimensions
-        vertices = transform.apply((vertices).T).T
+        vertices = transform.apply(vertices.T).T
 
         if self._NUMBER_OF_AXES == 3:
             self.figure.add_trace(
@@ -137,10 +136,10 @@ class Plotly(_engine.Engine, ABC):
                             **self._prepare_plot_coordinates(faces.T,
                                                              ('i', 'j', 'k')),
                             **update_recursive(dict(
-                                    facecolor=['rgb(178, 178, 178)'] *
-                                              faces.shape[0],
-                                    vertexcolor=['rgb(0, 0, 0)'] *
-                                                vertices.shape[0],
+                                    facecolor=['rgb(178, 178, 178)']
+                                              * faces.shape[0],
+                                    vertexcolor=['rgb(0, 0, 0)']
+                                                * vertices.shape[0],
                                     flatshading=True,
                                     opacity=0.75,
                                     showscale=False,
@@ -513,12 +512,11 @@ class Plotly(_engine.Engine, ABC):
         cable_shapes = kinematics.cable_shapes
 
         # and plot each kinematic chain
-        for index_chain in range(cable_shapes.shape[1]):
+        for cable_shape in cable_shapes:
             self.figure.add_trace(
                     self._scatter(
                             **self._prepare_plot_coordinates(
-                                    self._extract_coordinates(
-                                            cable_shapes[:, index_chain, :])),
+                                    self._extract_coordinates(cable_shape)),
                             mode='lines',
                             line_color='rgb(255, 0, 0)',
                             name='',
@@ -539,8 +537,7 @@ class Plotly(_engine.Engine, ABC):
                         *args,
                         **kwargs):
         # platform position and orientation
-        position = platform.pose.linear.position
-        dcm = platform.pose.angular.dcm
+        ppos, prot = platform.pose.position
 
         # temporary platform loop index
         pidx = kwargs.pop('loop_index', -1)
@@ -556,97 +553,103 @@ class Plotly(_engine.Engine, ABC):
         # otherwise, without a platform geometry, we will triangulate the
         # anchor points and plot the platform shape via that
         else:
-            # render bounding box of platform
-            if platform.is_cuboid:
-                # get original anchors as (K,M) matrix
-                anchors = self._extract_coordinates(platform.bi.swapaxes(0, 1))
+            # get trimmed platfrom anchors as (K, M) matrix
+            panchors = self._extract_coordinates(platform.bi.swapaxes(0, 1))
 
-                # in 3D, we perform delaunay triangulation of the corners and
-                # retrieve the convex hull from there
-                if self._NUMBER_OF_AXES == 3:
-                    try:
-                        delau = _Delaunay(anchors.T)
-                    except QhullError as e:
-                        warnings.warn(RuntimeWarning(e))
-                        return
+            # in 3 dimensions, we will triangulate using Delaunay triangulation,
+            # in 2 dimensions, we can simply calculate the convex hull. if
+            # either of these methods fail, the platform anchors are very likely
+            # to be coplanar or coincident i.e., the platform is 1T, 2T, 3T
 
-                    edges = delau.convex_hull
-                    vertices = delau.points
-                # in any other case, we simply calculate the convex hull of
-                # the anchors
-                else:
+            # we cannot plot the platform in a 1D coordinate case as it has no
+            # extend
+            if self._NUMBER_OF_COORDINATES == 1:
+                return
+
+            if self._NUMBER_OF_COORDINATES == 3:
+                try:
+                    delau = _Delaunay(panchors.T)
+                except QhullError as e:
+                    warnings.warn(RuntimeWarning(e))
+                    return
+
+                # and get all vertices and points in the correct sorted order
+                edges = delau.convex_hull
+                vertices = delau.points
+            else:
+                try:
                     # calculate convex hull of the platform shape
-                    cv = _ConvexHull(anchors.T)
-                    # and get all vertices and points in the correct sorted
-                    # order
-                    edges = cv.vertices
-                    vertices = cv.points
-                    # to close the loop of vertices, we will append the first
-                    # one to the list
-                    edges = _np.append(edges, edges[0])
+                    cv = _ConvexHull(panchors.T)
+                except QhullError as e:
+                    warnings.warn(RuntimeWarning(e))
+                    return
 
-                # ensure vertices are (N,3) arrays
-                vertices = _np.pad(vertices,
-                                   ((0, 0), (0, 3 - vertices.shape[1])))
+                # and get all vertices and points in the correct sorted order
+                edges = cv.vertices
+                vertices = cv.points
+                # to close the loop of vertices, we will append the first one to
+                # the list
+                edges = _np.append(edges, edges[0])
 
-                # also rotate and translate the platform anchors
-                vertices = (position[:, _np.newaxis] + dcm.dot(vertices.T)).T
+            # also rotate and translate the platform anchors
+            prot_ = prot[0:self._NUMBER_OF_COORDINATES,
+                   0:self._NUMBER_OF_COORDINATES]
+            vertices = ppos[None, 0:self._NUMBER_OF_COORDINATES] + vertices.dot(prot_.T)
 
-                # 3D plot
-                if self._NUMBER_OF_AXES == 3:
-                    # first, plot the mesh of the platform i.e., its volume
-                    self.figure.add_trace(
-                            self._mesh(
-                                    **self._prepare_plot_coordinates(
-                                            self._extract_coordinates(
-                                                    vertices.T)),
-                                    **self._prepare_plot_coordinates(edges.T,
-                                                                     ('i', 'j',
-                                                                      'k')),
-                                    color='rgb(0, 0, 0)',
-                                    facecolor=['rgb(178, 178, 178)'] *
-                                              edges.shape[0],
-                                    flatshading=True,
-                                    name='',
-                                    hoverinfo='skip',
-                                    hovertext='',
-                            )
-                    )
-                    # close all edges by appending the first column
-                    edges = _np.hstack((edges, edges[:, 0, _np.newaxis]))
-                    # and loop over each edge to plot
-                    for edge in edges:
-                        self.figure.add_trace(
-                                self._scatter(
-                                        **self._prepare_plot_coordinates(
-                                                vertices[edge, :].T),
-                                        mode='lines',
-                                        line=dict(
-                                                color='rgb(13, 13, 13)',
-                                        ),
-                                        name='',
-                                        hoverinfo='skip',
-                                        hovertext='',
-                                        showlegend=False
-                                )
+            # 3D plot
+            if self._NUMBER_OF_AXES == 3:
+                # first, plot the mesh of the platform i.e., its volume
+                self.figure.add_trace(
+                        self._mesh(
+                                **self._prepare_plot_coordinates(
+                                        self._extract_coordinates(vertices.T)),
+                                **self._prepare_plot_coordinates(
+                                        edges.T,
+                                        ('i', 'j', 'k')),
+                                color='rgb(0, 0, 0)',
+                                facecolor=['rgb(178, 178, 178)'] *
+                                          edges.shape[0],
+                                flatshading=True,
+                                name='',
+                                hoverinfo='skip',
+                                hovertext='',
                         )
-                # 2D plot
-                else:
+                )
+                # close all edges by appending the first column
+                edges = _np.hstack((edges, edges[:, 0, _np.newaxis]))
+                # and loop over each edge to plot
+                for edge in edges:
                     self.figure.add_trace(
                             self._scatter(
                                     **self._prepare_plot_coordinates(
-                                            self._extract_coordinates(
-                                                    vertices[edges, :].T)),
+                                            vertices[edge, :].T),
                                     mode='lines',
-                                    fill='toself',
-                                    line_color='rgb(13, 13, 13)',
-                                    fillcolor='rgb(178, 178, 178)',
+                                    line=dict(
+                                            color='rgb(13, 13, 13)',
+                                    ),
                                     name='',
                                     hoverinfo='skip',
                                     hovertext='',
                                     showlegend=False
                             )
                     )
+            # 2D plot
+            else:
+                self.figure.add_trace(
+                        self._scatter(
+                                **self._prepare_plot_coordinates(
+                                        self._extract_coordinates(
+                                                vertices[edges, :].T)),
+                                mode='lines',
+                                fill='toself',
+                                line_color='rgb(13, 13, 13)',
+                                fillcolor='rgb(178, 178, 178)',
+                                name='',
+                                hoverinfo='skip',
+                                hovertext='',
+                                showlegend=False
+                        )
+                )
 
         # render all anchors
         self._render_component_list(platform,
@@ -657,7 +660,7 @@ class Plotly(_engine.Engine, ABC):
                                     )
 
         # render reference coordinate system of platform
-        self.render_coordinate_system(position,
+        self.render_coordinate_system(ppos,
                                       name=f'platform {pidx}: center',
                                       hoverinfo='text',
                                       hovertext=f'platform {pidx}: center',
@@ -669,8 +672,8 @@ class Plotly(_engine.Engine, ABC):
 
         # render rotated coordinate system of platform
         if platform.can_rotate:
-            self.render_coordinate_system(position,
-                                          dcm,
+            self.render_coordinate_system(ppos,
+                                          prot,
                                           name=f'platform {pidx}',
                                           hovertext=f'platform {pidx}',
                                           hoverinfo='text',
@@ -875,6 +878,11 @@ class Plotly(_engine.Engine, ABC):
         # and now strip
         if is_single:
             prepared = prepared[:, 0, :]
+
+        # in case of 1D plots (i.e., 1xN arrays), the y-coordinates must all be
+        # zero
+        if self._NUMBER_OF_COORDINATES == 1:
+            prepared = _np.vstack((prepared, _np.zeros_like(prepared)))
 
         # return result as a dictionary of ('e0': [], 'e1': [], ..., 'en': [])
         return dict(zip(axes[0:self._NUMBER_OF_AXES], prepared))

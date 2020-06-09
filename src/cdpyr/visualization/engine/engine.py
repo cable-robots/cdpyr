@@ -270,7 +270,7 @@ class Engine(Object, ABC):
         -------
         coordinate: Vector
             A `(NA,X)` matrix of `_NUMBER_OF_AXES` coordinates which can be
-            directly passed to the underlying matplotlib render call.
+            directly passed to the underlying engine render call.
 
         """
         # anything into a numpy array
@@ -286,12 +286,12 @@ class Engine(Object, ABC):
 
         # if the coordinate has less rows than the visualization needs, we will
         # add zeros at the bottom
-        if coordinate.shape[0] < self._NUMBER_OF_AXES:
+        if coordinate.shape[0] < self._NUMBER_OF_COORDINATES:
             coordinate = _np.pad(coordinate, (
-                    (0, self._NUMBER_OF_AXES - coordinate.shape[0]),))
+                    (0, self._NUMBER_OF_COORDINATES - coordinate.shape[0]),))
 
         # return result
-        return coordinate[0:self._NUMBER_OF_AXES, :]
+        return coordinate[0:self._NUMBER_OF_COORDINATES, :]
 
     def _extract_dcm(self, dcm: Union[Vector, Matrix]):
         """
