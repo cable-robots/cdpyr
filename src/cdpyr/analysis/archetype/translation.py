@@ -37,7 +37,7 @@ class Translation(_archetype.Archetype):
 
     @property
     def angular(self):
-        return self.angular
+        return self._angular
 
     @property
     def comparator(self):
