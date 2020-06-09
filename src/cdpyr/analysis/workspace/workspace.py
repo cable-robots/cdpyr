@@ -13,6 +13,8 @@ from cdpyr.analysis import evaluator as _evaluator, result as _result
 from cdpyr.analysis.archetype import archetype as _archetype_
 from cdpyr.analysis.criterion import criterion as _criterion_
 from cdpyr.robot import robot as _robot
+from cdpyr.motion import pose as _pose
+from cdpyr.exceptions import InvalidPoseException
 
 
 class Algorithm(_evaluator.RobotEvaluator):
@@ -54,6 +56,19 @@ class Algorithm(_evaluator.RobotEvaluator):
                   *args,
                   **kwargs) -> Result:
         raise NotImplementedError()
+
+    @staticmethod
+    def _check_pose(robot: _robot.Robot,
+                    pose: _pose.Pose,
+                    criterion: _criterion_.Criterion):
+        try:
+            criterion.evaluate(robot, pose)
+        except InvalidPoseException:
+            flag = False
+        else:
+            flag = True
+
+        return flag
 
 
 class Result(_result.PlottableResult):

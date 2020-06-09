@@ -10,7 +10,7 @@ __all__ = [
 import itertools
 import multiprocessing
 from collections import abc
-from typing import Union
+from typing import Callable, Union
 
 import numpy as _np
 from joblib import delayed, Parallel
@@ -111,18 +111,28 @@ class Algorithm(_workspace.Algorithm):
         ))
 
     def _evaluate(self, robot: _robot.Robot, *args, **kwargs) -> 'Result':
+
+        # quicker look ups
+        archetype_ = self._archetype
+        comparator_ = archetype_.comparator
+        criterion_ = self._criterion
+
         # parallelized evaluation
         if kwargs.pop('parallel', False):
             n_jobs = kwargs.pop('n_jobs', multiprocessing.cpu_count())
-            coordinates, flags = zip(
+
+            def _check__coordinate_parallel(r, c):
+                return c, self._check__coordinate(r, c)
+
+            coordinates, flags = list(zip(
                     *Parallel(n_jobs=n_jobs, **kwargs)(
-                            delayed(self.__check__coordinate)(robot, coordinate)
-                            for coordinate in self.coordinates()))
+                            ( delayed(_check__coordinate_parallel)(robot, c)
+                              for c in self.coordinates() )
+                    )
+            ))
         # non-parallelized, fancy list comprehension
         else:
-            coordinates, flags = list(zip(
-                    *((coordinate, self.__check__coordinate(robot, coordinate))
-                      for coordinate in self.coordinates())))
+            coordinates, flags = list(zip(*((coordinate, self._check__coordinate(robot, coordinate)) for coordinate in self.coordinates())))
 
         # return the tuple of poses that were evaluated
         return Result(
@@ -133,18 +143,16 @@ class Algorithm(_workspace.Algorithm):
                 flags
         )
 
-    def __check__coordinate(self, robot, coordinate: _np.ndarray):
-        # we don't want to loose too much type looking up variables inside
-        # this object, so we will store them as local variables here
-        criterion_ = self._criterion.evaluate
-        poses_ = self._archetype.poses
+    def _check__coordinate(self,
+                            robot: _robot.Robot,
+                            coordinate: _np.ndarray,
+                            ):
+        # quicker look ups
+        archetype_ = self._archetype
+        comparator_ = archetype_.comparator
+        criterion_ = self._criterion
 
-        # and compare
-        try:
-            return coordinate, self._archetype.comparator(
-                    criterion_(robot, pose) for pose in poses_(coordinate))
-        except InvalidPoseException:
-            return coordinate, False
+        return comparator_(self._check_pose(robot, pose, criterion_) for pose in archetype_.poses(coordinate))
 
 
 class Result(_workspace.Result, abc.Collection):

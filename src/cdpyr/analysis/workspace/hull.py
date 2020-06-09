@@ -83,9 +83,11 @@ class Algorithm(_workspace.Algorithm):
         if kwargs.pop('parallel', False):
             n_jobs = kwargs.pop('n_jobs', multiprocessing.cpu_count())
             vertices = Parallel(n_jobs=n_jobs, **kwargs)(
-                    delayed(self.__check_direction)(robot, direction, min_step,
-                                                    max_iters) for direction in
-                    search_directions)
+                    delayed(self.__check_direction)(robot,
+                                                    direction,
+                                                    min_step,
+                                                    max_iters)
+                    for direction in search_directions)
         # non-parallelized, list-comprehension code of hull method
         else:
             vertices = list(
@@ -102,7 +104,11 @@ class Algorithm(_workspace.Algorithm):
                       vertices,
                       faces)
 
-    def __check_direction(self, robot, direction: Vector, min_step, max_iters):
+    def __check_direction(self,
+                          robot,
+                          direction: Vector,
+                          min_step: float,
+                          max_iters: int):
         # step length along this coordinate
         step_length = 1
 
@@ -115,8 +121,8 @@ class Algorithm(_workspace.Algorithm):
 
         # quicker look ups
         archetype_ = self._archetype
-        comparator_ = self._archetype.comparator
-        criterion_ = self._criterion.evaluate
+        comparator_ = archetype_.comparator
+        criterion_ = self._criterion
 
         # as long as the step size isn't too small
         while step_length >= min_step and kiter <= max_iters:
@@ -124,24 +130,17 @@ class Algorithm(_workspace.Algorithm):
             # the current step length
             coordinate_trial = coordinate + step_length * direction
 
-            try:
-                # evaluate criterion for every pose and compare the results
-                # to be true according to the archetype
-                if comparator_(criterion_(robot, pose)
-                               for pose in archetype_.poses(coordinate_trial)):
-                    coordinate = coordinate_trial
-                # the archetype has not be validating all poses successfully,
-                # so reduce step size
-                else:
-                    step_length /= 2
-            # failure to determine a valid pose due to e.g., invalid force
-            # distribution, so we will reduce the step size
-            except InvalidPoseException:
+            # check if any/all pose(s) are valid according to the criterion's
+            # comparator
+            if comparator_(self._check_pose(robot, pose, criterion_)
+                           for pose in archetype_.poses(coordinate_trial)):
+                coordinate = coordinate_trial
+            # one or all pose(s) are invalid, so reduce step size
+            else:
                 step_length /= 2
-            # increase iteration counter so that we don't continue along a
-            # search direction too far
-            finally:
-                kiter += 1
+
+            # increase step counter
+            kiter = kiter + 1
 
         # append the last coordinate as the vertex
         return coordinate

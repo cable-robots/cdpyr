@@ -298,8 +298,11 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
             # number of discretization steps for the wrapped part
             num = 100
 
+            # number of linear degrees of freedom
+            nl, _ = self._robot.num_dimensionality
+
             # storing all forms in here as
-            shapes = _np.zeros((3, self._robot.num_kinematic_chains, num))
+            shapes = _np.zeros((self._robot.num_kinematic_chains, nl, num))
 
             # unit vector along the first axis in 3D
             evec_x = cdpyr.numpy.linalg.evec3_1()
@@ -310,7 +313,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
                 # get frame anchor, platform, platform anchor, and cable
                 fanchor = self._robot.frame.anchors[kc.frame_anchor]
                 platform = self._robot.platforms[kc.platform]
-                panchor = platform.anchors[kc.platform_anchor]
+                # panchor = platform.anchors[kc.platform_anchor]
                 # cable = self._robot.cables[kc.cable]
 
                 # get platform position and orientation
@@ -324,7 +327,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
                 #                          + platform_dcm.dot(
                 #                          panchor.linear.position)
 
-                shapes[:, idxkc, 0:num - 1] = frame_anchor_coordinates[:, None]
+                shapes[idxkc, :, 0:num - 1] = frame_anchor_coordinates[0:nl, None]
 
                 # first, the part on the drum
                 try:
@@ -349,7 +352,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
 
                     # transform coordinates back into world coordinates and
                     # store
-                    shapes[:, idxkc, 0:num - 1] += frame_dcm.dot(
+                    shapes[idxkc, :, 0:num - 1] += frame_dcm.dot(
                             pulley_dcm.dot(cable_dcm.dot(pulley_shape)))
                 except (TypeError, KeyError, ValueError) as e:
                     pass
@@ -357,8 +360,7 @@ class Result(_result.PoseResult, _result.RobotResult, _result.PlottableResult):
             # the last step will be to close the loop from the cable leave point
             # to the platform anchor which we will append as a simple last point
             shapes[:, :, -1] = shapes[:, :, -2] \
-                               - self.workspace_length[None, :] \
-                               * self._directions
+                               - self.workspace_length[:, None] * self._directions[:, 0:nl]
             # cache result
             self._cable_shapes = shapes
 
