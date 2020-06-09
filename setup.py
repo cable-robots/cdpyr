@@ -81,9 +81,6 @@ setup(
         extras_require={
                 'visualization': [
                         'plotly',
-                        'pyqt5',
-                        'vtk',
-                        'mayavi',
                 ],
                 'twincat':       [
                         'pint',
