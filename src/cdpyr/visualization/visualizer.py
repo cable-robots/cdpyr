@@ -12,13 +12,13 @@ from cdpyr.analysis.result import PlottableResult
 from cdpyr.base import Object
 from cdpyr.geometry.primitive import Primitive as GeometryPrimitive
 from cdpyr.robot.robot_component import RobotComponent
-from cdpyr.visualization.engine import engine as _engine
+from cdpyr.visualization.engine import engine as _engine_
 
 
 class Visualizer(Object):
-    _engine: _engine.Engine
+    _engine: _engine_.Engine
 
-    def __init__(self, engine: _engine.Engine, **kwargs):
+    def __init__(self, engine: _engine_.Engine, **kwargs):
         super().__init__(**kwargs)
         self._engine = engine
 
