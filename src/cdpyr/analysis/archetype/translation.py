@@ -45,7 +45,7 @@ class Translation(_archetype.Archetype):
 
     @property
     def dcm(self):
-        return self.dcm
+        return self._dcm
 
     def _poses(self, coordinate: Vector):
         return [_pose.Pose(coordinate, self._dcm)]
