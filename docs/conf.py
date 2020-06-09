@@ -30,8 +30,8 @@ version = release = '1.0.dev0'
 pygments_style = 'trac'
 templates_path = ['.']
 extlinks = {
-        'issue': ('https://github.com/cable-robots/cdpyr/issues/%s', '#'),
-        'pr':    ('https://github.com/cable-robots/cdpyr/pull/%s', 'PR #'),
+        'issue': ('https://gitlab.com/cable-robots/cdpyr/-/issues/%s', '#'),
+        'pr':    ('https://gitlab.com/cable-robots/cdpyr/-/merge_requests/%s', 'PR #'),
 }
 # on_rtd is whether we are on readthedocs.org
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
